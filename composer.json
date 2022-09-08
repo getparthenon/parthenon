@@ -1,0 +1,12 @@
+{
+    "name": "parthenon/parthenon",
+    "description": "The parthenon bundle",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Iain Cambridge",
+            "email": "iain@humblyarrogant.io"
+        }
+    ],
+    "require": {}
+}
