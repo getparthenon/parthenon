@@ -1,7 +1,7 @@
 {
     "name": "parthenon/parthenon",
     "type": "library",
-    "license": "BSL",
+    "license": "BUSL-1.1",
     "require": {
         "php": ">=8.0",
         "ext-ctype": "*",
