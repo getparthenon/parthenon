@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autoconfigure="true" />
+
+        <prototype namespace="Parthenon\AbTesting\Controller\" resource="../../AbTesting/Controller/*">
+            <tag name="controller.service_arguments"/>
+        </prototype>
+
+        <service id="parthenon.ab_testing.report.pdf_generator" class="Parthenon\AbTesting\Report\PdfGenerator">
+            <argument type="service" id="Parthenon\AbTesting\Repository\ExperimentRepositoryInterface" />
+            <argument type="service" id="Twig\Environment" />
+            <argument type="service" id="Parthenon\Common\Pdf\GeneratorInterface" on-invalid="null" />
+        </service>
+        <service id="Parthenon\AbTesting\Report\PdfGenerator" alias="parthenon.ab_testing.report.pdf_generator" />
+
+        <service id="parthenon.ab_testing.report.generator" class="Parthenon\AbTesting\Report\Generator">
+            <argument type="service" id="Parthenon\AbTesting\Report\PdfGenerator" />
+        </service>
+        <service id="Parthenon\AbTesting\Report\Generator" alias="parthenon.ab_testing.report.generator" />
+
+        <service id="Parthenon\AbTesting\Command\GenerateReportCommand">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service" id="Parthenon\AbTesting\Report\Generator" />
+            <tag name="console.command" command="parthenon:ab-testing:generate-report"/>
+        </service>
+
+        <service id="Parthenon\AbTesting\Command\CleanUpCommand">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service" id="Parthenon\AbTesting\Report\CleanUpSessions" />
+            <tag name="console.command" command="parthenon:ab-testing:cleanup"/>
+        </service>
+
+        <service id="parthenon.ab_testing.decider.choice_decider.decider_manager" class="Parthenon\AbTesting\Decider\ChoiceDecider\DeciderManager">
+        </service>
+        <service id="Parthenon\AbTesting\Decider\ChoiceDeciderInterface" alias="parthenon.ab_testing.decider.choice_decider.decider_manager" />
+
+        <service id="parthenon.ab_testing.decider.enabled_decider.decider_manager" class="Parthenon\AbTesting\Decider\EnabledDecider\DeciderManager">
+        </service>
+        <service id="Parthenon\AbTesting\Decider\EnabledDecider\DeciderManager" alias="parthenon.ab_testing.decider.enabled_decider.decider_manager" />
+        <service id="Parthenon\AbTesting\Decider\EnabledDeciderInterface" alias="parthenon.ab_testing.decider.enabled_decider.decider_manager" />
+
+        <service id="Parthenon\AbTesting\Decider\EnabledDecider\UserAgentDecider">
+            <argument type="service" id="Symfony\Component\HttpFoundation\RequestStack" />
+            <argument>%parthenon.ab_testing.disabled_user_agents%</argument>
+        </service>
+
+        <service id="Parthenon\AbTesting\Report\CleanUpSessions">
+            <argument type="service" id="Parthenon\AbTesting\Repository\SessionRepositoryInterface" />
+            <argument type="service" id="Parthenon\AbTesting\Repository\ResultLogRepositoryInterface" />
+            <argument type="service" id="Parthenon\AbTesting\Repository\ExperimentLogRepositoryInterface" />
+            <argument>%parthenon.ab_testing.disabled_user_agents%</argument>
+        </service>
+
+        <service id="Parthenon\AbTesting\Command\GenerateStatsCommand">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service" id="Parthenon\AbTesting\Repository\ExperimentRepositoryInterface" />
+            <argument type="service" id="Parthenon\AbTesting\Calculation\Calculate" />
+            <tag name="console.command" command="parthenon:ab-testing:generate-stats"/>
+        </service>
+
+        <service id="Parthenon\AbTesting\Events\SessionCreator" class="Parthenon\AbTesting\Events\SessionCreator">
+            <argument type="service" id="Parthenon\AbTesting\Repository\SessionRepositoryInterface" />
+            <argument type="service" id="Parthenon\AbTesting\Decider\EnabledDeciderInterface" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+        <service id="Parthenon\AbTesting\Events\UserResultsLogging" class="Parthenon\AbTesting\Events\UserResultsLogging">
+            <argument type="service" id="Parthenon\AbTesting\Experiment\ResultLogger" />
+            <argument>%ab_testing_log_user_results%</argument>
+            <tag name="kernel.event_subscriber" />
+        </service>
+        <service id="Parthenon\AbTesting\Calculation\ExperimentStatsCalculator" class="Parthenon\AbTesting\Calculation\ExperimentStatsCalculator">
+            <argument type="service" id="Parthenon\AbTesting\Repository\StatsRepositoryInterface" />
+        </service>
+
+        <service id="Parthenon\AbTesting\Calculation\Calculate" class="Parthenon\AbTesting\Calculation\Calculate">
+            <argument type="service" id="Parthenon\AbTesting\Repository\ExperimentRepositoryInterface" />
+            <argument type="service" id="Parthenon\AbTesting\Calculation\ExperimentStatsCalculator" />
+        </service>
+
+        <service id="Parthenon\AbTesting\Twig\AbExtension" class="Parthenon\AbTesting\Twig\AbExtension">
+            <argument type="service" id="Parthenon\AbTesting\Experiment\Decider" />
+            <tag name="twig.extension"/>
+        </service>
+    </services>
+</container>
+

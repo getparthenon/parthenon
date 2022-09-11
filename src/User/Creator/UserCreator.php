@@ -1,0 +1,67 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Copyright Humbly Arrogant Ltd 2020-2022, all rights reserved.
+ */
+
+namespace Parthenon\User\Creator;
+
+use Parthenon\Notification\EmailSenderInterface;
+use Parthenon\User\Entity\UserInterface;
+use Parthenon\User\Event\PostUserSignupEvent;
+use Parthenon\User\Event\PreUserSignupEvent;
+use Parthenon\User\Notification\MessageFactory;
+use Parthenon\User\Repository\UserRepositoryInterface;
+use Parthenon\User\Team\TeamCreator;
+use Parthenon\User\Team\TeamCreatorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+
+final class UserCreator implements UserCreatorInterface
+{
+    public function __construct(
+        private UserRepositoryInterface $repository,
+        private PasswordHasherFactoryInterface $encoderFactory,
+        private EventDispatcherInterface $eventDispatcher,
+        private MainInviteHandlerInterface $inviteHandler,
+        private EmailSenderInterface $emailSender,
+        private MessageFactory $messageFactory,
+        private bool $teamCreation,
+        private TeamCreatorInterface $teamCreator,
+        private RequestStack $requestStack,
+        private string $defaultRole,
+    ) {
+    }
+
+    public function create(UserInterface $user): void
+    {
+        $this->eventDispatcher->dispatch(new PreUserSignupEvent($user), PreUserSignupEvent::NAME);
+
+        $encoder = $this->encoderFactory->getPasswordHasher($user);
+        $user->setPassword($encoder->hash($user->getPassword()));
+        $user->setConfirmationCode(bin2hex(random_bytes(32)));
+        $user->setCreatedAt(new \DateTime('now'));
+        $user->setRoles([$this->defaultRole]);
+        $this->repository->save($user);
+
+        if ($this->teamCreation) { // TODO move to teamCreator
+            $this->teamCreator->createForUser($user);
+        }
+
+        $request = $this->requestStack->getMainRequest();
+        $inviteCode = $request?->get('code', null);
+        if ($inviteCode) {
+            $this->inviteHandler->handleInvite($user, $inviteCode);
+            $user->setIsConfirmed(true);
+            $this->repository->save($user);
+        } else {
+            $message = $this->messageFactory->getUserSignUpMessage($user);
+            $this->emailSender->send($message);
+        }
+
+        $this->eventDispatcher->dispatch(new PostUserSignupEvent($user), PostUserSignupEvent::NAME);
+    }
+}

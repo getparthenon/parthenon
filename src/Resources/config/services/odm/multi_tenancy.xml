@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Parthenon\MultiTenancy\Repository\TenantRepositoryInterface" alias="parthenon.multi_tenancy.repository.tenant_repository" />
+        <service id="parthenon.multi_tenancy.repository.tenant_repository" class="Parthenon\MultiTenancy\Repository\Odm\TenantRepository">
+            <argument type="service" id="parthenon.multi_tenancy.repository.odm.tenant_repository_doctrine" />
+        </service>
+        <service id="parthenon.multi_tenancy.repository.odm.tenant_repository_doctrine" class="Parthenon\MultiTenancy\Repository\Odm\TenantRepository" />
+        <service alias="parthenon.multi_tenancy.repository.odm.tenant_repository_doctrine" id="Parthenon\MultiTenancy\Repository\Odm\TenantRepository" />
+
+    </services>
+</container>

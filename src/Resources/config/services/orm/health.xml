@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <defaults autoconfigure="true" />
+
+
+        <service id="parthenon.health.checks.doctrine_connection" class="Parthenon\Health\Checks\DoctrineConnectionCheck">
+            <argument type="service" id="Doctrine\ORM\EntityManagerInterface" />
+        </service>
+        <service id="Parthenon\Health\Checks\DoctrineConnectionCheck" alias="parthenon.health.checks.doctrine_connection" />
+    </services>
+</container>

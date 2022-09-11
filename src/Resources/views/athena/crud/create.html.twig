@@ -1,0 +1,41 @@
+{% extends '@Parthenon/athena/base.html.twig' %}
+
+{% block pagetitle %}
+    {{ entityType }} {{ "parthenon.backoffice.crud.create.title"|trans }}
+{% endblock %}
+
+
+{% block content %}
+    {% if process == true %}
+        <div class="alert alert-success" role="alert">
+            {{ 'parthenon.backoffice.crud.create.success'|trans }}
+        </div>
+    {% endif %}
+
+    {{ form_start(form,  {'attr': {"class": "form-edit"}}) }}
+
+    {% for section in entityForm.sections %}
+        <div class="row">
+            <div class="col-lg-12 stretch-card">
+                <div class="card">
+                    <h4 class="card-title">{{ section.headerName }}</h4>
+                    <div class="card-body">
+                    {% for field in section.fields %}
+                        <div class="row">
+                            <div class="col-lg-3 input-label">{{ form_label(attribute(form, field.name)) }}</div>
+                            <div class="col-lg-3">{{ form_widget(attribute(form, field.name),  {'attr': {"class": "form-control"}}) }}</div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
+    {{ form_widget(form) }}
+    <button class="btn btn-lg btn-primary" type="submit" id="crud_create_submit">{{ "parthenon.global.submit"|trans }}</button>
+    {{ form_end(form) }}
+{% endblock %}

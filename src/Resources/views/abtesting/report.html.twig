@@ -1,0 +1,38 @@
+<h1>Report </h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Decision ID</th>
+            <th>Desired Result</th>
+            <th>Last Updated At</th>
+            <th>Total Sessions</th>
+            <th>Total Converted</th>
+            <th>Total Conversion Rate</th>
+            <th>Control Sessions</th>
+            <th>Control Converted</th>
+            <th>Control Conversion Rate</th>
+            <th>Experiment Sessions</th>
+            <th>Experiment Converted</th>
+            <th>Experiment Conversion Rate</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for experiment in experiments %}
+        <tr>
+            <td>{{ experiment.decisionId }}</td>
+            <td>{{ experiment.desiredResult }}</td>
+            <td>{{ experiment.updatedAt|date('Y-m-d h:i:s') }}</td>
+            <td>{{ experiment.overallStats.totalSessions }}</td>
+            <td>{{ experiment.overallStats.totalConverted }}</td>
+            <td>{{ experiment.overallStats.totalConversion }}%</td>
+            <td>{{ experiment.overallStats.controlSessions }}</td>
+            <td>{{ experiment.overallStats.controlConverted }}</td>
+            <td>{{ experiment.overallStats.controlConversion }}%</td>
+            <td>{{ experiment.overallStats.experimentSessions }}</td>
+            <td>{{ experiment.overallStats.experimentConverted }}</td>
+            <td>{{ experiment.overallStats.experimentConversion }}%</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

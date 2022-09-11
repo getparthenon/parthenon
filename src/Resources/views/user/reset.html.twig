@@ -1,0 +1,20 @@
+{% extends 'user/base.html.twig' %}
+
+{% block title %}{{ "parthenon.user.password_reset.title"|trans }}{% endblock %}
+
+{% block body %}
+    <form method="post">
+        {% if processed %}
+            <div class="alert alert-success" id="user-reset-success">{{ "parthenon.user.password_reset.success"|trans }}</div>
+        {% endif %}
+
+        {{ form_start(form) }}
+        <div class="my-custom-class-for-errors">
+            {{ form_errors(form) }}
+        </div>
+        {{ form_widget(form) }}
+        <button type="submit" id="user_password_reset_submit">{{ "parthenon.user.password_reset.submit"|trans }}</button>
+        {{ form_end(form) }}
+
+    </form>
+{% endblock %}

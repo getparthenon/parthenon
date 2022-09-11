@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="Parthenon\Athena\Entity\Notification">
+        <id name="id" type="uuid" column="id">
+            <generator strategy="CUSTOM" />
+            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
+        </id>
+        <field name="messageTemplate" column="message_template" type="string" length="255" />
+        <embedded name="link" class="Parthenon\Athena\Entity\Link" />
+        <field name="createdAt" column="created_at" type="datetime"  />
+        <field name="readAt" column="read_at" type="datetime" nullable="true"  />
+        <field name="isRead" column="is_read" type="boolean" />
+    </entity>
+
+</doctrine-mapping>

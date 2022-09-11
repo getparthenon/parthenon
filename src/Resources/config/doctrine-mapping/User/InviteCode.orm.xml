@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="Parthenon\User\Entity\InviteCode">
+        <id name="id" type="uuid" column="id">
+            <generator strategy="CUSTOM" />
+            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
+        </id>
+        <many-to-one field="user" target-entity="Parthenon\User\Entity\UserInterface" />
+        <many-to-one field="invitedUser" target-entity="Parthenon\User\Entity\UserInterface" />
+        <field name="code" column="code" type="string" length="255" />
+        <field name="email" column="email" type="string" length="255" />
+        <field name="used" column="used" type="boolean" />
+        <field name="createdAt" column="created_at" type="datetime"  />
+        <field name="usedAt" column="used_at" type="datetime" nullable="true" />
+        <field name="cancelled" column="cancelled" type="boolean" />
+    </mapped-superclass>
+</doctrine-mapping>

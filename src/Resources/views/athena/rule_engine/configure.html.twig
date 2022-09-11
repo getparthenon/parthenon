@@ -1,0 +1,49 @@
+{% extends '@Parthenon/athena/base.html.twig' %}
+
+{% block pagetitle %}
+    {{ "parthenon.rule_engine.index.title"|trans }}
+{% endblock %}
+
+{% block content %}
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex">
+            <div style="flex-grow: 1;">{{ "parthenon.rule_engine.index.subtitle"|trans }}</div>
+
+            <div class="filter dropdown keep_it_open">
+                <a href="{{ path('parthenon_rule_athena_add') }}" class="btn btn-primary"><i class="fas fa-plus"></i> {{ 'parthenon.rule_engine.index.links.add'|trans }}</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="col-sm-12">
+                <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0"
+                       role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                    <thead>
+                    <tr role="row">
+                        <th>
+                            Class
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity }}</td>
+                <td><a href="{{ path("parthenon_rule_athena_list", {"entity": entity}) }}">View</a></td>
+            </tr>
+
+        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends '@Parthenon/athena/base.html.twig' %}
+
+{% block pagetitle %}
+    {{ "parthenon.backoffice.crud.list.title"|trans }}
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title">
+                <div class="d-flex">
+                    <div style="flex-grow: 1;">{{ entityType }} List</div>
+                    {% if listFilters.filters|length > 0 %}
+                        <div class="filter dropdown keep_it_open">
+                            <button class="btn btn-light dropdown-toggle" data-toggle="dropdown"><i class="fas fa-filter"></i> Filter</button>
+                            <div class="dropdown-menu">
+
+                                {% for filter in listFilters.filters %}
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input filter-checkbox" id="fl{{ filter.fieldName|replace({'.': '_'}) }}">
+                                        <label class="custom-control-label" for="fl{{ filter.fieldName|replace({'.': '_'}) }}"> {{ filter.headerName|trans }}</label>
+
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if settings.isCreateEnabled and is_granted(rights.create) %}
+                        <div class="filter dropdown keep_it_open">
+                            <a href="{{ path('parthenon_athena_crud_' ~ section.urlTag ~ '_create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> {{ 'parthenon.backoffice.crud.list.links.add'|trans }}</a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="cbfilter">
+                    <div class="row justify-content-center">
+                        <div class="col-md-5">
+                            <form>
+                                {% set showButton = false %}
+                                {% for filter in listFilters.filters %}
+                                    {% if filter.hasData == true %}
+                                        {% set showButton = true %}
+                                    {% endif %}
+                                    <div class="form-group row filter-row fl{{ filter.fieldName|replace({'.': '_'}) }}" {% if filter.hasData != true %}style="display:none;"{% endif %}>
+                                        <label for="filter-{{ filter.fieldName }}"> {{ filter.headerName|trans }}</label>
+                                        {% if filter.name == "bool" %}
+                                            <select name="filters[{{ filter.fieldName }}]" class="form-control" id="filter-{{ filter.fieldName }}">
+                                                <option value="">{{ 'all'|trans }}</option>
+                                                <option value="true" {% if filter.data == "true" %}selected{% endif %}>{{ 'true'|trans }}</option>
+                                                <option value="false" {% if filter.data == "false" %}selected{% endif %}>{{ 'false'|trans }}</option>
+                                            </select>
+                                        {% elseif attribute(filter, "getChoices") is defined  %}
+                                            <select name="filters[{{ filter.fieldName }}]" class="form-control" id="filter-{{ filter.fieldName }}">
+                                                <option value=""></option>
+                                                {% for choice in filter.choices %}
+                                                    <option value="{{ choice }}" {% if filter.data == choice %}selected{% endif %}>{{ choice|trans }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        {% else %}
+                                            <input type="text" name="filters[{{ filter.fieldName }}]" class="form-control" id="filter-{{ filter.fieldName }}" value="{{ filter.data }}">
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                                <div class="text-center mt-1  {% if showButton != true %}flsub{% endif %}">
+                                    <button class="btn btn-info width-lg" id="filters_submit">Submit</button>
+                                </div></form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-1">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                        <tr>
+
+                            {% for field in listView.fields %}
+                                <th class="border-top-0">
+                                    {% if field.isSortable %}
+                                        {% if currentSortKey == field.name and currentSortType == "ASC" %}
+                                            {% set sortType = "DESC" %}
+                                        {% else %}
+                                            {% set sortType = "ASC" %}
+                                        {% endif %}
+                                        <a href="?sort_key={{ field.name }}&sort_type={{ sortType }}">
+                                            {{ field.headerName|trans }}
+                                        </a>
+                                    {% else %}
+                                        {{ field.headerName|trans }}
+                                    {% endif %}
+                                </th>
+                            {% endfor %}
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for name, item in results.results %}
+                            <tr role="row" class="table-item">
+                                {% for name, field in listView.data(item) %}
+                                    <td>
+                                        {% if listView.isLink(name) %}
+                                            <a href="{{ path('parthenon_athena_crud_' ~ section.urlTag ~ '_read',{'id': item.id}) }}">{{ field.htmlOutput }}</a>
+                                        {% else %}
+                                            {{ field.htmlOutput }}
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                                <td>
+                                    {% if settings.isReadEnabled and is_granted(rights.view) %}
+                                        <a href="{{ path('parthenon_athena_crud_' ~ section.urlTag ~ '_read',{'id': item.id}) }}" id="link_{{ item.id }}_read" class="btn-read btn btn-success">{{ "parthenon.backoffice.crud.list.read"|trans }}</a>
+                                    {% endif %}
+                                    {% if settings.isEditEnabled and is_granted(rights.edit) %}
+                                        <a href="{{ path('parthenon_athena_crud_' ~ section.urlTag ~ '_edit',{'id': item.id}) }}" id="link_{{ item.id }}_edit" class="btn-edit btn btn-success">{{ "parthenon.backoffice.crud.list.edit"|trans }}</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <ul class="pagination">
+
+            {% if stepBackKey is not null %}
+                <li class="pagination-item"><a href="?sort_key={{ currentSortKey }}&sort_type={{ currentSortType }}&last_key={{ stepBackKey }}{{ athena_crud_filters_link(listFilters) }}"
+                                               aria-controls="dataTable"
+                                               data-dt-idx="7"
+                                               tabindex="0"
+                                               class="page-link">Previous</a>
+                </li>
+            {% endif %}
+
+            {% if results.hasMore %}
+                <li class="pagination-item">
+                    <a href="?sort_key={{ currentSortKey }}&sort_type={{ currentSortType }}&last_key={{ results.lastKey }}&step_back_key={{ currentLastKey }}{{ athena_crud_filters_link(listFilters) }}"
+                       aria-controls="dataTable"
+                       data-dt-idx="7"
+                       tabindex="0"
+                       id="crud_list_next"
+                       class="page-link">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

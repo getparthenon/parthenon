@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <defaults autoconfigure="true" />
+
+        <service id="parthenon.common.pdf.docraptor.config" class="DocRaptor\Configuration">
+            <call method="setUsername">
+                <argument>%parthenon_common_pdf_docraptor_api_key%</argument>
+            </call>
+        </service>
+        <service id="parthenon.common.pdf.docraptor.doc_api" class="DocRaptor\DocApi">
+            <argument>null</argument>
+            <argument type="service" id="parthenon.common.pdf.docraptor.config" on-invalid="null" />
+        </service>
+
+        <service id="Parthenon\Common\Pdf\DocRaptorGenerator" class="Parthenon\Common\Pdf\DocRaptorGenerator">
+            <argument type="service" id="parthenon.common.pdf.docraptor.doc_api" on-invalid="null" />
+        </service>
+
+        <service id="Parthenon\Common\Pdf\GeneratorInterface" alias="Parthenon\Common\Pdf\DocRaptorGenerator" />
+    </services>
+</container>

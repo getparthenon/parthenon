@@ -1,0 +1,18 @@
+{% extends '@Parthenon/athena/base.html.twig' %}
+
+{% block content %}
+    <div class="row">
+    {% for section in sections %}
+
+            <div class="col-lg-{{ section.columnSize }} stretch-card">
+                <div class="card">
+                    <h4 class="card-title">{{ section.title|trans }}</h4>
+                    <div class="card-body">
+                        {% include section.template with section.templateData %}
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}

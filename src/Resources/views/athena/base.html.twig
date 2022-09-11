@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Athena</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <!-- App css -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('bundles/parthenon/css/athena/bootstrap.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ asset('bundles/parthenon/css/athena/app.css') }}" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body class="light-version">
+
+<!-- start wrapper -->
+<div id="wrapper">
+
+    <!-- Topbar Start -->
+    <div class="navbar header">
+        <ul class="header-item float-right">
+
+            {% set notifications = athena_notifications() %}
+            {% set notificationsCount =  notifications|count %}
+            <li class="dropdown dropdown-notification show">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="true">
+                    <i class="far fa-bell"></i>
+
+                    {% if notificationsCount > 0 %}
+                        <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+                    {% endif %}
+                </a>
+                <div class="dropdown-menu dropdown-position d-size" style="">
+
+                    <!-- item-->
+                    <div class="notification-header">
+                        <h5 class="m-0">
+
+                            {% if notificationsCount > 0 %}
+                                    <span class="float-right">
+                                        <a href="#"><span class="badge badge-info">+ {{ notificationsCount }}</span></a>
+                                    </span>
+                            {% endif %}
+                            {{ 'parthenon.backoffice.notifications.label'|trans }}
+                        </h5>
+                    </div>
+
+                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 331px;">
+                        <div class="slimscroll noti-scroll" style="overflow: hidden; width: auto; height: 331px;">
+
+
+                            {% for notification in notifications|slice(0,3)  %}
+                                <a class="dropdown-item item-list" href="{{ path(notification.link.urlName, notification.link.urlVariables) }}" data-id="{{ notification.id }}">
+
+                                    <div class="item-icon bg-success"><i class="mdi mdi-map-marker-check"></i> </div>
+                                    <p class="item-details">
+                                        {{ notification.messageTemplate }}
+                                        <small class="text-muted">{{ notification.createdAt|date("Y-m-d") }}</small>
+                                    </p>
+                                </a>
+                            {% endfor %}
+
+                        </div><div class="slimScrollBar" style="background: rgb(131, 174, 242); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 124.675px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+
+                    <!-- All-->
+                    <a href="javascript:void(0);" class="dropdown-item text-center item-list notify-all">
+                        View all
+                        <i class="fi-arrow-right"></i>
+                    </a>
+
+                </div>
+            </li>
+            <li class="nav-link">
+                <div class="light-i switch" id="default-version"><i class="fas fa-sun"></i></div>
+                <div class="dark-i" id="dark-version"><i class="fas fa-moon"></i></div>
+            </li>
+
+        </ul>
+
+        <ul class="left-item">
+
+            <li class="float-left">
+                <a class="mobile-menu toggle-button">
+                    <div class="sidebar-toggler">
+                        <span></span>
+                        <span class="sm"></span>
+                        <span class="md"></span>
+                        <span></span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="thentitle">
+                <div class="headtitle">
+                    {% block pagetitle %}
+                        Dashboard
+                    {% endblock %}
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- end Topbar -->
+
+    <!-- Start Left Sidebar -->
+    <div class="sidebar bdr-info">
+        <div class="float-left">
+            <a href="index.html" class="logo">
+                        <span class="desktop-logo d-flex" style="margin-left: 36px;">
+                            <div class="sidebar-brand-icon">
+                            {% set logo = athena_dashboard_logo() %}
+                                {% if logo is not null %}
+                                    <img src="{{ logo }}" width="120" style="margin-left: 10px;">
+                            {% else %}
+                                    <img src="{{ asset('bundles/parthenon/images/athena/logo.png') }}" width="120" style="margin-left: 10px;">
+                                {% endif %}
+                            </div>
+                            <div class="sidebar-brand-text mx-2"><img src="assets/images/logo-sm.png" width="40"></div>
+                        </span>
+            </a>
+        </div>
+
+        <div class="">
+            <!--- Sidemenu -->
+            <div id="nav-menu">
+                <ul class="metismenu" id="side-menu">
+                    <li>
+                        <a href="{{ path('parthenon_athena_index') }}">
+                            <i class="fas fa-chevron-right"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    {% for groupName, groupData in athena_menu()  %}
+                        {% if groupData.roles|length > 1  or is_granted(groupData.roles|first) %}
+                            <li>
+                                <a href="javascript: void(0);">
+                                    <i class="fas fa-chevron-right"></i>
+                                    <span>{{ groupName|trans }}</span>
+                                </a>
+
+                                <ul class="dropdown-nav mm-collapse" aria-expanded="false">
+                                        {% for sectionName, urlTag in groupData.items  %}
+                                            {% if is_granted(urlTag.required_role) %}
+                                                <li>
+                                                    <a href="{{ path(urlTag.route) }}">
+                                                        <span>{{ sectionName|trans }}</span>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% endfor  %}
+
+                </ul>
+                <div class="left-two">
+                    <div class="l-set">
+                        <a class="custbtn mr-1" href="{{ path("parthenon_user_logout") }}"><i class="fas fa-sign-out-alt"></i></a>
+                    </div>
+                </div>
+            </div> <!-- end Sidebar -->
+            <div class="clearfix"></div>
+        </div> <!-- end sidebar left -->
+    </div> <!-- end Left Sidebar-->
+
+    <!-- start main container -->
+    <div class="main-container">
+
+        <!-- start container-fluid-->
+        <div class="container-fluid">
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert_success">
+                    <div class="alert_wrapper">
+                        {{ message|trans }}
+                    </div>
+                </div>
+
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert_warning">
+                    <div class="alert_wrapper">
+                        {{ message|trans }}
+                    </div>
+                </div>
+
+            {% endfor %}
+
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <!-- end container-fluid -->
+
+
+    </div>
+    <!-- end main container -->
+
+</div>
+<!-- end wrapper -->
+
+<!-- Vendor JS -->
+<script src="{{ asset('bundles/parthenon/js/athena/vendor.min.js') }}"></script>
+<script src="{{ asset('bundles/parthenon/js/athena/settings.js') }}"></script>
+<script src="{{ asset('bundles/parthenon/js/athena/app.js') }}"></script>
+</html>

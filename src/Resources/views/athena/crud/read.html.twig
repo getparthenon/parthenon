@@ -1,0 +1,59 @@
+{% extends '@Parthenon/athena/base.html.twig' %}
+
+{% block pagetitle %}
+    {{ entityType }} {{ "parthenon.backoffice.crud.read.title"|trans }}
+{% endblock %}
+
+
+{% block content %}
+    {% for section in readView.sections %}
+
+        <div class="row">
+            <div class="col-lg-12 stretch-card">
+                <div class="card shadow">
+
+                    <h4 class="card-title">{{ section.headerName }}</h4>
+                    <div class="card-body pt-1">
+                        <div class="basic-list-group">
+                            {% if section.hasController %}
+                                {{ render(controller(
+                                    section.controller, {'id': entity.id}
+                                )) }}
+                            {% else %}
+                                <ul class="list-group borderless">
+                                    {% set lastKey = section.fields|length - 1 %}
+                                    {% for key, field in section.fields %}
+                                        <li class="list-group-item d-flex justify-content-between center-item {% if key == 0 %}border-top-0{% endif %} {% if key == lastKey %}border-bottom-0{% endif %}">{{ field.headerName }}: {{ field.output(entity) }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="float-right">
+
+
+        {% if settings.isEditEnabled and is_granted(rights.edit) %}
+            <a href="{{ path('parthenon_athena_crud_' ~ section.urlTag ~ '_edit',{'id': entity.id}) }}" class="btn btn-info width-md" >{{ "parthenon.backoffice.crud.view.edit"|trans }}</a>
+        {% endif %}
+        {% if attribute(entity, "isDeleted") is defined  and is_granted(rights.delete)  %}
+            {% if entity.isDeleted %}
+                {% if settings.isUndeleteEnabled %}
+                    <a href="{{ path('parthenon_athena_crud_' ~ section.urlTag ~ '_undelete',{'id': entity.id}) }}" class="btn btn-danger width-md">{{ "parthenon.backoffice.crud.view.undelete"|trans }}</a>
+                {% endif %}
+            {% else %}
+                {% if settings.isDeleteEnabled %}
+                    <a href="{{ path('parthenon_athena_crud_' ~ section.urlTag ~ '_delete',{'id': entity.id}) }}" class="btn btn-danger width-md">{{ "parthenon.backoffice.crud.view.delete"|trans }}</a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% for button in buttons %}
+            <a href="{{ path(button.path,{'id': entity.id}) }}" title="{{ button.name }}" class="btn-delete btn alert-success">{{ button.label|trans }}</a>
+
+        {% endfor %}
+    </div>
+{% endblock %}

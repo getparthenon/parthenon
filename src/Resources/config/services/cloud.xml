@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autoconfigure="true" />
+
+        <service id="Parthenon\Cloud\DigitalOcean\ClientFactory" class="Parthenon\Cloud\DigitalOcean\ClientFactory">
+            <argument>%parthenon_cloud_digitalocean_apikey%</argument>
+        </service>
+        <service id="Parthenon\Cloud\DigitalOcean\ClientFactoryInterface" alias="Parthenon\Cloud\DigitalOcean\ClientFactory" />
+
+        <service id="Parthenon\Cloud\DigitalOcean\Client" class="Parthenon\Cloud\DigitalOcean\Client">
+            <factory service="Parthenon\Cloud\DigitalOcean\ClientFactoryInterface" method="createClient" />
+        </service>
+        <service id="Parthenon\Cloud\DigitalOcean\ClientInterface" alias="Parthenon\Cloud\DigitalOcean\Client" />
+    </services>
+</container>

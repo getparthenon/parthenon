@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <defaults autoconfigure="true" autowire="true" />
+
+        <service id="parthenon.notification.messenger.sender_handler" class="\Parthenon\Notification\Messenger\SenderHandler">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service" id="parthenon.notification.sender.background" on-invalid="null" />
+        </service>
+
+        <service id="Parthenon\Notification\Sender\MessengerEmailSender" class="Parthenon\Notification\Sender\MessengerEmailSender">
+            <argument type="service" id="Symfony\Component\Messenger\MessageBusInterface" />
+        </service>
+
+        <service id="parthenon.notification.sender.null" class="Parthenon\Notification\Sender\NullEmailSender" />
+        <service id="Parthenon\Notification\Sender\NullEmailSender" alias="parthenon.notification.sender.null" />
+        <service id="Parthenon\Notification\EmailSenderInterface" alias="parthenon.notification.sender.null" />
+
+        <service id="parthenon.notification.mailgun" class="Mailgun\Mailgun">
+            <factory class="Mailgun\Mailgun" method="create" />
+            <argument>%parthenon_notification_email_mailgun_api_key%</argument>
+            <argument>%parthenon_notification_email_mailgun_api_url%</argument>
+        </service>
+        <service id="Parthenon\Notification\Sender\MailgunEmailSender" class="Parthenon\Notification\Sender\MailgunEmailSender">
+            <argument type="service" id="parthenon.notification.mailgun" />
+            <argument>%parthenon_notification_email_mailgun_domain%</argument>
+            <argument type="service" id="Parthenon\Notification\Configuration" />
+        </service>
+
+        <service id="Parthenon\Notification\Sender\SymfonyEmailSender" class="Parthenon\Notification\Sender\SymfonyEmailSender">
+            <argument type="service" id="Symfony\Component\Mailer\MailerInterface" />
+            <argument type="service" id="Parthenon\Notification\Configuration" />
+        </service>
+        <service id="parthenon.notification.third_party.sendgrid" class="SendGrid">
+            <argument>%parthenon_notification_email_sendgrid_api_key%</argument>
+        </service>
+        <service id="Parthenon\Notification\Sender\SendGridEmailSender" class="Parthenon\Notification\Sender\SendGridEmailSender">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service" id="parthenon.notification.third_party.sendgrid" />
+            <argument type="service" id="Parthenon\Notification\Configuration" />
+        </service>
+        <service id="Parthenon\Notification\Configuration" class="Parthenon\Notification\Configuration">
+            <argument>%parthenon_notification_email_from_name%</argument>
+            <argument>%parthenon_notification_email_from_address%</argument>
+        </service>
+
+        <service id="parthenon.notification.slack.webhook_poster" class="Parthenon\Notification\Slack\WebhookPoster">
+            <argument type="service" id="Parthenon\Common\Http\ClientInterface" />
+        </service>
+        <service id="Parthenon\Notification\Slack\WebhookPoster" alias="parthenon.notification.slack.webhook_poster" />
+        <service id="Parthenon\Notification\Slack\WebhookPosterInterface" alias="parthenon.notification.slack.webhook_poster" />
+        <service id="Parthenon\Notification\Slack\NullWebhookPoster" class="Parthenon\Notification\Slack\NullWebhookPoster" />
+
+        <service id="Parthenon\Notification\Slack\OauthFactory" class="Parthenon\Notification\Slack\OauthFactory">
+            <argument>%parthenon_notification_slack_client_id%</argument>
+            <argument>%parthenon_notification_slack_client_secret%</argument>
+            <argument>%parthenon_notification_slack_redirect_url%</argument>
+        </service>
+
+        <service id="parthenon.notification.third_party.slack.oauth" class="Chadhutchins\OAuth2\Client\Provider\Slack">
+            <factory service="Parthenon\Notification\Slack\OauthFactory" method="getProvider" />
+        </service>
+
+        <service id="Parthenon\Notification\Slack\OauthConfigProvider" class="Parthenon\Notification\Slack\OauthConfigProvider">
+            <argument type="service" id="parthenon.notification.third_party.slack.oauth" />
+        </service>
+        <service id="Parthenon\Notification\Slack\ConfigProviderInterface" alias="Parthenon\Notification\Slack\OauthConfigProvider"/>
+
+        <service id="parthenon.notification.third_party.postmark_client" class="\PostmarkClient">
+            <argument>%parthenon_notification_email_postmark_apikey%</argument>
+        </service>
+        <service id="Parthenon\Notification\Sender\PostmarkEmailSender" class="Parthenon\Notification\Sender\PostmarkEmailSender">
+            <argument type="service" id="parthenon.notification.third_party.postmark_client" />
+        </service>
+
+
+    </services>
+</container>

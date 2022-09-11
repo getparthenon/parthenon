@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Parthenon\AbTesting\Entity\Variant" collection="parthenon_ab_experiments">
+        <id field-name="id" />
+        <field field-name="name" name="name" type="string" />
+        <field field-name="percentage" name="percentage" type="integer"  />
+        <field field-name="isDefault" name="is_default" type="boolean" />
+        <embed-one field="stats" field-name="stats" target-document="Parthenon\AbTesting\Entity\VariantStats" />
+    </document>
+
+</doctrine-mongo-mapping>

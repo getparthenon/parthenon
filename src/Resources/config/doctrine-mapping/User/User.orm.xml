@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="Parthenon\User\Entity\User">
+        <id name="id" type="uuid" column="id">
+            <generator strategy="CUSTOM" />
+            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
+        </id>
+
+        <field name="email" column="email" type="string" length="255" />
+        <field name="password" column="password" type="string" length="255"  />
+        <field name="name" column="name" type="string" length="255" nullable="true" />
+        <field name="confirmationCode" column="confirmation_code" type="string" length="255" />
+        <field name="createdAt" column="created_at" type="datetime"  />
+        <field name="activatedAt" column="activated_at" type="datetime" nullable="true" />
+        <field name="deactivatedAt" column="deactivated_at" type="datetime" nullable="true" />
+        <field name="deletedAt" column="deleted_at" type="datetime" nullable="true" />
+        <field name="isConfirmed" column="is_confirmed" type="boolean" />
+        <field name="isDeleted" column="is_deleted" type="boolean" />
+        <field name="roles" column="roles" type="simple_array" nullable="true" />
+
+    </mapped-superclass>
+</doctrine-mapping>

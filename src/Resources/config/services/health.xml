@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <defaults autoconfigure="true" />
+
+        <prototype namespace="Parthenon\Health\Controller\" resource="../../Health/Controller/*">
+            <tag name="controller.service_arguments"/>
+        </prototype>
+
+        <service id="parthenon.health.checks.check_manager" class="Parthenon\Health\Checks\CheckManager" />
+        <service id="Parthenon\Health\Checks\CheckManager" alias="parthenon.health.checks.check_manager" />
+
+    </services>
+</container>

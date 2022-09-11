@@ -1,0 +1,139 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autoconfigure="true" />
+
+        <prototype namespace="Parthenon\MultiTenancy\Controller\" resource="../../MultiTenancy/Controller/*">
+            <tag name="controller.service_arguments"/>
+        </prototype>
+
+        <service id="Parthenon\MultiTenancy\TenantProvider\CurrentTenantProvider" class="Parthenon\MultiTenancy\TenantProvider\CurrentTenantProvider">
+            <argument type="service" id="Parthenon\MultiTenancy\Repository\TenantRepositoryInterface" />
+            <argument type="service" id="request_stack" />
+            <argument>%parthenon_multi_tenancy_default_database%</argument>
+        </service>
+        <service id="Parthenon\MultiTenancy\TenantProvider\TenantProviderInterface" alias="Parthenon\MultiTenancy\TenantProvider\CurrentTenantProvider">
+        </service>
+        <service id="Parthenon\MultiTenancy\TenantProvider\TestCurrentTenantProvider" class="Parthenon\MultiTenancy\TenantProvider\TestCurrentTenantProvider">
+        </service>
+
+        <service id="Parthenon\MultiTenancy\Command\MigrateCommand">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service" id="Parthenon\MultiTenancy\Repository\TenantRepositoryInterface" />
+            <argument type="service" id="Parthenon\MultiTenancy\TenantProvider\TestCurrentTenantProvider" />
+            <argument type="service" id="parthenon.multi_tenancy.dbal.connection" />
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+            <argument>%parthenon_multi_tenancy_migrations_directory%</argument>
+            <argument>%parthenon_multi_tenancy_orm_entity_manager%</argument>
+            <argument>%parthenon_multi_tenancy_enabled%</argument>
+            <tag name="console.command" />
+        </service>
+
+        <service id="Parthenon\MultiTenancy\Dbal\SchemaToolProvider" class="Parthenon\MultiTenancy\Dbal\SchemaToolProvider" />
+        <service id="Parthenon\MultiTenancy\Database\DbalDatabaseCreator" class="Parthenon\MultiTenancy\Database\DbalDatabaseCreator">
+            <argument type="service" id="Parthenon\MultiTenancy\Dbal\SchemaToolProvider" />
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+            <argument type="service" id="parthenon.multi_tenancy.dbal.global_connection" />
+            <argument type="service" id="Parthenon\MultiTenancy\Database\DatabaseSwitcherInterface" />
+            <argument>%parthenon_multi_tenancy_orm_entity_manager%</argument>
+            <argument type="service" id="Parthenon\MultiTenancy\Database\MigrationsHandlerInterface" />
+        </service>
+        <service id="Parthenon\MultiTenancy\Database\DigitalOceanDatabaseCreator" class="Parthenon\MultiTenancy\Database\DigitalOceanDatabaseCreator">
+            <argument type="service" id="Parthenon\Cloud\DigitalOcean\ClientInterface" />
+            <argument type="service" id="Parthenon\MultiTenancy\Database\DatabaseSwitcherInterface" />
+            <argument type="service" id="Parthenon\MultiTenancy\Dbal\SchemaToolProvider" />
+            <argument type="service" id="Parthenon\MultiTenancy\Database\MigrationsHandlerInterface" />
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+            <argument>%parthenon_multi_tenancy_orm_entity_manager%</argument>
+            <argument>%parthenon_multi_tenancy_digitalocean_cluster_id%</argument>
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+
+        <service id="Parthenon\MultiTenancy\Database\DatabaseCreatorInterface" alias="Parthenon\MultiTenancy\Database\DbalDatabaseCreator" />
+
+        <service id="Parthenon\MultiTenancy\Model\SignUp" class="Parthenon\MultiTenancy\Model\SignUp" />
+        <service id="Parthenon\MultiTenancy\Form\Type\SignupType" class="Parthenon\MultiTenancy\Form\Type\SignupType">
+            <argument type="service" id="Parthenon\MultiTenancy\Model\SignUp" />
+        </service>
+
+        <service id="Parthenon\MultiTenancy\Entity\TenantInterface" class="Parthenon\MultiTenancy\Entity\Tenant" />
+
+        <service id="Parthenon\MultiTenancy\Factory\TenantFactory" class="Parthenon\MultiTenancy\Factory\TenantFactory">
+            <argument type="service" id="Parthenon\MultiTenancy\Entity\TenantInterface" />
+        </service>
+        <service id="Parthenon\MultiTenancy\Factory\TenantFactoryInterface" alias="Parthenon\MultiTenancy\Factory\TenantFactory" />
+
+        <service id="Parthenon\MultiTenancy\Factory\UserFactory" class="Parthenon\MultiTenancy\Factory\UserFactory">
+            <argument type="service" id="Parthenon\User\Entity\UserInterface" />
+        </service>
+        <service id="Parthenon\MultiTenancy\Factory\UserFactoryInterface" alias="Parthenon\MultiTenancy\Factory\UserFactory" />
+
+        <service id="Parthenon\MultiTenancy\Database\DatabaseSwitcher" class="Parthenon\MultiTenancy\Database\DatabaseSwitcher">
+            <argument type="service" id="parthenon.multi_tenancy.dbal.connection" />
+        </service>
+        <service id="Parthenon\MultiTenancy\Database\DatabaseSwitcherInterface" alias="Parthenon\MultiTenancy\Database\DatabaseSwitcher" />
+
+        <service id="Parthenon\MultiTenancy\RequestProcessor\TenantSignup" class="Parthenon\MultiTenancy\RequestProcessor\TenantSignup">
+            <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
+            <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
+            <argument type="service" id="Parthenon\MultiTenancy\Form\Type\SignupType" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Parthenon\MultiTenancy\Factory\TenantFactoryInterface" />
+            <argument type="service" id="Parthenon\MultiTenancy\Factory\UserFactoryInterface" />
+            <argument type="service" id="Parthenon\MultiTenancy\Creator\TenantCreatorInterface" />
+            <argument type="service" id="Parthenon\User\Creator\UserCreatorInterface" />
+            <argument type="service" id="Parthenon\MultiTenancy\Database\DatabaseSwitcherInterface" />
+            <argument type="service" id="Parthenon\Common\Config\SiteUrlProviderInterface" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+
+
+        <service id="parthenon.multi_tenancy.tenant_creator.messenger.tenant_creator_handler" class="\Parthenon\MultiTenancy\Messenger\TenantCreatorHandler">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service" id="Parthenon\MultiTenancy\Creator\TenantCreator" on-invalid="null" />
+        </service>
+
+        <service id="Parthenon\MultiTenancy\Creator\MessengerTenantCreator" class="Parthenon\MultiTenancy\Creator\MessengerTenantCreator">
+            <argument type="service" id="Symfony\Component\Messenger\MessageBusInterface" />
+        </service>
+
+        <service id="Parthenon\MultiTenancy\Creator\TenantCreator" class="Parthenon\MultiTenancy\Creator\TenantCreator">
+            <argument type="service" id="Parthenon\MultiTenancy\Repository\TenantRepositoryInterface" />
+            <argument type="service" id="Parthenon\MultiTenancy\Database\DatabaseCreatorInterface" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+        </service>
+        <service id="Parthenon\MultiTenancy\Creator\TenantCreatorInterface" alias="Parthenon\MultiTenancy\Creator\TenantCreator" />
+
+        <service id="Parthenon\MultiTenancy\SiteUrlProvider" class="Parthenon\MultiTenancy\SiteUrlProvider">
+            <argument>%parthenon_multi_tenancy_domain%</argument>
+            <argument>%parthenon_common_site_url%</argument>
+            <argument type="service" id="Parthenon\MultiTenancy\TenantProvider\TenantProviderInterface" />
+        </service>
+        <service id="Parthenon\Common\Config\SiteUrlProviderInterface" alias="Parthenon\MultiTenancy\SiteUrlProvider" />
+
+        <service id="Parthenon\MultiTenancy\Database\MigrationsHandler" class="Parthenon\MultiTenancy\Database\MigrationsHandler">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+            <argument>%parthenon_multi_tenancy_migrations_directory%</argument>
+            <argument>%parthenon_multi_tenancy_orm_entity_manager%</argument>
+        </service>
+        <service id="Parthenon\MultiTenancy\Database\MigrationsHandlerInterface" alias="Parthenon\MultiTenancy\Database\MigrationsHandler" />
+
+
+        <service id="Parthenon\MultiTenancy\Validator\UniqueSubdomainValidator" class="Parthenon\MultiTenancy\Validator\UniqueSubdomainValidator">
+            <argument type="service" id="Parthenon\MultiTenancy\Repository\TenantRepositoryInterface" />
+            <tag name="validator.constraint_validator" />
+        </service>
+    </services>
+</container>

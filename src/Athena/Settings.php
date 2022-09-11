@@ -1,0 +1,73 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Copyright Humbly Arrogant Ltd 2020-2022, all rights reserved.
+ */
+
+namespace Parthenon\Athena;
+
+final class Settings
+{
+    private array $setting;
+
+    public function __construct(array $setting)
+    {
+        $this->setting = $setting;
+    }
+
+    public function isReadEnabled(): bool
+    {
+        if (array_key_exists('read', $this->setting) && false === $this->setting['read']) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function hasSavedFilters(): bool
+    {
+        if (array_key_exists('saved_filters', $this->setting) && false !== $this->setting['saved_filters']) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isCreateEnabled(): bool
+    {
+        if (array_key_exists('create', $this->setting) && false === $this->setting['create']) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isDeleteEnabled(): bool
+    {
+        if (array_key_exists('delete', $this->setting) && false === $this->setting['delete']) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isUndeleteEnabled(): bool
+    {
+        if (array_key_exists('undelete', $this->setting) && false === $this->setting['undelete']) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isEditEnabled(): bool
+    {
+        if (array_key_exists('edit', $this->setting) && false === $this->setting['edit']) {
+            return false;
+        }
+
+        return true;
+    }
+}

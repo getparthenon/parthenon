@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autoconfigure="true" />
+        
+        <service id="parthenon.common.pdf.mpdf.mpdf" class="Mpdf\Mpdf">
+            <argument type="collection">
+                <argument key="tempDir">%parthenon.common.pdf.mpdf.tmp_dir%</argument>
+            </argument>
+        </service>
+
+        <service id="Parthenon\Common\Pdf\MpdfGenerator" class="Parthenon\Common\Pdf\MpdfGenerator">
+            <argument type="service" id="parthenon.common.pdf.mpdf.mpdf" on-invalid="null" />
+        </service>
+
+        <service id="Parthenon\Common\Pdf\GeneratorInterface" alias="Parthenon\Common\Pdf\MpdfGenerator" />
+    </services>
+</container>

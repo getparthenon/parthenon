@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <mapped-superclass name="Parthenon\MultiTenancy\Entity\Tenant" collection="parthenon_tenants">
+        <id field-name="id" />
+
+        <field field-name="subdomain" name="subdomain" type="string" />
+        <field field-name="database" name="database" type="string" />
+        <field field-name="createdAt" name="created_at" type="date" />
+        <field field-name="updatedAt" name="updated_at" type="date" />
+        <field field-name="deletedAt" name="deleted_at" type="date" />
+
+        <indexes>
+            <index>
+                <key name="subdomain" order="asc" />
+                <option name="safe" value="true" />
+                <option name="unique" value="true" />
+            </index>
+        </indexes>
+
+    </mapped-superclass>
+
+</doctrine-mongo-mapping>

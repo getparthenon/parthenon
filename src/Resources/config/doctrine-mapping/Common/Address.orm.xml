@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <embeddable name="Parthenon\Common\Address">
+        <field name="companyName" column="company_name" nullable="true" />
+        <field name="streetLineOne" column="street_line_one" nullable="true" />
+        <field name="streetLineTwo" column="street_line_two" nullable="true" />
+        <field name="city" column="city" nullable="true" />
+        <field name="region" column="region" nullable="true" />
+        <field name="country" column="country" nullable="true" />
+        <field name="postcode" column="postcode" nullable="true" />
+    </embeddable>
+</doctrine-mapping>

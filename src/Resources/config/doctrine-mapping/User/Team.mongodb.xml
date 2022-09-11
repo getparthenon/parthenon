@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <mapped-superclass name="Parthenon\User\Entity\Team" collection="parthenon_teams">
+        <id field-name="id" />
+        <field name="created_at" field-name="createdAt" type="date" />
+        <field name="updated_at" field-name="updatedAt" type="date" />
+        <field name="deleted_at" field-name="deletedAt" type="date" />
+        <embed-many field="members" field-name="members" target-document="Parthenon\User\Entity\UserInterface" />
+        <field name="name" field-name="name" type="string" />
+    </mapped-superclass>
+
+</doctrine-mongo-mapping>

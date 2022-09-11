@@ -1,0 +1,59 @@
+paths:
+    - ./src
+exclude_files:
+    - .*test.*
+layers:
+    - name: Athena
+      collectors:
+          - type: directory
+            regex: src/Athena/*
+    - name: Notification
+      collectors:
+           - type: directory
+             regex: src/Notification/*
+    - name: Common
+      collectors:
+           - type: directory
+             regex: src/Common/*
+    - name: User
+      collectors:
+           - type: directory
+             regex: src/User/*
+    - name: Funnel
+      collectors:
+        - type: directory
+          regex: src/Funnel/*
+    - name: Health
+      collectors:
+        - type: directory
+          regex: src/Health/*
+    - name: RuleEngine
+      collectors:
+        - type: directory
+          regex: src/RuleEngine/*
+    - name: Invoice
+      collectors:
+        - type: directory
+          regex: src/Invoice/*
+ruleset:
+    Athena:
+        - Common
+    User:
+        - Common
+        - Notification
+        - Athena
+        - RuleEngine
+        - User
+    Notification:
+        - Common
+    Funnel:
+        - Common
+    Health:
+        - Common
+    Invoice:
+        - Common
+    RuleEngine:
+        - Athena
+        - Common
+        - Notification
+    Common:

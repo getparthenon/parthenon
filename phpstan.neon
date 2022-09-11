@@ -1,0 +1,11 @@
+parameters:
+    level: 5
+    paths:
+        - src
+    ignoreErrors:
+        -
+            message: '#Call to an undefined method [a-zA-Z0-9\\_]+::[a-zA-Z0-9\\_]+\(\)#'
+            path: src/DependencyInjection/Configuration.php
+    excludePaths:
+        - src/User/Logging/Monolog/PasswordFilterProcessor.php
+        - src/Payments/Stripe/EventFactory.php

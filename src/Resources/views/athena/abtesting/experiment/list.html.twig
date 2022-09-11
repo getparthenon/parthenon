@@ -1,0 +1,75 @@
+{% extends '@Parthenon/athena/base.html.twig' %}
+
+{% block pagetitle %}
+    {{ "parthenon.abtesting.experiment.title"|trans }}
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title">
+                <div class="d-flex">
+                    <div style="flex-grow: 1;"> List</div>
+                    <div class="filter dropdown keep_it_open">
+                        <a href="{{ path('parthenon_athena_abtesting_create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> {{ 'parthenon.abtesting.experiment.list.add'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-1">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                        <tr>
+                            <th class="border-top-0">
+                                {{ "parthenon.abtesting.experiment.list.name"|trans }}
+                            </th>
+                            <th class="border-top-0">
+                                {{ "parthenon.abtesting.experiment.list.pre_decided"|trans }}
+                            </th>
+                            <th class="border-top-0">
+                                {{ "parthenon.abtesting.experiment.list.actions"|trans }}
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for name, item in results.results %}
+                            <tr role="row" class="table-item">
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.isPredecided }}</td>
+                                <td>
+                                    <a href="{{ path("parthenon_athena_abtesting_view", {id: item.id}) }}" class="btn btn-success">{{ "parthenon.abtesting.experiment.list.buttons.view"|trans }}</a>
+                                    <a href="{{ path("parthenon_athena_abtesting_edit", {id: item.id}) }}" class="btn btn-success">{{ "parthenon.abtesting.experiment.list.buttons.edit"|trans }}</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <ul class="pagination">
+
+            {% if stepBackKey is not null %}
+                <li class="pagination-item"><a href="?sort_key={{ currentSortKey }}&sort_type={{ currentSortType }}&last_key={{ stepBackKey }}"
+                                               aria-controls="dataTable"
+                                               data-dt-idx="7"
+                                               tabindex="0"
+                                               class="page-link">Previous</a>
+                </li>
+            {% endif %}
+
+            {% if results.hasMore %}
+                <li class="pagination-item">
+                    <a href="?sort_key={{ currentSortKey }}&sort_type={{ currentSortType }}&last_key={{ results.lastKey }}&step_back_key={{ currentLastKey }}"
+                       aria-controls="dataTable"
+                       data-dt-idx="7"
+                       tabindex="0"
+                       id="crud_list_next"
+                       class="page-link">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Copyright Humbly Arrogant Ltd 2020-2022, all rights reserved.
+ */
+
+namespace Parthenon\AbTesting\Repository\Timescale;
+
+use Doctrine\DBAL\Connection;
+use Parthenon\AbTesting\Repository\ExperimentLogRepositoryInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+
+class ExperimentLogRepository implements ExperimentLogRepositoryInterface
+{
+    private Connection $connection;
+
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
+
+    public function saveDecision(UuidInterface $sessionId, string $experimentName, string $decisionOutput): void
+    {
+        $uuid = Uuid::uuid4();
+        $now = new \DateTime('now');
+        $query = $this->connection->prepare('INSERT INTO ab_experiment_log (id, session_id, decision_string_id, decision_output, created_at) VALUES (:id, :session_id, :decision_string_id, :decision_output, :created_at)');
+        $query->bindValue(':id', (string) $uuid);
+        $query->bindValue(':session_id', (string) $sessionId);
+        $query->bindValue(':decision_string_id', (string) $experimentName);
+        $query->bindValue(':decision_output', (string) $decisionOutput);
+        $query->bindValue(':created_at', $now->format('Y-m-d H:i:s'));
+        $query->execute();
+    }
+
+    public function deleteAllForSession(UuidInterface $sessionId): void
+    {
+        $statement = $this->connection->prepare('DELETE FROM ab_experiment_log WHERE session_id = :session_id');
+        $statement->bindValue(':session_id', (string) $sessionId);
+        $statement->execute();
+    }
+}

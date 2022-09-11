@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Parthenon\AbTesting\Entity\Experiment" table="parthenon_ab_experiments">
+        <id name="id" type="uuid" column="id">
+            <generator strategy="CUSTOM" />
+            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
+        </id>
+
+        <field name="type" column="type" type="string" length="255" />
+        <field name="name" column="name" type="string" length="255" unique="true"  />
+        <field name="desiredResult" column="desired_result" type="string" length="255" />
+        <field name="createdAt" column="created_at" type="datetime"  />
+        <field name="updatedAt" column="activated_at" type="datetime" nullable="true" />
+        <field name="deletedAt" column="deleted_at" type="datetime" nullable="true" />
+        <field name="isDeleted" column="is_deleted" type="boolean" />
+
+        <one-to-many field="variants" target-entity="Parthenon\AbTesting\Entity\Variant" mapped-by="experiment">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
+
+    </entity>
+</doctrine-mapping>

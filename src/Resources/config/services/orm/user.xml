@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="Parthenon\User\Repository\InviteCodeRepositoryInterface" alias="parthenon.user.repository.invite_code_repository" />
+        <service id="parthenon.user.repository.invite_code_repository" class="Parthenon\User\Repository\InviteCodeRepository">
+            <argument type="service" id="parthenon.user.repository.orm.invite_code_repository_doctrine" />
+        </service>
+        <service id="Parthenon\User\Repository\Orm\InviteCodeRepository" alias="parthenon.user.repository.orm.invite_code_repository_doctrine" />
+
+        <service id="parthenon.user.repository.invite_code_repository_doctrine" alias="Parthenon\User\Repository\InviteCodeRepositoryRepository" />
+        <service id="parthenon.user.repository.orm.invite_code_repository_doctrine" class="Parthenon\User\Repository\Orm\InviteCodeRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+
+        <service id="Parthenon\User\Repository\TeamInviteCodeRepositoryInterface" alias="parthenon.user.repository.team_invite_code_repository" />
+        <service id="parthenon.user.repository.team_invite_code_repository" class="Parthenon\User\Repository\TeamInviteCodeRepository">
+            <argument type="service" id="parthenon.user.repository.orm.team_invite_code_repository_doctrine" />
+        </service>
+        <service id="Parthenon\User\Repository\Orm\TeamInviteCodeRepository" alias="parthenon.user.repository.orm.team_invite_code_repository_doctrine" />
+
+        <service id="parthenon.user.repository.team_invite_code_repository_doctrine" alias="Parthenon\User\Repository\TeamInviteCodeRepositoryRepository" />
+        <service id="parthenon.user.repository.orm.team_invite_code_repository_doctrine" class="Parthenon\User\Repository\Orm\TeamInviteCodeRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+
+        <service id="Parthenon\User\Repository\ForgotPasswordCodeRepositoryInterface" alias="parthenon.user.repository.forgot_password_code_repository" />
+        <service id="parthenon.user.repository.forgot_password_code_repository" class="Parthenon\User\Repository\ForgotPasswordCodeRepository">
+            <argument type="service" id="parthenon.user.repository.orm.password_reset_repository_doctrine" />
+        </service>
+        <service    id="parthenon.user.repository.orm.password_reset_repository_doctrine" class="Parthenon\User\Repository\Orm\ForgotPasswordCodeRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+
+        <service id="Parthenon\User\Repository\Orm\PasswordResetRepository" alias="parthenon.user.repository.orm.password_reset_repository_doctrine" />
+
+        <service id="Parthenon\User\Repository\TeamRepositoryInterface" alias="parthenon.user.repository.team_repository" />
+        <service id="parthenon.user.repository.team_repository" class="Parthenon\User\Repository\TeamRepository">
+            <argument type="service" id="parthenon.user.repository.orm.team_repository_doctrine" />
+        </service>
+        <service id="parthenon.user.repository.orm.team_repository_doctrine" class="Parthenon\User\Repository\Orm\TeamRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+        <service alias="parthenon.user.repository.orm.user_repository_doctrine" id="Parthenon\User\Repository\Orm\UserRepository" />
+
+        <service id="Parthenon\User\Repository\UserRepositoryInterface" alias="parthenon.user.repository.user_repository" />
+        <service id="Parthenon\User\Repository\ActiveMembersRepositoryInterface" alias="Parthenon\User\Repository\UserRepositoryInterface" />
+        <service id="parthenon.user.repository.user_repository" class="Parthenon\User\Repository\UserRepository">
+            <argument type="service" id="parthenon.user.repository.orm.user_repository_doctrine" />
+        </service>
+
+        <service id="parthenon.user.repository.orm.user_repository_doctrine" class="Parthenon\User\Repository\Orm\UserRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+        <service alias="parthenon.user.repository.orm.user_repository_doctrine" id="Parthenon\User\Repository\Orm\UserRepository" />
+
+    </services>
+</container>

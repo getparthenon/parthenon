@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Parthenon\Athena\Entity\Notification" collection="parthenon_backoffice_notifications">
+        <id field-name="id" />
+        <field name="message_template" field-name="messageTemplate" type="string" />
+        <field name="created_at" field-name="createdAt" type="date" />
+        <field name="is_read" field-name="isRead" type="boolean" />
+        <embed-one field="link" field-name="link" target-document="Parthenon\Athena\Entity\Notification\Link" />
+
+        <indexes>
+            <index>
+                <key name="is_read" order="asc" />
+            </index>
+        </indexes>
+
+    </document>
+
+    <embedded-document name="Parthenon\Athena\Entity\Link" >
+        <field name="url_name" field-name="urlName" type="string" />
+        <field name="url_variables" field-name="urlVariables" type="collection" />
+    </embedded-document>
+</doctrine-mongo-mapping>

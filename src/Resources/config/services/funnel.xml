@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <defaults autoconfigure="true" />
+
+        <service id="parthenon.funnel.unfinnished_actions.action_manager" class="Parthenon\UnfinnishedActions\ActionManager" public="true" />
+        <service id="Parthenon\UnfinnishedActions\ActionManager" alias="parthenon.funnel.unfinnished_actions.action_manager" public="true" />
+
+        <service id="parthenon.funnel.repository.repository_manager" class="Parthenon\Repository\RepositoryManager" public="true" />
+        <service id="Parthenon\Repository\RepositoryManager" alias="parthenon.funnel.repository.repository_manager" public="true" />
+
+        <service id="parthenon.funnel.funnel" class="Parthenon\Funnel\Funnel" public="true">
+            <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
+            <argument type="service" id="request_stack" />
+        </service>
+        <service id="Parthenon\Funnel\Funnel" alias="parthenon.funnel.funnel" public="true"  />
+        <service id="Parthenon\Funnel\FunnelInterface" alias="parthenon.funnel.funnel" />
+    </services>
+</container>

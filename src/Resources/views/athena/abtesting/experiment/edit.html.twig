@@ -1,0 +1,87 @@
+{% extends '@Parthenon/athena/base.html.twig' %}
+
+{% block pagetitle %}
+    {{ "parthenon.abtesting.experiment.edit.title"|trans }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
+
+    <form method="post">
+        <div class="row">
+            <div class="col-lg-12 stretch-card">
+                <div class="card">
+                    <h4 class="card-title">{{ "parthenon.abtesting.experiment.edit.experment_section.title"|trans }}</h4>
+                    <div class="card-body">
+                        <div class="row m-2">
+                            <div class="col-lg-3 input-label">{{ form_label(form.name) }}</div>
+                            <div class="col-lg-3">{{ form_widget(form.name,  {'attr': {"class": "form-control"}}) }}</div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col-lg-3 input-label">{{ form_label(form.type) }}</div>
+                            <div class="col-lg-3">{{ form_widget(form.type,  {'attr': {"class": "form-control"}}) }}</div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col-lg-3 input-label">{{ form_label(form.desiredResult) }}</div>
+                            <div class="col-lg-3">{{ form_widget(form.desiredResult,  {'attr': {"class": "form-control"}}) }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 stretch-card">
+                <div class="card">
+                    <h4 class="card-title">{{ form_label(form.variants) }}</h4> <div class="card-body">
+                        <div class="variants">
+
+                            {% for variant in form.variants %}{{ form_label(form.variants) }}
+                                <div class="row m-2">
+                                    <div class="col-lg-3 input-label">{{ form_label(variant.name) }}</div>
+                                    <div class="col-lg-3">{{ form_widget(variant.name,  {'attr': {"class": "form-control"}}) }}</div>
+                                </div>
+                                <div class="row m-2">
+                                    <div class="col-lg-3 input-label">{{ form_label(variant.percentage) }}</div>
+                                    <div class="col-lg-3">{{ form_widget(variant.percentage,  {'attr': {"class": "form-control"}}) }}</div>
+                                </div>
+                                <div class="row m-2">
+                                    <div class="col-lg-3 input-label">{{ form_label(variant.is_default) }}</div>
+                                    <div class="col-lg-3">{{ form_widget(variant.is_default,  {'attr': {"class": "form-control"}}) }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="row m-4">
+                            <a href="javascript:addVariant()" class="btn btn-success">Add</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-lg btn-primary" type="submit" id="crud_create_submit">{{ "parthenon.global.submit"|trans }}</button>
+            <script type="text/javascript">
+                var index = {{ form.variants|count  }};
+
+
+                function addVariant() {
+                    var html = "<div class=\"row m-2\"><div class=\"col-lg-3 input-label\">{{ form_label(form.variants.vars.prototype.name)|e('js') }}</div>" +
+                        "<div class=\"col-lg-3\">{{ form_widget(form.variants.vars.prototype.name,  {'attr': {"class": "form-control"}})|e('js') }}</div></div>" +
+                        "<div class=\"row m-2\"><div class=\"col-lg-3 input-label\">{{ form_label(form.variants.vars.prototype.percentage)|e('js') }}</div>" +
+                        "<div class=\"col-lg-3\">{{ form_widget(form.variants.vars.prototype.percentage,  {'attr': {"class": "form-control"}})|e('js') }}</div></div>" +
+                        "<div class=\"row m-2\">" +
+                        "<div class=\"col-lg-3 input-label\">{{ form_label(form.variants.vars.prototype.is_default)|e('js') }}</div>" +
+                        "<div class=\"col-lg-3\">{{ form_widget(form.variants.vars.prototype.is_default,  {'attr': {"class": "form-control"}})|e('js') }}</div>" +
+                        "</div>"
+
+                    html = html.replace(/__name__/g, index)
+
+                    index++;
+                    $('.variants').append(html)
+
+                }
+            </script>
+            <input type="hidden" id="experiment__csrf_token" name="experiment[_csrf_token]" value="{{ csrf_token('experiment_item') }}">
+    </form>
+{% endblock %}

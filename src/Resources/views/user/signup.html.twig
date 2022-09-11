@@ -1,0 +1,16 @@
+{% extends 'user/base.html.twig' %}
+
+{% block title %}
+    {{ 'parthenon.user.signup.title'|trans }}
+{% endblock %}
+
+
+{% block body %}
+{{ form_start(form,  {'attr': {"class": "form-signup"}}) }}
+<div class="my-custom-class-for-errors">
+    {{ form_errors(form) }}
+</div>
+    {{ form_widget(form, {'attr': {"class": "form-control"}}) }}
+    <button class="btn btn-lg btn-primary" type="submit" id="user_signup_submit">{{ "parthenon.global.submit"|trans }}</button>
+{{ form_end(form) }}
+{% endblock %}

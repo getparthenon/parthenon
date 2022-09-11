@@ -1,0 +1,56 @@
+{% extends '@Parthenon/athena/base.html.twig' %}
+
+{% block pagetitle %}
+    {{ "parthenon.rule_engine.list.title"|trans }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="card shadow mb-4">
+        <div class="card-title">
+            <div class="d-flex">
+                <div style="flex-grow: 1;">{{ "parthenon.rule_engine.list.subtitle"|trans }}</div>
+
+                <div class="filter dropdown keep_it_open">
+                    <a href="{{ path('parthenon_rule_athena_add') }}" class="btn btn-primary"><i class="fas fa-plus"></i> {{ 'parthenon.rule_engine.list.links.add'|trans }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0"
+                                   role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                <thead>
+                                <tr role="row">
+                                    <th>{{ "parthenon.rule_engine.list.entity"|trans }}</th>
+                                    <th>{{ "parthenon.rule_engine.list.field"|trans }}</th>
+                                    <th>{{ "parthenon.rule_engine.list.comparison"|trans }}</th>
+                                    <th>{{ "parthenon.rule_engine.list.value"|trans }}</th>
+                                    <th>{{ "parthenon.rule_engine.list.action"|trans }}</th>
+                                    <th>{{ "parthenon.rule_engine.list.options"|trans }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in entities %}
+                                    <tr role="row" class="odd table-item">
+                                        <td>{{ item.entity }}</td>
+                                        <td>{{ item.field }}</td>
+                                        <td>{{ item.comparison }}</td>
+                                        <td>{{ item.value }}</td>
+                                        <td>{{ item.action }}</td>
+                                        <td>{{ item.options|json_encode }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

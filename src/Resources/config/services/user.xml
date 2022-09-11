@@ -1,0 +1,385 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <defaults autoconfigure="true" />
+
+        <prototype namespace="Parthenon\User\Controller\" resource="../../User/Controller/*">
+            <tag name="controller.service_arguments"/>
+        </prototype>
+
+        <service id="Parthenon\User\Command\ChangePasswordCommand">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service"  id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <argument type="service" id="Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface" />
+            <tag name="console.command" command="parthenon:user:change-password" />
+        </service>
+
+        <service id="Parthenon\User\Command\SoftDeleteCommand">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service"  id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <tag name="console.command" command="parthenon:user:soft-delete" />
+        </service>
+
+        <service id="Parthenon\User\Command\ConfirmCommand">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service"  id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <tag name="console.command" command="parthenon:user:confirm" />
+        </service>
+
+        <service id="Parthenon\User\Command\RemoveRoleCommand">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service"  id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <tag name="console.command" command="parthenon:user:remove-role" />
+        </service>
+
+        <service id="Parthenon\User\Command\GiveRoleCommand">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service"  id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <tag name="console.command" command="parthenon:user:give-role" />
+        </service>
+        <service id="Parthenon\User\Command\CreateUserCommand">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service"  id="Parthenon\User\Entity\UserInterface" />
+            <argument type="service" id="Parthenon\User\Creator\UserCreatorInterface" />
+            <tag name="console.command" command="parthenon:user:create-user" />
+        </service>
+
+
+        <service id="Parthenon\User\Listener\TimezoneListener" class="Parthenon\User\Listener\TimezoneListener">
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <argument type="service"  id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Parthenon\User\Team\CurrentTeamProviderInterface" />
+            <tag name="kernel.event_listener" event="kernel.request"/>
+            <tag name="container.preload" class="Parthenon\User\Listener\TimezoneListener"/>
+        </service>
+
+
+        <service id="parthenon.user.backoffice.user_section" class="Parthenon\User\Athena\UserSection">
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <argument>%parthenon_user_roles_athena_assignable_roles%</argument>
+            <tag name="parthenon.athena.section" />
+            <tag name="container.preload" class="Parthenon\User\Athena\UserSection" />
+        </service>
+
+        <service id="parthenon.user.backoffice.team_section" class="Parthenon\User\Athena\TeamSection">
+            <argument type="service" id="Parthenon\User\Repository\TeamRepositoryInterface" />
+            <tag name="parthenon.athena.section" />
+            <tag name="container.preload" class="Parthenon\User\Athena\TeamSection" />
+        </service>
+
+        <service id="parthenon.user.creator.invite_handler" class="Parthenon\User\Creator\InviteHandler">
+            <argument type="service" id="Parthenon\User\Repository\InviteCodeRepositoryInterface" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument>%parthenon_user_users_invites_enabled%</argument>
+            <tag name="container.preload" class="Parthenon\User\Creator\InviteHandler" />
+        </service>
+        <service id="Parthenon\User\Creator\InviteHandler" alias="parthenon.user.creator.invite_handler" />
+
+        <service id="parthenon.user.creator.team_invite_handler" class="Parthenon\User\Creator\TeamInviteHandler">
+            <argument type="service" id="Parthenon\User\Repository\TeamRepositoryInterface" />
+            <argument type="service" id="Parthenon\User\Repository\TeamInviteCodeRepositoryInterface" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument>%parthenon_user_teams_invites_enabled%</argument>
+            <tag name="container.preload" class="Parthenon\User\Creator\TeamInviteHandler" />
+        </service>
+        <service id="Parthenon\User\Creator\TeamInviteHandler" alias="parthenon.user.creator.team_invite_handler" />
+
+        <service id="Parthenon\User\Creator\MainInviteHandler" class="Parthenon\User\Creator\MainInviteHandler">
+            <call method="add">
+                <argument type="service" id="Parthenon\User\Creator\InviteHandler" />
+            </call>
+            <call method="add">
+                <argument type="service" id="Parthenon\User\Creator\TeamInviteHandler" />
+            </call>
+            <tag name="container.preload" class="Parthenon\User\Creator\MainInviteHandler" />
+        </service>
+        <service id="Parthenon\User\Creator\MainInviteHandlerInterface" alias="Parthenon\User\Creator\MainInviteHandler" />
+
+        <service id="parthenon.user.creator.user_creator" class="Parthenon\User\Creator\UserCreator">
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <argument type="service" id="Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Parthenon\User\Creator\MainInviteHandlerInterface" />
+            <argument type="service" id="Parthenon\Notification\EmailSenderInterface" />
+            <argument type="service" id="Parthenon\User\Notification\MessageFactory" />
+            <argument>%parthenon_user_teams_enabled%</argument>
+            <argument type="service" id="Parthenon\User\Team\TeamCreatorInterface" />
+            <argument type="service" id="Symfony\Component\HttpFoundation\RequestStack" />
+            <argument>%parthenon_user_roles_default_role%</argument>
+        </service>
+        <service id="Parthenon\User\Creator\UserCreatorInterface" alias="parthenon.user.creator.user_creator" />
+        <service id="Parthenon\User\Creator\UserCreator" alias="parthenon.user.creator.user_creator" />
+
+        <service id="parthenon.user.factory.entity" class="Parthenon\User\Factory\EntityFactory" />
+        <service id="Parthenon\User\Factory\EntityFactory" alias="parthenon.user.factory.entity" />
+
+        <service id="Parthenon\User\Gdpr\Deletion\Deleter" alias="parthenon.user.gdpr.deletion.deleter" />
+        <service id="Parthenon\User\Gdpr\Deletion\DeleterInterface" alias="parthenon.user.gdpr.deletion.deleter" />
+        <service id="parthenon.user.gdpr.deletion.deleter" class="Parthenon\User\Gdpr\Deletion\Deleter" />
+
+        <service id="Parthenon\User\Gdpr\Deletion\Decider" alias="parthenon.user.gdpr.deletion.decider" />
+        <service id="Parthenon\User\Gdpr\Deletion\VoterInterface" alias="parthenon.user.gdpr.deletion.decider" />
+        <service id="parthenon.user.gdpr.deletion.decider" class="Parthenon\User\Gdpr\Deletion\Decider" />
+
+        <service id="parthenon.user.gdpr.deletion.deletion_executor" class="Parthenon\User\Gdpr\Deletion\DeletionExecutor">
+            <argument type="service" id="Parthenon\User\Gdpr\Deletion\VoterInterface" />
+            <argument type="service" id="Parthenon\User\Gdpr\Deletion\DeleterInterface" />
+        </service>
+        <service id="Parthenon\User\Gdpr\Deletion\DeletionExecutor" alias="parthenon.user.gdpr.deletion.decider" />
+
+        <service id="parthenon.user.gdpr.export.exporter_execturor" class="Parthenon\User\Gdpr\Export\ExporterExecutor">
+            <argument type="service" id="Parthenon\User\Gdpr\Export\ExporterManagerInterface" />
+            <argument type="service" id="Parthenon\User\Gdpr\Export\FormatterManagerInterface" />
+        </service>
+        <service id="Parthenon\User\Gdpr\Export\ExportExecutorInterface" alias="parthenon.user.gdpr.export.exporter_execturor" />
+
+        <service id="parthenon.user.gdpr.export.exporter_manager" class="Parthenon\User\Gdpr\Export\ExporterManager" />
+        <service id="parthenon.user.gdpr.export.default_user_exporter" class="Parthenon\User\Gdpr\Export\DefaultUserExporter" />
+        <service id="Parthenon\User\Gdpr\Export\ExporterManagerInterface" alias="parthenon.user.gdpr.export.exporter_manager" />
+
+        <service id="parthenon.user.gdpr.export.formatter_manager" class="Parthenon\User\Gdpr\Export\FormatterManager">
+            <argument>%parthenon_user_gdpr_formatter_type%</argument>
+        </service>
+        <service id="Parthenon\User\Gdpr\Export\FormatterManagerInterface" alias="parthenon.user.gdpr.export.formatter_manager" />
+        <service id="parthenon.user.gdpr.export.json_formatter" class="Parthenon\User\Gdpr\Export\JsonFormatter" />
+
+        <service id="parthenon.user.logging.monolog.password_filter" class="Parthenon\User\Logging\Monolog\PasswordFilterProcessor">
+            <tag name="monolog.processor"/>
+        </service>
+
+        <service id="parthenon.user.logging.monolog.user" class="Parthenon\User\Logging\Monolog\UserProcessor">
+            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <tag name="monolog.processor"/>
+        </service>
+
+        <service id="parthenon.user.notification.message_factory" class="Parthenon\User\Notification\MessageFactory">
+            <argument type="service" id="Parthenon\Common\Config" />
+        </service>
+        <service id="Parthenon\User\Notification\MessageFactory" alias="parthenon.user.notification.message_factory" />
+
+        <service id="parthenon.user.request_processor.change_password" class="Parthenon\User\RequestProcessor\ChangePassword">
+            <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <argument type="service" id="Parthenon\User\Form\Type\ChangePasswordType" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface" />
+            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
+            <tag name="container.preload" class="Parthenon\User\RequestProcessor\ChangePassword" />
+        </service>
+        <service id="Parthenon\User\RequestProcessor\ChangePassword" alias="parthenon.user.request_processor.change_password" />
+
+        <service id="parthenon.user.request_processor.confirm_email" class="Parthenon\User\RequestProcessor\ConfirmEmail">
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <tag name="container.preload" class="Parthenon\User\RequestProcessor\ConfirmEmail" />
+        </service>
+        <service id="Parthenon\User\RequestProcessor\ConfirmEmail" alias="parthenon.user.request_processor.confirm_email" />
+
+        <service id="parthenon.user.request_processor.invite_user" class="Parthenon\User\RequestProcessor\InviteUser">
+            <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
+            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Parthenon\User\Repository\InviteCodeRepositoryInterface" />
+            <argument type="service" id="Parthenon\Notification\EmailSenderInterface" />
+            <argument type="service" id="Parthenon\User\Form\Type\UserInviteType" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Parthenon\User\Notification\MessageFactory" />
+            <argument type="service" id="Parthenon\User\Factory\EntityFactory" />
+            <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <tag name="container.preload" class="Parthenon\User\RequestProcessor\InviteUser" />
+        </service>
+        <service id="Parthenon\User\RequestProcessor\InviteUser" alias="parthenon.user.request_processor.invite_user" />
+
+        <service id="parthenon.user.request_processor.password_reset" class="Parthenon\User\RequestProcessor\PasswordReset">
+            <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <argument type="service" id="Parthenon\User\Repository\ForgotPasswordCodeRepositoryInterface" />
+            <argument type="service" id="Parthenon\Notification\EmailSenderInterface" />
+            <argument type="service" id="Parthenon\User\Form\Type\PasswordResetType" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Parthenon\User\Notification\MessageFactory" />
+            <argument type="service" id="Parthenon\User\Factory\EntityFactory" />
+            <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <tag name="container.preload" class="Parthenon\User\RequestProcessor\PasswordReset" />
+        </service>
+        <service id="Parthenon\User\RequestProcessor\PasswordReset" alias="parthenon.user.request_processor.password_reset" />
+
+        <service id="parthenon.user.request_processor.password_reset_confirm" class="Parthenon\User\RequestProcessor\PasswordResetConfirm">
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <argument type="service" id="Parthenon\User\Repository\ForgotPasswordCodeRepositoryInterface" />
+            <argument type="service" id="Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" />
+            <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <tag name="container.preload" class="Parthenon\User\RequestProcessor\PasswordResetConfirm" />
+        </service>
+        <service id="Parthenon\User\RequestProcessor\PasswordResetConfirm" alias="parthenon.user.request_processor.password_reset_confirm" />
+
+        <service id="parthenon.user.request_processor.profile" class="Parthenon\User\RequestProcessor\Profile">
+            <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <argument type="service" id="Parthenon\User\Form\Type\ProfileType" />
+            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <tag name="container.preload" class="Parthenon\User\RequestProcessor\Profile" />
+        </service>
+        <service id="Parthenon\User\RequestProcessor\Profile" alias="parthenon.user.request_processor.profile" />
+
+        <service id="parthenon.user.request_processor.team_invite" class="Parthenon\User\RequestProcessor\TeamInvite">
+            <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
+            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Parthenon\User\Repository\TeamInviteCodeRepositoryInterface" />
+            <argument type="service" id="Parthenon\Notification\EmailSenderInterface" />
+            <argument type="service" id="Parthenon\User\Form\Type\UserInviteType" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Parthenon\User\Notification\MessageFactory" />
+            <argument type="service" id="Parthenon\User\Factory\EntityFactory" />
+            <argument type="service" id="Parthenon\User\Repository\TeamRepositoryInterface" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
+            <argument type="service" id="Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface" />
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <argument>%parthenon_user_roles_default_role%</argument>
+            <argument>%parthenon_user_roles_user_assignable_roles%</argument>
+            <tag name="container.preload" class="Parthenon\User\RequestProcessor\TeamInvite" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+        <service id="Parthenon\User\RequestProcessor\TeamInvite" alias="parthenon.user.request_processor.team_invite" />
+
+        <service id="parthenon.user.request_processor.user_signup" class="Parthenon\User\RequestProcessor\UserSignup">
+            <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
+            <argument type="service" id="Parthenon\User\Creator\UserCreator" />
+            <argument type="service" id="Parthenon\User\Form\Type\UserSignUpType" />
+            <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
+            <argument>%parthenon_user_self_signup_enabled%</argument>
+            <tag name="container.preload" class="Parthenon\User\RequestProcessor\UserSignup" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+        <service id="Parthenon\User\RequestProcessor\UserSignup" alias="parthenon.user.request_processor.user_signup" />
+
+        <service id="parthenon.user.security.user_provider" class="Parthenon\User\Security\UserProvider">
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <tag name="container.preload" class="Parthenon\User\Security\UserProvider" />
+        </service>
+        <service id="Parthenon\User\Security\UserProvider" alias="parthenon.user.security.user_provider" />
+
+        <service id="parthenon.user.security.voter.team" class="Parthenon\User\Security\Voter\TeamVoter">
+            <argument type="service" id="Parthenon\User\Repository\TeamRepositoryInterface" />
+            <tag name="security.voter" />
+            <tag name="container.preload" class="Parthenon\User\Security\Voter\TeamVoter" />
+        </service>
+        <service id="Parthenon\User\Security\Voter\TeamVoter" alias="parthenon.user.security.voter.team" />
+
+        <service id="Parthenon\User\Form\Type\ChangePasswordType" class="Parthenon\User\Form\Type\ChangePasswordType" />
+        <service id="Parthenon\User\Form\Type\PasswordResetType" class="Parthenon\User\Form\Type\PasswordResetType" />
+        <service id="Parthenon\User\Form\Type\ProfileType" class="Parthenon\User\Form\Type\ProfileType">
+            <argument type="service"  id="Parthenon\User\Entity\UserInterface" />
+            <tag name="form.type"  />
+            <tag name="container.preload"  class="Parthenon\User\Form\Type\ProfileType" />
+        </service>
+        <service id="Parthenon\User\Form\Type\UserInviteType" class="Parthenon\User\Form\Type\UserInviteType" />
+        <service id="Parthenon\User\Form\Type\UserSignUpType" class="Parthenon\User\Form\Type\UserSignUpType">
+            <argument type="service"  id="Parthenon\User\Entity\UserInterface" />
+            <tag name="form.type"  />
+        </service>
+
+        <service id="Parthenon\User\Entity\UserInterface" class="Parthenon\User\Entity\User" />
+        <service id="Parthenon\User\Entity\TeamInterface" class="Parthenon\User\Entity\Team" />
+
+        <service id="parthenon.user.validator.unique_user" class="Parthenon\User\Validator\UniqueUserValidator">
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <tag name="validator.constraint_validator" />
+            <tag name="container.preload" class="Parthenon\User\Validator\UniqueUserValidator" />
+        </service>
+
+        <service id="Parthenon\User\Team\CurrentTeamProviderInterface" alias="Parthenon\User\Team\CurrentTeamProvider" />
+        <service id="Parthenon\User\Team\CurrentTeamProvider" class="Parthenon\User\Team\CurrentTeamProvider">
+            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Parthenon\User\Repository\TeamRepositoryInterface" />
+            <tag name="container.preload"  class="Parthenon\User\Team\CurrentTeamProvider" />
+        </service>
+
+        <service id="Parthenon\User\Team\TeamCreatorInterface" alias="Parthenon\User\Team\TeamCreator" />
+        <service id="Parthenon\User\Team\TeamCreator" class="Parthenon\User\Team\TeamCreator">
+            <argument type="service" id="Parthenon\User\Repository\TeamRepositoryInterface" />
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <argument type="service" id="Parthenon\User\Entity\TeamInterface" />
+            <tag name="container.preload" class="Parthenon\User\Team\TeamCreator"/>
+        </service>
+
+        <service id="Parthenon\User\Security\JsonBodyAuthenticator" class="Parthenon\User\Security\JsonBodyAuthenticator">
+            <argument>%parthenon_user_login_route%</argument>
+            <tag name="container.preload" class="Parthenon\User\Security\JsonBodyAuthenticator" />
+        </service>
+
+        <service id="parthenon.user.security.user_checker_observer" class="Parthenon\User\Security\UserChecker\UserCheckerObserver"/>
+        <service id="Parthenon\User\Security\UserChecker\UserCheckerObserver" alias="parthenon.user.security.user_checker_observer" />
+        <service id="Parthenon\User\Security\UserChecker\ConfirmedUserChecker" class="Parthenon\User\Security\UserChecker\ConfirmedUserChecker">
+            <tag name="parthenon.user.security.user_checker" />
+            <tag name="container.preload"  class="Parthenon\User\Security\UserChecker\ConfirmedUserChecker" />
+        </service>
+
+        <service id="Parthenon\User\Security\JsonEntryPoint" class="Parthenon\User\Security\JsonEntryPoint" />
+
+        <service id="parthenon.user.request_processor.request_handler.user_signup" class="Parthenon\Common\RequestHandler\RedirectRequestHandler">
+            <argument type="service" id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" />
+            <argument>%parthenon_user_signup_success_route%</argument>
+            <argument>parthenon_user_signup</argument>
+            <tag name="container.preload" class="Parthenon\Common\RequestHandler\RedirectRequestHandler" />
+        </service>
+        <service id="parthenon.user.request_processor.request_handler.confirm_email" class="Parthenon\Common\RequestHandler\RedirectRequestHandler">
+            <argument type="service" id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" />
+            <argument>%parthenon_user_signup_success_route%</argument>
+            <argument>parthenon_user_confirm</argument>
+            <tag name="container.preload"  class="Parthenon\Common\RequestHandler\RedirectRequestHandler" />
+        </service>
+
+        <service id="Parthenon\User\Formatter\UserFormatterInterface" alias="Parthenon\User\Formatter\UserFormatter" />
+        <service id="Parthenon\User\Formatter\UserFormatter" class="Parthenon\User\Formatter\UserFormatter" />
+
+
+        <service id="Parthenon\User\Athena\Dashboard\SignedUpCountSection" class="Parthenon\User\Athena\Dashboard\SignedUpCountSection">
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <tag name="container.preload" class="Parthenon\User\Athena\Dashboard\SignedUpCountSection" />
+        </service>
+
+    </services>
+</container>

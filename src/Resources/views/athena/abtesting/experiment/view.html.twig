@@ -1,0 +1,46 @@
+{% extends '@Parthenon/athena/base.html.twig' %}
+
+{% block pagetitle %}
+    {{ "parthenon.abtesting.experiment.view.title"|trans }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12 stretch-card">
+            <div class="card">
+                <h4 class="card-title">{{ "parthenon.abtesting.experiment.view.main.title"|trans }}</h4>
+                <div class="card-body">
+                    <ul class="list-group borderless">
+                        <li class="list-group-item d-flex justify-content-between center-item border-top-0">{{ 'parthenon.abtesting.experiment.view.main.name'|trans }} - {{ experiment.name }}</li>
+                        <li class="list-group-item d-flex justify-content-between center-item">{{ 'parthenon.abtesting.experiment.view.main.pre_decided'|trans }} - {% if experiment.predecided %}<div class="badge badge-success">Yes</div>{% else%}<div class="badge badge-danger">No</div>{% endif %}</li>
+                        <li class="list-group-item d-flex justify-content-between center-item border-bottom-0">{{ 'parthenon.abtesting.experiment.view.main.desired_result'|trans }} - {{ experiment.desiredResult }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for variant in experiment.variants %}
+        <h2>{{ variant.name }}</h2>
+        <div class="row mt-2 justify-content-around">
+        <div class="col-sm-3 card">
+            <div class="card-body text-center">
+                {{ "parthenon.abtesting.experiment.view.variant.stats.total"|trans }}
+                <h2>{{ variant.stats.numberOfSessions }}</h2>
+            </div>
+        </div>
+        <div class="col-sm-3 card">
+            <div class="card-body text-center">
+                {{ "parthenon.abtesting.experiment.view.variant.stats.converted"|trans }}
+                <h2>{{ variant.stats.numberOfConversions }}</h2>
+            </div>
+        </div>
+        <div class="col-sm-3 card">
+            <div class="card-body text-center">
+                {{ "parthenon.abtesting.experiment.view.variant.stats.conversion_percentage"|trans }}
+                <h2>{{ variant.stats.conversionPercentage }}%</h2>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

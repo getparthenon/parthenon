@@ -1,0 +1,20 @@
+{% extends 'user/base.html.twig' %}
+
+{% block title %}{{ "parthenon.user.password_reset_confirm.title"|trans }}{% endblock %}
+
+{% block body %}
+    <form method="post">
+        {# TODO localise #}
+        <h1 class="h3 mb-3 font-weight-normal">{{ "parthenon.user.password_reset_confirm.title"|trans }}</h1>
+        <label for="inputPassword" class="sr-only">{{ "parthenon.user.password_reset_confirm.form.label.password"|trans }}</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+
+        <button class="btn btn-lg btn-primary" name="user_password_reset_confirm_submit" type="submit">
+            {{ "parthenon.user.password_reset_confirm.submit"|trans }}
+        </button>
+    </form>
+{% endblock %}

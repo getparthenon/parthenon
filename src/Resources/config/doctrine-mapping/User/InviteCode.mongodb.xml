@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <mapped-superclass name="Parthenon\User\Entity\InviteCode" collection="parthenon_users_invite_codes">
+        <id field-name="id" />
+        <field name="email" field-name="email" type="string" />
+        <field name="code" field-name="code" type="string" />
+        <field name="created_at" field-name="createdAt" type="date" />
+        <field name="used_at" field-name="usedAt" type="date" />
+        <field name="used" field-name="used" type="bool" />
+        <field name="cancelled" field-name="cancelled" type="bool" />
+        <embed-one field="user" field-name="user" target-document="Parthenon\User\Entity\UserInterface" />
+        <embed-one field="invited_user" field-name="invitedUser" target-document="Parthenon\User\Entity\UserInterface" />
+
+        <indexes>
+            <index>
+                <key name="email" order="asc" />
+                <option name="safe" value="true" />
+                <option name="unique" value="true" />
+            </index>
+            <index>
+                <key name="code" order="asc" />
+                <option name="safe" value="true" />
+                <option name="sparse" value="true" />
+                <option name="unique" value="true" />
+            </index>
+        </indexes>
+
+    </mapped-superclass>
+
+</doctrine-mongo-mapping>

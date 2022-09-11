@@ -1,0 +1,124 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <defaults autoconfigure="true" />
+
+        <service id="Parthenon\Common\Config\SiteUrlProvider" class="Parthenon\Common\Config\SiteUrlProvider">
+            <argument>%parthenon_common_site_url%</argument>
+            <tag name="container.preload"  class="Parthenon\Common\Config\SiteUrlProvider"/>
+        </service>
+        <service id="Parthenon\Common\Config\SiteUrlProviderInterface" alias="Parthenon\Common\Config\SiteUrlProvider" />
+
+        <service id="Parthenon\Common\Config" class="Parthenon\Common\Config">
+            <argument type="service" id="Parthenon\Common\Config\SiteUrlProviderInterface" />
+            <tag name="container.preload" class="Parthenon\Common\Config" />
+        </service>
+
+        <service id="parthenon.common.upload.naming.md5_time" class="Parthenon\Common\Upload\Naming\NamingMd5Time" />
+        <service alias="parthenon.common.upload.naming.md5_time" id="Parthenon\Common\Upload\Naming\NamingMd5Time" />
+
+        <service id="parthenon.common.upload.naming.random_time" class="Parthenon\Common\Upload\Naming\RandomTime" />
+        <service alias="parthenon.common.upload.naming.random_time" id="Parthenon\Common\Upload\Naming\RandomTime" />
+
+        <service id="parthenon.common.logging.monolog.process_id_generator" class="Parthenon\Common\Logging\Monolog\ProcessIdGenerator" />
+        <service alias="parthenon.common.logging.monolog.process_id_generator" id="Parthenon\Common\Logging\Monolog\ProcessIdGenerator" />
+
+
+        <service id="parthenon.common.logging.monolog.process_id" class="Parthenon\Common\Logging\Monolog\ProcessIdProcessor">
+            <argument type="service" id="Parthenon\Common\Logging\Monolog\ProcessIdGenerator" />
+            <tag name="monolog.processor"/>
+            <tag name="container.preload"  class="Parthenon\Common\Logging\Monolog\ProcessIdProcessor"/>
+        </service>
+
+        <service id="parthenon.common.logging.monolog.request" class="Parthenon\Common\Logging\Monolog\RequestProcessor">
+            <argument type="service" id="Symfony\Component\HttpFoundation\RequestStack" />
+            <tag name="monolog.processor"/>
+            <tag name="container.preload"  class="Parthenon\Common\Logging\Monolog\RequestProcessor"/>
+        </service>
+
+        <service id="parthenon.common.http.guzzle_factory" class="Parthenon\Common\Http\GuzzleFactory" />
+        <service id="GuzzleHttp\ClientInterface">
+            <factory class="Parthenon\Common\Http\GuzzleFactory" method="build" />
+            <tag name="container.preload"  class="Parthenon\Common\Http\GuzzleFactory" />
+        </service>
+
+        <service id="parthenon.common.uploader.factory.flysystem_adapter_factory" class="Parthenon\Common\Upload\Factory\FlySystemAdapterFactory">
+            <argument type="service" id="Parthenon\Common\Upload\Factory\S3AdapterInterface" />
+            <argument type="service" id="Parthenon\Common\Upload\Factory\LocalAdapterInterface" />
+            <tag name="container.preload"  class="Parthenon\Common\Upload\Factory\FlySystemAdapterFactory"/>
+        </service>
+        <service id="Parthenon\Common\Upload\Factory\FlySystemAdapterFactoryInterface" alias="parthenon.common.uploader.factory.flysystem_adapter_factory" />
+
+        <service id="parthenon.common.uploader.factory.local_adapter" class="Parthenon\Common\Upload\Factory\LocalAdapter" />
+        <service id="Parthenon\Common\Upload\Factory\LocalAdapterInterface" alias="parthenon.common.uploader.factory.local_adapter" />
+        <service id="parthenon.common.uploader.factory.s3_adapter" class="Parthenon\Common\Upload\Factory\S3Adapter" />
+        <service id="Parthenon\Common\Upload\Factory\S3AdapterInterface" alias="parthenon.common.uploader.factory.s3_adapter" />
+        <service id="parthenon.common.uploader.naming.factory" class="Parthenon\Common\Upload\Naming\Factory" />
+        <service id="Parthenon\Common\Upload\Naming\FactoryInterface" alias="parthenon.common.uploader.naming.factory" />
+
+        <service id="parthenon.common.uploader.factory.factory" class="Parthenon\Common\Upload\Factory\FlysystemFactory">
+            <argument type="service" id="Parthenon\Common\Upload\Factory\FlySystemAdapterFactoryInterface" />
+            <argument type="service" id="Parthenon\Common\Upload\Naming\FactoryInterface" />
+            <tag name="container.preload"  class="Parthenon\Common\Upload\Factory\FlysystemFactory"/>
+        </service>
+
+        <service id="Parthenon\Common\Upload\Factory\FactoryInterface" alias="parthenon.common.uploader.factory.factory" />
+
+        <service id="Parthenon\Common\Upload\UploaderInterface">
+            <factory service="Parthenon\Common\Upload\UploadManagerInterface" method="getUploader" />
+        </service>
+
+        <service id="parthenon.common.uploader.upload_manager" class="Parthenon\Common\Upload\UploaderManager">
+            <argument>%parthenon_common_uploaders%</argument>
+            <argument type="service" id="Parthenon\Common\Upload\Factory\FactoryInterface" />
+            <tag name="container.preload" class="Parthenon\Common\Upload\UploaderManager" />
+        </service>
+        <service id="Parthenon\Common\Upload\UploadManagerInterface" alias="parthenon.common.uploader.upload_manager" />
+
+        <service id="parthenon.common.elasticsearch.config" class="Parthenon\Common\Elasticsearch\Config">
+        </service>
+        <service id="Parthenon\Common\Elasticsearch\Config" alias="parthenon.common.elasticsearch.config" />
+
+        <service id="parthenon.common.elasticsearch.client_factory" class="Parthenon\Common\Elasticsearch\ClientFactory">
+            <argument type="service" id="Parthenon\Common\Elasticsearch\Config" />
+            <tag name="container.preload" class="Parthenon\Common\Elasticsearch\ClientFactory" />
+        </service>
+        <service id="Parthenon\Common\Elasticsearch\ClientFactory" alias="parthenon.common.elasticsearch.client_factory" />
+
+        <service id="Parthenon\Common\Elasticsearch\ClientInterface">
+            <factory service="parthenon.common.elasticsearch.client_factory" method="build" />
+        </service>
+
+        <service id="Parthenon\Common\Http\Guzzle7Client" class="Parthenon\Common\Http\Guzzle7Client">
+            <argument type="service" id="GuzzleHttp\ClientInterface" />
+            <tag name="container.preload"  class="Parthenon\Common\Http\Guzzle7Client" />
+        </service>
+        <service id="Parthenon\Common\Http\ClientInterface" alias="Parthenon\Common\Http\Guzzle7Client" />
+
+        <service id="Parthenon\Common\Form\Extension\DisableCrsfExtension" class="Parthenon\Common\Form\Extension\DisableCrsfExtension">
+            <argument type="service" id="Symfony\Component\HttpFoundation\RequestStack" />
+            <tag name="form.type_extension" alias="form" priority="-99" />
+            <tag name="container.preload" class="Parthenon\Common\Form\Extension\DisableCrsfExtension" />
+        </service>
+
+
+        <service id="Parthenon\Common\Command\GenerateAnsibleConfigCommand">
+            <argument type="service" id="Symfony\Component\HttpKernel\KernelInterface" />
+            <tag name="console.command" command="parthenon:common:generate-ansible-config"/>
+        </service>
+
+        <service id="Parthenon\Common\RequestHandler\FormRequestHandler" class="Parthenon\Common\RequestHandler\FormRequestHandler" />
+        <service id="Parthenon\Common\RequestHandler\JsonRequestHandler" class="Parthenon\Common\RequestHandler\JsonRequestHandler" />
+
+        <service id="Parthenon\Common\RequestHandler\RequestHandlerManager" class="Parthenon\Common\RequestHandler\RequestHandlerManager">
+        </service>
+        <service id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" alias="Parthenon\Common\RequestHandler\RequestHandlerManager" />
+
+
+    </services>
+</container>

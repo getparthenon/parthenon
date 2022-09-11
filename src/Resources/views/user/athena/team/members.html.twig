@@ -1,0 +1,21 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>{{ 'parthenon.user.athena.team.header.email'|trans }}</th>
+            <th>{{ 'parthenon.user.athena.team.header.deleted'|trans }}</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for member in members %}
+            {% set status = member.deleted ? 'parthenon.user.athena.team.deleted.yes' : 'parthenon.user.athena.team.deleted.no' %}
+        <tr>
+            <td>{{ member.email }}</td>
+            <td>{{ status|trans }}</td>
+            <td>
+                <a href="{{ path('parthenon_athena_crud_user_read', {id: member.id}) }}" class="btn btn-success">{{ 'parthenon.user.athena.team.button.read'|trans }}</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

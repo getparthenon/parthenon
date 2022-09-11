@@ -1,0 +1,89 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Copyright Humbly Arrogant Ltd 2020-2022, all rights reserved.
+ */
+
+namespace Parthenon\Athena\Filters;
+
+use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
+
+final class BoolFilter implements DoctrineFilterInterface, OdmFilterInterface
+{
+    use QueryBuilderTrait;
+
+    public const NAME = 'boolean';
+
+    protected string $fieldName;
+
+    private $data;
+
+    public function getName(): string
+    {
+        return self::NAME;
+    }
+
+    public function setData($data): FilterInterface
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    public function setFieldName(string $fieldName): FilterInterface
+    {
+        $this->fieldName = $fieldName;
+
+        return $this;
+    }
+
+    public function modifyQueryBuilder(QueryBuilder $queryBuilder)
+    {
+        if (!$this->data) {
+            return;
+        }
+        [$alias, $fieldName] = $this->readyQueryBuilderForAliasAndFieldName($queryBuilder);
+        $queryBuilder->andWhere($alias.'.'.$fieldName.' = :'.$this->getSafeFieldName());
+    }
+
+    public function modifyQuery(Query $query)
+    {
+        if (!$this->data) {
+            return;
+        }
+        $booleanAsInt = (int) ('true' == strtolower($this->data));
+        $query->setParameter(':'.$this->getSafeFieldName(), $booleanAsInt);
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function getFieldName(): string
+    {
+        return $this->fieldName;
+    }
+
+    public function getHeaderName(): string
+    {
+        return ucwords(str_replace('_', ' ', $this->fieldName));
+    }
+
+    public function hasData(): bool
+    {
+        return isset($this->data) && !empty($this->data);
+    }
+
+    public function modifiyOdmQueryBuilder(Builder $builder): Builder
+    {
+        $boolValue = ('true' == strtolower($this->data));
+        $builder->field($this->fieldName)->equals($boolValue);
+
+        return $builder;
+    }
+}

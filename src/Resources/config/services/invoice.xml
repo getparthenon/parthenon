@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <defaults autoconfigure="true" />
+
+        <service id="parthenon.invoice.pdf_exporter" class="Parthenon\Invoice\PdfExporter">
+            <argument type="service" id="Parthenon\Common\Pdf\GeneratorInterface" />
+            <argument type="service" id="Twig\Environment" />
+        </service>
+        <service id="Parthenon\Invoice\PdfExporter" alias="parthenon.invoice.pdf_exporter" />
+
+    </services>
+</container>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Parthenon\AbTesting\Entity\Variant" table="parthenon_ab_experiment_variant">
+
+        <indexes>
+            <index name="search_idx" columns="name"/>
+        </indexes>
+
+        <id name="id" type="uuid" column="id">
+            <generator strategy="CUSTOM" />
+            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
+        </id>
+        <field name="name" column="name" type="string" length="255" />
+        <field name="percentage" column="percentage" type="integer" />
+        <field name="isDefault" column="is_default" type="boolean" />
+        <many-to-one field="experiment" target-entity="Parthenon\AbTesting\Entity\Experiment" />
+        <embedded name="stats" class="Parthenon\AbTesting\Entity\VariantStats" />
+    </entity>
+</doctrine-mapping>

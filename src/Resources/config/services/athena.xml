@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autoconfigure="true" />
+
+        <prototype namespace="Parthenon\Athena\Controller\" resource="../../Athena/Controller/*">
+            <tag name="controller.service_arguments"/>
+        </prototype>
+
+        <service id="parthenon.athena.view_type_manager" class="Parthenon\Athena\ViewTypeManager" public="true" />
+        <service id="Parthenon\Athena\ViewTypeManager" alias="parthenon.athena.view_type_manager" public="true"  />
+
+        <service id="parthenon.athena.view_type.text" class="Parthenon\Athena\ViewType\TextViewType" />
+        <service id="parthenon.athena.view_type.bool" class="Parthenon\Athena\ViewType\BooleanViewType" public="true" />
+
+        <service id="parthenon.athena.section_manager" class="Parthenon\Athena\SectionManager" public="true">
+            <argument type="service" id="Parthenon\Athena\AccessRightsManagerInterface" />
+        </service>
+        <service id="Parthenon\Athena\SectionManager" alias="parthenon.athena.section_manager" public="true"  />
+
+        <service id="parthenon.athena.dashboard_section_manager" class="Parthenon\Athena\DashboardSectionManager" public="true">
+        </service>
+        <service id="Parthenon\Athena\DashboardSectionManager" alias="parthenon.athena.dashboard_section_manager" public="true"  />
+
+        <service id="parthenon.athena.filter.filter_manager" class="Parthenon\Athena\Filters\FilterManager" public="true" />
+        <service id="Parthenon\Athena\Filters\FilterManager" alias="parthenon.athena.filter.filter_manager" public="true"  />
+
+        <service id="parthenon.athena.filter.bool_filter" class="Parthenon\Athena\Filters\BoolFilter" public="true" />
+        <service id="parthenon.athena.filter.contains_filter" class="Parthenon\Athena\Filters\ContainsFilter" public="true" />
+        <service id="parthenon.athena.filter.exact_choice_filter" class="Parthenon\Athena\Filters\ExactChoiceFilter" public="true" />
+        <service id="parthenon.athena.filter.json_contains_filter" class="Parthenon\Athena\Filters\JsonContainsFilter" public="true" />
+
+
+        <service id="parthenon.athena.filter.list_filter" class="Parthenon\Athena\Filters\ListFilter">
+            <argument type="service" id="Parthenon\Athena\Filter\FilterManager" />
+        </service>
+
+        <service id="parthenon.athena.repository.notification" class="Parthenon\Athena\Repository\Dummy\NotificationRepository" />
+        <service id="Parthenon\Athena\Repository\NotificationRepositoryInterface" alias="parthenon.athena.repository.notification" public="true"  />
+
+        <service id="parthenon.athena.twig.athena" class="Parthenon\Athena\Twig\AthenaExtension">
+            <argument type="service" id="Parthenon\Athena\SectionManager" />
+            <argument type="service" id="Parthenon\Athena\Repository\NotificationRepositoryInterface" />
+            <argument>%parthenon_athena_login_logo%</argument>
+            <argument>%parthenon_athena_dashboard_logo%</argument>
+            <tag name="twig.extension"/>
+        </service>
+
+        <service id="parthenon.athena.notifier" class="Parthenon\Athena\Notifier">
+            <argument type="service" id="Parthenon\Athena\Repository\NotificationRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Athena\Notifier" alias="parthenon.athena.notifier" public="true"  />
+
+
+        <service id="parthenon.athena.edit.form_builder" class="Parthenon\Athena\Edit\FormBuilder">
+            <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
+        </service>
+        <service id="Parthenon\Athena\Edit\FormBuilder" alias="parthenon.athena.edit.form_builder" public="true"  />
+
+
+        <service id="Parthenon\Athena\NotifierInterface" alias="parthenon.athena.notifier" public="true"  />
+
+        <service id="parthenon.athena.routing.loader" class="Parthenon\Athena\Routing\AthenaRouteLoader">
+            <argument type="service" id="Parthenon\Athena\SectionManager" />
+            <argument>%parthenon_athena_host%</argument>
+            <tag name="routing.loader"/>
+        </service>
+
+        <service id="parthenon.athena.default_access_rights" class="Parthenon\Athena\DefaultAccessRights" />
+        <service id="Parthenon\Athena\AccessRightsManagerInterface" alias="parthenon.athena.default_access_rights" />
+    </services>
+</container>
