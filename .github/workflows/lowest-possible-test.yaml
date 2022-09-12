@@ -42,7 +42,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer install
+          composer update- -prefer-lowest
 
       - name: Code Style
         run: |
