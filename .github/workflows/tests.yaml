@@ -11,10 +11,12 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
 
     strategy:
       matrix:
         php-versions: ['8.1']
+        composer-flags: ['', '--prefer-lowest']
         experimental: [false]
         include:
           - php-versions: '8.2'
@@ -46,7 +48,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer install
+          composer update ${{ matrix.composer-flags }}
 
       - name: PHPUnit
         run: |
