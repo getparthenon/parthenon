@@ -42,7 +42,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer update- -prefer-lowest
+          composer update --prefer-lowest
 
       - name: PHPUnit
         run: |
