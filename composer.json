@@ -53,7 +53,8 @@
         "wildbit/postmark-php": "^4.0",
         "chadhutchins/oauth2-slack": "^1.2",
         "symfony/mailer": "^5.3",
-        "elasticsearch/elasticsearch": "^7.15"
+        "elasticsearch/elasticsearch": "^7.15",
+        "phpunit/phpunit": "^9.5"
     },
     "suggest": {
         "guzzlehttp/guzzle": "^7.0",
