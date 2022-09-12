@@ -44,6 +44,6 @@ jobs:
         run: |
           composer update- -prefer-lowest
 
-      - name: Code Style
+      - name: PHPUnit
         run: |
           vendor/bin/phpunit
