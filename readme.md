@@ -69,3 +69,23 @@ When you get a license you perpetual license for the minor version of Parthenon 
 For example, if you buy a commercial license and the minor version is 2.0 and don't subscribe to a yearly subscription. You'll be able to use 2.0 and any minor version released throughout the year but once the update support has ended you'll be entitled to use 2.0 only.
 
 Another example, if you buy a commercial license and the minor version is 2.0 and don't subscribe for 3-years and after the support license has ended you would be entitled to use the version minor that was available 12-months before. So if 2.4 was released at the start of the final year of update support and 2.5 was available at the end of it. You would be entitled to use version 2.4 after the the suport license is over.
+
+### Who is Parthenon for?
+
+Parthenon is for people who want to operate a web company that doesn’t focus on the boring tech that everyone has done.
+
+From bootstraps that want to start their business on the right footing to companies that want to improve their tech to large companies that have new projects and don’t to redo the same features they’ve done so many times.
+
+### Can I use Parthenon with my existing Symfony application?
+
+Yes. Parthenon is a bundle that can be used with your existing Symfony application. All the modules are toggable. So if you only want to use one part you can.
+
+### Will I be able to grow with Parthenon?
+
+Parthenon is designed for to scale. It has been purposefully designed so that things are able to be replaced as you grow.
+
+We know that as your system scales there will be parts of Parthenon you'll want to replace with highly custom code and we designed Parthenon to allow you to do it with ease.
+
+### What happens if development of Parthenon stops?
+
+Because we've licensed Parthenon under the Business Source License after 3-years the release will be licensed under FOSS license which means the community will be able to take over if anything unforseen happens.
