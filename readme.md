@@ -12,6 +12,8 @@
   <br>
 </p>
 
+**Version 2.0 is stilL WIP. Release date is expected to be 03.10.2022**
+
 ## Features
 
 * User System
@@ -30,6 +32,12 @@ To add Parthenon to a pre-existing Symfony application just run the composer com
 
 ```
 composer require parthenon/parthenon
+```
+
+Or you can use the Parthenon Skeleton Application that includes a VueJS frontend.
+
+```
+composer create-project parthenon/skeleton
 ```
 
 ## FAQ
