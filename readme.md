@@ -12,7 +12,7 @@
   <br>
 </p>
 
-**Version 2.0 is stilL WIP. Release date is expected to be 03.10.2022**
+**Version 2.0 is still WIP. Release date is expected to be 03.10.2022**
 
 ## Features
 
@@ -40,7 +40,7 @@ Or you can use the Parthenon Skeleton Application that includes a VueJS frontend
 composer create-project parthenon/skeleton
 ```
 
-You can checkout the skeleton application docs at https://getparthenon.com/docs or find the repository at https://github.com/getparthenon/skeleton
+You can checkout the skeleton application docs at https://getparthenon.com/docs/skeleton/overview or find the repository at https://github.com/getparthenon/skeleton
 
 ## FAQ
 
