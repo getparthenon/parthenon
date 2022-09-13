@@ -28,7 +28,7 @@ class OdmCrudRepository extends OdmRepository implements CrudRepositoryInterface
         $sortKey = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $sortKey))));
 
         $parts = explode('\\', $this->documentRepository->getClassName());
-        $name = end($parts);
+
         $qb = $this->documentRepository->createQueryBuilder();
         $qb
             ->sort($sortKey, $sortType)
