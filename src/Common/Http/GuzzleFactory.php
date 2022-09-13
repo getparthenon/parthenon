@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace Parthenon\Common\Http;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 
 final class GuzzleFactory
 {
-    public static function build(): ClientInterface
+    public static function build(): GuzzleClientInterface
     {
         return new Client();
     }
