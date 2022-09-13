@@ -20,7 +20,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 trait LoggerAwareTrait
 {
-    private ?LoggerInterface $logger;
+    private LoggerInterface $logger;
 
     public function getLogger(): LoggerInterface
     {
