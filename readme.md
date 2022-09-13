@@ -14,6 +14,22 @@
 
 **Version 2.0 is still WIP. Release date is expected to be 03.10.2022**
 
+##  What is Parthenon? 
+
+Parthenon is a general functionality bundle for Symfony. Combined with the skeleton application it is a SaaS boilerplate which can allow you to build a project quicker by providing the generic functionality you would require.
+
+### Project Goals
+
+* Provide a solid foundation to build upon
+* Make building Symfony applications faster and make enjoyable
+* Provide generic functionality that can be used to support custom business logic
+* Provide bug fixes, performance fixes, and documentaion fixes.
+
+### Project Non-goals
+
+* Supporting other frameworks or languages
+* Provide custom business logic
+
 ## Features
 
 * User System
@@ -25,6 +41,7 @@
 * Multi-step forms - Funnel
 * SaaS Subscription/Plans
 * Invoice
+
 
 ## Getting started
 
@@ -41,6 +58,12 @@ composer create-project parthenon/skeleton
 ```
 
 You can checkout the skeleton application docs at https://getparthenon.com/docs/skeleton/overview or find the repository at https://github.com/getparthenon/skeleton
+
+## Documentation
+
+The documentation can be found on the Parthenon website https://getparthenon.com/docs/getting-started/. 
+
+If you wish to contribute to the documentation or look at the raw files they can be found at https://github.com/getparthenon/parthenon-docs.
 
 ## FAQ
 
