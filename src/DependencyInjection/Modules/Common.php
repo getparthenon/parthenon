@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Parthenon\DependencyInjection\Modules;
 
+use DocRaptor\Doc;
+use Mpdf\Mpdf;
 use Parthenon\Common\Exception\MissingDependencyException;
 use Parthenon\Common\Exception\ParameterNotSetException;
 use Parthenon\Common\RequestHandler\RequestHandlerInterface;
@@ -173,6 +175,10 @@ final class Common implements ModuleConfigurationInterface
     private function configurePdf(array $config, ContainerBuilder $container, XmlFileLoader $loader): array
     {
         if (isset($config['common']['pdf']['generator']) && 'docraptor' === $config['common']['pdf']['generator']) {
+            if (!class_exists(Doc::class)) {
+                throw new MissingDependencyException('To use docraptor you need to have the docraptor/docraptor package installed. Do composer require docraptor/docraptor.');
+            }
+
             if (!isset($config['common']['pdf']['docraptor']) || !$config['common']['pdf']['docraptor']['api_key']) {
                 throw new ParameterNotSetException('When pdf generator is docraptor you need to set parthenon.common.pdf.docraptor.api_key');
             }
@@ -180,6 +186,10 @@ final class Common implements ModuleConfigurationInterface
 
             $loader->load('services/common/pdf/docraptor.xml');
         } elseif (isset($config['common']['pdf']['generator']) && 'mpdf' === $config['common']['pdf']['generator']) {
+            if (!class_exists(Mpdf::class)) {
+                throw new MissingDependencyException('To use mpdf you need to have the mpdf/mpdf package installed. Do composer require mpdf/mpdf.');
+            }
+
             $container->setParameter('parthenon.common.pdf.mpdf.tmp_dir', $config['common']['pdf']['mpdf']['tmp_dir']);
             $loader->load('services/common/pdf/mpdf.xml');
         } elseif (isset($config['common']['pdf']['generator']) && 'wkhtmltopdf' === $config['common']['pdf']['generator']) {
