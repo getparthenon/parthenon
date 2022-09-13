@@ -54,7 +54,8 @@
         "chadhutchins/oauth2-slack": "^1.2.2",
         "symfony/mailer": "^5.3",
         "elasticsearch/elasticsearch": "^7.15",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "phpunit/php-code-coverage": "^9.2"
     },
     "suggest": {
         "guzzlehttp/guzzle": "^7.0",
