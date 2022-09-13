@@ -46,7 +46,7 @@ You can checkout the skeleton application docs at https://getparthenon.com/docs/
 
 ### Is Parthenon Open-Source?
 
-Parthenon is not considered to be open-source, it's made available under a license known as source available. The License Parthenon is released under is the Business Source License which was created by MariaDB. The premise is you're allow to use Parthenon free of charge for non-production use but are required to have a commercial license if you use it in production and generate more than $5,000 USD a month.
+Parthenon is not considered to be open-source, it's made available under a license type known as a source available license. The License Parthenon is released under is the Business Source License which was created by MariaDB. The premise is you're allow to use Parthenon free of charge for non-production use but are required to have a commercial license if you use it in production and generate more than $5,000 USD a month.
 
 ### Can I use Parthenon for free?
 
