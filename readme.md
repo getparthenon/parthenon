@@ -59,6 +59,12 @@ composer create-project parthenon/skeleton
 
 You can check out the skeleton application docs at https://getparthenon.com/docs/skeleton/overview or find the repository at https://github.com/getparthenon/skeleton
 
+## Documentation
+
+The documentation can be found on the Parthenon website https://getparthenon.com/docs/getting-started/.
+
+If you wish to contribute to the documentation. Or just look at the raw files. They can be found at https://github.com/getparthenon/parthenon-docs.
+
 ## FAQ
 
 ### Is Parthenon Open-Source?
