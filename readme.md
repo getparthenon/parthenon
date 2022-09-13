@@ -40,17 +40,19 @@ Parthenon is not considered to be open-source, it's made available under a licen
 
 ### Can I use Parthenon for free?
 
+A quick answer is, you can use Parthenon for free if you're generating $5,000 USD a month.
+
 For non-production use you can use Parthenon for free. This includes development and testing. If you're generating less than $5,000 USD a month in revenue you can use Parthenon for free. Otherwise, you'll need a commercial license to use it in production.
 
 ### Where can I get a commercial license?
 
 You can find out more information about getting a commercial license at https://getparthenon.com.
 
-## How much does a commercial license cost?
+### How much does a commercial license cost?
 
 The cost of a commercial license is $250 per developer.
 
-## Do I get a perpetual commercial license for Parthenon?
+### Do I get a perpetual commercial license for Parthenon?
 
 When you get a license you perpetual license for the minor version of Parthenon that is currently released at the time of purchase as well as the right to updates for a year. If you subscribe to the year updates support you'll be able to always use the latest version. If you choose not to continue a updates subscription you'll be entitled to use the minor version of Parthenon that was available at the last yearly license update.
 
