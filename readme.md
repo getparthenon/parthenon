@@ -40,7 +40,7 @@ Parthenon is not considered to be open-source, it's made available under a licen
 
 ### Can I use Parthenon for free?
 
-A quick answer is, you can use Parthenon for free if you're generating $5,000 USD a month.
+A quick answer is, you can use Parthenon for free if you're generating less $5,000 USD a month.
 
 For non-production use you can use Parthenon for free. This includes development and testing. If you're generating less than $5,000 USD a month in revenue you can use Parthenon for free. Otherwise, you'll need a commercial license to use it in production.
 
