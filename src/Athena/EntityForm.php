@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Athena;
 
-use Parthenon\Athena\Edit\Field;
+use Parthenon\Athena\Edit\Field as EditField;
 use Parthenon\Athena\Edit\Section;
 use Parthenon\Athena\Exception\NoSectionOpenException;
 use Parthenon\Athena\Exception\SectionAlreadyOpenException;
@@ -45,7 +45,7 @@ final class EntityForm
             throw new NoSectionOpenException();
         }
 
-        $this->openSection->addField(new Field($name, $type, $extraOptions));
+        $this->openSection->addField(new EditField($name, $type, $extraOptions));
 
         return $this;
     }
