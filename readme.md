@@ -23,7 +23,8 @@ Parthenon is a general functionality bundle for Symfony. Combined with the skele
 * Provide a solid foundation to build upon
 * Make building Symfony applications faster and enjoyable
 * Provide generic functionality that can be used to support custom business logic
-* Provide bug fixes, performance fixes, and documentaion fixes.
+* Provide bug fixes, performance fixes, and documentation fixes.
+* Allow developers to focus on custom business logic instead of generic functionality.
 
 ### Project Non-goals
 
