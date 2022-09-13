@@ -40,6 +40,8 @@ Or you can use the Parthenon Skeleton Application that includes a VueJS frontend
 composer create-project parthenon/skeleton
 ```
 
+You can checkout the skeleton application docs at https://getparthenon.com/docs or find the repository at https://github.com/getparthenon/skeleton
+
 ## FAQ
 
 ### Is Parthenon Open-Source?
