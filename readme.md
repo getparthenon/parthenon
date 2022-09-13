@@ -91,7 +91,7 @@ When you get a license, you have a perpetual license for the minor version of Pa
 
 For example, if you buy a commercial license and the minor version is 2.0, and you don't subscribe to a yearly subscription, you'll be able to use 2.0 and any minor version released throughout the year, but once the update support has ended, you'll be entitled to use 2.0 only.
 
-Another example: if you buy a commercial license and the minor version is 2.0 and don't subscribe for three years, and after the support license has ended, you would be entitled to use the minor version that was available 12 months before. So if 2.4 was released at the start of the final year of update support and 2.5 was available at the end of it, you would be entitled to use version 2.4 after the support license is over.
+Another example: if you buy a commercial license and the minor version is 2.0 and subscribe for three years, and after the support license has ended, you would be entitled to use the minor version that was available 12 months before. So if 2.4 was released at the start of the final year of update support and 2.5 was available at the end of it, you would be entitled to use version 2.4 after the support license is over.
 
 ### Who is Parthenon for?
 
