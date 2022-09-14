@@ -94,6 +94,12 @@ For example, if you buy a commercial license and the minor version is 2.0, and y
 
 Another example: if you buy a commercial license and the minor version is 2.0 and subscribe for three years, and after the support license has ended, you would be entitled to use the minor version that was available 12 months before. So if 2.4 was released at the start of the final year of update support and 2.5 was available at the end of it, you would be entitled to use version 2.4 after the support license is over.
 
+### Do I get better support when I have a commercial license?
+
+Yes. Bugs report, support requests, and feature requests from commercial license holders will receive preferential treatment and will always receive a response.
+
+Those without a commercial license will receive better efforts to support them.
+
 ### Who is Parthenon for?
 
 Parthenon is for people who want to operate a web company that doesn't focus on the boring tech that everyone has done.
