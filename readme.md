@@ -16,7 +16,7 @@
 
 ## What is Parthenon? 
 
-Parthenon is a general functionality bundle for Symfony. Combined with the skeleton application it is a SaaS boilerplate which can allow you to build a project quicker by providing the generic functionality you would require.
+[Parthenon](https://getparthenon.com) is a general functionality bundle for Symfony. Combined with the skeleton application it is a SaaS boilerplate which can allow you to build a project quicker by providing the generic functionality you would require.
 
 ### Project Goals
 
@@ -52,7 +52,7 @@ To add Parthenon to a pre-existing Symfony application, just run the composer co
 composer require parthenon/parthenon
 ```
 
-Or you can use the Parthenon Skeleton Application that includes a VueJS frontend.
+Or you can use the [Parthenon Skeleton Application](https://github.com/parthenon/skeleton) that includes a VueJS frontend.
 
 ```sh
 composer create-project parthenon/skeleton
