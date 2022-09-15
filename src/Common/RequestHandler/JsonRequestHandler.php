@@ -81,7 +81,7 @@ final class JsonRequestHandler implements RequestHandlerInterface
                     $output[$childName] = $this->convert($child);
                 }
             } else {
-                $output[$name] = ['value' => $field->vars['value'], 'choices' => $field->vars['choices'] ?? []];
+                $output[$name] = $field->vars['value'];
             }
         }
 

@@ -245,19 +245,19 @@
         </service>
         <service id="Parthenon\User\RequestProcessor\PasswordResetConfirm" alias="parthenon.user.request_processor.password_reset_confirm" />
 
-        <service id="parthenon.user.request_processor.profile" class="Parthenon\User\RequestProcessor\Profile">
+        <service id="parthenon.user.request_processor.settings" class="Parthenon\User\RequestProcessor\Settings">
             <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
             <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
-            <argument type="service" id="Parthenon\User\Form\Type\ProfileType" />
+            <argument type="service" id="Parthenon\User\Form\Type\SettingsType" />
             <argument type="service" id="Symfony\Component\Security\Core\Security" />
             <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
             <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
             <call method="setLogger">
                 <argument type="service" id="logger" />
             </call>
-            <tag name="container.preload" class="Parthenon\User\RequestProcessor\Profile" />
+            <tag name="container.preload" class="Parthenon\User\RequestProcessor\Settings" />
         </service>
-        <service id="Parthenon\User\RequestProcessor\Profile" alias="parthenon.user.request_processor.profile" />
+        <service id="Parthenon\User\RequestProcessor\Settings" alias="parthenon.user.request_processor.settings" />
 
         <service id="parthenon.user.request_processor.team_invite" class="Parthenon\User\RequestProcessor\TeamInvite">
             <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
@@ -310,10 +310,10 @@
 
         <service id="Parthenon\User\Form\Type\ChangePasswordType" class="Parthenon\User\Form\Type\ChangePasswordType" />
         <service id="Parthenon\User\Form\Type\PasswordResetType" class="Parthenon\User\Form\Type\PasswordResetType" />
-        <service id="Parthenon\User\Form\Type\ProfileType" class="Parthenon\User\Form\Type\ProfileType">
+        <service id="Parthenon\User\Form\Type\SettingsType" class="Parthenon\User\Form\Type\SettingsType">
             <argument type="service"  id="Parthenon\User\Entity\UserInterface" />
             <tag name="form.type"  />
-            <tag name="container.preload"  class="Parthenon\User\Form\Type\ProfileType" />
+            <tag name="container.preload"  class="Parthenon\User\Form\Type\SettingsType" />
         </service>
         <service id="Parthenon\User\Form\Type\UserInviteType" class="Parthenon\User\Form\Type\UserInviteType" />
         <service id="Parthenon\User\Form\Type\UserSignUpType" class="Parthenon\User\Form\Type\UserSignUpType">

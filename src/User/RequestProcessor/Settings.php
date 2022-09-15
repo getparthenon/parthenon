@@ -17,23 +17,23 @@ namespace Parthenon\User\RequestProcessor;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Common\RequestHandler\RequestHandlerManagerInterface;
 use Parthenon\User\Entity\UserInterface;
-use Parthenon\User\Event\PostProfileEvent;
-use Parthenon\User\Event\PreProfileEvent;
-use Parthenon\User\Form\Type\ProfileType;
+use Parthenon\User\Event\PostSettingsEvent;
+use Parthenon\User\Event\PreSettingsEvent;
+use Parthenon\User\Form\Type\SettingsType;
 use Parthenon\User\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 
-class Profile
+class Settings
 {
     use LoggerAwareTrait;
 
     public function __construct(
         private FormFactoryInterface $formFactory,
         private UserRepositoryInterface $userRepository,
-        private ProfileType $profileType,
+        private SettingsType $settingsType,
         private Security $security,
         private EventDispatcherInterface $dispatcher,
         private RequestHandlerManagerInterface $requestHandlerManager,
@@ -42,24 +42,24 @@ class Profile
 
     public function process(Request $request)
     {
-        $this->getLogger()->info('A user has view their profile');
+        $this->getLogger()->info('A user has view their settings');
 
         /** @var UserInterface $securityUser */
         $securityUser = $this->security->getUser();
         $user = $this->userRepository->findByEmail($securityUser->getEmail());
-        $formType = $this->formFactory->create(get_class($this->profileType), $user);
+        $formType = $this->formFactory->create(get_class($this->settingsType), $user);
         $requestHandler = $this->requestHandlerManager->getRequestHandler($request);
 
         if ($request->isMethod('POST')) {
             $requestHandler->handleForm($formType, $request);
             if ($formType->isSubmitted() && $formType->isValid()) {
-                $this->getLogger()->info('A user has successfully submitted their profile');
+                $this->getLogger()->info('A user has successfully submitted their settings');
                 $user = $formType->getData();
-                $this->dispatcher->dispatch(new PreProfileEvent($user), PreProfileEvent::NAME);
+                $this->dispatcher->dispatch(new PreSettingsEvent($user), PreSettingsEvent::NAME);
                 $this->userRepository->save($user);
-                $this->dispatcher->dispatch(new PostProfileEvent($user), PostProfileEvent::NAME);
+                $this->dispatcher->dispatch(new PostSettingsEvent($user), PostSettingsEvent::NAME);
             } else {
-                $this->getLogger()->info('A user has submitted an invalid profile');
+                $this->getLogger()->info('A user has submitted an invalid settings');
 
                 return $requestHandler->generateErrorOutput($formType);
             }

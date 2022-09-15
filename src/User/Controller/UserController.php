@@ -22,7 +22,7 @@ use Parthenon\User\RequestProcessor\ConfirmEmail;
 use Parthenon\User\RequestProcessor\InviteUser;
 use Parthenon\User\RequestProcessor\PasswordReset;
 use Parthenon\User\RequestProcessor\PasswordResetConfirm;
-use Parthenon\User\RequestProcessor\Profile;
+use Parthenon\User\RequestProcessor\Settings;
 use Parthenon\User\RequestProcessor\UserSignup;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -97,11 +97,11 @@ final class UserController
         }
     }
 
-    #[Route('/user/profile', name: 'parthenon_user_profile')]
-    #[Template('user/profile.html.twig')]
-    public function profile(Request $request, Profile $processor, LoggerInterface $logger)
+    #[Route('/user/settings', name: 'parthenon_user_settings')]
+    #[Template('user/settings.html.twig')]
+    public function profile(Request $request, Settings $processor, LoggerInterface $logger)
     {
-        $logger->info('User profile page called');
+        $logger->info('User settings page called');
 
         return $processor->process($request);
     }

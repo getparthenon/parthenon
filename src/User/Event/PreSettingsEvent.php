@@ -17,9 +17,9 @@ namespace Parthenon\User\Event;
 use Parthenon\User\Entity\UserInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
-final class PostProfileEvent extends Event
+final class PreSettingsEvent extends Event
 {
-    public const NAME = 'parthenon.user.profile.post';
+    public const NAME = 'parthenon.user.settings.pre';
     private UserInterface $user;
 
     public function __construct(UserInterface $user)
