@@ -59,6 +59,8 @@ class Subscription implements SubscriptionInterface
 
     private ?string $checkoutId;
 
+    private ?int $seats;
+
     public function getPriceId(): ?string
     {
         return $this->priceId;
@@ -182,5 +184,15 @@ class Subscription implements SubscriptionInterface
         } elseif (self::PAYMENT_SCHEDULE_MONTHLY === $this->paymentSchedule) {
             $this->validUntil = new \DateTime('+1 month');
         }
+    }
+
+    public function getSeats(): ?int
+    {
+        return $this->seats;
+    }
+
+    public function setSeats(int $seats): void
+    {
+        $this->seats = $seats;
     }
 }

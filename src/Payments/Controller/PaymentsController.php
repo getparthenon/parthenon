@@ -48,6 +48,14 @@ class PaymentsController
         SubscriptionOptionsFactoryInterface $subscriptionOptionsFactory,
         CheckoutManagerInterface $checkoutManager
     ) {
+        $content = json_decode($request->getContent(), true);
+        $seats = 1;
+        if ($content) {
+            if (isset($content['seats'])) {
+                $seats = (int) $content['seats'];
+            }
+        }
+
         $planName = $request->get('planName');
         $paymentSchedule = $request->get('paymentSchedule');
 
@@ -62,7 +70,7 @@ class PaymentsController
         $subscriber = $subscriberProvider->getSubscriber();
         $subscription = $subscriptionFactory->createFromPlanAndPaymentSchedule($plan, $paymentSchedule);
         $options = $subscriptionOptionsFactory->getOptions($plan, $paymentSchedule);
-        $checkout = $checkoutManager->createCheckoutForSubscription($subscription, $options);
+        $checkout = $checkoutManager->createCheckoutForSubscription($subscription, $options, $seats);
 
         $subscriber->setSubscription($subscription);
         $subscriberRepository->save($subscriber);

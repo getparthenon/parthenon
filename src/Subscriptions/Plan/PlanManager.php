@@ -27,7 +27,16 @@ final class PlanManager implements PlanManagerInterface
     public function __construct(array $plans, private SubscriberRepositoryInterface $subscriberRepository)
     {
         foreach ($plans as $planName => $planInfo) {
-            $plan = new Plan($planName, $planInfo['limit'], $planInfo['features'] ?? [], $planInfo['yearly_price_id'] ?? '', $planInfo['monthly_price_id'] ?? '', $planInfo['is_free'] ?? false);
+            $plan = new Plan(
+                $planName,
+                $planInfo['limit'],
+                $planInfo['features'] ?? [],
+                $planInfo['yearly_price_id'] ?? '',
+                $planInfo['monthly_price_id'] ?? '',
+                $planInfo['is_free'] ?? false,
+                $planInfo['is_per_seat'] ?? false,
+                $planInfo['user_count'] ?? 1
+            );
             $this->plans[] = $plan;
         }
     }

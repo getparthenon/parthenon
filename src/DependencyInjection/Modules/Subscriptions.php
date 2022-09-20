@@ -110,6 +110,8 @@ final class Subscriptions implements ModuleConfigurationInterface
             ->fixXmlConfig('limits')
                 ->children()
                     ->booleanNode('is_free')->defaultFalse()->end()
+                    ->booleanNode('is_per_seat')->defaultFalse()->end()
+                    ->scalarNode('user_count')->end()
                     ->arrayNode('features')
                         ->scalarPrototype()->end()
                     ->end()

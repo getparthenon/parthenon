@@ -23,8 +23,16 @@ final class Plan
     public const PAY_MONTHLY = 'monthly';
     public const CHECK_FEATURE = 'feature';
 
-    public function __construct(private string $name, private array $limits, private array $features, private string $yearlyPriceId, private string $monthlyPriceId, private bool $isFree)
-    {
+    public function __construct(
+        private string $name,
+        private array $limits,
+        private array $features,
+        private string $yearlyPriceId,
+        private string $monthlyPriceId,
+        private bool $isFree,
+        private bool $isPerSeat,
+        private int $userCount,
+    ) {
     }
 
     public function getName(): string
@@ -100,5 +108,15 @@ final class Plan
     public function isFree(): bool
     {
         return $this->isFree;
+    }
+
+    public function isPerSeat(): bool
+    {
+        return $this->isPerSeat;
+    }
+
+    public function getUserCount(): int
+    {
+        return $this->userCount;
     }
 }

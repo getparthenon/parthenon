@@ -16,5 +16,6 @@
         <field field-name="endedAt" name="ended_at" type="date" nullable="true" />
         <field field-name="paymentId" name="payment_id" type="string" nullable="true"  />
         <field field-name="checkoutId" name="checkout_id" type="string" nullable="true"  />
+        <field field-name="seats" name="seats" type="integer" nullable="true" />
     </embedded-document>
 </doctrine-mongo-mapping>

@@ -28,14 +28,14 @@ class CheckoutManager implements CheckoutManagerInterface
     {
     }
 
-    public function createCheckoutForSubscription(Subscription $subscription, array $options = []): CheckoutInterface
+    public function createCheckoutForSubscription(Subscription $subscription, array $options = [], int $seats = 1): CheckoutInterface
     {
         $lineItems = [];
 
         $lineItems[] = [
             'description' => $subscription->getPlanName(),
             'price' => $subscription->getPriceId(),
-            'quantity' => 1,
+            'quantity' => $seats,
         ];
 
         if (!isset($options['payment_method_types'])) {

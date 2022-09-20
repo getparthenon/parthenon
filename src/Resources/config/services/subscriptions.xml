@@ -34,6 +34,14 @@
         </service>
         <service id="Parthenon\Subscriptions\Plan\Security\Voter\PlanVoter" alias="parthenon.plan.security.voter.plan" />
 
+        <service id="parthenon.plan.security.voter.invite" class="Parthenon\Subscriptions\Plan\Security\Voter\InviteVoter">
+            <argument type="service" id="Parthenon\Subscriptions\Plan\Counter\TeamInviteCounterInterface" />
+            <argument type="service" id="Parthenon\Subscriptions\Plan\PlanManager" />
+            <argument type="service" id="Parthenon\Subscriptions\Subscriber\CurrentSubscriberProviderInterface" />
+            <tag name="security.voter" priority="20"/>
+        </service>
+        <service id="Parthenon\Subscriptions\Plan\Security\Voter\InviteVoter" alias="parthenon.plan.security.voter.invite" />
+
         <service id="Parthenon\Subscriptions\Athena\UserSubscriberSection" class="Parthenon\Subscriptions\Athena\UserSubscriberSection">
             <argument type="service"  id="Parthenon\Subscriptions\Repository\SubscriberRepositoryInterface" />
             <argument type="service" id="Parthenon\Subscriptions\Plan\PlanManager" />
@@ -47,6 +55,7 @@
             <argument type="service" id="Parthenon\User\Repository\ActiveMembersRepositoryInterface" />
             <argument type="service" id="Parthenon\User\Repository\TeamRepositoryInterface" />
         </service>
+        <service id="Parthenon\Subscriptions\Plan\Counter\TeamInviteCounterInterface" alias="Parthenon\Subscriptions\Plan\Counter\TeamInviteCounter" />
 
         <service id="Parthenon\Subscriptions\Command\SyncSubscriptionsCommand">
             <call method="setLogger">

@@ -16,5 +16,6 @@
         <field name="endedAt" column="ended_at" type="datetime" nullable="true" />
         <field name="paymentId" column="payment_id" type="string" nullable="true"  />
         <field name="checkoutId" column="checkout_id" type="string" nullable="true"  />
+        <field name="seats" column="seats" type="integer" nullable="true" />
     </embeddable>
 </doctrine-mapping>

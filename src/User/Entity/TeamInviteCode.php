@@ -16,8 +16,6 @@ namespace Parthenon\User\Entity;
 
 class TeamInviteCode extends InviteCode
 {
-    public const LIMITABLE_NAME = 'team_invite';
-
     protected ?TeamInterface $team;
 
     protected ?string $role;
@@ -39,11 +37,6 @@ class TeamInviteCode extends InviteCode
         $self->setTeam($team); /* @phpstan-ignore-line */
 
         return $self; /* @phpstan-ignore-line */
-    }
-
-    public function getLimitableName(): string
-    {
-        return static::LIMITABLE_NAME;
     }
 
     public function hasRole(): bool
