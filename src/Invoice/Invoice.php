@@ -31,10 +31,10 @@ final class Invoice
     private Address $billingAddress;
     private Address $shippingAddress;
     private bool $addVat;
-    private ?\DateTime $createdAt = null;
+    private ?\DateTimeInterface $createdAt = null;
     private $invoiceNumber;
     private string $currency = 'EUR';
-    private string $freeHandAddress = '';
+    private string $deliveryAddress = '';
     private string $paymentDetails = '';
 
     public function __construct(bool $addVat = true)
@@ -120,12 +120,12 @@ final class Invoice
         $this->shippingAddress = $shippingAddress;
     }
 
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTimeInterface $createdAt)
     {
         $this->createdAt = $createdAt;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -135,14 +135,14 @@ final class Invoice
         $this->currency = $currency;
     }
 
-    public function getFreeHandAddress(): string
+    public function getDeliveryAddress(): string
     {
-        return $this->freeHandAddress;
+        return $this->deliveryAddress;
     }
 
-    public function setFreeHandAddress(string $freeHandAddress): void
+    public function setDeliveryAddress(string $deliveryAddress): void
     {
-        $this->freeHandAddress = $freeHandAddress;
+        $this->deliveryAddress = $deliveryAddress;
     }
 
     /**

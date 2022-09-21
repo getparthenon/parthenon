@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Parthenon\Invoice;
 
 use Brick\Money\Money;
-use DateTime;
 use Parthenon\Common\Address;
 
 final class InvoiceBuilder
@@ -35,7 +34,7 @@ final class InvoiceBuilder
 
     private bool $addVat = true;
 
-    private DateTime $createdAt;
+    private \DateTimeInterface $createdAt;
 
     private string $currency = 'EUR';
 
@@ -43,7 +42,7 @@ final class InvoiceBuilder
 
     private $invoiceNumber;
 
-    private string $freeHandAddress;
+    private string $deliveryAddress;
 
     private string $paymentDetails;
 
@@ -71,7 +70,7 @@ final class InvoiceBuilder
         return $this;
     }
 
-    public function addItem($name, Money $value, array $options = []): self
+    public function addItem(string $name, Money $value, array $options = []): self
     {
         $quantity = $options['quantity'] ?? 1;
         $vat = $options['vat'] ?? $this->vatRate;
@@ -97,8 +96,8 @@ final class InvoiceBuilder
             $invoice->setInvoiceNumber($this->invoiceNumberGenerator->generateNumber());
         }
 
-        if (isset($this->freeHandAddress)) {
-            $invoice->setFreeHandAddress($this->freeHandAddress);
+        if (isset($this->deliveryAddress)) {
+            $invoice->setDeliveryAddress($this->deliveryAddress);
         }
 
         if (isset($this->billerAddress)) {
@@ -142,7 +141,7 @@ final class InvoiceBuilder
         $this->countryRules = $countryRules;
     }
 
-    public function setCreatedAt(DateTime $createdAt): void
+    public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -152,9 +151,9 @@ final class InvoiceBuilder
         $this->currency = $currency;
     }
 
-    public function setFreeHandAddress(string $freeHandAddress): void
+    public function setDeliveryAddress(string $deliveryAddress): void
     {
-        $this->freeHandAddress = $freeHandAddress;
+        $this->deliveryAddress = $deliveryAddress;
     }
 
     public function setPaymentDetails(string $paymentDetails): void
