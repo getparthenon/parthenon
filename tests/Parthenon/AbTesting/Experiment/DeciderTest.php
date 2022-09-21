@@ -3,7 +3,13 @@
 declare(strict_types=1);
 
 /*
- * Copyright Humbly Arrogant Ltd 2020-2022, all rights reserved.
+ * Copyright Humbly Arrogant Ltd 2020-2022.
+ *
+ * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
+ *
+ * Change Date: TBD ( 3 years after 2.0.0 release )
+ *
+ * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
 namespace Parthenon\AbTesting\Experiment;
@@ -116,7 +122,7 @@ class DeciderTest extends TestCase
         $enablerDecider->method('isTestable')->willReturn(true);
         $choiceDecider->method('getChoice')->willReturn(null);
 
-        $session->method('get')->withConsecutive([$this->equalTo('ab_testing_'.$decisionId)], [SessionCreator::SESSION_ID], )->willReturnOnConsecutiveCalls(null, (string) $uuid);
+        $session->method('get')->withConsecutive([$this->equalTo('ab_testing_'.$decisionId)], [SessionCreator::SESSION_ID])->willReturnOnConsecutiveCalls(null, (string) $uuid);
         $session->expects($this->once())->method('set')->with($this->equalTo('ab_testing_'.$decisionId), $this->anything());
 
         $experimentLogRepository->expects($this->once())->method('saveDecision');
@@ -155,7 +161,7 @@ class DeciderTest extends TestCase
         $enablerDecider->method('isTestable')->willReturn(true);
         $choiceDecider->method('getChoice')->willReturn(null);
 
-        $session->method('get')->withConsecutive([$this->equalTo('ab_testing_'.$decisionId)], [SessionCreator::SESSION_ID], )->willReturnOnConsecutiveCalls('control', (string) $uuid);
+        $session->method('get')->withConsecutive([$this->equalTo('ab_testing_'.$decisionId)], [SessionCreator::SESSION_ID])->willReturnOnConsecutiveCalls('control', (string) $uuid);
         $session->expects($this->never())->method('set')->with($this->equalTo('ab_testing_'.$decisionId), $this->anything());
 
         $experimentLogRepository->expects($this->never())->method('saveDecision');
@@ -194,7 +200,7 @@ class DeciderTest extends TestCase
         $enablerDecider->method('isTestable')->willReturn(true);
         $choiceDecider->method('getChoice')->willReturn(null);
 
-        $session->method('get')->withConsecutive([$this->equalTo('ab_testing_'.$decisionId)], [SessionCreator::SESSION_ID], )->willReturnOnConsecutiveCalls('control', (string) $uuid);
+        $session->method('get')->withConsecutive([$this->equalTo('ab_testing_'.$decisionId)], [SessionCreator::SESSION_ID])->willReturnOnConsecutiveCalls('control', (string) $uuid);
         $session->expects($this->never())->method('set')->with($this->equalTo('ab_testing_'.$decisionId), $this->anything());
 
         $experimentLogRepository->expects($this->never())->method('saveDecision');

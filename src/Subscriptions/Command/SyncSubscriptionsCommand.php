@@ -29,7 +29,7 @@ class SyncSubscriptionsCommand extends Command
 {
     use LoggerAwareTrait;
 
-    protected static $defaultName = 'parthenon:payments:sync-subscriptions';
+    protected static $defaultName = 'parthenon:subscriptions:sync-subscriptions';
 
     public function __construct(
         private SubscriberRepositoryInterface $subscriberRepository,
