@@ -35,7 +35,7 @@ final class BasicCountryTypeRule implements VatRuleInterface
         return $item->getType() === $this->type && $this->country === $address->getCountry();
     }
 
-    public function setVat(ItemInterface $item)
+    public function setVat(ItemInterface $item): void
     {
         $item->setVatRate($this->percentage);
     }

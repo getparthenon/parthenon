@@ -21,5 +21,5 @@ interface VatRuleInterface
 {
     public function supports(ItemInterface $item, Address $address): bool;
 
-    public function setVat(ItemInterface $item);
+    public function setVat(ItemInterface $item): void;
 }
