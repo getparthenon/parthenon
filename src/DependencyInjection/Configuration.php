@@ -3,7 +3,13 @@
 declare(strict_types=1);
 
 /*
- * Copyright Humbly Arrogant Ltd 2020-2021, all rights reserved.
+ * Copyright Humbly Arrogant Ltd 2020-2022.
+ *
+ * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
+ *
+ * Change Date: TBD ( 3 years after 2.0.0 release )
+ *
+ * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
 namespace Parthenon\DependencyInjection;
@@ -15,12 +21,11 @@ use Parthenon\DependencyInjection\Modules\Common;
 use Parthenon\DependencyInjection\Modules\Funnel;
 use Parthenon\DependencyInjection\Modules\Health;
 use Parthenon\DependencyInjection\Modules\Invoice;
+use Parthenon\DependencyInjection\Modules\MultiTenancy;
 use Parthenon\DependencyInjection\Modules\Notification;
 use Parthenon\DependencyInjection\Modules\Payments;
 use Parthenon\DependencyInjection\Modules\Subscriptions;
-use Parthenon\DependencyInjection\Modules\RuleEngine;
 use Parthenon\DependencyInjection\Modules\User;
-use Parthenon\DependencyInjection\Modules\MultiTenancy;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -33,14 +38,23 @@ class Configuration implements ConfigurationInterface
         $children = $treeBuilder->getRootNode()
                 ->children();
 
-        $abTesting = new AbTesting();
-        $abTesting->addConfig($children);
-
         $athena = new Athena();
         $athena->addConfig($children);
 
+        $abTesting = new AbTesting();
+        $abTesting->addConfig($children);
+
         $common = new Common();
         $common->addConfig($children);
+
+        $user = new User();
+        $user->addConfig($children);
+
+        $notifcation = new Notification();
+        $notifcation->addConfig($children);
+
+        $payments = new Payments();
+        $payments->addConfig($children);
 
         $funnel = new Funnel();
         $funnel->addConfig($children);
@@ -51,18 +65,6 @@ class Configuration implements ConfigurationInterface
         $invoice = new Invoice();
         $invoice->addConfig($children);
 
-        $notifcation = new Notification();
-        $notifcation->addConfig($children);
-
-        $payments = new Payments();
-        $payments->addConfig($children);
-
-        $plan = new Subscriptions();
-        $plan->addConfig($children);
-
-        $user = new User();
-        $user->addConfig($children);
-        
         $multiTenancy = new MultiTenancy();
         $multiTenancy->addConfig($children);
 

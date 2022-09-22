@@ -3,7 +3,13 @@
 declare(strict_types=1);
 
 /*
- * Copyright Humbly Arrogant Ltd 2020-2021, all rights reserved.
+ * Copyright Humbly Arrogant Ltd 2020-2022.
+ *
+ * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
+ *
+ * Change Date: TBD ( 3 years after 2.0.0 release )
+ *
+ * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
 namespace Parthenon\DependencyInjection;
@@ -15,11 +21,11 @@ use Parthenon\DependencyInjection\Modules\Common;
 use Parthenon\DependencyInjection\Modules\Funnel;
 use Parthenon\DependencyInjection\Modules\Health;
 use Parthenon\DependencyInjection\Modules\Invoice;
+use Parthenon\DependencyInjection\Modules\MultiTenancy;
 use Parthenon\DependencyInjection\Modules\Notification;
 use Parthenon\DependencyInjection\Modules\Payments;
 use Parthenon\DependencyInjection\Modules\Subscriptions;
 use Parthenon\DependencyInjection\Modules\User;
-use Parthenon\DependencyInjection\Modules\MultiTenancy;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
@@ -32,11 +38,13 @@ class ParthenonExtension extends Extension
     {
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
+        if (empty($config)) {
+            return;
+        }
 
         $this->handleCommon($config, $container);
         $this->handleNotification($config, $container);
         $this->handleUserConfig($config, $container);
-        $this->handleSubscriptions($config, $container);
         $this->handleAthena($config, $container);
         $this->handleAbTesting($config, $container);
         $this->handleFunnelConfig($config, $container);
@@ -80,13 +88,6 @@ class ParthenonExtension extends Extension
         $athena = new Athena();
         $athena->handleDefaultParameters($container);
         $athena->handleConfiguration($config, $container);
-    }
-
-    public function handleSubscriptions(array $config, ContainerBuilder $container)
-    {
-        $plan = new Subscriptions();
-        $plan->handleDefaultParameters($container);
-        $plan->handleConfiguration($config, $container);
     }
 
     public function handleHealth(array $config, ContainerBuilder $container)
