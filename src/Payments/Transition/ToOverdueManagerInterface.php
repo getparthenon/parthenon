@@ -12,13 +12,13 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Payments;
+namespace Parthenon\Payments\Transition;
 
-use Parthenon\Payments\Entity\Subscription;
+use Parthenon\Payments\Subscriber\SubscriberInterface;
 
-interface CheckoutManagerInterface
+interface ToOverdueManagerInterface
 {
-    public function createCheckoutForSubscription(Subscription $subscription, array $options = [], int $seats = 1): CheckoutInterface;
+    public function addTransition(ToOverdueTransitionInterface $activeTransition): void;
 
-    public function handleSuccess(Subscription $subscription): void;
+    public function transition(SubscriberInterface $subscriber): void;
 }

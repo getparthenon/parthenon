@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Payments\Subscriber;
 
 use Parthenon\Payments\PriceProviderInterface;
-use Parthenon\Subscriptions\Plan\Plan;
+use Parthenon\Payments\Plan\Plan;
 use PHPUnit\Framework\TestCase;
 
 class SubscriptionFactoryTest extends TestCase

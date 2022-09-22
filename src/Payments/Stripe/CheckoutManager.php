@@ -19,7 +19,7 @@ use Parthenon\Payments\Checkout;
 use Parthenon\Payments\CheckoutInterface;
 use Parthenon\Payments\CheckoutManagerInterface;
 use Parthenon\Payments\Exception\NoCheckoutFoundException;
-use Parthenon\Subscriptions\Entity\Subscription;
+use Parthenon\Payments\Entity\Subscription;
 use Stripe\StripeClient;
 
 class CheckoutManager implements CheckoutManagerInterface

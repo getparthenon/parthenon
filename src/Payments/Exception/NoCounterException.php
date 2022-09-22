@@ -12,13 +12,10 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Payments;
+namespace Parthenon\Payments\Exception;
 
-use Parthenon\Payments\Entity\Subscription;
+use Parthenon\Common\Exception\GeneralException;
 
-interface CheckoutManagerInterface
+class NoCounterException extends GeneralException
 {
-    public function createCheckoutForSubscription(Subscription $subscription, array $options = [], int $seats = 1): CheckoutInterface;
-
-    public function handleSuccess(Subscription $subscription): void;
 }

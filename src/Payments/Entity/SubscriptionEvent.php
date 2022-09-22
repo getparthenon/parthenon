@@ -12,21 +12,25 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Payments\Event;
+namespace Parthenon\Payments\Entity;
 
 use Parthenon\Payments\Subscriber\SubscriberInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 
-final class PaymentSuccessEvent extends Event
+class SubscriptionEvent
 {
-    public const NAME = 'parthenon.payments.payment.success';
+    public const TYPE_CREATED = 'created';
+    public const TYPE_CHANGE_BEFORE = 'change_before';
+    public const TYPE_CHANGE_AFTER = 'change_after';
+    public const TYPE_CANCELLED = 'cancelled';
+    public const TYPE_PAYMENT = 'payment';
 
-    public function __construct(private SubscriberInterface $subscriber)
-    {
-    }
+    protected $id;
 
-    public function getSubscriber(): SubscriberInterface
-    {
-        return $this->subscriber;
-    }
+    protected SubscriberInterface $subscriber;
+
+    protected string $type;
+
+    protected string $planName;
+
+    protected array $data;
 }

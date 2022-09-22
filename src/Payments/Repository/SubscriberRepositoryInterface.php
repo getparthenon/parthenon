@@ -12,21 +12,19 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Payments\Event;
+namespace Parthenon\Payments\Repository;
 
+use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Payments\Subscriber\SubscriberInterface;
-use Symfony\Contracts\EventDispatcher\Event;
+use Parthenon\Payments\SubscriptionInterface;
+use Parthenon\User\Entity\UserInterface;
 
-final class PaymentSuccessEvent extends Event
+interface SubscriberRepositoryInterface extends CrudRepositoryInterface
 {
-    public const NAME = 'parthenon.payments.payment.success';
+    public function getSubscriptionForUser(UserInterface $user): SubscriptionInterface;
 
-    public function __construct(private SubscriberInterface $subscriber)
-    {
-    }
-
-    public function getSubscriber(): SubscriberInterface
-    {
-        return $this->subscriber;
-    }
+    /**
+     * @return SubscriberInterface[]
+     */
+    public function findAllSubscriptions(): array;
 }

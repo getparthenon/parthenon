@@ -16,8 +16,8 @@ namespace Parthenon\Payments\Stripe;
 
 use Parthenon\Common\Exception\GeneralException;
 use Parthenon\Common\LoggerAwareTrait;
-use Parthenon\Subscriptions\Entity\Subscription;
-use Parthenon\Subscriptions\SubscriptionManagerInterface;
+use Parthenon\Payments\Entity\Subscription;
+use Parthenon\Payments\SubscriptionManagerInterface;
 use Stripe\StripeClient;
 
 final class SubscriptionManager implements SubscriptionManagerInterface

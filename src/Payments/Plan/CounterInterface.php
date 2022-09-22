@@ -12,13 +12,11 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Payments;
+namespace Parthenon\Payments\Plan;
 
-use Parthenon\Payments\Entity\Subscription;
-
-interface CheckoutManagerInterface
+interface CounterInterface
 {
-    public function createCheckoutForSubscription(Subscription $subscription, array $options = [], int $seats = 1): CheckoutInterface;
+    public function supports(LimitableInterface $limitable): bool;
 
-    public function handleSuccess(Subscription $subscription): void;
+    public function getCount(LimitedUserInterface $user, LimitableInterface $limitable): int;
 }

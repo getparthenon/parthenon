@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Payments;
 
 use Parthenon\Payments\Exception\NoPriceFoundException;
-use Parthenon\Subscriptions\Plan\Plan;
+use Parthenon\Payments\Plan\Plan;
 
 final class PriceProvider implements PriceProviderInterface
 {

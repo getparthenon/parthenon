@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace Parthenon\Payments\Subscriber;
 
 use Parthenon\Payments\PriceProviderInterface;
-use Parthenon\Subscriptions\Entity\Subscription;
-use Parthenon\Subscriptions\Plan\Plan;
-use Parthenon\Subscriptions\Subscriber\SubscriptionFactoryInterface;
+use Parthenon\Payments\Entity\Subscription;
+use Parthenon\Payments\Plan\Plan;
+use Parthenon\Payments\Subscriber\SubscriptionFactoryInterface;
 
 final class SubscriptionFactory implements SubscriptionFactoryInterface
 {

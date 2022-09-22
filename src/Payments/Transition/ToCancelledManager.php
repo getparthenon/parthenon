@@ -12,21 +12,26 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Payments\Event;
+namespace Parthenon\Payments\Transition;
 
 use Parthenon\Payments\Subscriber\SubscriberInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 
-final class PaymentSuccessEvent extends Event
+final class ToCancelledManager implements ToCancelledManagerInterface
 {
-    public const NAME = 'parthenon.payments.payment.success';
+    /**
+     * @var ToCancelledTransitionInterface[]
+     */
+    private array $transitions = [];
 
-    public function __construct(private SubscriberInterface $subscriber)
+    public function addTransition(ToCancelledTransitionInterface $activeTransition): void
     {
+        $this->transitions[] = $activeTransition;
     }
 
-    public function getSubscriber(): SubscriberInterface
+    public function transition(SubscriberInterface $subscriber): void
     {
-        return $this->subscriber;
+        foreach ($this->transitions as $transition) {
+            $transition->transition($subscriber);
+        }
     }
 }

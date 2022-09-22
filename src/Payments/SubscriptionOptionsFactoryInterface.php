@@ -14,11 +14,9 @@ declare(strict_types=1);
 
 namespace Parthenon\Payments;
 
-use Parthenon\Payments\Entity\Subscription;
+use Parthenon\Payments\Plan\Plan;
 
-interface CheckoutManagerInterface
+interface SubscriptionOptionsFactoryInterface
 {
-    public function createCheckoutForSubscription(Subscription $subscription, array $options = [], int $seats = 1): CheckoutInterface;
-
-    public function handleSuccess(Subscription $subscription): void;
+    public function getOptions(Plan $plan, string $paymentSchedule): array;
 }

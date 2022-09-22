@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Payments\Stripe;
 
 use Parthenon\Payments\Checkout;
-use Parthenon\Subscriptions\Entity\Subscription;
+use Parthenon\Payments\Entity\Subscription;
 use PHPUnit\Framework\TestCase;
 use Stripe\Checkout\Session;
 use Stripe\Service\Checkout\CheckoutServiceFactory;

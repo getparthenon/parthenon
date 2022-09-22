@@ -16,9 +16,15 @@ namespace Parthenon\Payments;
 
 use Parthenon\Payments\Entity\Subscription;
 
-interface CheckoutManagerInterface
+interface SubscriptionManagerInterface
 {
-    public function createCheckoutForSubscription(Subscription $subscription, array $options = [], int $seats = 1): CheckoutInterface;
+    public function cancel(Subscription $subscription);
 
-    public function handleSuccess(Subscription $subscription): void;
+    public function change(Subscription $subscription);
+
+    public function syncStatus(Subscription $subscription): Subscription;
+
+    public function getInvoiceUrl(Subscription $subscription);
+
+    public function getBillingPortal(Subscription $subscription): string;
 }

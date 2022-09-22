@@ -14,11 +14,15 @@ declare(strict_types=1);
 
 namespace Parthenon\Payments;
 
-use Parthenon\Payments\Entity\Subscription;
-
-interface CheckoutManagerInterface
+interface SubscriptionInterface
 {
-    public function createCheckoutForSubscription(Subscription $subscription, array $options = [], int $seats = 1): CheckoutInterface;
+    public function getPaymentId();
 
-    public function handleSuccess(Subscription $subscription): void;
+    public function getPriceId();
+
+    public function isActive(): bool;
+
+    public function getPlanName(): ?string;
+
+    public function getValidUntil(): ?\DateTimeInterface;
 }
