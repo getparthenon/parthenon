@@ -90,12 +90,6 @@ final class InvoiceBuilder
         $invoice = new Invoice($this->addVat);
         $invoice->setCurrency($this->currency);
 
-        if (isset($this->invoiceNumber)) {
-            $invoice->setInvoiceNumber($this->invoiceNumber);
-        } elseif (isset($this->invoiceNumberGenerator)) {
-            $invoice->setInvoiceNumber($this->invoiceNumberGenerator->generateNumber());
-        }
-
         if (isset($this->deliveryAddress)) {
             $invoice->setDeliveryAddress($this->deliveryAddress);
         }
@@ -121,6 +115,12 @@ final class InvoiceBuilder
                 $this->countryRules->handleRules($item, $this->billerAddress);
             }
             $invoice->addItem($item);
+        }
+
+        if (isset($this->invoiceNumber)) {
+            $invoice->setInvoiceNumber($this->invoiceNumber);
+        } elseif (isset($this->invoiceNumberGenerator)) {
+            $invoice->setInvoiceNumber($this->invoiceNumberGenerator->generateNumber($invoice));
         }
 
         return $invoice;

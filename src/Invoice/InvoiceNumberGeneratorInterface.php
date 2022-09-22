@@ -16,8 +16,5 @@ namespace Parthenon\Invoice;
 
 interface InvoiceNumberGeneratorInterface
 {
-    /**
-     * @return mixed
-     */
-    public function generateNumber();
+    public function generateNumber(?Invoice $invoice = null): mixed;
 }
