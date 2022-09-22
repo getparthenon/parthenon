@@ -74,7 +74,7 @@ If you have a commercial license you will be able to list the GitHub accounts th
 means when an issue is created by an account linked to a commercial license they will get priority support. All other
 issues will be given best effort support.
 
-* Github: You can make an issue on [getparthenon/parthenon-dev](https://github.com/getparthenon/parthenon-dev/issues/new/choose)
+* Github: You can make an issue on [getparthenon/monorepo](https://github.com/getparthenon/monorepo/issues/new/choose)
 * Email: support@getparthenon.com
 * Slack: [Click here](https://join.slack.com/t/parthenonsupport/shared_invite/zt-1gujl7xsw-OALGFlPs~_Vf1cw6zaEkdg) to signup
 
