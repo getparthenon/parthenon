@@ -40,7 +40,7 @@ class ParthenonBundle extends Bundle
             realpath(__DIR__.'/Resources/config/doctrine-mapping/User') => 'Parthenon\User\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Athena') => 'Parthenon\Athena\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Common') => 'Parthenon\Common',
-            realpath(__DIR__.'/Resources/config/doctrine-mapping/Subscriptions') => 'Parthenon\Payments\Entity',
+            realpath(__DIR__.'/Resources/config/doctrine-mapping/Payments') => 'Parthenon\Payments\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/AbTesting') => 'Parthenon\AbTesting\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/MultiTenancy') => 'Parthenon\MultiTenancy\Entity',
         ];

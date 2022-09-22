@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <embedded-document  name="Parthenon\Payments\Entity\Subscription">
+        <field field-name="priceId" name="price_id" type="string" nullable="true" />
+        <field field-name="planName" name="plan_name" type="string" nullable="true"  />
+        <field field-name="paymentSchedule" name="payment_schedule" type="string" nullable="true"  />
+        <field field-name="active" name="active" type="boolean" nullable="true"  />
+        <field field-name="status" name="status" type="string" nullable="true"  />
+        <field field-name="startedAt" name="started_at" type="date" nullable="true"  />
+        <field field-name="validUntil" name="valid_until" type="date" nullable="true" />
+        <field field-name="updatedAt" name="updated_at" type="date" nullable="true" />
+        <field field-name="endedAt" name="ended_at" type="date" nullable="true" />
+        <field field-name="paymentId" name="payment_id" type="string" nullable="true"  />
+        <field field-name="checkoutId" name="checkout_id" type="string" nullable="true"  />
+        <field field-name="customerId" name="customer_id" type="string" nullable="true"  />
+        <field field-name="seats" name="seats" type="integer" nullable="true" />
+    </embedded-document>
+</doctrine-mongo-mapping>
