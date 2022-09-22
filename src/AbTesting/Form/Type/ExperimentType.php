@@ -41,7 +41,9 @@ class ExperimentType extends AbstractType
         $builder->add('type', ChoiceType::class, ['choices' => ['session' => 'session', 'user' => 'user']])
             ->add('name', TextType::class)
             ->add('desiredResult', TextType::class)
-            ->add('variants', CollectionType::class,
+            ->add(
+                'variants',
+                CollectionType::class,
                 [
                     'entry_type' => VariantType::class,
                     'allow_add' => true,

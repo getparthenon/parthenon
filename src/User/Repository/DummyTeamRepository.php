@@ -32,7 +32,7 @@ class DummyTeamRepository implements TeamRepositoryInterface
 
     public function getByMember(MemberInterface $member): TeamInterface
     {
-        return new class() implements TeamInterface {
+        return new class () implements TeamInterface {
             public function getId()
             {
                 return null;

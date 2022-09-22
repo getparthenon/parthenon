@@ -84,7 +84,9 @@ final class RemoveRoleCommand extends Command
 
         $user = $this->userRepository->findByEmail($email);
 
-        $user->setRoles(array_filter($user->getRoles(), function ($v) use ($role) { return $v !== $role; }));
+        $user->setRoles(array_filter($user->getRoles(), function ($v) use ($role) {
+            return $v !== $role;
+        }));
 
         $this->userRepository->save($user);
 

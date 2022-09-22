@@ -120,7 +120,7 @@ class MigrateCommand extends Command
 
     protected function getConfigLoader(Configuration $a)
     {
-        $configLoader = new class($a) implements ConfigurationLoader {
+        $configLoader = new class ($a) implements ConfigurationLoader {
             public function __construct(private $a)
             {
             }
@@ -136,7 +136,7 @@ class MigrateCommand extends Command
 
     protected function getEmLoader(\Doctrine\Persistence\ObjectManager $em)
     {
-        $emLoader = new class($em) implements EntityManagerLoader {
+        $emLoader = new class ($em) implements EntityManagerLoader {
             public function __construct(private $em)
             {
             }
