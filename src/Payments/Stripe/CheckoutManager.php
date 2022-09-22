@@ -76,6 +76,7 @@ class CheckoutManager implements CheckoutManagerInterface
         }
 
         $subscription->setStatus(Subscription::STATUS_ACTIVE);
+        $subscription->setCustomerId($stripeSession->customer->id);
         $subscription->increaseValidUntil();
         if (Subscription::PAYMENT_SCHEDULE_LIFETIME !== $subscription->getPaymentSchedule()) {
             $subscription->setPaymentId($stripeSession->subscription);

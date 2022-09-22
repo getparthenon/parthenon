@@ -45,6 +45,8 @@ class Subscription implements SubscriptionInterface
 
     private ?bool $active;
 
+    private ?string $customerId = null;
+
     private ?string $status = self::STATUS_UNKNOWN;
 
     private ?\DateTimeInterface $startedAt;
@@ -194,5 +196,21 @@ class Subscription implements SubscriptionInterface
     public function setSeats(int $seats): void
     {
         $this->seats = $seats;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCustomerId(): ?string
+    {
+        return $this->customerId;
+    }
+
+    /**
+     * @param string|null $customerId
+     */
+    public function setCustomerId(?string $customerId): void
+    {
+        $this->customerId = $customerId;
     }
 }
