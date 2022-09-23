@@ -45,13 +45,13 @@ class ResultLogRepository implements ResultLogRepositoryInterface
         $statement->bindValue(':user_id', $userId);
         $statement->bindValue(':result_string_id', $resultId);
         $statement->bindValue(':created_at', $now->format('Y-m-d H:i:s'));
-        $statement->execute();
+        $statement->executeQuery();
     }
 
     public function deleteAllForSession(UuidInterface $sessionId): void
     {
         $statement = $this->connection->prepare('DELETE FROM ab_result_log WHERE session_id = :session_id');
         $statement->bindValue(':session_id', (string) $sessionId);
-        $statement->execute();
+        $statement->executeQuery();
     }
 }

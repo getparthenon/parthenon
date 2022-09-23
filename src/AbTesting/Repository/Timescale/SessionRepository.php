@@ -43,7 +43,7 @@ class SessionRepository implements SessionRepositoryInterface
         $query->bindValue(':user_agent', $userAgent);
         $query->bindValue(':ip_address', $ipAddress);
         $query->bindValue(':created_at', $now->format('Y-m-d H:i:s'));
-        $query->execute();
+        $query->executeQuery();
 
         return $uuid;
     }
@@ -53,14 +53,14 @@ class SessionRepository implements SessionRepositoryInterface
         $query = $this->connection->prepare('UPDATE ab_sessions SET user_id = :user_id WHERE id = :id');
         $query->bindValue(':id', (string) $sessionId);
         $query->bindValue(':user_id', (string) $user->getId());
-        $query->execute();
+        $query->executeQuery();
     }
 
     public function deleteSession(UuidInterface $sessionId): void
     {
         $statement = $this->connection->prepare('DELETE FROM ab_sessions WHERE id = :session_id');
         $statement->bindValue(':session_id', (string) $sessionId);
-        $statement->execute();
+        $statement->executeQuery();
     }
 
     public function findAll(): \Generator

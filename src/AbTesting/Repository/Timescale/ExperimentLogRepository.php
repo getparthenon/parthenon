@@ -38,13 +38,13 @@ class ExperimentLogRepository implements ExperimentLogRepositoryInterface
         $query->bindValue(':decision_string_id', (string) $experimentName);
         $query->bindValue(':decision_output', (string) $decisionOutput);
         $query->bindValue(':created_at', $now->format('Y-m-d H:i:s'));
-        $query->execute();
+        $query->executeQuery();
     }
 
     public function deleteAllForSession(UuidInterface $sessionId): void
     {
         $statement = $this->connection->prepare('DELETE FROM ab_experiment_log WHERE session_id = :session_id');
         $statement->bindValue(':session_id', (string) $sessionId);
-        $statement->execute();
+        $statement->executeQuery();
     }
 }
