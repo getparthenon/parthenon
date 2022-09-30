@@ -11,35 +11,6 @@
             <tag name="controller.service_arguments"/>
         </prototype>
 
-        <service id="parthenon.payments.stripe.config" class="Parthenon\Payments\Stripe\Config">
-            <argument>%parthenon_payments_stripe_public_api_key%</argument>
-            <argument>%parthenon_payments_stripe_private_api_key%</argument>
-            <argument>%parthenon_payments_stripe_success_url%</argument>
-            <argument>%parthenon_payments_stripe_cancel_url%</argument>
-            <argument>%parthenon_payments_stripe_return_url%</argument>
-        </service>
-        <service alias="parthenon.payments.stripe.config" id="Parthenon\Payments\Stripe\Config" />
-
-        <service id="Parthenon\Payments\Stripe\CheckoutManager" class="Parthenon\Payments\Stripe\CheckoutManager">
-            <argument type="service" id="Parthenon\Payments\Stripe\Config" />
-            <argument type="service" id="parthenon.payments.third_party.stripe.client" />
-        </service>
-        <service id="Parthenon\Payments\CheckoutManagerInterface" alias="Parthenon\Payments\Stripe\CheckoutManager" />
-
-        <service id="Parthenon\Payments\Stripe\SubscriptionManager" class="Parthenon\Payments\Stripe\SubscriptionManager">
-            <argument type="service" id="parthenon.payments.third_party.stripe.client" />
-            <argument type="service" id="Parthenon\Payments\Stripe\Config" />
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-        </service>
-        <service id="Parthenon\Payments\SubscriptionManagerInterface" alias="Parthenon\Payments\Stripe\SubscriptionManager" />
-
-
-        <service id="parthenon.payments.third_party.stripe.client" class="Stripe\StripeClient">
-            <argument>%parthenon_payments_stripe_private_api_key%</argument>
-        </service>
-
         <service id="Parthenon\Payments\Subscriber\SubscriptionFactory" class="Parthenon\Payments\Subscriber\SubscriptionFactory">
             <argument type="service" id="Parthenon\Payments\PriceProviderInterface" />
         </service>

@@ -31,6 +31,7 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\FileLoader;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class Payments implements ModuleConfigurationInterface
@@ -95,11 +96,12 @@ final class Payments implements ModuleConfigurationInterface
 
         $this->configureSubscriberType($config, $container);
 
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
         if ('stripe' === strtolower($config['payments']['provider'])) {
             $this->handlePaymentsStripe($config, $container);
+            $loader->load('services/payments/stripe.xml');
         }
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
         $loader->load('services/payments.xml');
     }
 
