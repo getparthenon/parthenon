@@ -55,6 +55,15 @@ final class Payments implements ModuleConfigurationInterface
                             ->scalarNode('return_url')->end()
                         ->end()
                     ->end()
+                    ->arrayNode('transaction_cloud')
+                        ->children()
+                            ->scalarNode('api_key')->end()
+                            ->scalarNode('api_key_password')->end()
+                            ->booleanNode('sandbox')->defaultFalse()->end()
+                            ->scalarNode('customer_id_parameter')->end()
+                            ->scalarNode('payment_id_parameter')->end()
+                        ->end()
+                    ->end()
                     ->arrayNode('subscriptions')
                     ->children()
                     ->scalarNode('subscriber_type')->end()
@@ -72,11 +81,19 @@ final class Payments implements ModuleConfigurationInterface
     public function handleDefaultParameters(ContainerBuilder $container): void
     {
         $container->setParameter('parthenon_payments_subscriber_type', '');
+
         $container->setParameter('parthenon_payments_stripe_private_api_key', '');
         $container->setParameter('parthenon_payments_stripe_public_api_key', '');
         $container->setParameter('parthenon_payments_stripe_success_url', '');
         $container->setParameter('parthenon_payments_stripe_cancel_url', '');
         $container->setParameter('parthenon_payments_stripe_return_url', '');
+
+        $container->setParameter('parthenon_payments_transaction_cloud_api_key', '');
+        $container->setParameter('parthenon_payments_transaction_cloud_api_key_password', '');
+        $container->setParameter('parthenon_payments_transaction_cloud_sandbox', false);
+        $container->setParameter('parthenon_payments_transaction_cloud_customer_id_parameter', '');
+        $container->setParameter('parthenon_payments_transaction_cloud_payment_id_parameter', '');
+
         $container->setParameter('parthenon_payments_prices', []);
         $container->setParameter('parthenon_payments_plan_plans', []);
         $container->setParameter('parthenon_payments_success_redirect_route', 'app_index');
@@ -97,12 +114,31 @@ final class Payments implements ModuleConfigurationInterface
         $this->configureSubscriberType($config, $container);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
+
         if ('stripe' === strtolower($config['payments']['provider'])) {
             $this->handlePaymentsStripe($config, $container);
             $loader->load('services/payments/stripe.xml');
+        } elseif ('transaction_cloud' === strtolower($config['payments']['provider'])) {
+            $this->handlePaymentsTransactionCloud($config, $container);
+            $loader->load('services/payments/transaction_cloud.xml');
         }
 
         $loader->load('services/payments.xml');
+    }
+
+    private function handlePaymentsTransactionCloud(array $config, ContainerBuilder $containerBuilder)
+    {
+        if (empty($config['payments']['transaction_cloud'])) {
+            throw new ParameterNotSetException('Then payment.provider is transaction_cloud then payments.transaction_cloud must be provided');
+        }
+
+        $transactionCloudConfig = $config['payments']['transaction_cloud'];
+
+        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_api_key', $transactionCloudConfig['api_key'] ?? '');
+        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_api_key_password', $transactionCloudConfig['api_key_password'] ?? '');
+        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_sandbox', $transactionCloudConfig['sandbox'] ?? '');
+        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_customer_id_parameter', $transactionCloudConfig['customer_id_parameter'] ?? '');
+        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_payment_id_parameter', $transactionCloudConfig['payment_id_parameter'] ?? '');
     }
 
     private function handlePaymentsStripe(array $config, ContainerBuilder $containerBuilder)

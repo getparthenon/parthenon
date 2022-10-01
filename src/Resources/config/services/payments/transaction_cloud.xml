@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autoconfigure="true" />
+
+        <service id="Parthenon\Payments\PaymentProvider\TransactionCloud\Config"
+                 class="Parthenon\Payments\PaymentProvider\TransactionCloud\Config">
+            <argument>%parthenon_payments_transaction_cloud_api_key%</argument>
+            <argument>%parthenon_payments_transaction_cloud_api_key_password%</argument>
+            <argument>%parthenon_payments_transaction_cloud_sandbox%</argument>
+            <argument>%parthenon_payments_transaction_cloud_customer_id_parameter%</argument>
+            <argument>%parthenon_payments_transaction_cloud_payment_id_parameter%</argument>
+        </service>
+
+        <service id="Parthenon\Payments\PaymentProvider\TransactionCloud\ClientFactory"
+                 class="Parthenon\Payments\PaymentProvider\TransactionCloud\ClientFactory">
+            <argument type="service" id="Parthenon\Payments\PaymentProvider\TransactionCloud\Config" />
+        </service>
+
+        <service id="parthenon.payments.third_party.TransactionCloud.client" class="Stripe\StripeClient">
+            <factory service="Parthenon\Payments\PaymentProvider\TransactionCloud\ClientFactory" method="createBuild" />
+        </service>
+
+    </services>
+</container>
+
