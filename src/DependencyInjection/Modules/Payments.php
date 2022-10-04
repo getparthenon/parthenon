@@ -17,6 +17,7 @@ namespace Parthenon\DependencyInjection\Modules;
 use Parthenon\Common\Exception\ParameterNotSetException;
 use Parthenon\Payments\Athena\TeamSubscriberSection;
 use Parthenon\Payments\Athena\UserSubscriberSection;
+use Parthenon\Payments\PaymentProvider\TransactionCloud\Config;
 use Parthenon\Payments\Plan\CounterInterface;
 use Parthenon\Payments\Repository\SubscriberRepositoryInterface;
 use Parthenon\Payments\Subscriber\SubscriberInterface;
@@ -91,8 +92,8 @@ final class Payments implements ModuleConfigurationInterface
         $container->setParameter('parthenon_payments_transaction_cloud_api_key', '');
         $container->setParameter('parthenon_payments_transaction_cloud_api_key_password', '');
         $container->setParameter('parthenon_payments_transaction_cloud_sandbox', false);
-        $container->setParameter('parthenon_payments_transaction_cloud_customer_id_parameter', '');
-        $container->setParameter('parthenon_payments_transaction_cloud_payment_id_parameter', '');
+        $container->setParameter('parthenon_payments_transaction_cloud_customer_id_parameter', Config::DEFAULT_CUSTOMER_ID_PARAMETER);
+        $container->setParameter('parthenon_payments_transaction_cloud_payment_id_parameter', Config::DEFAULT_PAYMENT_ID_PARAMETER);
 
         $container->setParameter('parthenon_payments_prices', []);
         $container->setParameter('parthenon_payments_plan_plans', []);
@@ -134,11 +135,18 @@ final class Payments implements ModuleConfigurationInterface
 
         $transactionCloudConfig = $config['payments']['transaction_cloud'];
 
-        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_api_key', $transactionCloudConfig['api_key'] ?? '');
-        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_api_key_password', $transactionCloudConfig['api_key_password'] ?? '');
-        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_sandbox', $transactionCloudConfig['sandbox'] ?? '');
-        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_customer_id_parameter', $transactionCloudConfig['customer_id_parameter'] ?? '');
-        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_payment_id_parameter', $transactionCloudConfig['payment_id_parameter'] ?? '');
+        if (!isset($transactionCloudConfig['api_key'])) {
+            throw new ParameterNotSetException('Then payment.provider is transaction_cloud then payments.transaction_cloud.api_key must be provided');
+        }
+        if (!isset($transactionCloudConfig['api_key_password'])) {
+            throw new ParameterNotSetException('Then payment.provider is transaction_cloud then payments.transaction_cloud.api_key must be provided');
+        }
+
+        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_api_key', $transactionCloudConfig['api_key']);
+        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_api_key_password', $transactionCloudConfig['api_key_password']);
+        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_sandbox', $transactionCloudConfig['sandbox'] ?? false);
+        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_customer_id_parameter', $transactionCloudConfig['customer_id_parameter'] ?? Config::DEFAULT_CUSTOMER_ID_PARAMETER);
+        $containerBuilder->setParameter('parthenon_payments_transaction_cloud_payment_id_parameter', $transactionCloudConfig['payment_id_parameter'] ?? Config::DEFAULT_PAYMENT_ID_PARAMETER);
     }
 
     private function handlePaymentsStripe(array $config, ContainerBuilder $containerBuilder)

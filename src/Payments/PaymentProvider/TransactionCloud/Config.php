@@ -4,6 +4,9 @@ namespace Parthenon\Payments\PaymentProvider\TransactionCloud;
 
 final class Config
 {
+    public const DEFAULT_CUSTOMER_ID_PARAMETER = 'customerId';
+    public const DEFAULT_PAYMENT_ID_PARAMETER = 'paymentId';
+
     public function __construct(
         private string $apiKey,
         private string $apiKeyPassword,

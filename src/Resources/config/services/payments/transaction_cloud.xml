@@ -21,7 +21,7 @@
             <argument type="service" id="Parthenon\Payments\PaymentProvider\TransactionCloud\Config" />
         </service>
 
-        <service id="parthenon.payments.third_party.TransactionCloud.client" class="Stripe\StripeClient">
+        <service id="parthenon.payments.third_party.transaction_cloud.client" class="TransactionCloud\TransactionCloud">
             <factory service="Parthenon\Payments\PaymentProvider\TransactionCloud\ClientFactory" method="createBuild" />
         </service>
 
