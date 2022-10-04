@@ -34,7 +34,7 @@ final class CurrentSubscriberProvider implements CurrentSubscriberProviderInterf
             return $this->getTeamSubscriber();
         }
 
-        throw new InvalidSubscriberException(sprintf("'%s'  is not a valid type", $this->type));
+        throw new InvalidSubscriberException(sprintf("'%s' is not a subscriber valid type", $this->type));
     }
 
     /**
