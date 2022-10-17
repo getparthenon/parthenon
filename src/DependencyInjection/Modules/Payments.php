@@ -43,7 +43,6 @@ final class Payments implements ModuleConfigurationInterface
                 ->children()
                     ->booleanNode('enabled')->end()
                     ->scalarNode('provider')->end()
-                    ->scalarNode('subscriber_type')->end()
                     ->scalarNode('success_redirect_route')->end()
                     ->scalarNode('cancel_checkout_redirect_route')->end()
                     ->arrayNode('stripe')
@@ -277,14 +276,16 @@ final class Payments implements ModuleConfigurationInterface
         if (isset($config['payments']['subscriptions']['subscriber_type'])) {
             if (SubscriberInterface::TYPE_USER == $config['payments']['subscriptions']['subscriber_type']) {
                 $containerBuilder->setAlias(SubscriberRepositoryInterface::class, UserRepositoryInterface::class);
+
                 // Remove TeamSubscriberSection so only UserSubscriberSection remains
                 $containerBuilder->removeDefinition(TeamSubscriberSection::class);
             } elseif (SubscriberInterface::TYPE_TEAM == $config['payments']['subscriptions']['subscriber_type']) {
                 $containerBuilder->setAlias(SubscriberRepositoryInterface::class, TeamRepositoryInterface::class);
+
                 // Remove TeamSubscriberSection so only UserSubscriberSection remains
                 $containerBuilder->removeDefinition(UserSubscriberSection::class);
             } else {
-                throw new ParameterNotSetException('Invalid setting for subscriptions.subscriber_type');
+                throw new ParameterNotSetException('Invalid setting for payment.subscriptions.subscriber_type');
             }
 
             $containerBuilder->setParameter('parthenon_payments_subscriber_type', $config['payments']['subscriptions']['subscriber_type']);
