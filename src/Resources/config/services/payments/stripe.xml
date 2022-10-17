@@ -7,14 +7,14 @@
     <services>
         <defaults autoconfigure="true" />
 
-        <service id="parthenon.payments.stripe.config" class="Parthenon\Payments\Stripe\Config">
+        <service id="Parthenon\Payments\Stripe\Config" class="Parthenon\Payments\Stripe\Config">
             <argument>%parthenon_payments_stripe_public_api_key%</argument>
             <argument>%parthenon_payments_stripe_private_api_key%</argument>
             <argument>%parthenon_payments_stripe_success_url%</argument>
             <argument>%parthenon_payments_stripe_cancel_url%</argument>
             <argument>%parthenon_payments_stripe_return_url%</argument>
         </service>
-        <service alias="parthenon.payments.stripe.config" id="Parthenon\Payments\Stripe\Config" />
+        <service alias="Parthenon\Payments\Stripe\Config" id="Parthenon\Payments\ConfigInterface" />
 
         <service id="Parthenon\Payments\Stripe\CheckoutManager" class="Parthenon\Payments\Stripe\CheckoutManager">
             <argument type="service" id="Parthenon\Payments\Stripe\Config" />

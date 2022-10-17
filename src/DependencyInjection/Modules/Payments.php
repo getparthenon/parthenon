@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
  *
- * Change Date: TBD ( 3 years after 2.0.0 release )
+ * Change Date: TBD ( 3 years after 2.1.0 release )
  *
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
@@ -32,7 +32,6 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\FileLoader;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class Payments implements ModuleConfigurationInterface
@@ -123,6 +122,7 @@ final class Payments implements ModuleConfigurationInterface
             $this->handlePaymentsTransactionCloud($config, $container);
             $loader->load('services/payments/transaction_cloud.xml');
         }
+        $config = $this->configurePrice($config, $container);
 
         $loader->load('services/payments.xml');
     }
@@ -166,8 +166,6 @@ final class Payments implements ModuleConfigurationInterface
         $containerBuilder->setParameter('parthenon_payments_stripe_success_url', $stripeConfig['success_url'] ?? '');
         $containerBuilder->setParameter('parthenon_payments_stripe_cancel_url', $stripeConfig['cancel_url'] ?? '');
         $containerBuilder->setParameter('parthenon_payments_stripe_return_url', $stripeConfig['return_url'] ?? '');
-
-        $config = $this->configurePrice($config, $containerBuilder);
 
         $this->configureSuccessRedirectRoute($config, $containerBuilder);
     }
@@ -270,6 +268,7 @@ final class Payments implements ModuleConfigurationInterface
 
         return $stripeConfig;
     }
+
     /**
      * @throws ParameterNotSetException
      */
@@ -288,7 +287,7 @@ final class Payments implements ModuleConfigurationInterface
                 throw new ParameterNotSetException('Invalid setting for subscriptions.subscriber_type');
             }
 
-            $containerBuilder->setParameter('parthenon_subscriptions_subscriber_type', $config['payments']['subscriptions']['subscriber_type']);
+            $containerBuilder->setParameter('parthenon_payments_subscriber_type', $config['payments']['subscriptions']['subscriber_type']);
         }
 
         return $config;

@@ -1,7 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * Copyright Humbly Arrogant Ltd 2020-2022.
+ *
+ * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
+ *
+ * Change Date: TBD ( 3 years after 2.1.0 release )
+ *
+ * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
+ */
+
 namespace Parthenon\Payments\PaymentProvider\TransactionCloud;
 
+use Parthenon\Common\Exception\GeneralException;
 use Parthenon\Payments\Checkout;
 use Parthenon\Payments\CheckoutInterface;
 use Parthenon\Payments\CheckoutManagerInterface;
@@ -14,6 +27,7 @@ final class CheckoutManager implements CheckoutManagerInterface
     public function __construct(
         private TransactionCloud $transactionCloud,
         private RequestStack $requestStack,
+        private Config $config,
     ) {
     }
 
@@ -28,7 +42,20 @@ final class CheckoutManager implements CheckoutManagerInterface
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        $subscription->setPaymentId($request->get('paymentId'));
-        $subscription->setCustomerId($request->get('customerId'));
+        try {
+            $transaction = $this->transactionCloud->getTransactionById($request->get($this->config->getPaymentIdParameter()));
+        } catch (\Throwable $e) {
+            throw new GeneralException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        if (!in_array($transaction->getTransactionStatus(), ['SUBSCRIPTION_STATUS_ACTIVE', 'ONE_TIME_PAYMENT_STATUS_PAID'])) {
+            throw new GeneralException('status is not paid');
+        }
+
+        $subscription->setActive(true);
+        $subscription->setStatus(Subscription::STATUS_ACTIVE);
+        $subscription->setPaymentId($request->get($this->config->getPaymentIdParameter()));
+        $subscription->setCustomerId($request->get($this->config->getCustomerIdParameter()));
+        $subscription->increaseValidUntil();
     }
 }

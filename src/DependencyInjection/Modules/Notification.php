@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
  *
- * Change Date: TBD ( 3 years after 2.0.0 release )
+ * Change Date: TBD ( 3 years after 2.1.0 release )
  *
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
@@ -124,9 +124,6 @@ final class Notification implements ModuleConfigurationInterface
         return $config;
     }
 
-    /**
-     * @param $send_via_queue
-     */
     private function configureSendToQueue($send_via_queue, ContainerBuilder $container): string
     {
         if (true === $send_via_queue) {
