@@ -171,8 +171,6 @@ final class MultiTenancy implements ModuleConfigurationInterface
     }
 
     /**
-     * @param $database_creation_strategy
-     *
      * @throws ParameterNotSetException
      */
     private function handleDatabaseCreationStrategy($database_creation_strategy, ContainerBuilder $containerBuilder): void

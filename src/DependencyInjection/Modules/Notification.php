@@ -124,9 +124,6 @@ final class Notification implements ModuleConfigurationInterface
         return $config;
     }
 
-    /**
-     * @param $send_via_queue
-     */
     private function configureSendToQueue($send_via_queue, ContainerBuilder $container): string
     {
         if (true === $send_via_queue) {
