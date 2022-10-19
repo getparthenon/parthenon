@@ -16,6 +16,7 @@ namespace Parthenon\Payments\PaymentProvider\TransactionCloud;
 
 use Parthenon\Payments\Entity\Subscription;
 use Parthenon\Payments\SubscriptionManagerInterface;
+use TransactionCloud\Model\PaymentEntry;
 use TransactionCloud\TransactionCloud;
 
 class SubscriptionManager implements SubscriptionManagerInterface
@@ -55,7 +56,20 @@ class SubscriptionManager implements SubscriptionManagerInterface
 
     public function getInvoiceUrl(Subscription $subscription)
     {
-        // TODO: Implement getInvoiceUrl() method.
+        $transaction = $this->transactionCloud->getTransactionById($subscription->getPaymentId());
+        /** @var PaymentEntry $payment */
+        $payment = null;
+        foreach ($transaction->getEntries() as $entry) {
+            if (null === $payment || $payment->getCreateDate() < $entry->getCreateDate()) {
+                $payment = $entry;
+            }
+        }
+
+        if (null === $payment) {
+            return null;
+        }
+
+        return $this->transactionCloud->getInvoiceUrlForPayment($entry);
     }
 
     public function getBillingPortal(Subscription $subscription): string
