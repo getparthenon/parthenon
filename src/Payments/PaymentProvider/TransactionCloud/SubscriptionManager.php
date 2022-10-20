@@ -44,7 +44,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
             case 'SUBSCRIPTION_STATUS_CANCELLED_PENDING':
             case 'SUBSCRIPTION_STATUS_CANCELLED':
                 $status = Subscription::STATUS_CANCELLED;
-                // no break
+                break;
             default:
                 $status = Subscription::STATUS_ACTIVE;
         }
