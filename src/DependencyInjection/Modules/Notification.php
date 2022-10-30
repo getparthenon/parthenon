@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * Copyright Humbly Arrogant Ltd 2020-2022.
+ * Copyright Iain Cambridge 2020-2022.
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
  *
@@ -124,9 +124,6 @@ final class Notification implements ModuleConfigurationInterface
         return $config;
     }
 
-    /**
-     * @param $send_via_queue
-     */
     private function configureSendToQueue($send_via_queue, ContainerBuilder $container): string
     {
         if (true === $send_via_queue) {

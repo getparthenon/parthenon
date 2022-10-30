@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * Copyright Humbly Arrogant Ltd 2020-2022.
+ * Copyright Iain Cambridge 2020-2022.
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
  *
@@ -171,8 +171,6 @@ final class MultiTenancy implements ModuleConfigurationInterface
     }
 
     /**
-     * @param $database_creation_strategy
-     *
      * @throws ParameterNotSetException
      */
     private function handleDatabaseCreationStrategy($database_creation_strategy, ContainerBuilder $containerBuilder): void
