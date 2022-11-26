@@ -10,7 +10,7 @@
         <field field-name="name" name="name" type="string" unique="true"  />
         <field field-name="desiredResult" name="desired_result" type="string" />
         <field field-name="createdAt" name="created_at" type="date"  />
-        <field field-name="updatedAt" name="activated_at" type="date" nullable="true" />
+        <field field-name="updatedAt" name="updated_at" type="date" nullable="true" />
         <field field-name="deletedAt" name="deleted_at" type="date" nullable="true" />
         <field field-name="isDeleted" name="is_deleted" type="boolean" />
     </document>

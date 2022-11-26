@@ -14,7 +14,7 @@
         <field name="name" column="name" type="string" length="255" unique="true"  />
         <field name="desiredResult" column="desired_result" type="string" length="255" />
         <field name="createdAt" column="created_at" type="datetime"  />
-        <field name="updatedAt" column="activated_at" type="datetime" nullable="true" />
+        <field name="updatedAt" column="updated_at" type="datetime" nullable="true" />
         <field name="deletedAt" column="deleted_at" type="datetime" nullable="true" />
         <field name="isDeleted" column="is_deleted" type="boolean" />
 
