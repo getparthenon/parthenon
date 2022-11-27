@@ -44,6 +44,37 @@ class FlysystemUploaderTest extends TestCase
         $actualFile = $flysystemUploader->uploadUploadedFile($file);
 
         $this->assertEquals(self::UPLOAD_URL.$newName, $actualFile->getPath());
+        $this->assertEquals($newName, $actualFile->getFilename());
         unlink($tmpName);
+    }
+
+    public function testCallsDelete()
+    {
+        $flysystem = $this->createMock(FilesystemOperator::class);
+        $naming = $this->createMock(NamingStrategyInterface::class);
+
+        $newName = 'kdsljflksdjf.pdf';
+        $file = new File(self::UPLOAD_URL.$newName, $newName);
+        $flysystem->expects($this->once())->method('delete')->with($newName);
+
+        $flysystemUploader = new FlysystemUploader($flysystem, $naming, self::UPLOAD_URL);
+        $flysystemUploader->deleteFile($file);
+    }
+
+    public function testCallsRead()
+    {
+        $flysystem = $this->createMock(FilesystemOperator::class);
+        $naming = $this->createMock(NamingStrategyInterface::class);
+
+        $string = 'Content here....';
+        $stream = fopen('data://text/plain,'.$string, 'r');
+
+        $newName = 'kdsljflksdjf.pdf';
+        $file = new File(self::UPLOAD_URL.$newName, $newName);
+        $flysystem->expects($this->once())->method('readStream')->with($newName)->willReturn($stream);
+
+        $flysystemUploader = new FlysystemUploader($flysystem, $naming, self::UPLOAD_URL);
+        $fileContents = $flysystemUploader->readFile($file);
+        $this->assertEquals($stream, $fileContents);
     }
 }

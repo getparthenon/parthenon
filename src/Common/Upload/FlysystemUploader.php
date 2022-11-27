@@ -40,7 +40,25 @@ final class FlysystemUploader implements UploaderInterface
             $filename = $this->namingStrategy->getName($file->getClientOriginalName());
             $this->filesystem->write($filename, $content);
 
-            return new File(rtrim($this->url, '/').'/'.$filename);
+            return new File(rtrim($this->url, '/').'/'.$filename, $filename);
+        } catch (\Exception $e) {
+            throw new GeneralException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    public function deleteFile(File $file): void
+    {
+        try {
+            $this->filesystem->delete($file->getFilename());
+        } catch (\Exception $e) {
+            throw new GeneralException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    public function readFile(File $file)
+    {
+        try {
+            return $this->filesystem->readStream($file->getFilename());
         } catch (\Exception $e) {
             throw new GeneralException($e->getMessage(), $e->getCode(), $e);
         }

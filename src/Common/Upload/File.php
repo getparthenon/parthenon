@@ -17,14 +17,25 @@ namespace Parthenon\Common\Upload;
 final class File
 {
     private string $path;
+    private string $filename;
 
-    public function __construct(string $path)
+    public function __construct(string $path, string $filename = '')
     {
         $this->path = $path;
+        if (empty($filename)) {
+            $this->filename = $path;
+        } else {
+            $this->filename = $filename;
+        }
     }
 
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    public function getFilename(): string
+    {
+        return $this->filename;
     }
 }
