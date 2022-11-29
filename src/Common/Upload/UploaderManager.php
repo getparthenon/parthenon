@@ -25,7 +25,7 @@ final class UploaderManager implements UploadManagerInterface
 
     public function getUploader(string $name = 'default'): UploaderInterface
     {
-        if ('default' === $name && 1 == count($this->configs)) {
+        if ('default' === $name && 1 === count($this->configs)) {
             $config = current($this->configs);
         } elseif (!isset($this->configs[$name])) {
             throw new NoUploaderFoundException(sprintf('There is no uploader by the name "%s".', $name));
