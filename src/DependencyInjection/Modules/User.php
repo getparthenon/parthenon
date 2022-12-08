@@ -37,6 +37,7 @@ final class User implements ModuleConfigurationInterface
                     ->booleanNode('enabled')->defaultValue(false)->end()
                     ->scalarNode('user_class')->end()
                     ->booleanNode('email_confirmation')->defaultValue(true)->end()
+                    ->booleanNode('signed_in_after_signup')->defaultValue(false)->end()
                     ->booleanNode('user_invites_enabled')->defaultValue(false)->end()
                     ->scalarNode('login_route')->defaultValue('parthenon_user_login')->end()
                     ->scalarNode('login_redirect_route')->defaultValue('parthenon_user_profile')->end()
@@ -45,6 +46,7 @@ final class User implements ModuleConfigurationInterface
                     ->booleanNode('teams_invites_enabled')->defaultValue(false)->end()
                     ->booleanNode('self_signup_enabled')->defaultValue(true)->end()
                     ->scalarNode('team_class')->end()
+                    ->scalarNode('firewall_name')->end()
                     ->arrayNode('roles')
                         ->children()
                             ->scalarNode('default_role')->defaultValue('ROLE_USER')->end()
@@ -85,6 +87,8 @@ final class User implements ModuleConfigurationInterface
         $container->setParameter('parthenon_user_roles_athena_assignable_roles', []);
         $container->setParameter('parthenon_user_self_signup_enabled', true);
         $container->setParameter('parthenon_user_email_confirmation', true);
+        $container->setParameter('parthenon_user_signed_in_after_signup', false);
+        $container->setParameter('parthenon_user_firewall_name', 'main');
     }
 
     public function handleConfiguration(array $config, ContainerBuilder $container): void
@@ -111,6 +115,8 @@ final class User implements ModuleConfigurationInterface
         $config = $this->configureRoles($config, $container);
         $config = $this->configureSelfSignup($config, $container);
         $config = $this->configureEmailConfirmation($config, $container);
+        $config = $this->configureSignedInAfterSignup($config, $container);
+        $config = $this->configureFirewall($config, $container);
 
         $this->configureTeams($config, $container);
     }
@@ -199,6 +205,24 @@ final class User implements ModuleConfigurationInterface
     {
         if (isset($config['user']['email_confirmation'])) {
             $container->setParameter('parthenon_user_email_confirmation', $config['user']['email_confirmation']);
+        }
+
+        return $config;
+    }
+
+    private function configureFirewall(array $config, ContainerBuilder $container): array
+    {
+        if (isset($config['user']['firewall_name'])) {
+            $container->setParameter('parthenon_user_firewall_name', $config['user']['firewall_name']);
+        }
+
+        return $config;
+    }
+
+    private function configureSignedInAfterSignup(array $config, ContainerBuilder $container): array
+    {
+        if (isset($config['user']['signed_in_after_signup'])) {
+            $container->setParameter('parthenon_user_signed_in_after_signup', $config['user']['signed_in_after_signup']);
         }
 
         return $config;
