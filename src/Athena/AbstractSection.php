@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Athena;
 
+use Parthenon\Athena\Export\NormaliserBuilderInterface;
 use Parthenon\Athena\Filters\ListFilters;
 
 abstract class AbstractSection implements SectionInterface
@@ -81,5 +82,10 @@ abstract class AbstractSection implements SectionInterface
     public function getButtons(): array
     {
         return [];
+    }
+
+    public function buildNormalsier(NormaliserBuilderInterface $builder): NormaliserBuilderInterface
+    {
+        return $builder;
     }
 }

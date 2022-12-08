@@ -50,12 +50,12 @@ class OdmCrudRepository extends OdmRepository implements CrudRepositoryInterface
         }
 
         foreach ($filters as $filter) {
+            /** @var DoctrineFilterInterface $filter */
             if ($filter instanceof OdmFilterInterface && $filter->hasData()) {
                 $filter->modifiyOdmQueryBuilder($qb);
             }
         }
 
-        /** @var DoctrineFilterInterface $filter */
         $query = $qb->getQuery();
 
         return new ResultSet($query->toArray(), $sortKey, $sortType, $limit);
@@ -88,5 +88,14 @@ class OdmCrudRepository extends OdmRepository implements CrudRepositoryInterface
         }
         $entity->unmarkAsDeleted();
         $this->save($entity);
+    }
+
+    public function getByIds(array $ids): ResultSet
+    {
+        $qb = $this->documentRepository->createQueryBuilder();
+        $qb->find('id')->in($ids);
+        $query = $qb->getQuery();
+
+        return new ResultSet($query->toArray(), 'id', 'asc', count($ids));
     }
 }

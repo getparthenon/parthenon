@@ -35,6 +35,10 @@ final class ResultSet
 
     public function getResults(): array
     {
+        if ($this->limit < 1) {
+            return $this->results;
+        }
+
         return array_slice($this->results, 0, $this->limit);
     }
 

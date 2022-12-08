@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autoconfigure="true" />
+
+        <service id="Parthenon\Export\Exporter\CsvExporter" class="Parthenon\Export\Exporter\CsvExporter">
+        </service>
+        <service id="Parthenon\Export\Exporter\XslExporter" class="Parthenon\Export\Exporter\XslExporter">
+        </service>
+
+        <service id="Parthenon\Export\Exporter\ExporterManager" class="Parthenon\Export\Exporter\ExporterManager">
+        </service>
+        <service id="Parthenon\Export\Exporter\ExporterManagerInterface" alias="Parthenon\Export\Exporter\ExporterManager" />
+
+        <service id="Parthenon\Export\Normaliser\NormaliserManager" class="Parthenon\Export\Normaliser\NormaliserManager">
+        </service>
+        <service id="Parthenon\Export\Normaliser\NormaliserManagerInterface" alias="Parthenon\Export\Normaliser\NormaliserManager" />
+
+        <service id="Parthenon\Export\Messenger\BackgroundDownloadRequestHandler" class="Parthenon\Export\Messenger\BackgroundDownloadRequestHandler">
+            <argument type="service" id="Parthenon\Export\Repository\BackgroundExportRequestRepositoryInterface" />
+            <argument type="service" id="Parthenon\Export\DataProvider\DataProviderFetcher" />
+            <argument type="service" id="Parthenon\Export\Exporter\ExporterManagerInterface" />
+            <argument type="service" id="Parthenon\Export\Normaliser\NormaliserManagerInterface" />
+            <argument type="service" id="Parthenon\Common\Upload\UploaderInterface" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+
+        <service id="Parthenon\Export\Messenger\BackgroundEmailRequestHandler" class="Parthenon\Export\Messenger\BackgroundEmailRequestHandler">
+            <argument type="service" id="Parthenon\Export\DataProvider\DataProviderFetcher" />
+            <argument type="service" id="Parthenon\Export\Exporter\ExporterManagerInterface" />
+            <argument type="service" id="Parthenon\Export\Normaliser\NormaliserManagerInterface" />
+            <argument type="service" id="parthenon.export.user_provider" />
+            <argument type="service" id="Parthenon\Notification\EmailSenderInterface" />
+            <argument type="service" id="Parthenon\Export\Notification\ExportEmailFactoryInterface" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+        <service id="parthenon.export.user_provider" alias="Symfony\Component\Security\Core\User\UserProviderInterface" />
+
+        <service id="Parthenon\Export\Engine\BackgroundEmailEngine" class="Parthenon\Export\Engine\BackgroundEmailEngine">
+            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Symfony\Component\Messenger\MessageBusInterface" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+        <service id="Parthenon\Export\Engine\BackgroundDownloadEngine" class="Parthenon\Export\Engine\BackgroundDownloadEngine">
+            <argument type="service" id="Symfony\Component\Messenger\MessageBusInterface" />
+            <argument type="service" id="Parthenon\Export\Repository\BackgroundExportRequestRepositoryInterface" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+
+        <service id="Parthenon\Export\Engine\DirectDownloadEngine" class="Parthenon\Export\Engine\DirectDownloadEngine">
+            <argument type="service" id="Parthenon\Export\Normaliser\NormaliserManagerInterface" />
+            <argument type="service" id="Parthenon\Export\Exporter\ExporterManagerInterface" />
+            <argument type="service" id="Parthenon\Export\DataProvider\DataProviderFetcherInterface" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+        <service id="Parthenon\Export\Engine\EngineInterface" alias="Parthenon\Export\Engine\DirectDownloadEngine" />
+
+        <service id="Parthenon\Export\DataProvider\DataProviderFetcher" class="Parthenon\Export\DataProvider\DataProviderFetcher">
+            <argument type="service" id="service_container" />
+        </service>
+        <service id="Parthenon\Export\DataProvider\DataProviderFetcherInterface" alias="Parthenon\Export\DataProvider\DataProviderFetcher" />
+
+        <service id="Parthenon\Export\Notification\ExportEmailFactory" class="Parthenon\Export\Notification\ExportEmailFactory" />
+        <service id="Parthenon\Export\Notification\ExportEmailFactoryInterface" alias="Parthenon\Export\Notification\ExportEmailFactory"/>
+    </services>
+</container>

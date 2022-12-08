@@ -22,6 +22,8 @@ interface UploaderInterface
 
     public const PROVIDER_LOCAL = 'local';
 
+    public function uploadString(string $filename, string $contents): File;
+
     public function uploadUploadedFile(UploadedFile $file): File;
 
     public function deleteFile(File $file): void;

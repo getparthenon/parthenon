@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace Parthenon\Athena;
 
+use Parthenon\Athena\Export\NormaliserBuilderInterface;
 use Parthenon\Athena\Filters\ListFilters;
+use Parthenon\Athena\Filters\ListFiltersInterface;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface SectionInterface
@@ -25,7 +27,7 @@ interface SectionInterface
 
     public function buildListView(ListView $listView): ListView;
 
-    public function buildFilters(ListFilters $listFilters): ListFilters;
+    public function buildFilters(ListFilters $listFilters): ListFiltersInterface;
 
     public function buildReadView(ReadView $readView): ReadView;
 
@@ -48,4 +50,6 @@ interface SectionInterface
     public function preSave($entity): void;
 
     public function postSave($entity): void;
+
+    public function buildNormalsier(NormaliserBuilderInterface $normaliserBuilder): NormaliserBuilderInterface;
 }

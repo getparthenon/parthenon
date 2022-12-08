@@ -38,6 +38,8 @@ interface CrudRepositoryInterface extends RepositoryInterface
      */
     public function getById($id, $includeDeleted = false);
 
+    public function getByIds(array $ids): ResultSet;
+
     public function save($entity);
 
     public function delete($entity);

@@ -72,5 +72,17 @@
 
         <service id="parthenon.athena.default_access_rights" class="Parthenon\Athena\DefaultAccessRights" />
         <service id="Parthenon\Athena\AccessRightsManagerInterface" alias="parthenon.athena.default_access_rights" />
+
+        <service id="Parthenon\Athena\Export\DefaultDataProvider" class="Parthenon\Athena\Export\DefaultDataProvider">
+            <argument type="service" id="Parthenon\Athena\SectionManager" />
+            <argument type="service" id="Parthenon\Athena\Filters\FilterManager" />
+        </service>
+
+        <service id="Parthenon\Athena\Export\AthenaResponseConverter" class="Parthenon\Athena\Export\AthenaResponseConverter">
+            <argument type="service" id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" />
+        </service>
+
+        <service id="Parthenon\Athena\Export\NormaliserFactory" class="Parthenon\Athena\Export\NormaliserFactory" />
+        <service id="Parthenon\Athena\Export\NormaliserFactoryInterface" alias="Parthenon\Athena\Export\NormaliserFactory" />
     </services>
 </container>

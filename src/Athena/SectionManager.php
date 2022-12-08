@@ -15,8 +15,9 @@ declare(strict_types=1);
 namespace Parthenon\Athena;
 
 use Parthenon\Athena\Controller\AthenaControllerInterface;
+use Parthenon\Athena\Exception\NoSectionFoundException;
 
-class SectionManager
+final class SectionManager implements SectionManagerInterface
 {
     /**
      * @var SectionInterface[]
@@ -59,6 +60,19 @@ class SectionManager
     public function getControllers(): array
     {
         return $this->controllers;
+    }
+
+    /**
+     * @throws NoSectionFoundException
+     */
+    public function getByUrlTag(string $urlTag): SectionInterface
+    {
+        foreach ($this->sections as $section) {
+            if ($section->getUrlTag() === $urlTag) {
+                return $section;
+            }
+        }
+        throw new NoSectionFoundException(sprintf("No section found for url tag '%s'", $urlTag));
     }
 
     public function getMenu(): array

@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Parthenon\Export\Repository\BackgroundExportRequestRepositoryInterface" alias="parthenon.export.repository.background_export_request_repository" />
+        <service id="parthenon.export.repository.background_export_request_repository" class="Parthenon\Export\Repository\Odm\BackgroundExportRequestRepository">
+            <argument type="service" id="parthenon.export.repository.odm.background_export_request_repository_doctrine" />
+        </service>
+        <service id="parthenon.export.repository.odm.background_export_request_repository_doctrine" class="Parthenon\Export\Repository\Odm\BackgroundExportRequestRepository" />
+        <service alias="parthenon.export.repository.odm.background_export_request_repository_doctrine" id="Parthenon\Export\Repository\Odm\BackgroundExportRequestRepository" />
+
+    </services>
+</container>

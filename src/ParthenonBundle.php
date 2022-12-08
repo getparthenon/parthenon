@@ -20,6 +20,7 @@ use Doctrine\DBAL\Types\Type;
 use Parthenon\AbTesting\Compiler\AbTestingCompilerPass;
 use Parthenon\Athena\Compiler\AthenaCompilerPass;
 use Parthenon\Common\Compiler\CommonCompilerPass;
+use Parthenon\Export\Compiler\ExportCompilerPass;
 use Parthenon\Funnel\Compiler\FunnelCompilerPass;
 use Parthenon\Health\Compiler\HealthCompilerPass;
 use Parthenon\MultiTenancy\Compiler\MultiTenancyCompilerPass;
@@ -43,6 +44,7 @@ class ParthenonBundle extends Bundle
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Payments') => 'Parthenon\Payments\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/AbTesting') => 'Parthenon\AbTesting\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/MultiTenancy') => 'Parthenon\MultiTenancy\Entity',
+            realpath(__DIR__.'/Resources/config/doctrine-mapping/Export') => 'Parthenon\Export\Entity',
         ];
 
         $bundles = $container->getParameter('kernel.bundles');
@@ -60,6 +62,7 @@ class ParthenonBundle extends Bundle
         $container->addCompilerPass(new AbTestingCompilerPass());
         $container->addCompilerPass(new AthenaCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
         $container->addCompilerPass(new CommonCompilerPass());
+        $container->addCompilerPass(new ExportCompilerPass());
         $container->addCompilerPass(new FunnelCompilerPass());
         $container->addCompilerPass(new HealthCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
         $container->addCompilerPass(new SubscriptionsCompilerPass());

@@ -16,6 +16,7 @@ namespace Parthenon\Common\Repository;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\ORM\QueryBuilder;
 use Parthenon\Common\Exception\GeneralException;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
@@ -54,5 +55,23 @@ class DoctrineRepository implements RepositoryInterface
         }
 
         return $entity;
+    }
+
+    /**
+     * Returns the name used to create the query builder.
+     */
+    protected function getQueryBuilderName(): string
+    {
+        $parts = explode('\\', $this->entityRepository->getClassName());
+        $name = end($parts);
+
+        return $name;
+    }
+
+    protected function createQueryBuilder(): QueryBuilder
+    {
+        $name = $this->getQueryBuilderName();
+
+        return $this->entityRepository->createQueryBuilder($name);
     }
 }

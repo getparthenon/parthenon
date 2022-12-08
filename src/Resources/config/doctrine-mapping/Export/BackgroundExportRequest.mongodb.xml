@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Parthenon\Export\Entity\BackgroundExportRequest" collection="parthenon_export_background_export_requests">
+        <id field-name="id" />
+        <field field-name="exportedFile" name="exported_file" type="string"  nullable="true" />
+        <field field-name="exportedFilePath" name="exported_file_path" type="string"  nullable="true" />
+        <field field-name="exportFormat" name="export_format" type="string"  />
+        <field field-name="filename" name="filename" type="string"  />
+        <field field-name="dataProviderService" name="data_provider_service" type="string"/>
+        <field field-name="dataProviderParameters" name="data_provider_parameters" type="hash" nullable="true" />
+        <field field-name="createdAt" name="created_at" type="date" />
+        <field field-name="updatedAt" name="updated_at" type="date" />
+
+    </document>
+
+</doctrine-mongo-mapping>

@@ -63,4 +63,16 @@ final class FlysystemUploader implements UploaderInterface
             throw new GeneralException($e->getMessage(), $e->getCode(), $e);
         }
     }
+
+    public function uploadString(string $filename, string $contents): File
+    {
+        try {
+            $filename = $this->namingStrategy->getName($filename);
+            $this->filesystem->write($filename, $contents);
+
+            return new File(rtrim($this->url, '/').'/'.$filename, $filename);
+        } catch (\Exception $e) {
+            throw new GeneralException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
 }

@@ -21,6 +21,7 @@ final class DefaultAccessRights implements AccessRightsManagerInterface
         'view' => 'ROLE_USER',
         'delete' => 'ROLE_USER',
         'edit' => 'ROLE_USER',
+        'export' => 'ROLE_USER',
     ];
 
     public function getAccessRights(SectionInterface $section): array

@@ -24,7 +24,7 @@ class DefaultAccessRightsTest extends TestCase
         $section = $this->createMock(SectionInterface::class);
         $section->method('getAccessRights')->willReturn([]);
 
-        $expected = ['create' => User::DEFAULT_ROLE, 'view' => User::DEFAULT_ROLE, 'delete' => User::DEFAULT_ROLE, 'edit' => User::DEFAULT_ROLE];
+        $expected = ['create' => User::DEFAULT_ROLE, 'view' => User::DEFAULT_ROLE, 'delete' => User::DEFAULT_ROLE, 'edit' => User::DEFAULT_ROLE, 'export' => User::DEFAULT_ROLE];
 
         $subject = new DefaultAccessRights();
         $this->assertEquals($expected, $subject->getAccessRights($section));
@@ -35,7 +35,7 @@ class DefaultAccessRightsTest extends TestCase
         $section = $this->createMock(SectionInterface::class);
         $section->method('getAccessRights')->willReturn(['view' => 'ROLE_ADMIN']);
 
-        $expected = ['create' => User::DEFAULT_ROLE, 'view' => 'ROLE_ADMIN', 'delete' => User::DEFAULT_ROLE, 'edit' => User::DEFAULT_ROLE];
+        $expected = ['create' => User::DEFAULT_ROLE, 'view' => 'ROLE_ADMIN', 'delete' => User::DEFAULT_ROLE, 'edit' => User::DEFAULT_ROLE, 'export' => User::DEFAULT_ROLE];
 
         $subject = new DefaultAccessRights();
         $this->assertEquals($expected, $subject->getAccessRights($section));

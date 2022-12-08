@@ -53,4 +53,9 @@ class NotificationRepository implements NotificationRepositoryInterface
     {
         // TODO: Implement findById() method.
     }
+
+    public function getByIds(array $ids): ResultSet
+    {
+        return new ResultSet([], '', '', 10);
+    }
 }

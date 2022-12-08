@@ -32,6 +32,15 @@ final class Settings
         return true;
     }
 
+    public function isExportEnabled(): bool
+    {
+        if (array_key_exists('export', $this->setting) && false === $this->setting['export']) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function hasSavedFilters(): bool
     {
         if (array_key_exists('saved_filters', $this->setting) && false !== $this->setting['saved_filters']) {

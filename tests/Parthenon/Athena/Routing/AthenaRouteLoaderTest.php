@@ -29,6 +29,6 @@ class AthenaRouteLoaderTest extends TestCase
 
         $athenaRouteLoader = new AthenaRouteLoader($sectionManager, null);
         $routes = $athenaRouteLoader->load('mixed');
-        $this->assertCount(9, $routes);
+        $this->assertCount(12, $routes);
     }
 }

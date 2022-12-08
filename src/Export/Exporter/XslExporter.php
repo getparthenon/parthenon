@@ -12,13 +12,26 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Common\Export;
+namespace Parthenon\Export\Exporter;
 
-class CsvExporter implements ExporterInterface
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+
+class XslExporter implements ExporterInterface
 {
+    public function getFormat(): string
+    {
+        return 'Xlsx';
+    }
+
     public function getMimeType(): string
     {
-        return 'text/csv';
+        return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    }
+
+    public function getFilename(string $name): string
+    {
+        return sprintf('%s.xlsx', $name);
     }
 
     public function getOutput(array $input): mixed
@@ -34,9 +47,17 @@ class CsvExporter implements ExporterInterface
             }
         }
 
-        $fp = fopen('php://memory', 'w');
-        fputcsv($fp, array_keys($columns));
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
+        $headers = array_keys($columns);
+        $column = 'A';
+        $rowCount = 1;
+        foreach ($headers as $value) {
+            $sheet->setCellValue($column.$rowCount, $value);
+            ++$column;
+        }
+        ++$rowCount;
         foreach ($input as $row) {
             $csvRow = [];
             foreach ($row as $columnName => $value) {
@@ -44,9 +65,17 @@ class CsvExporter implements ExporterInterface
                 $csvRow[$index] = $value;
             }
             $outputRow = $this->populate($columns, $csvRow);
-            fputcsv($fp, $outputRow);
+            $column = 'A';
+            foreach ($outputRow as $value) {
+                $sheet->setCellValue($column.$rowCount, $value);
+                ++$column;
+            }
+            ++$rowCount;
         }
 
+        $fp = fopen('php://memory', 'w');
+        $writer = new Xls($spreadsheet);
+        $writer->save($fp);
         fseek($fp, 0);
 
         return stream_get_contents($fp);

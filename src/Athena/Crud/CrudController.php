@@ -17,6 +17,8 @@ namespace Parthenon\Athena\Crud;
 use Parthenon\Athena\AccessRightsManagerInterface;
 use Parthenon\Athena\Edit\FormBuilder;
 use Parthenon\Athena\EntityForm;
+use Parthenon\Athena\Export\AthenaResponseConverter;
+use Parthenon\Athena\Export\DefaultDataProvider;
 use Parthenon\Athena\Filters\FilterManager;
 use Parthenon\Athena\Filters\ListFilters;
 use Parthenon\Athena\ListView;
@@ -24,6 +26,10 @@ use Parthenon\Athena\ReadView;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Athena\SectionInterface;
 use Parthenon\Athena\ViewTypeManager;
+use Parthenon\Export\Engine\EngineInterface;
+use Parthenon\Export\Exporter\CsvExporter;
+use Parthenon\Export\Exporter\ExporterManagerInterface;
+use Parthenon\Export\ExportRequest;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,10 +46,51 @@ class CrudController
     {
     }
 
+    public function export(Request $request, LoggerInterface $logger, EngineInterface $engine, AthenaResponseConverter $athenaResponseConverter)
+    {
+        $rights = $this->accessRightsManager->getAccessRights($this->section);
+
+        if (!$this->security->isGranted($rights['export'])) {
+            $logger->warning('Access denied to export data via Athena CRUD');
+
+            throw new AccessDeniedException();
+        }
+
+        if (!$this->section->getSettings()->isExportEnabled()) {
+            $logger->warning('Athena CRUD export page called when disabled');
+            throw new BadRequestHttpException();
+        }
+
+        $logger->info('Athena CRUD export processing');
+
+        $filterData = $request->get('filters', []);
+        $exportFormat = $request->get('export_format', CsvExporter::EXPORT_FORMAT);
+        $exportType = $request->get('export_type');
+
+        $now = new \DateTime();
+        $exportName = sprintf('%s-%s', $this->section->getUrlTag(), $now->format('Y-m-d-hi'));
+
+        $parameters = [];
+        $parameters['export_type'] = $exportType;
+        $parameters['section_url_tag'] = $this->section->getUrlTag();
+
+        if ('all' === $exportType) {
+            $parameters['search'] = $filterData;
+        } else {
+            $parameters['search'] = $request->get('export_ids', []);
+        }
+
+        $exportRequest = new ExportRequest($exportName, $exportFormat, DefaultDataProvider::class, $parameters);
+
+        $response = $engine->process($exportRequest);
+
+        return $athenaResponseConverter->convert($response);
+    }
+
     /**
      * @Template("@Parthenon/athena/crud/list.html.twig")
      */
-    public function showList(Request $request, LoggerInterface $logger, Session $session)
+    public function showList(Request $request, LoggerInterface $logger, Session $session, ExporterManagerInterface $exporterManager)
     {
         $rights = $this->accessRightsManager->getAccessRights($this->section);
 
@@ -93,6 +140,7 @@ class CrudController
             'buttons' => $this->section->getButtons(),
             'entityType' => get_class($this->section->getEntity()),
             'rights' => $rights,
+            'export_formats' => $exporterManager->getFormats(),
         ];
     }
 

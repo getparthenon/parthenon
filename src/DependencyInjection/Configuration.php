@@ -18,6 +18,7 @@ use Parthenon\DependencyInjection\Modules\AbTesting;
 use Parthenon\DependencyInjection\Modules\Athena;
 use Parthenon\DependencyInjection\Modules\Cloud;
 use Parthenon\DependencyInjection\Modules\Common;
+use Parthenon\DependencyInjection\Modules\Export;
 use Parthenon\DependencyInjection\Modules\Funnel;
 use Parthenon\DependencyInjection\Modules\Health;
 use Parthenon\DependencyInjection\Modules\Invoice;
@@ -69,6 +70,9 @@ class Configuration implements ConfigurationInterface
 
         $cloud = new Cloud();
         $cloud->addConfig($children);
+
+        $export = new Export();
+        $export->addConfig($children);
 
         $children->end();
 
