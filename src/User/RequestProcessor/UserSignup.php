@@ -18,6 +18,8 @@ use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Common\RequestHandler\RequestHandlerManagerInterface;
 use Parthenon\User\Creator\UserCreator;
 use Parthenon\User\Form\Type\UserSignUpType;
+use Parthenon\User\Formatter\UserFormatterInterface;
+use Parthenon\User\Security\LogUserInInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,7 +32,10 @@ class UserSignup
         private UserCreator $userCreator,
         private UserSignUpType $signUpType,
         private RequestHandlerManagerInterface $requestHandlerManager,
+        private LogUserInInterface $logUserIn,
+        private UserFormatterInterface $userFormatter,
         private bool $selfSignupEnabled,
+        private bool $loggedInAfterSignup,
     ) {
     }
 
@@ -58,7 +63,13 @@ class UserSignup
 
                 $this->getLogger()->info('A user has signed up successfully');
 
-                return $requestHandler->generateSuccessOutput($formType);
+                $extraData = [];
+                if ($this->loggedInAfterSignup) {
+                    $this->logUserIn->login($user);
+                    $extraData['user'] = $this->userFormatter->format($user);
+                }
+
+                return $requestHandler->generateSuccessOutput($formType, $extraData);
             } else {
                 $this->getLogger()->info('A user sign up failed due to form validation');
 

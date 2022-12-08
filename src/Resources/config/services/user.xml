@@ -288,7 +288,10 @@
             <argument type="service" id="Parthenon\User\Creator\UserCreator" />
             <argument type="service" id="Parthenon\User\Form\Type\UserSignUpType" />
             <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
+            <argument type="service" id="Parthenon\User\Security\LogUserInInterface" />
+            <argument type="service" id="Parthenon\User\Formatter\UserFormatterInterface" />
             <argument>%parthenon_user_self_signup_enabled%</argument>
+            <argument>%parthenon_user_signed_in_after_signup%</argument>
             <tag name="container.preload" class="Parthenon\User\RequestProcessor\UserSignup" />
             <call method="setLogger">
                 <argument type="service" id="logger" />
@@ -381,6 +384,13 @@
             <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
             <tag name="container.preload" class="Parthenon\User\Athena\Dashboard\SignedUpCountSection" />
         </service>
+        <service id="Parthenon\User\Security\LogUserIn" class="Parthenon\User\Security\LogUserIn">
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface" />
+            <argument type="service" id="request_stack" />
+            <argument>%parthenon_user_firewall_name%</argument>
+        </service>
+        <service id="Parthenon\User\Security\LogUserInInterface" alias="Parthenon\User\Security\LogUserIn" />
 
     </services>
 </container>
