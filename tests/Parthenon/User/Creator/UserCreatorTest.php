@@ -108,6 +108,7 @@ class UserCreatorTest extends TestCase
             $teamCreator,
             $requestStack,
             'USER_ROLE',
+            true
         );
 
         $userCreator->create($user);
@@ -163,7 +164,7 @@ class UserCreatorTest extends TestCase
 
         $passwordHasher->method('hash')->with($this->equalTo(self::RANDOM_PASSWORD))->will($this->returnValue(self::ENCODED_PASSWORD));
 
-        $userRepository->expects($this->exactly(1))->method('save')->with($this->callback(function (User $user) {
+        $userRepository->expects($this->exactly(2))->method('save')->with($this->callback(function (User $user) {
             return self::ENCODED_PASSWORD === $user->getPassword();
         }));
 
@@ -184,6 +185,7 @@ class UserCreatorTest extends TestCase
             $teamCreator,
             $requestStack,
             'USER_ROLE',
+            true,
         );
 
         $emailSender->expects($this->once())->method('send')->with($this->isInstanceOf(UserEmail::class));
@@ -241,7 +243,7 @@ class UserCreatorTest extends TestCase
 
         $passwordHasher->method('hash')->with($this->equalTo(self::RANDOM_PASSWORD))->will($this->returnValue(self::ENCODED_PASSWORD));
 
-        $userRepository->expects($this->exactly(1))->method('save')->with($this->callback(function (User $user) {
+        $userRepository->expects($this->exactly(2))->method('save')->with($this->callback(function (User $user) {
             return self::ENCODED_PASSWORD === $user->getPassword();
         }));
 
@@ -262,6 +264,7 @@ class UserCreatorTest extends TestCase
             $teamCreator,
             $requestStack,
             'USER_ROLE',
+            true,
         );
 
         $emailSender->expects($this->once())->method('send')->with($this->isInstanceOf(UserEmail::class));

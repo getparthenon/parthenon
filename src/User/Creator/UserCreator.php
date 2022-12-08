@@ -39,6 +39,7 @@ final class UserCreator implements UserCreatorInterface
         private TeamCreatorInterface $teamCreator,
         private RequestStack $requestStack,
         private string $defaultRole,
+        private bool $emailConfirmation,
     ) {
     }
 
@@ -66,6 +67,8 @@ final class UserCreator implements UserCreatorInterface
         } else {
             $message = $this->messageFactory->getUserSignUpMessage($user);
             $this->emailSender->send($message);
+            $user->setIsConfirmed(!$this->emailConfirmation);
+            $this->repository->save($user);
         }
 
         $this->eventDispatcher->dispatch(new PostUserSignupEvent($user), PostUserSignupEvent::NAME);

@@ -123,6 +123,7 @@
             <argument type="service" id="Parthenon\User\Team\TeamCreatorInterface" />
             <argument type="service" id="Symfony\Component\HttpFoundation\RequestStack" />
             <argument>%parthenon_user_roles_default_role%</argument>
+            <argument>%parthenon_user_email_confirmation%</argument>
         </service>
         <service id="Parthenon\User\Creator\UserCreatorInterface" alias="parthenon.user.creator.user_creator" />
         <service id="Parthenon\User\Creator\UserCreator" alias="parthenon.user.creator.user_creator" />

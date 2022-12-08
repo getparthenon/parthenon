@@ -36,7 +36,7 @@ final class User implements ModuleConfigurationInterface
                 ->children()
                     ->booleanNode('enabled')->defaultValue(false)->end()
                     ->scalarNode('user_class')->end()
-                    ->booleanNode('confirm_email')->defaultValue(false)->end()
+                    ->booleanNode('email_confirmation')->defaultValue(true)->end()
                     ->booleanNode('user_invites_enabled')->defaultValue(false)->end()
                     ->scalarNode('login_route')->defaultValue('parthenon_user_login')->end()
                     ->scalarNode('login_redirect_route')->defaultValue('parthenon_user_profile')->end()
@@ -84,6 +84,7 @@ final class User implements ModuleConfigurationInterface
         $container->setParameter('parthenon_user_roles_user_assignable_roles', []);
         $container->setParameter('parthenon_user_roles_athena_assignable_roles', []);
         $container->setParameter('parthenon_user_self_signup_enabled', true);
+        $container->setParameter('parthenon_user_email_confirmation', true);
     }
 
     public function handleConfiguration(array $config, ContainerBuilder $container): void
@@ -109,6 +110,7 @@ final class User implements ModuleConfigurationInterface
         $config = $this->configureGdprFormatterType($config, $container);
         $config = $this->configureRoles($config, $container);
         $config = $this->configureSelfSignup($config, $container);
+        $config = $this->configureEmailConfirmation($config, $container);
 
         $this->configureTeams($config, $container);
     }
@@ -188,6 +190,15 @@ final class User implements ModuleConfigurationInterface
     {
         if (isset($config['user']['signup_success_route'])) {
             $container->setParameter('parthenon_user_signup_success_route', $config['user']['signup_success_route']);
+        }
+
+        return $config;
+    }
+
+    private function configureEmailConfirmation(array $config, ContainerBuilder $container): array
+    {
+        if (isset($config['user']['email_confirmation'])) {
+            $container->setParameter('parthenon_user_email_confirmation', $config['user']['email_confirmation']);
         }
 
         return $config;
