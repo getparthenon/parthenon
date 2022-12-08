@@ -16,15 +16,18 @@ namespace Parthenon\User\Security;
 
 use Parthenon\User\Entity\UserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
-class LogUserIn implements LogUserInInterface
+final class LogUserIn implements LogUserInInterface
 {
     public function __construct(
         private EventDispatcherInterface $dispatcher,
         private TokenStorageInterface $tokenStorage,
+        private RequestStack $requestStack,
         private string $firewallName,
     ) {
     }
@@ -34,7 +37,8 @@ class LogUserIn implements LogUserInInterface
         $token = new UsernamePasswordToken($user, $this->firewallName, $user->getRoles());
         $this->tokenStorage->setToken($token);
 
-        $event = new SecurityEvents();
+        $request = $this->requestStack->getCurrentRequest();
+        $event = new InteractiveLoginEvent($request, $token);
         $this->dispatcher->dispatch($event, SecurityEvents::INTERACTIVE_LOGIN);
     }
 }

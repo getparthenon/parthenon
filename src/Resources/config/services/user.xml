@@ -387,6 +387,7 @@
         <service id="Parthenon\User\Security\LogUserIn" class="Parthenon\User\Security\LogUserIn">
             <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
             <argument type="service" id="Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface" />
+            <argument type="service" id="request_stack" />
             <argument>%parthenon_user_firewall_name%</argument>
         </service>
         <service id="Parthenon\User\Security\LogUserInInterface" alias="Parthenon\User\Security\LogUserIn" />
