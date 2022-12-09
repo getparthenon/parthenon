@@ -16,10 +16,10 @@ namespace Parthenon\Export\Engine;
 
 use Parthenon\Export\BackgroundEmailExportRequest;
 use Parthenon\Export\ExportRequest;
-use Parthenon\User\Entity\UserInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class BackgroundEmailEngineTest extends TestCase
 {

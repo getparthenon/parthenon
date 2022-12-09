@@ -25,8 +25,8 @@ use Parthenon\Export\Notification\ExportEmailFactoryInterface;
 use Parthenon\Notification\Attachment;
 use Parthenon\Notification\Email;
 use Parthenon\Notification\EmailSenderInterface;
-use Parthenon\User\Entity\UserInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class BackgroundEmailRequestHandlerTest extends TestCase

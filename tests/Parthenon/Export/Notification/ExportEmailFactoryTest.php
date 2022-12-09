@@ -17,15 +17,34 @@ namespace Parthenon\Export\Notification;
 use Parthenon\Export\BackgroundEmailExportRequest;
 use Parthenon\Export\ExportRequest;
 use Parthenon\Notification\Email;
-use Parthenon\User\Entity\User;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ExportEmailFactoryTest extends TestCase
 {
     public function testEmail()
     {
-        $user = new User();
-        $user->setEmail('iain.cambridge@example.org');
+        $user = new class() implements UserInterface {
+            public function getRoles(): array
+            {
+                return [];
+            }
+
+            public function eraseCredentials()
+            {
+                // TODO: Implement eraseCredentials() method.
+            }
+
+            public function getUserIdentifier(): string
+            {
+                return 'iain.cambridge@example.org';
+            }
+
+            public function getEmail(): string
+            {
+                return 'iain.cambridge@example.org';
+            }
+        };
 
         $exportRequest = new ExportRequest('filename', 'csv', 'service', []);
 
