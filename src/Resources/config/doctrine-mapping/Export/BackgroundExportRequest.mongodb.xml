@@ -9,7 +9,7 @@
         <field field-name="exportedFile" name="exported_file" type="string"  nullable="true" />
         <field field-name="exportedFilePath" name="exported_file_path" type="string"  nullable="true" />
         <field field-name="exportFormat" name="export_format" type="string"  />
-        <field field-name="filename" name="filename" type="string"  />
+        <field field-name="name" name="name" type="string"  />
         <field field-name="dataProviderService" name="data_provider_service" type="string"/>
         <field field-name="dataProviderParameters" name="data_provider_parameters" type="hash" nullable="true" />
         <field field-name="createdAt" name="created_at" type="date" />

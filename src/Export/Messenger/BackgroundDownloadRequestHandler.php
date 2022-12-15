@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
  *
- * Change Date: TBD ( 3 years after 2.1.0 release )
+ * Change Date: 16.12.2025
  *
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
@@ -38,7 +38,7 @@ final class BackgroundDownloadRequestHandler implements MessageHandlerInterface
 
     public function __invoke(BackgroundExportRequest $message)
     {
-        $this->getLogger()->info('Processing background download export request', ['export_filename' => $message->getFilename()]);
+        $this->getLogger()->info('Processing background download export request', ['export_filename' => $message->getName()]);
 
         /** @var BackgroundExportRequest $backgroundExportRequest */
         $backgroundExportRequest = $this->backgroundExportRequestRepository->findById($message->getId());
@@ -60,7 +60,7 @@ final class BackgroundDownloadRequestHandler implements MessageHandlerInterface
         }
 
         $exportedContent = $exporter->getOutput($normalisedData);
-        $filename = $exporter->getFilename($backgroundExportRequest->getFilename());
+        $filename = $exporter->getFilename($backgroundExportRequest->getName());
 
         $file = $this->uploader->uploadString($filename, $exportedContent);
         $backgroundExportRequest->setExportedFilePath($file->getPath());
@@ -68,6 +68,6 @@ final class BackgroundDownloadRequestHandler implements MessageHandlerInterface
         $backgroundExportRequest->setUpdatedAt(new \DateTime());
 
         $this->backgroundExportRequestRepository->save($backgroundExportRequest);
-        $this->getLogger()->info('Finished processing background download export request', ['export_filename' => $message->getFilename()]);
+        $this->getLogger()->info('Finished processing background download export request', ['export_filename' => $message->getName()]);
     }
 }

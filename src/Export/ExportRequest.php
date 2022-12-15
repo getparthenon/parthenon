@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
  *
- * Change Date: TBD ( 3 years after 2.1.0 release )
+ * Change Date: 16.12.2025
  *
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
@@ -17,7 +17,7 @@ namespace Parthenon\Export;
 class ExportRequest
 {
     public function __construct(
-        protected string $filename,
+        protected string $name,
         protected string $exportFormat,
         protected string $dataProviderService,
         protected array $dataProviderParameters = [],
@@ -34,9 +34,9 @@ class ExportRequest
         return $this->dataProviderService;
     }
 
-    public function getFilename(): string
+    public function getName(): string
     {
-        return $this->filename;
+        return $this->name;
     }
 
     public function getDataProviderParameters(): array

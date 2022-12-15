@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
  *
- * Change Date: TBD ( 3 years after 2.1.0 release )
+ * Change Date: 16.12.2025
  *
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
@@ -61,7 +61,7 @@ class BackgroundDownloadRequestHandlerTest extends TestCase
         $file->method('getFilename')->willReturn($fileFilename);
 
         $backgroundExport->method('getId')->willReturn($id);
-        $backgroundExport->method('getFilename')->willReturn($filename);
+        $backgroundExport->method('getName')->willReturn($filename);
         $backgroundExport->method('setExportedFile')->with($fileFilename);
         $backgroundExport->method('setExportedFilePath')->with($fileFilepath);
 
