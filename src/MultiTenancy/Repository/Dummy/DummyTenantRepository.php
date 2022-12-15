@@ -55,4 +55,9 @@ final class DummyTenantRepository implements TenantRepositoryInterface
     {
         throw new GeneralException('Dummy repository please set up real one');
     }
+
+    public function getByIds(array $ids): ResultSet
+    {
+        throw new GeneralException('Dummy repository please set up real one');
+    }
 }
