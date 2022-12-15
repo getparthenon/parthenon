@@ -11,6 +11,7 @@
         "symfony/framework-bundle": ">=v6.0.0",
         "symfony/monolog-bundle": ">=v3.8.0",
         "symfony/security-bundle": ">=v6.0.0",
+        "symfony/security-core": ">=v6.0.0",
         "symfony/translation": ">=v6.0.0",
         "symfony/twig-bundle": ">=v6.0.0",
         "symfony/validator": ">=v6.0.0",
