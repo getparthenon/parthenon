@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
  *
- * Change Date: 16.12.2025
+ * Change Date: TBD ( 3 years after 2.2.0 release )
  *
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
@@ -15,13 +15,12 @@ declare(strict_types=1);
 namespace Parthenon\Payments\Controller;
 
 use Parthenon\Payments\CheckoutManagerInterface;
+use Parthenon\Payments\ConfigInterface;
 use Parthenon\Payments\Event\PaymentSuccessEvent;
 use Parthenon\Payments\Plan\PlanManager;
 use Parthenon\Payments\Plan\PlanManagerInterface;
 use Parthenon\Payments\PriceProviderInterface;
 use Parthenon\Payments\Repository\SubscriberRepositoryInterface;
-use Parthenon\Payments\Stripe\Config;
-use Parthenon\Payments\Stripe\SubscriptionManager;
 use Parthenon\Payments\Subscriber\CurrentSubscriberProviderInterface;
 use Parthenon\Payments\Subscriber\SubscriptionFactoryInterface;
 use Parthenon\Payments\SubscriptionManagerInterface;
@@ -78,7 +77,7 @@ class PaymentsController
         return new JsonResponse(['id' => $checkout->getId()]);
     }
 
-    #[Route('/payments/success/{checkoutId}', name: 'parthenon_payment_checkout_success')]
+    #[Route('/payments/success/{checkoutId}', name: 'parthenon_payment_checkout_success', requirements: ['checkoutId' => '\w+'])]
     public function success(
         Request $request,
         LoggerInterface $logger,
@@ -87,21 +86,22 @@ class PaymentsController
         CheckoutManagerInterface $checkoutManager,
         UrlGeneratorInterface $urlGenerator,
         EventDispatcherInterface $dispatcher,
-        ParameterBagInterface $parameterBag
+        ParameterBagInterface $parameterBag,
+        ?string $checkoutId = null,
     ) {
         $subscriber = $subscriberProvider->getSubscriber();
-        if (!$subscriber->getSubscription()->getCheckoutId()) {
-            $logger->warning("The subscriber doesn't have a checkout id");
+        if ($checkoutId) {
+            if (!$subscriber->getSubscription()->getCheckoutId()) {
+                $logger->warning("The subscriber doesn't have a checkout id");
 
-            return new RedirectResponse('/');
-        }
+                return new RedirectResponse('/');
+            }
 
-        $checkoutId = $request->get('checkoutId');
+            if ($subscriber->getSubscription()->getCheckoutId() !== $checkoutId) {
+                $logger->warning("The checkout ids don't match");
 
-        if ($subscriber->getSubscription()->getCheckoutId() !== $checkoutId) {
-            $logger->warning("The checkout ids don't match");
-
-            return new RedirectResponse('/');
+                return new RedirectResponse('/');
+            }
         }
 
         $checkoutManager->handleSuccess($subscriber->getSubscription());
@@ -120,7 +120,7 @@ class PaymentsController
         LoggerInterface $logger,
         CurrentSubscriberProviderInterface $subscriberProvider,
         SubscriberRepositoryInterface $subscriberRepository,
-        SubscriptionManager $subscriptionManager,
+        SubscriptionManagerInterface $subscriptionManager,
         PlanManager $planManager,
         PriceProviderInterface $priceProvider
     ) {
@@ -193,7 +193,7 @@ class PaymentsController
     }
 
     #[Route('/payments/plans', name: 'parthenon_payments_plans')]
-    public function listAction(PlanManager $planManager, Config $config, CurrentSubscriberProviderInterface $currentSubscriberProvider, PriceProviderInterface $priceProvider)
+    public function listAction(PlanManager $planManager, ConfigInterface $config, CurrentSubscriberProviderInterface $currentSubscriberProvider, PriceProviderInterface $priceProvider)
     {
         $plans = $planManager->getPlans();
 
@@ -216,7 +216,7 @@ class PaymentsController
                 'status' => $subscriber->getSubscription()->getStatus(),
                 'payment_schedule' => $subscriber->getSubscription()->getPaymentSchedule(),
             ],
-            'stripe' => ['api_key' => $config->getPublicApiKey()],
+            'provider' => $config->getConfigPublicPayload(),
         ]);
     }
 }

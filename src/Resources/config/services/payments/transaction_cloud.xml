@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autoconfigure="true" />
+
+        <service id="Parthenon\Payments\PaymentProvider\TransactionCloud\Config"
+                 class="Parthenon\Payments\PaymentProvider\TransactionCloud\Config">
+            <argument>%parthenon_payments_transaction_cloud_api_key%</argument>
+            <argument>%parthenon_payments_transaction_cloud_api_key_password%</argument>
+            <argument>%parthenon_payments_transaction_cloud_sandbox%</argument>
+            <argument>%parthenon_payments_transaction_cloud_customer_id_parameter%</argument>
+            <argument>%parthenon_payments_transaction_cloud_payment_id_parameter%</argument>
+        </service>
+        <service id="Parthenon\Payments\ConfigInterface" alias="Parthenon\Payments\PaymentProvider\TransactionCloud\Config" />
+
+        <service id="Parthenon\Payments\PaymentProvider\TransactionCloud\ClientFactory"
+                 class="Parthenon\Payments\PaymentProvider\TransactionCloud\ClientFactory">
+            <argument type="service" id="Parthenon\Payments\PaymentProvider\TransactionCloud\Config" />
+        </service>
+
+        <service id="parthenon.payments.third_party.transaction_cloud.client" class="TransactionCloud\TransactionCloud">
+            <factory service="Parthenon\Payments\PaymentProvider\TransactionCloud\ClientFactory" method="buildClient" />
+        </service>
+
+        <service id="Parthenon\Payments\PaymentProvider\TransactionCloud\CheckoutManager" class="Parthenon\Payments\PaymentProvider\TransactionCloud\CheckoutManager">
+            <argument type="service" id="parthenon.payments.third_party.transaction_cloud.client" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="Parthenon\Payments\PaymentProvider\TransactionCloud\Config" />
+        </service>
+        <service id="Parthenon\Payments\CheckoutManagerInterface" alias="Parthenon\Payments\PaymentProvider\TransactionCloud\CheckoutManager" />
+
+        <service id="Parthenon\Payments\PaymentProvider\TransactionCloud\SubscriptionManager" class="Parthenon\Payments\PaymentProvider\TransactionCloud\SubscriptionManager">
+            <argument type="service" id="parthenon.payments.third_party.transaction_cloud.client" />
+        </service>
+        <service id="Parthenon\Payments\SubscriptionManagerInterface" alias="Parthenon\Payments\PaymentProvider\TransactionCloud\SubscriptionManager" />
+
+    </services>
+</container>
+
