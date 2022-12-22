@@ -17,7 +17,7 @@
         "symfony/validator": ">=v6.0.0",
         "symfony/form": ">=v6.0.0",
         "league/flysystem": "^2.4",
-        "monolog/monolog": "^2.8",
+        "monolog/monolog": "^2.8 | ^3.0",
         "sendgrid/sendgrid": "~7.11.0",
         "ramsey/uuid-doctrine": "^1.8.1",
         "ramsey/uuid": "^4",
