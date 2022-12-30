@@ -161,15 +161,6 @@
         <service id="Parthenon\User\Gdpr\Export\FormatterManagerInterface" alias="parthenon.user.gdpr.export.formatter_manager" />
         <service id="parthenon.user.gdpr.export.json_formatter" class="Parthenon\User\Gdpr\Export\JsonFormatter" />
 
-        <service id="parthenon.user.logging.monolog.password_filter" class="Parthenon\User\Logging\Monolog\PasswordFilterProcessor">
-            <tag name="monolog.processor"/>
-        </service>
-
-        <service id="parthenon.user.logging.monolog.user" class="Parthenon\User\Logging\Monolog\UserProcessor">
-            <argument type="service" id="Symfony\Component\Security\Core\Security" />
-            <tag name="monolog.processor"/>
-        </service>
-
         <service id="parthenon.user.notification.message_factory" class="Parthenon\User\Notification\MessageFactory">
             <argument type="service" id="Parthenon\Common\Config" />
         </service>
