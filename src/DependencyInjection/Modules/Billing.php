@@ -73,6 +73,7 @@ class Billing implements ModuleConfigurationInterface
         $obolConfig = match ($paymentsConfig['provider']) {
             'stripe' => $this->buildStripeObolConfig($paymentsConfig),
             'adyen' => $this->buildAdyenObolConfig($paymentsConfig),
+            'custom' => [],
             default => throw new ParameterNotSetException('billing.payments.provider must be valid'),
         };
 
