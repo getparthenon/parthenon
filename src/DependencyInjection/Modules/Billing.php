@@ -21,7 +21,25 @@ class Billing implements ModuleConfigurationInterface
 {
     public function addConfig(NodeBuilder $nodeBuilder): void
     {
-        // TODO: Implement addConfig() method.
+        $nodeBuilder->arrayNode('billing')
+            ->children()
+                ->booleanNode('enabled')->defaultFalse()->end()
+                ?->arrayNode('payments')
+                    ->children()
+                        ->scalarNode('provider')->end()
+                        ?->arrayNode('adyen')
+                            ->children()
+                                ->scalarNode('api_key')->end()
+                                ->scalarNode('merchant_account')->end()
+                                ->booleanNode('pci_mode')->end()
+                                ->booleanNode('test_mode')->end()
+                                ->scalarNode('return_url')->end()
+                                ->scalarNode('prefix')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ?->end();
     }
 
     public function handleDefaultParameters(ContainerBuilder $container): void
