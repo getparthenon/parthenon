@@ -16,6 +16,7 @@ namespace Parthenon\DependencyInjection;
 
 use Parthenon\DependencyInjection\Modules\AbTesting;
 use Parthenon\DependencyInjection\Modules\Athena;
+use Parthenon\DependencyInjection\Modules\Billing;
 use Parthenon\DependencyInjection\Modules\Cloud;
 use Parthenon\DependencyInjection\Modules\Common;
 use Parthenon\DependencyInjection\Modules\Export;
@@ -73,6 +74,9 @@ class Configuration implements ConfigurationInterface
 
         $export = new Export();
         $export->addConfig($children);
+
+        $billing = new Billing();
+        $billing->addConfig($children);
 
         $children->end();
 

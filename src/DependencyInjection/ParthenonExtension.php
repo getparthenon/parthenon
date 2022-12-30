@@ -16,6 +16,7 @@ namespace Parthenon\DependencyInjection;
 
 use Parthenon\DependencyInjection\Modules\AbTesting;
 use Parthenon\DependencyInjection\Modules\Athena;
+use Parthenon\DependencyInjection\Modules\Billing;
 use Parthenon\DependencyInjection\Modules\Cloud;
 use Parthenon\DependencyInjection\Modules\Common;
 use Parthenon\DependencyInjection\Modules\Export;
@@ -54,6 +55,7 @@ class ParthenonExtension extends Extension
         $this->handleMultiTenancy($config, $container);
         $this->handleCloud($config, $container);
         $this->handleExport($config, $container);
+        $this->handleBilling($config, $container);
     }
 
     public function handleFunnelConfig(array $config, ContainerBuilder $container)
@@ -110,6 +112,13 @@ class ParthenonExtension extends Extension
         $abTesting = new AbTesting();
         $abTesting->handleDefaultParameters($container);
         $abTesting->handleConfiguration($config, $container);
+    }
+
+    public function handleBilling(array $config, ContainerBuilder $container)
+    {
+        $export = new Billing();
+        $export->handleDefaultParameters($container);
+        $export->handleConfiguration($config, $container);
     }
 
     public function handleExport(array $config, ContainerBuilder $container)
