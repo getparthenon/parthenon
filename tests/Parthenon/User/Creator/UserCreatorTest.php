@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * Copyright Iain Cambridge 2020-2022.
+ * Copyright Iain Cambridge 2020-2023.
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
  *
