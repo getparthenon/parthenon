@@ -27,6 +27,7 @@ class Billing implements ModuleConfigurationInterface
         $nodeBuilder->arrayNode('billing')
             ->children()
                 ->booleanNode('enabled')->defaultFalse()->end()
+                ->scalarNode('customer_type')->defaultValue('team')->end()
                 ?->arrayNode('payments')
                     ->children()
                         ->scalarNode('provider')->end()
@@ -58,6 +59,7 @@ class Billing implements ModuleConfigurationInterface
     public function handleDefaultParameters(ContainerBuilder $container): void
     {
         $container->setParameter('parthenon_billing_payments_obol_config', []);
+        $container->setParameter('parthenon_billing_customer_type', 'team');
     }
 
     public function handleConfiguration(array $config, ContainerBuilder $container): void
