@@ -12,13 +12,11 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Billing\Entity;
+namespace Parthenon\Billing\Repository\Orm;
 
-interface CustomerInterface
+use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Parthenon\Common\Repository\DoctrineRepository;
+
+class PaymentDetailsRepository extends DoctrineRepository implements PaymentDetailsRepositoryInterface
 {
-    public function hasSubscription(): bool;
-
-    public function getSubscription(): ?Subscription;
-
-    public function setSubscription(?Subscription $subscription);
 }
