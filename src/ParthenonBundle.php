@@ -90,6 +90,7 @@ class ParthenonBundle extends Bundle
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($athenaMappings, ['parthenon.athena.mongodb'], enabledParameter: 'parthenon_athena_enabled'));
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($abMappings, ['parthenon.ab_testing.mongodb'], enabledParameter: 'parthenon_abtesting_enabled'));
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($exportMappings, ['parthenon.export.mongodb'], enabledParameter: 'parthenon_export_enabled'));
+            $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($multiTenacyMappings, ['parthenon.multi_tenancy.mongodb'], enabledParameter: 'parthenon_multi_tenancy_enabled'));
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($paymentMappings, ['parthenon.payments.mongodb'], enabledParameter: 'parthenon_payments_enabled'));
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($userMappings, ['parthenon.user.mongodb'], enabledParameter: 'parthenon_user_enabled'));
         }
