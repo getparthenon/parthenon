@@ -38,6 +38,7 @@ final class Athena implements ModuleConfigurationInterface
         if (!isset($config['athena']) || !isset($config['athena']['enabled']) || false == $config['athena']['enabled']) {
             return;
         }
+        $container->setParameter('parthenon_athena_enabled', true);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
         $loader->load('services/athena.xml');

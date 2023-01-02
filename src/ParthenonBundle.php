@@ -38,12 +38,15 @@ class ParthenonBundle extends Bundle
         parent::build($container);
 
         $mappings = [
-            realpath(__DIR__.'/Resources/config/doctrine-mapping/Athena') => 'Parthenon\Athena\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Common') => 'Parthenon\Common',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Payments') => 'Parthenon\Payments\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/MultiTenancy') => 'Parthenon\MultiTenancy\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Export') => 'Parthenon\Export\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/User') => 'Parthenon\User\Entity',
+        ];
+
+        $athenaMappings = [
+            realpath(__DIR__.'/Resources/config/doctrine-mapping/Athena') => 'Parthenon\Athena\Entity',
         ];
 
         $abMappings = [
@@ -58,6 +61,7 @@ class ParthenonBundle extends Bundle
 
         if (isset($bundles['DoctrineBundle'])) {
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings, ['parthenon.orm']));
+            $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($athenaMappings, ['parthenon.athena.orm'], enabledParameter: 'parthenon_athena_enabled'));
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($abMappings, ['parthenon.ab_testing.orm'], enabledParameter: 'parthenon_abtesting_enabled'));
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($billingMappings, ['parthenon.billing.orm'], enabledParameter: 'parthenon_billing_enabled'));
 
@@ -67,6 +71,7 @@ class ParthenonBundle extends Bundle
 
         if (isset($bundles['DoctrineMongoDBBundle'])) {
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($mappings, ['parthenon.mongodb']));
+            $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($athenaMappings, ['parthenon.athena.mongodb'], enabledParameter: 'parthenon_athena_enabled'));
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($abMappings, ['parthenon.ab_testing.mongodb'], enabledParameter: 'parthenon_abtesting_enabled'));
         }
 
