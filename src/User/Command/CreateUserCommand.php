@@ -17,17 +17,17 @@ namespace Parthenon\User\Command;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\User\Creator\UserCreatorInterface;
 use Parthenon\User\Entity\UserInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
+#[AsCommand(name: 'parthenon:user:create-user', description: 'Create user')]
 final class CreateUserCommand extends Command
 {
     use LoggerAwareTrait;
-
-    protected static $defaultName = 'parthenon:user:create-user';
 
     public function __construct(private UserInterface $user, private UserCreatorInterface $userCreator)
     {
@@ -36,8 +36,7 @@ final class CreateUserCommand extends Command
 
     protected function configure()
     {
-        $this->setName(static::$defaultName)
-            ->setDescription('Create user')
+        $this
             ->addArgument('email', InputArgument::REQUIRED, 'The email address')
             ->addArgument('password', InputArgument::REQUIRED, 'The password');
     }

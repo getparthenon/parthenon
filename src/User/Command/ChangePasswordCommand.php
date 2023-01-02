@@ -16,6 +16,7 @@ namespace Parthenon\User\Command;
 
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\User\Repository\UserRepositoryInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,11 +24,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
+#[AsCommand(name: 'parthenon:user:change-password', description: 'Change user password')]
 final class ChangePasswordCommand extends Command
 {
     use LoggerAwareTrait;
-
-    protected static $defaultName = 'parthenon:user:change-password';
 
     public function __construct(private UserRepositoryInterface $userRepository, private PasswordHasherFactoryInterface $hasherFactory)
     {
@@ -36,8 +36,7 @@ final class ChangePasswordCommand extends Command
 
     protected function configure()
     {
-        $this->setName(static::$defaultName)
-            ->setDescription('Give role')
+        $this
             ->addArgument('email', InputArgument::REQUIRED, 'The email address')
             ->addArgument('password', InputArgument::REQUIRED, 'The new password');
     }

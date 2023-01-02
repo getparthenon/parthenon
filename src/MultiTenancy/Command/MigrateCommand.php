@@ -26,6 +26,7 @@ use Parthenon\MultiTenancy\Entity\Tenant;
 use Parthenon\MultiTenancy\Repository\TenantRepositoryInterface;
 use Parthenon\MultiTenancy\TenantProvider\TenantProviderInterface;
 use Parthenon\MultiTenancy\TenantProvider\TestCurrentTenantProvider;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -33,6 +34,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'parthenon:multi-tenancy:migrate', aliases: ['p:m:m'])]
 class MigrateCommand extends Command
 {
     use LoggerAwareTrait;
@@ -52,8 +54,6 @@ class MigrateCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('parthenon:multi-tenancy:migrate')
-            ->setAliases(['p:m:m'])
             ->addArgument('version', InputArgument::OPTIONAL, 'The version number (YYYYMMDDHHMMSS) or alias (first, prev, next, latest) to migrate to.', 'latest')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the migration as a dry run.');
     }

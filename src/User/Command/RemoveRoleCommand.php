@@ -16,17 +16,17 @@ namespace Parthenon\User\Command;
 
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\User\Repository\UserRepositoryInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
+#[AsCommand(name: 'parthenon:user:remove-role', description: 'Remove role')]
 final class RemoveRoleCommand extends Command
 {
     use LoggerAwareTrait;
-
-    protected static $defaultName = 'parthenon:user:remove-role';
 
     public function __construct(private UserRepositoryInterface $userRepository)
     {
@@ -35,8 +35,7 @@ final class RemoveRoleCommand extends Command
 
     protected function configure()
     {
-        $this->setName(static::$defaultName)
-            ->setDescription('Remove role')
+        $this
             ->addArgument('email', InputArgument::REQUIRED, 'The email address')
             ->addArgument('role', InputArgument::REQUIRED, 'The role');
     }

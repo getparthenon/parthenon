@@ -16,15 +16,15 @@ namespace Parthenon\AbTesting\Command;
 
 use Parthenon\AbTesting\Decider\ChoiceDecider\CacheGenerator;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'parthenon:ab-testing:generate-decision-cache')]
 final class GenerateDecisionCacheCommand extends Command
 {
     use LoggerAwareTrait;
-
-    protected static $defaultName = 'parthenon:ab-testing:generate-decision-cache';
 
     private CacheGenerator $generator;
 

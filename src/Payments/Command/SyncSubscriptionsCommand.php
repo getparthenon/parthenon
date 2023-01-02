@@ -21,15 +21,15 @@ use Parthenon\Payments\SubscriptionManagerInterface;
 use Parthenon\Payments\Transition\ToActiveManagerInterface;
 use Parthenon\Payments\Transition\ToCancelledManagerInterface;
 use Parthenon\Payments\Transition\ToOverdueManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'parthenon:payments:sync-subscriptions', description: 'Sync Subscriptions')]
 class SyncSubscriptionsCommand extends Command
 {
     use LoggerAwareTrait;
-
-    protected static $defaultName = 'parthenon:payments:sync-subscriptions';
 
     public function __construct(
         private SubscriberRepositoryInterface $subscriberRepository,
@@ -39,12 +39,6 @@ class SyncSubscriptionsCommand extends Command
         private ToOverdueManagerInterface $overdueManager,
     ) {
         parent::__construct();
-    }
-
-    protected function configure()
-    {
-        $this->setName(static::$defaultName)
-            ->setDescription('Sync Subscriptions');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

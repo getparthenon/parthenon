@@ -16,15 +16,16 @@ namespace Parthenon\AbTesting\Command;
 
 use Parthenon\AbTesting\Report\CleanUpSessions;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'parthenon:ab-testing:cleanup')]
 final class CleanUpCommand extends Command
 {
     use LoggerAwareTrait;
 
-    protected static $defaultName = 'parthenon:ab-testing:cleanup';
     private CleanUpSessions $generator;
 
     public function __construct(CleanUpSessions $cleanUpSessions)

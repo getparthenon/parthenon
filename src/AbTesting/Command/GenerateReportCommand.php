@@ -16,15 +16,16 @@ namespace Parthenon\AbTesting\Command;
 
 use Parthenon\AbTesting\Report\Generator;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'parthenon:ab-testing:generate-report')]
 final class GenerateReportCommand extends Command
 {
     use LoggerAwareTrait;
 
-    protected static $defaultName = 'parthenon:ab-testing:generate-report';
     private Generator $generator;
 
     public function __construct(Generator $generator)

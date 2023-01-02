@@ -17,10 +17,12 @@ namespace Parthenon\Funnel\Command;
 use Parthenon\Funnel\Repository\RepositoryManager;
 use Parthenon\Funnel\UnfinnishedActions\ActionManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'parthenon:funnel:process-unfinished', description: 'Processes actions on unfinnished funnels')]
 final class ProcessUnfinishedCommand extends Command
 {
     private ActionManager $actionManager;
@@ -33,12 +35,6 @@ final class ProcessUnfinishedCommand extends Command
         $this->repositoryManager = $repositoryManager;
         parent::__construct();
         $this->logger = $logger;
-    }
-
-    protected function configure()
-    {
-        $this->setName('parthenon:funnel:process-unfinished')
-        ->setDescription('Processes actions on unfinnished funnels');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

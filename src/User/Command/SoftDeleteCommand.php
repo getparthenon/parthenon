@@ -16,17 +16,17 @@ namespace Parthenon\User\Command;
 
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\User\Repository\UserRepositoryInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
+#[AsCommand(name: 'parthenon:user:soft-delete', description: 'Soft delete user')]
 final class SoftDeleteCommand extends Command
 {
     use LoggerAwareTrait;
-
-    protected static $defaultName = 'parthenon:user:soft-delete';
 
     public function __construct(private UserRepositoryInterface $userRepository)
     {
@@ -35,8 +35,7 @@ final class SoftDeleteCommand extends Command
 
     protected function configure()
     {
-        $this->setName(static::$defaultName)
-            ->setDescription('Soft delete user')
+        $this
             ->addArgument('email', InputArgument::REQUIRED, 'The email address');
     }
 
