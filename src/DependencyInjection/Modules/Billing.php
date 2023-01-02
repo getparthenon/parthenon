@@ -72,7 +72,6 @@ class Billing implements ModuleConfigurationInterface
 
     public function handleDefaultParameters(ContainerBuilder $container): void
     {
-        $container->setParameter('parthenon_billing_enabled', false);
         $container->setParameter('parthenon_billing_payments_obol_config', []);
         $container->setParameter('parthenon_billing_customer_type', 'team');
         $container->setParameter('parthenon_billing_plan_plans', []);
@@ -84,6 +83,7 @@ class Billing implements ModuleConfigurationInterface
             return;
         }
         $container->setParameter('parthenon_billing_enabled', true);
+
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
         $loader->load('services/billing.xml');
 
