@@ -97,6 +97,7 @@ final class User implements ModuleConfigurationInterface
         if (!isset($config['user']) || !isset($config['user']['enabled']) || false == $config['user']['enabled']) {
             return;
         }
+        $container->setParameter('parthenon_user_enabled', true);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
         $bundles = $container->getParameter('kernel.bundles');
