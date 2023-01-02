@@ -14,8 +14,19 @@ declare(strict_types=1);
 
 namespace Parthenon\DependencyInjection\Modules;
 
+use Parthenon\Billing\Athena\CustomerTeamSection;
+use Parthenon\Billing\Athena\CustomerUserSection;
+use Parthenon\Billing\CustomerProviderInterface;
+use Parthenon\Billing\Repository\CustomerRepositoryInterface;
+use Parthenon\Billing\TeamCustomerProvider;
+use Parthenon\Billing\UserCustomerProvider;
 use Parthenon\Common\Exception\ParameterNotSetException;
+use Parthenon\User\Repository\TeamRepositoryInterface;
+use Parthenon\User\Repository\UserRepositoryInterface;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -53,6 +64,9 @@ class Billing implements ModuleConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->end()
+                ->fixXmlConfig('plans')
+                ->append($this->getPlansNode())
             ?->end();
     }
 
@@ -60,17 +74,26 @@ class Billing implements ModuleConfigurationInterface
     {
         $container->setParameter('parthenon_billing_payments_obol_config', []);
         $container->setParameter('parthenon_billing_customer_type', 'team');
+        $container->setParameter('parthenon_billing_plan_plans', []);
     }
 
     public function handleConfiguration(array $config, ContainerBuilder $container): void
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
-
         if (!isset($config['billing']) || !isset($config['billing']['enabled']) || false === $config['billing']['enabled']) {
             return;
         }
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
+        $loader->load('services/billing.xml');
+
         $billingConfig = $config['billing'];
         $paymentsConfig = $billingConfig['payments'];
+
+        if ('team' === strtolower($billingConfig['customer_type'])) {
+            $this->handleTeamCustomer($config, $container);
+        } elseif ('user' === strtolower($billingConfig['customer_type'])) {
+            $this->handleUserCustomer($config, $container);
+        }
+        $container->setParameter('parthenon_billing_plan_plans', $config['billing']['plan']);
 
         $obolConfig = match ($paymentsConfig['provider']) {
             'stripe' => $this->buildStripeObolConfig($paymentsConfig),
@@ -80,6 +103,21 @@ class Billing implements ModuleConfigurationInterface
         };
 
         $container->setParameter('parthenon_billing_payments_obol_config', $obolConfig);
+        $container->setParameter('parthenon_billing_plan_plans', $config['billing']['plan']);
+    }
+
+    protected function handleTeamCustomer(array $config, ContainerBuilder $containerBuilder): void
+    {
+        $containerBuilder->setAlias(CustomerProviderInterface::class, TeamCustomerProvider::class);
+        $containerBuilder->setAlias(CustomerRepositoryInterface::class, TeamRepositoryInterface::class);
+        $containerBuilder->removeDefinition(CustomerUserSection::class);
+    }
+
+    protected function handleUserCustomer(array $config, ContainerBuilder $containerBuilder): void
+    {
+        $containerBuilder->setAlias(CustomerProviderInterface::class, UserCustomerProvider::class);
+        $containerBuilder->setAlias(CustomerRepositoryInterface::class, UserRepositoryInterface::class);
+        $containerBuilder->removeDefinition(CustomerTeamSection::class);
     }
 
     protected function buildStripeObolConfig(array $paymentsConfig): array
@@ -152,5 +190,39 @@ class Billing implements ModuleConfigurationInterface
         }
 
         return $config;
+    }
+
+    private function getPlansNode(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('plan');
+        $node = $treeBuilder->getRootNode();
+
+        /** @var ArrayNodeDefinition $planNode */
+        $planNode = $node
+            ->requiresAtLeastOneElement()
+            ->useAttributeAsKey('name')
+            ->prototype('array');
+
+        $planNode
+            ->fixXmlConfig('limits')
+                ->children()
+                    ->booleanNode('is_free')->defaultFalse()->end()
+                    ->booleanNode('is_per_seat')->defaultFalse()->end()
+                    ->scalarNode('user_count')->end()
+                    ->arrayNode('features')
+                        ->scalarPrototype()->end()
+                    ->end()
+                    ->arrayNode('limit')
+                        ->useAttributeAsKey('name')
+                        ->prototype('array')
+                        ->children()
+                            ->integerNode('limit')->end()
+                            ->scalarNode('description')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+
+        return $node;
     }
 }

@@ -65,7 +65,7 @@ final class Payments implements ModuleConfigurationInterface
                     ->end()
                     ->arrayNode('subscriptions')
                     ->children()
-                    ->scalarNode('subscriber_type')->end()
+                        ->scalarNode('subscriber_type')->end()
                     ->end()
                     ->fixXmlConfig('plans')
                     ->append($this->getPlansNode())

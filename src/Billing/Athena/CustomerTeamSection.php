@@ -14,8 +14,49 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Athena;
 
+use Parthenon\Athena\EntityForm;
+use Parthenon\Athena\ReadView;
+use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Plan\Plan;
+use Parthenon\Billing\Plan\PlanManagerInterface;
+use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\User\Athena\TeamSection;
+use Parthenon\User\Repository\TeamRepositoryInterface;
 
 class CustomerTeamSection extends TeamSection
 {
+    public function __construct(private CustomerRepositoryInterface|TeamRepositoryInterface $customerRepository, private PlanManagerInterface $planManager)
+    {
+        parent::__construct($this->customerRepository);
+    }
+
+    public function buildEntityForm(EntityForm $entityForm): EntityForm
+    {
+        $entityForm = parent::buildEntityForm($entityForm);
+
+        $planNames = array_map(function (Plan $plan) {
+            return $plan->getName();
+        }, $this->planManager->getPlans());
+
+        $entityForm->section('plan')
+            ->field('subscription.planName', 'choice', ['choices' => array_combine($planNames, $planNames)])
+            ->field('subscription.status', 'choice', ['choices' => array_combine(Subscription::STATUS_ARRAY, Subscription::STATUS_ARRAY)])
+            ->field('subscription.validUntil', 'date')
+            ->end();
+
+        return $entityForm;
+    }
+
+    public function buildReadView(ReadView $readView): ReadView
+    {
+        $readView = parent::buildReadView($readView);
+
+        $readView->section('plan')
+            ->field('subscription.planName')
+            ->field('subscription.validUntil')
+            ->field('subscription.status')
+            ->end();
+
+        return $readView;
+    }
 }

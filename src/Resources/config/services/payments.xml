@@ -38,13 +38,13 @@
 
         <service id="parthenon.plan.security.voter.plan_feature" class="Parthenon\Payments\Plan\Security\Voter\PlanFeatureVoter">
             <argument type="service" id="Parthenon\Payments\Plan\CounterManager" />
-            <argument type="service" id="Parthenon\Payments\Plan\PlanManager" />
+            <argument type="service" id="Parthenon\Payments\Plan\PlanManagerInterface" />
             <tag name="security.voter" priority="20"/>
         </service>
 
         <service id="parthenon.plan.security.voter.plan" class="Parthenon\Payments\Plan\Security\Voter\PlanVoter">
             <argument type="service" id="Parthenon\Payments\Plan\CounterManager" />
-            <argument type="service" id="Parthenon\Payments\Plan\PlanManager" />
+            <argument type="service" id="Parthenon\Payments\Plan\PlanManagerInterface" />
             <argument type="service" id="Parthenon\Payments\Subscriber\CurrentSubscriberProviderInterface" />
             <tag name="security.voter" priority="20"/>
         </service>
@@ -52,7 +52,7 @@
 
         <service id="parthenon.plan.security.voter.invite" class="Parthenon\Payments\Plan\Security\Voter\InviteVoter">
             <argument type="service" id="Parthenon\Payments\Plan\Counter\TeamInviteCounterInterface" />
-            <argument type="service" id="Parthenon\Payments\Plan\PlanManager" />
+            <argument type="service" id="Parthenon\Payments\Plan\PlanManagerInterface" />
             <argument type="service" id="Parthenon\Payments\Subscriber\CurrentSubscriberProviderInterface" />
             <tag name="security.voter" priority="20"/>
         </service>
@@ -60,11 +60,11 @@
 
         <service id="Parthenon\Payments\Athena\UserSubscriberSection" class="Parthenon\Payments\Athena\UserSubscriberSection">
             <argument type="service"  id="Parthenon\Payments\Repository\SubscriberRepositoryInterface" />
-            <argument type="service" id="Parthenon\Payments\Plan\PlanManager" />
+            <argument type="service" id="Parthenon\Payments\Plan\PlanManagerInterface" />
         </service>
         <service id="Parthenon\Payments\Athena\TeamSubscriberSection" class="Parthenon\Payments\Athena\TeamSubscriberSection">
             <argument type="service"  id="Parthenon\Payments\Repository\SubscriberRepositoryInterface" />
-            <argument type="service" id="Parthenon\Payments\Plan\PlanManager" />
+            <argument type="service" id="Parthenon\Payments\Plan\PlanManagerInterface" />
         </service>
         <service id="Parthenon\Payments\Plan\Counter\TeamInviteCounter" class="Parthenon\Payments\Plan\Counter\TeamInviteCounter">
             <argument type="service" id="Parthenon\User\Repository\TeamInviteCodeRepositoryInterface" />

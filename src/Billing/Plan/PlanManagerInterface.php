@@ -12,17 +12,24 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\User\Repository;
+namespace Parthenon\Billing\Plan;
 
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
-use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\User\Entity\MemberInterface;
-use Parthenon\User\Entity\TeamInterface;
+use Parthenon\Billing\Exception\NoPlanFoundException;
 
-interface TeamRepositoryInterface extends CrudRepositoryInterface
+interface PlanManagerInterface
 {
     /**
-     * @throws NoEntityFoundException
+     * @return Plan[]
      */
-    public function getByMember(MemberInterface $member): TeamInterface;
+    public function getPlans(): array;
+
+    /**
+     * @throws NoPlanFoundException
+     */
+    public function getPlanForUser(LimitedUserInterface $limitedUser): Plan;
+
+    /**
+     * @throws NoPlanFoundException
+     */
+    public function getPlanByName(string $planName): Plan;
 }

@@ -12,17 +12,16 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\User\Repository;
+namespace Parthenon\Billing\Controller;
 
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
-use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\User\Entity\MemberInterface;
-use Parthenon\User\Entity\TeamInterface;
+use Obol\Provider\ProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-interface TeamRepositoryInterface extends CrudRepositoryInterface
+class PaymentDetailsController
 {
-    /**
-     * @throws NoEntityFoundException
-     */
-    public function getByMember(MemberInterface $member): TeamInterface;
+    #[Route('/billing/card/add', name: 'parthenon_billing_paymentdetails_addcarddetails', methods: ['POST'])]
+    public function addCardDetails(Request $request, ProviderInterface $provider)
+    {
+    }
 }

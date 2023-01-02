@@ -12,17 +12,17 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\User\Repository;
+namespace Parthenon\Billing;
 
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
-use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\User\Entity\MemberInterface;
-use Parthenon\User\Entity\TeamInterface;
+use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Exception\NoCustomerException;
 
-interface TeamRepositoryInterface extends CrudRepositoryInterface
+interface CustomerProviderInterface
 {
     /**
-     * @throws NoEntityFoundException
+     * Returns the customer for the current logged in user.
+     *
+     * @throws NoCustomerException
      */
-    public function getByMember(MemberInterface $member): TeamInterface;
+    public function getCurrentCustomer(): CustomerInterface;
 }

@@ -12,17 +12,9 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\User\Repository;
+namespace Parthenon\Billing\Plan;
 
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
-use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\User\Entity\MemberInterface;
-use Parthenon\User\Entity\TeamInterface;
-
-interface TeamRepositoryInterface extends CrudRepositoryInterface
+interface LimitableInterface
 {
-    /**
-     * @throws NoEntityFoundException
-     */
-    public function getByMember(MemberInterface $member): TeamInterface;
+    public function getLimitableName(): string;
 }
