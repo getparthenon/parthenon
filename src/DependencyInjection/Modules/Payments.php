@@ -104,6 +104,7 @@ final class Payments implements ModuleConfigurationInterface
         if (!isset($config['payments']) || !isset($config['payments']['enabled']) || false == $config['payments']['enabled']) {
             return;
         }
+        $container->setParameter('parthenon_payments_enabled', true);
         $container->setParameter('parthenon_payments_plan_plans', $config['payments']['subscriptions']['plan']);
         $container->registerForAutoconfiguration(CounterInterface::class)->addTag('parthenon.payments.plan.counter');
         $container->registerForAutoconfiguration(ToActiveTransitionInterface::class)->addTag('parthenon.payments.transitions.to_active');
