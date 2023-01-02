@@ -39,7 +39,6 @@ class ParthenonBundle extends Bundle
 
         $mappings = [
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Common') => 'Parthenon\Common',
-            realpath(__DIR__.'/Resources/config/doctrine-mapping/MultiTenancy') => 'Parthenon\MultiTenancy\Entity',
         ];
 
         $athenaMappings = [
@@ -58,6 +57,10 @@ class ParthenonBundle extends Bundle
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Export') => 'Parthenon\Export\Entity',
         ];
 
+        $multiTenacyMappings = [
+            realpath(__DIR__.'/Resources/config/doctrine-mapping/MultiTenancy') => 'Parthenon\MultiTenancy\Entity',
+        ];
+
         $paymentMappings = [
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Payments') => 'Parthenon\Payments\Entity',
         ];
@@ -74,6 +77,7 @@ class ParthenonBundle extends Bundle
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($abMappings, ['parthenon.ab_testing.orm'], enabledParameter: 'parthenon_abtesting_enabled'));
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($billingMappings, ['parthenon.billing.orm'], enabledParameter: 'parthenon_billing_enabled'));
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($exportMappings, ['parthenon.export.orm'], enabledParameter: 'parthenon_export_enabled'));
+            $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($multiTenacyMappings, ['parthenon.multi_tenancy.orm'], enabledParameter: 'parthenon_multi_tenancy_enabled'));
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($paymentMappings, ['parthenon.payments.orm'], enabledParameter: 'parthenon_payments_enabled'));
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($userMappings, ['parthenon.user.orm'], enabledParameter: 'parthenon_user_enabled'));
 

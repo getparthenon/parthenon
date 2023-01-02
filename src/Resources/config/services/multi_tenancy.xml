@@ -31,7 +31,7 @@
             <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
             <argument>%parthenon_multi_tenancy_migrations_directory%</argument>
             <argument>%parthenon_multi_tenancy_orm_entity_manager%</argument>
-            <argument>%parthenon_multi_tenancy_enabled%</argument>
+            <argument>%parthenon_multi_tenancy_is_enabled%</argument>
             <tag name="console.command" />
         </service>
 

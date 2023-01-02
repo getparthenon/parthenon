@@ -63,13 +63,13 @@ final class MultiTenancy implements ModuleConfigurationInterface
     {
         $container->setParameter('parthenon_multi_tenancy_domain', '');
         $container->setParameter('parthenon_multi_tenancy_migrations_directory', '');
-        $container->setParameter('parthenon_multi_tenancy_enabled', false);
         $container->setParameter('parthenon_multi_tenancy_background_creation', false);
         $container->setParameter('parthenon_multi_tenancy_dbal_connection', '');
         $container->setParameter('parthenon_multi_tenancy_global_dbal_connection', '');
         $container->setParameter('parthenon_multi_tenancy_orm_entity_manager', '');
         $container->setParameter('parthenon_multi_tenancy_default_database', 'dummy_database');
         $container->setParameter('parthenon_multi_tenancy_digitalocean_cluster_id', '');
+        $container->setParameter('parthenon_multi_tenancy_is_enabled', false);
     }
 
     public function handleConfiguration(array $config, ContainerBuilder $container): void
@@ -77,6 +77,7 @@ final class MultiTenancy implements ModuleConfigurationInterface
         if (!isset($config['multi_tenancy']['enabled']) || !$config['multi_tenancy']['enabled']) {
             return;
         }
+        $container->setParameter('parthenon_multi_tenancy_enabled', true);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
         $loader->load('services/multi_tenancy.xml');
@@ -101,7 +102,7 @@ final class MultiTenancy implements ModuleConfigurationInterface
                 throw new GeneralException('user.teams_enabled needs to be true to use multi tenancy');
             }
 
-            $container->setParameter('parthenon_multi_tenancy_enabled', $enabled);
+            $container->setParameter('parthenon_multi_tenancy_is_enabled', $enabled);
             $container->setParameter('parthenon_multi_tenancy_background_creation', $backgroundCreation);
 
             if (isset($multiTenancyConfig['domain'])) {
