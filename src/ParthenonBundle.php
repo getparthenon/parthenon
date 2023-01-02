@@ -41,10 +41,13 @@ class ParthenonBundle extends Bundle
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Athena') => 'Parthenon\Athena\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Common') => 'Parthenon\Common',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Payments') => 'Parthenon\Payments\Entity',
-            realpath(__DIR__.'/Resources/config/doctrine-mapping/AbTesting') => 'Parthenon\AbTesting\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/MultiTenancy') => 'Parthenon\MultiTenancy\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Export') => 'Parthenon\Export\Entity',
             realpath(__DIR__.'/Resources/config/doctrine-mapping/User') => 'Parthenon\User\Entity',
+        ];
+
+        $abMappings = [
+            realpath(__DIR__.'/Resources/config/doctrine-mapping/AbTesting') => 'Parthenon\AbTesting\Entity',
         ];
 
         $billingMappings = [
@@ -55,6 +58,7 @@ class ParthenonBundle extends Bundle
 
         if (isset($bundles['DoctrineBundle'])) {
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings, ['parthenon.orm']));
+            $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($abMappings, ['parthenon.ab_testing.orm'], enabledParameter: 'parthenon_abtesting_enabled'));
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($billingMappings, ['parthenon.billing.orm'], enabledParameter: 'parthenon_billing_enabled'));
 
             Type::overrideType('datetime', UtcDateTimeType::class);
@@ -63,6 +67,7 @@ class ParthenonBundle extends Bundle
 
         if (isset($bundles['DoctrineMongoDBBundle'])) {
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($mappings, ['parthenon.mongodb']));
+            $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($abMappings, ['parthenon.ab_testing.mongodb'], enabledParameter: 'parthenon_abtesting_enabled'));
         }
 
         $container->addCompilerPass(new AbTestingCompilerPass());

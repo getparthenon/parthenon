@@ -60,6 +60,7 @@ final class AbTesting implements ModuleConfigurationInterface
         if (!isset($config['ab_testing']) || !isset($config['ab_testing']['enabled']) || false == $config['ab_testing']['enabled']) {
             return;
         }
+        $container->setParameter('parthenon_abtesting_enabled', true);
 
         $container->registerForAutoconfiguration(EnabledDeciderInterface::class)->addTag('parthenon.ab_testing.decider');
 
