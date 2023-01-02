@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Parthenon\Billing\Entity\PaymentDetails">
+        <id name="id" type="uuid" column="id">
+            <generator strategy="CUSTOM" />
+            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
+        </id>
+        <many-to-one field="customer" target-entity="Parthenon\Billing\Entity\CustomerInterface" />
+        <field name="provider" column="provider" type="string" nullable="true"  />
+        <field name="storedCustomerReference" column="stored_customer_reference" type="string" nullable="true"  />
+        <field name="storedPaymentReference" column="stored_payment_reference" type="string" nullable="true"  />
+        <field name="default" column="default" type="boolean" nullable="false"  />
+    </entity>
+</doctrine-mapping>
