@@ -41,16 +41,8 @@ class ParthenonBundle extends Bundle
             realpath(__DIR__.'/Resources/config/doctrine-mapping/Common') => 'Parthenon\Common',
         ];
 
-        $athenaMappings = [
-            realpath(__DIR__.'/Resources/config/doctrine-mapping/Athena') => 'Parthenon\Athena\Entity',
-        ];
-
         $abMappings = [
             realpath(__DIR__.'/Resources/config/doctrine-mapping/AbTesting') => 'Parthenon\AbTesting\Entity',
-        ];
-
-        $billingMappings = [
-            realpath(__DIR__.'/Resources/config/doctrine-mapping/Billing') => 'Parthenon\Billing\Entity',
         ];
 
         $exportMappings = [
@@ -73,9 +65,7 @@ class ParthenonBundle extends Bundle
 
         if (isset($bundles['DoctrineBundle'])) {
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings, ['parthenon.orm']));
-            $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($athenaMappings, ['parthenon.athena.orm'], enabledParameter: 'parthenon_athena_enabled'));
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($abMappings, ['parthenon.ab_testing.orm'], enabledParameter: 'parthenon_abtesting_enabled'));
-            $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($billingMappings, ['parthenon.billing.orm'], enabledParameter: 'parthenon_billing_enabled'));
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($exportMappings, ['parthenon.export.orm'], enabledParameter: 'parthenon_export_enabled'));
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($multiTenacyMappings, ['parthenon.multi_tenancy.orm'], enabledParameter: 'parthenon_multi_tenancy_enabled'));
             $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($paymentMappings, ['parthenon.payments.orm'], enabledParameter: 'parthenon_payments_enabled'));
@@ -87,7 +77,6 @@ class ParthenonBundle extends Bundle
 
         if (isset($bundles['DoctrineMongoDBBundle'])) {
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($mappings, ['parthenon.mongodb']));
-            $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($athenaMappings, ['parthenon.athena.mongodb'], enabledParameter: 'parthenon_athena_enabled'));
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($abMappings, ['parthenon.ab_testing.mongodb'], enabledParameter: 'parthenon_abtesting_enabled'));
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($exportMappings, ['parthenon.export.mongodb'], enabledParameter: 'parthenon_export_enabled'));
             $container->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($multiTenacyMappings, ['parthenon.multi_tenancy.mongodb'], enabledParameter: 'parthenon_multi_tenancy_enabled'));
@@ -104,5 +93,46 @@ class ParthenonBundle extends Bundle
         $container->addCompilerPass(new SubscriptionsCompilerPass());
         $container->addCompilerPass(new UserCompilerPass());
         $container->addCompilerPass(new MultiTenancyCompilerPass());
+
+        $this->handleAthenaDoctrine($container);
+        $this->handleBillingDoctrine($container);
+    }
+
+    public function handleAthenaDoctrine(ContainerBuilder $containerBuilder): void
+    {
+        $athenaMappings = [
+            realpath(__DIR__.'/Resources/config/doctrine-mapping/Athena') => 'Parthenon\Athena\Entity',
+        ];
+
+        // This contains bundles that are loaded
+        $bundles = $containerBuilder->getParameter('kernel.bundles');
+
+        // Doctrine ORM Bundle
+        if (isset($bundles['DoctrineBundle'])) {
+            $containerBuilder->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($athenaMappings, ['parthenon.athena.orm'], enabledParameter: 'parthenon_athena_enabled'));
+        }
+        // Doctrine ODM Bundle
+        if (isset($bundles['DoctrineMongoDBBundle'])) {
+            $containerBuilder->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($athenaMappings, ['parthenon.athena.mongodb'], enabledParameter: 'parthenon_athena_enabled'));
+        }
+    }
+
+    public function handleBillingDoctrine(ContainerBuilder $containerBuilder): void
+    {
+        $mappings = [
+            realpath(__DIR__.'/Resources/config/doctrine-mapping/Billing') => 'Parthenon\Billing\Entity',
+        ];
+
+        // This contains bundles that are loaded
+        $bundles = $containerBuilder->getParameter('kernel.bundles');
+
+        // Doctrine ORM Bundle
+        if (isset($bundles['DoctrineBundle'])) {
+            $containerBuilder->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings, ['parthenon.billing.orm'], enabledParameter: 'parthenon_billing_enabled'));
+        }
+        // Doctrine ODM Bundle
+        if (isset($bundles['DoctrineMongoDBBundle'])) {
+            $containerBuilder->addCompilerPass(DoctrineMongoDBMappingsPass::createXmlMappingDriver($mappings, ['parthenon.billing.mongodb'], enabledParameter: 'parthenon_billing_enabled'));
+        }
     }
 }
