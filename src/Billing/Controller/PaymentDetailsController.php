@@ -14,7 +14,15 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Controller;
 
+use Obol\Model\CardDetails;
 use Obol\Provider\ProviderInterface;
+use Parthenon\Billing\CustomerProviderInterface;
+use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Obol\CustomerConverterInterface;
+use Parthenon\Billing\Repository\CustomerRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,8 +33,58 @@ class PaymentDetailsController
     {
     }
 
+    #[Route('/billing/card/token/start', name: 'parthenon_billing_paymentdetails_starttokenprocess', methods: ['GET'])]
+    public function startTokenProcess(
+        Request $request,
+        LoggerInterface $logger,
+        ProviderInterface $provider,
+        CustomerProviderInterface $customerProvider,
+        CustomerRepositoryInterface $customerRepository,
+        CustomerConverterInterface $customerConverter
+    ) {
+        $logger->info('Starting the card token process');
+
+        $customer = $customerProvider->getCurrentCustomer();
+        $billingDetails = $customerConverter->convertToBillingDetails($customer);
+
+        $tokenData = $provider->payments()->startFrontendCreateCardOnFile($billingDetails);
+        $customer->setExternalCustomerReference($tokenData->getCustomerReference());
+
+        $customerRepository->save($customer);
+
+        return new JsonResponse([
+            'token' => $tokenData->getToken(),
+        ]);
+    }
+
     #[Route('/billing/card/token/add', name: 'parthenon_billing_paymentdetails_addcardbytoken', methods: ['POST'])]
-    public function addCardByToken(Request $request, ProviderInterface $provider)
-    {
+    public function addCardByToken(
+        Request $request,
+        ProviderInterface $provider,
+        CustomerProviderInterface $customerProvider,
+        CustomerRepositoryInterface $customerRepository,
+        CustomerConverterInterface $customerConverter,
+        PaymentDetailsRepositoryInterface $detailsRepository,
+    ) {
+        $data = json_decode($request->getContent(), true);
+        $customer = $customerProvider->getCurrentCustomer();
+        $billingDetails = $customerConverter->convertToBillingDetails($customer);
+        $billingDetails->setCardDetails(new CardDetails());
+        $billingDetails->getCardDetails()->setToken($data['token']);
+
+        $details = $provider->payments()->createCardOnFile($billingDetails);
+        $storedPaymentReference = $details->getPaymentDetails()->getStoredPaymentReference();
+
+        $paymentDetails = new PaymentDetails();
+        $paymentDetails->setCustomer($customer);
+        $paymentDetails->setStoredCustomerReference($customer->getExternalCustomerReference());
+        $paymentDetails->setStoredPaymentReference($storedPaymentReference);
+        $paymentDetails->setProvider($provider->getName());
+        $paymentDetails->setDefaultPaymentOption(true);
+        $paymentDetails->setName('Default');
+
+        $detailsRepository->save($paymentDetails);
+
+        return new JsonResponse(['success' => true]);
     }
 }

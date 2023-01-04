@@ -86,6 +86,7 @@ class Billing implements ModuleConfigurationInterface
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
         $loader->load('services/billing.xml');
+        $loader->load('services/orm/billing.xml');
 
         $billingConfig = $config['billing'];
         $paymentsConfig = $billingConfig['payments'];

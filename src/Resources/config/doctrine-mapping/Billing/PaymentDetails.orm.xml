@@ -13,6 +13,6 @@
         <field name="provider" column="provider" type="string" nullable="true"  />
         <field name="storedCustomerReference" column="stored_customer_reference" type="string" nullable="true"  />
         <field name="storedPaymentReference" column="stored_payment_reference" type="string" nullable="true"  />
-        <field name="default" column="default" type="boolean" nullable="false"  />
+        <field name="defaultPaymentOption" column="default_payment_option" type="boolean" nullable="false"  />
     </entity>
 </doctrine-mapping>

@@ -28,7 +28,7 @@ class PaymentDetails
 
     protected string $name;
 
-    protected bool $default = true;
+    protected bool $defaultPaymentOption = true;
 
     /**
      * @return mixed
@@ -92,14 +92,14 @@ class PaymentDetails
         $this->name = $name;
     }
 
-    public function isDefault(): bool
+    public function isDefaultPaymentOption(): bool
     {
-        return $this->default;
+        return $this->defaultPaymentOption;
     }
 
-    public function setDefault(bool $default): void
+    public function setDefaultPaymentOption(bool $defaultPaymentOption): void
     {
-        $this->default = $default;
+        $this->defaultPaymentOption = $defaultPaymentOption;
     }
 
     public function getStoredCustomerReference(): string
