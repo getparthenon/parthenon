@@ -73,7 +73,7 @@ class PaymentDetailsController
         $billingDetails->getCardDetails()->setToken($data['token']);
 
         $details = $provider->payments()->createCardOnFile($billingDetails);
-        $storedPaymentReference = $details->getPaymentDetails()->getStoredPaymentReference();
+        $storedPaymentReference = $details->getCardFile()->getStoredPaymentReference();
 
         $paymentDetails = new PaymentDetails();
         $paymentDetails->setCustomer($customer);
