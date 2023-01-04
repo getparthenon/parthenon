@@ -110,6 +110,21 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement hasBillingAddress() method.
             }
+
+            public function setExternalCustomerReference($customerReference)
+            {
+                // TODO: Implement setExternalCustomerReference() method.
+            }
+
+            public function getExternalCustomerReference()
+            {
+                // TODO: Implement getExternalCustomerReference() method.
+            }
+
+            public function getBillingEmail()
+            {
+                // TODO: Implement getBillingEmail() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -175,6 +190,21 @@ class PlanVoterTest extends TestCase
             public function hasBillingAddress(): bool
             {
                 // TODO: Implement hasBillingAddress() method.
+            }
+
+            public function setExternalCustomerReference($customerReference)
+            {
+                // TODO: Implement setExternalCustomerReference() method.
+            }
+
+            public function getExternalCustomerReference()
+            {
+                // TODO: Implement getExternalCustomerReference() method.
+            }
+
+            public function getBillingEmail()
+            {
+                // TODO: Implement getBillingEmail() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
@@ -247,6 +277,21 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement hasBillingAddress() method.
             }
+
+            public function setExternalCustomerReference($customerReference)
+            {
+                // TODO: Implement setExternalCustomerReference() method.
+            }
+
+            public function getExternalCustomerReference()
+            {
+                // TODO: Implement getExternalCustomerReference() method.
+            }
+
+            public function getBillingEmail()
+            {
+                // TODO: Implement getBillingEmail() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -316,6 +361,21 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement hasBillingAddress() method.
             }
+
+            public function setExternalCustomerReference($customerReference)
+            {
+                // TODO: Implement setExternalCustomerReference() method.
+            }
+
+            public function getExternalCustomerReference()
+            {
+                // TODO: Implement getExternalCustomerReference() method.
+            }
+
+            public function getBillingEmail()
+            {
+                // TODO: Implement getBillingEmail() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -382,6 +442,21 @@ class PlanVoterTest extends TestCase
             public function hasBillingAddress(): bool
             {
                 // TODO: Implement hasBillingAddress() method.
+            }
+
+            public function setExternalCustomerReference($customerReference)
+            {
+                // TODO: Implement setExternalCustomerReference() method.
+            }
+
+            public function getExternalCustomerReference()
+            {
+                // TODO: Implement getExternalCustomerReference() method.
+            }
+
+            public function getBillingEmail()
+            {
+                // TODO: Implement getBillingEmail() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);

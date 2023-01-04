@@ -112,6 +112,21 @@ class UserCustomerProviderTest extends TestCase
             {
                 // TODO: Implement hasActiveSubscription() method.
             }
+
+            public function setExternalCustomerReference($customerReference)
+            {
+                // TODO: Implement setExternalCustomerReference() method.
+            }
+
+            public function getExternalCustomerReference()
+            {
+                // TODO: Implement getExternalCustomerReference() method.
+            }
+
+            public function getBillingEmail()
+            {
+                // TODO: Implement getBillingEmail() method.
+            }
         });
         $userCustomerProvider = new UserCustomerProvider($security);
         $actual = $userCustomerProvider->getCurrentCustomer();

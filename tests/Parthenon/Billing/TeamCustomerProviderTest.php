@@ -139,6 +139,21 @@ class TeamCustomerProviderTest extends TestCase
             {
                 // TODO: Implement hasActiveSubscription() method.
             }
+
+            public function setExternalCustomerReference($customerReference)
+            {
+                // TODO: Implement setExternalCustomerReference() method.
+            }
+
+            public function getExternalCustomerReference()
+            {
+                // TODO: Implement getExternalCustomerReference() method.
+            }
+
+            public function getBillingEmail()
+            {
+                // TODO: Implement getBillingEmail() method.
+            }
         };
 
         $teamRepository = $this->createMock(TeamRepositoryInterface::class);
