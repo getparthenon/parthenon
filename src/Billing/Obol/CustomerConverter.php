@@ -34,7 +34,7 @@ final class CustomerConverter implements CustomerConverterInterface
         $address->setPostalCode($customer->getBillingAddress()->getPostcode());
 
         $billingDetails->setAddress($address);
-        $billingDetails->setName($customer->getBillingEmail());
+        $billingDetails->setEmail($customer->getBillingEmail());
 
         return $billingDetails;
     }

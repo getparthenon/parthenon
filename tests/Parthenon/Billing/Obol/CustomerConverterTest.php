@@ -21,16 +21,20 @@ use PHPUnit\Framework\TestCase;
 
 class CustomerConverterTest extends TestCase
 {
+    public const EMAIL = 'iain.cambridge@example.org';
+    public const CUSTOMER_REFERENCE = 'a-reference';
+    public const STREET_LINE_ONE = '1 Example Way';
+
     public function testConvertCustomer()
     {
         $customer = $this->createMock(CustomerInterface::class);
         $address = $this->createMock(Address::class);
 
-        $customer->method('getBillingEmail')->willReturn('iain.cambridge@example.org');
-        $customer->method('getExternalCustomerReference')->willReturn('a-reference');
+        $customer->method('getBillingEmail')->willReturn(self::EMAIL);
+        $customer->method('getExternalCustomerReference')->willReturn(self::CUSTOMER_REFERENCE);
         $customer->method('getBillingAddress')->willReturn($address);
 
-        $address->method('getStreetLineOne')->willReturn('1 Example Way');
+        $address->method('getStreetLineOne')->willReturn(self::STREET_LINE_ONE);
         $address->method('getCity')->willReturn('Example Town');
         $address->method('getRegion')->willReturn('Example');
         $address->method('getCountry')->willReturn('US');
@@ -39,5 +43,9 @@ class CustomerConverterTest extends TestCase
         $subject = new CustomerConverter();
         $actual = $subject->convertToBillingDetails($customer);
         $this->assertInstanceOf(BillingDetails::class, $actual);
+
+        $this->assertEquals(self::EMAIL, $actual->getEmail());
+        $this->assertEquals(self::CUSTOMER_REFERENCE, $actual->getCustomerReference());
+        $this->assertEquals(self::STREET_LINE_ONE, $actual->getAddress()->getStreetLineOne());
     }
 }
