@@ -36,7 +36,7 @@ class BillingInformationController
 
         $data = $serializer->serialize(['address' => $customer->getBillingAddress()], 'json');
 
-        return new JsonResponse($data, json: true);
+        return JsonResponse::fromJsonString($data);
     }
 
     #[Route('/billing/address', name: 'parthenon_billing_billinginformation_setbillingaddress', methods: ['POST'])]
@@ -69,7 +69,6 @@ class BillingInformationController
         }
 
         $customer->setBillingAddress($address);
-
         $customerRepository->save($customer);
 
         return new JsonResponse(['success' => true]);

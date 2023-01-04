@@ -24,4 +24,9 @@ class PaymentDetailsController
     public function addCardDetails(Request $request, ProviderInterface $provider)
     {
     }
+
+    #[Route('/billing/card/token/add', name: 'parthenon_billing_paymentdetails_addcardbytoken', methods: ['POST'])]
+    public function addCardByToken(Request $request, ProviderInterface $provider)
+    {
+    }
 }
