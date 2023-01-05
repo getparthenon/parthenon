@@ -24,4 +24,6 @@ interface PaymentDetailsRepositoryInterface extends RepositoryInterface
      * @return PaymentDetails[]
      */
     public function getPaymentDetailsForCustomer(CustomerInterface $customer): array;
+
+    public function markAllCustomerDetailsAsNotDefault(CustomerInterface $customer): void;
 }

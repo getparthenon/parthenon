@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository\Orm;
 
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Common\Repository\DoctrineRepository;
 
@@ -23,5 +24,15 @@ class PaymentDetailsRepository extends DoctrineRepository implements PaymentDeta
     public function getPaymentDetailsForCustomer(CustomerInterface $customer): array
     {
         return $this->entityRepository->findBy(['customer' => $customer]);
+    }
+
+    public function markAllCustomerDetailsAsNotDefault(CustomerInterface $customer): void
+    {
+        $qb = $this->entityRepository->createQueryBuilder('pd');
+        $qb->update(PaymentDetails::class, 'pd')
+            ->set('pd.defaultPaymentOption', 'false')
+            ->where('pd.customer = :customer')
+            ->setParameter(':customer', $customer);
+        $qb->getQuery()->execute();
     }
 }

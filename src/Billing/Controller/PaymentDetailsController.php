@@ -79,8 +79,9 @@ class PaymentDetailsController
         PaymentDetailsRepositoryInterface $detailsRepository,
         SerializerInterface $serializer,
     ) {
-        $data = json_decode($request->getContent(), true);
         $customer = $customerProvider->getCurrentCustomer();
+
+        $data = json_decode($request->getContent(), true);
         $billingDetails = $customerConverter->convertToBillingDetails($customer);
         $billingDetails->setCardDetails(new CardDetails());
         $billingDetails->getCardDetails()->setToken($data['token']);
@@ -103,6 +104,7 @@ class PaymentDetailsController
         $paymentDetails->setDeleted(false);
         $paymentDetails->setCreatedAt(new \DateTime());
 
+        $detailsRepository->markAllCustomerDetailsAsNotDefault($customer);
         $detailsRepository->save($paymentDetails);
 
         $json = $serializer->serialize(['success' => true, 'payment_details' => $paymentDetails], 'json');
