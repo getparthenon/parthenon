@@ -77,6 +77,7 @@ class PaymentDetailsController
         CustomerProviderInterface $customerProvider,
         CustomerConverterInterface $customerConverter,
         PaymentDetailsRepositoryInterface $detailsRepository,
+        SerializerInterface $serializer,
     ) {
         $data = json_decode($request->getContent(), true);
         $customer = $customerProvider->getCurrentCustomer();
@@ -104,6 +105,8 @@ class PaymentDetailsController
 
         $detailsRepository->save($paymentDetails);
 
-        return new JsonResponse(['success' => true]);
+        $json = $serializer->serialize(['success' => true, 'payment_details' => $paymentDetails], 'json');
+
+        return JsonResponse::fromJsonString($json, JsonResponse::HTTP_ACCEPTED);
     }
 }
