@@ -26,12 +26,22 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PaymentDetailsController
 {
-    #[Route('/billing/card/add', name: 'parthenon_billing_paymentdetails_addcarddetails', methods: ['POST'])]
-    public function addCardDetails(Request $request, ProviderInterface $provider)
-    {
+    #[Route('/billing/payment-details', name: 'parthenon_billing_paymentdetails_fetch_payment_details', methods: ['GET'])]
+    public function fetchPaymentDetails(
+        Request $request,
+        CustomerProviderInterface $customerProvider,
+        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        SerializerInterface $serializer,
+    ) {
+        $customer = $customerProvider->getCurrentCustomer();
+        $paymentDetails = $paymentDetailsRepository->getPaymentDetailsForCustomer($customer);
+        $returnData = $serializer->serialize(['payment_details' => $paymentDetails], 'json');
+
+        return JsonResponse::fromJsonString($returnData);
     }
 
     #[Route('/billing/card/token/start', name: 'parthenon_billing_paymentdetails_starttokenprocess', methods: ['GET'])]

@@ -14,8 +14,14 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Repository;
 
+use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 interface PaymentDetailsRepositoryInterface extends RepositoryInterface
 {
+    /**
+     * @return PaymentDetails[]
+     */
+    public function getPaymentDetailsForCustomer(CustomerInterface $customer): array;
 }

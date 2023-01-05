@@ -127,6 +127,11 @@ class UserCustomerProviderTest extends TestCase
             {
                 // TODO: Implement getBillingEmail() method.
             }
+
+            public function getId()
+            {
+                // TODO: Implement getId() method.
+            }
         });
         $userCustomerProvider = new UserCustomerProvider($security);
         $actual = $userCustomerProvider->getCurrentCustomer();

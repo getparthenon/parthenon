@@ -108,6 +108,11 @@ class InviteVoterTest extends TestCase
             {
                 // TODO: Implement getBillingEmail() method.
             }
+
+            public function getId()
+            {
+                // TODO: Implement getId() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -195,6 +200,11 @@ class InviteVoterTest extends TestCase
             public function getBillingEmail()
             {
                 // TODO: Implement getBillingEmail() method.
+            }
+
+            public function getId()
+            {
+                // TODO: Implement getId() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
@@ -284,6 +294,11 @@ class InviteVoterTest extends TestCase
             {
                 // TODO: Implement getBillingEmail() method.
             }
+
+            public function getId()
+            {
+                // TODO: Implement getId() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -371,6 +386,11 @@ class InviteVoterTest extends TestCase
             public function getBillingEmail()
             {
                 // TODO: Implement getBillingEmail() method.
+            }
+
+            public function getId()
+            {
+                // TODO: Implement getId() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);

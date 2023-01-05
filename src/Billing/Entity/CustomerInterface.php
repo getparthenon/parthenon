@@ -18,6 +18,8 @@ use Parthenon\Common\Address;
 
 interface CustomerInterface
 {
+    public function getId();
+
     public function hasSubscription(): bool;
 
     public function hasActiveSubscription(): bool;

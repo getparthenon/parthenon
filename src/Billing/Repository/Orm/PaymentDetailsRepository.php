@@ -14,9 +14,14 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Repository\Orm;
 
+use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class PaymentDetailsRepository extends DoctrineRepository implements PaymentDetailsRepositoryInterface
 {
+    public function getPaymentDetailsForCustomer(CustomerInterface $customer): array
+    {
+        return $this->entityRepository->findBy(['customer' => $customer]);
+    }
 }

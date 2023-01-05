@@ -125,6 +125,11 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getBillingEmail() method.
             }
+
+            public function getId()
+            {
+                // TODO: Implement getId() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -205,6 +210,11 @@ class PlanVoterTest extends TestCase
             public function getBillingEmail()
             {
                 // TODO: Implement getBillingEmail() method.
+            }
+
+            public function getId()
+            {
+                // TODO: Implement getId() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
@@ -292,6 +302,11 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getBillingEmail() method.
             }
+
+            public function getId()
+            {
+                // TODO: Implement getId() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -376,6 +391,11 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getBillingEmail() method.
             }
+
+            public function getId()
+            {
+                // TODO: Implement getId() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -457,6 +477,11 @@ class PlanVoterTest extends TestCase
             public function getBillingEmail()
             {
                 // TODO: Implement getBillingEmail() method.
+            }
+
+            public function getId()
+            {
+                // TODO: Implement getId() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);

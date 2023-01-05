@@ -14,16 +14,22 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Symfony\Component\Serializer\Annotation\Ignore;
+
 class PaymentDetails
 {
     protected $id;
 
+    #[Ignore]
     protected $customer;
 
+    #[Ignore]
     protected string $provider;
 
+    #[Ignore]
     protected string $storedCustomerReference;
 
+    #[Ignore]
     protected string $storedPaymentReference;
 
     protected string $name;
