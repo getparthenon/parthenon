@@ -89,6 +89,8 @@ class PaymentDetailsController
         $paymentDetails->setLastFour($cardFile->getLastFour());
         $paymentDetails->setExpiryMonth($cardFile->getExpiryMonth());
         $paymentDetails->setExpiryYear($cardFile->getExpiryYear());
+        $paymentDetails->setDeleted(false);
+        $paymentDetails->setCreatedAt(new \DateTime());
 
         $detailsRepository->save($paymentDetails);
 

@@ -18,5 +18,7 @@
         <field name="lastFour" column="last_four" type="string" nullable="true" />
         <field name="expiryMonth" column="expiry_month" type="string" nullable="true" />
         <field name="expiryYear" column="expiry_year" type="string" nullable="true" />
+        <field name="deleted" column="is_deleted" type="boolean" nullable="false" />
+        <field name="createdAt" column="created_at" type="datetimetz" nullable="false" />
     </entity>
 </doctrine-mapping>

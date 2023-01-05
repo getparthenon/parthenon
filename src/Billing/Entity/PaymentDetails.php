@@ -38,6 +38,10 @@ class PaymentDetails
 
     protected ?string $expiryYear = null;
 
+    protected \DateTimeInterface $createdAt;
+
+    protected bool $deleted = false;
+
     /**
      * @return mixed
      */
@@ -158,5 +162,25 @@ class PaymentDetails
     public function setExpiryYear(?string $expiryYear): void
     {
         $this->expiryYear = $expiryYear;
+    }
+
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(bool $deleted): void
+    {
+        $this->deleted = $deleted;
     }
 }
