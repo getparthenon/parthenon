@@ -51,6 +51,7 @@ class Billing implements ModuleConfigurationInterface
                                 ->scalarNode('merchant_account')->end()
                                 ->booleanNode('test_mode')->end()
                                 ->scalarNode('prefix')->end()
+                                ->scalarNode('cse_url')->end()
                             ->end()
                         ->end()
                         ->arrayNode('stripe')
@@ -74,6 +75,7 @@ class Billing implements ModuleConfigurationInterface
     {
         $container->setParameter('parthenon_billing_payments_obol_config', []);
         $container->setParameter('parthenon_billing_customer_type', 'team');
+        $container->setParameter('parthenon_billing_config_frontend_info', '');
         $container->setParameter('parthenon_billing_plan_plans', []);
     }
 
@@ -99,8 +101,8 @@ class Billing implements ModuleConfigurationInterface
         $container->setParameter('parthenon_billing_plan_plans', $config['billing']['plan']);
 
         $obolConfig = match ($paymentsConfig['provider']) {
-            'stripe' => $this->buildStripeObolConfig($paymentsConfig),
-            'adyen' => $this->buildAdyenObolConfig($paymentsConfig),
+            'stripe' => $this->handleStripeConfig($paymentsConfig, $container),
+            'adyen' => $this->handleAdyen($paymentsConfig, $container),
             'custom' => [],
             default => throw new ParameterNotSetException('billing.payments.provider must be valid'),
         };
@@ -123,7 +125,7 @@ class Billing implements ModuleConfigurationInterface
         $containerBuilder->removeDefinition(CustomerTeamSection::class);
     }
 
-    protected function buildStripeObolConfig(array $paymentsConfig): array
+    protected function handleStripeConfig(array $paymentsConfig, ContainerBuilder $containerBuilder): array
     {
         if (!isset($paymentsConfig['stripe']['private_api_key'])) {
             throw new ParameterNotSetException('billing.payments.stripe.private_api_key must be set.');
@@ -141,6 +143,8 @@ class Billing implements ModuleConfigurationInterface
             'pci_mode' => $pciMode,
         ];
 
+        $containerBuilder->setParameter('parthenon_billing_config_frontend_info', $paymentsConfig['stripe']['public_api_key']);
+
         if (isset($paymentsConfig['stripe']['payment_methods'])) {
             $config['payment_methods'] = $paymentsConfig['stripe']['payment_methods'];
         }
@@ -157,7 +161,7 @@ class Billing implements ModuleConfigurationInterface
         return $config;
     }
 
-    protected function buildAdyenObolConfig(array $paymentsConfig): array
+    protected function handleAdyen(array $paymentsConfig, ContainerBuilder $containerBuilder): array
     {
         if (!isset($paymentsConfig['adyen']['api_key'])) {
             throw new ParameterNotSetException('billing.payments.adyen.api_key must be set.');
@@ -191,6 +195,8 @@ class Billing implements ModuleConfigurationInterface
         if (isset($paymentsConfig['return_url'])) {
             $config['return_url'] = $paymentsConfig['return_url'];
         }
+
+        $containerBuilder->setParameter('parthenon_billing_config_frontend_info', $paymentsConfig['stripe']['cse_url']);
 
         return $config;
     }

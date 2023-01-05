@@ -16,6 +16,7 @@ namespace Parthenon\Billing\Controller;
 
 use Obol\Model\CardDetails;
 use Obol\Provider\ProviderInterface;
+use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Obol\CustomerConverterInterface;
@@ -40,7 +41,8 @@ class PaymentDetailsController
         ProviderInterface $provider,
         CustomerProviderInterface $customerProvider,
         CustomerRepositoryInterface $customerRepository,
-        CustomerConverterInterface $customerConverter
+        CustomerConverterInterface $customerConverter,
+        FrontendConfig $config,
     ) {
         $logger->info('Starting the card token process');
 
@@ -54,6 +56,7 @@ class PaymentDetailsController
 
         return new JsonResponse([
             'token' => $tokenData->getToken(),
+            'api_info' => $config->getApiInfo(),
         ]);
     }
 
@@ -62,7 +65,6 @@ class PaymentDetailsController
         Request $request,
         ProviderInterface $provider,
         CustomerProviderInterface $customerProvider,
-        CustomerRepositoryInterface $customerRepository,
         CustomerConverterInterface $customerConverter,
         PaymentDetailsRepositoryInterface $detailsRepository,
     ) {
@@ -72,8 +74,9 @@ class PaymentDetailsController
         $billingDetails->setCardDetails(new CardDetails());
         $billingDetails->getCardDetails()->setToken($data['token']);
 
-        $details = $provider->payments()->createCardOnFile($billingDetails);
-        $storedPaymentReference = $details->getCardFile()->getStoredPaymentReference();
+        $response = $provider->payments()->createCardOnFile($billingDetails);
+        $cardFile = $response->getCardFile();
+        $storedPaymentReference = $cardFile->getStoredPaymentReference();
 
         $paymentDetails = new PaymentDetails();
         $paymentDetails->setCustomer($customer);
@@ -82,6 +85,10 @@ class PaymentDetailsController
         $paymentDetails->setProvider($provider->getName());
         $paymentDetails->setDefaultPaymentOption(true);
         $paymentDetails->setName('Default');
+        $paymentDetails->setBrand($cardFile->getBrand());
+        $paymentDetails->setLastFour($cardFile->getLastFour());
+        $paymentDetails->setExpiryMonth($cardFile->getExpiryMonth());
+        $paymentDetails->setExpiryYear($cardFile->getExpiryYear());
 
         $detailsRepository->save($paymentDetails);
 

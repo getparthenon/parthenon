@@ -30,6 +30,14 @@ class PaymentDetails
 
     protected bool $defaultPaymentOption = true;
 
+    protected ?string $brand = null;
+
+    protected ?string $lastFour = null;
+
+    protected ?string $expiryMonth = null;
+
+    protected ?string $expiryYear = null;
+
     /**
      * @return mixed
      */
@@ -110,5 +118,45 @@ class PaymentDetails
     public function setStoredCustomerReference(string $storedCustomerReference): void
     {
         $this->storedCustomerReference = $storedCustomerReference;
+    }
+
+    public function getBrand(): ?string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?string $brand): void
+    {
+        $this->brand = $brand;
+    }
+
+    public function getLastFour(): ?string
+    {
+        return $this->lastFour;
+    }
+
+    public function setLastFour(?string $lastFour): void
+    {
+        $this->lastFour = $lastFour;
+    }
+
+    public function getExpiryMonth(): ?string
+    {
+        return $this->expiryMonth;
+    }
+
+    public function setExpiryMonth(?string $expiryMonth): void
+    {
+        $this->expiryMonth = $expiryMonth;
+    }
+
+    public function getExpiryYear(): ?string
+    {
+        return $this->expiryYear;
+    }
+
+    public function setExpiryYear(?string $expiryYear): void
+    {
+        $this->expiryYear = $expiryYear;
     }
 }
