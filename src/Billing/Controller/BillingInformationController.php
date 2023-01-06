@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BillingInformationController
 {
-    #[Route('/billing/address', name: 'parthenon_billing_billinginformation_getbillingaddress', methods: ['GET'])]
+    #[Route('/billing/details', name: 'parthenon_billing_billinginformation_getbillingaddress', methods: ['GET'])]
     public function getBillingAddress(
         Request $request,
         SerializerInterface $serializer,
@@ -39,7 +39,7 @@ class BillingInformationController
         return JsonResponse::fromJsonString($data);
     }
 
-    #[Route('/billing/address', name: 'parthenon_billing_billinginformation_setbillingaddress', methods: ['POST'])]
+    #[Route('/billing/details', name: 'parthenon_billing_billinginformation_setbillingaddress', methods: ['POST'])]
     public function setBillingAddress(
         Request $request,
         SerializerInterface $serializer,
