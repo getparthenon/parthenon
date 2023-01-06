@@ -18,7 +18,7 @@ use Obol\Model\CardDetails;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\CustomerProviderInterface;
-use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Factory\PaymentDetailsFactoryInterface;
 use Parthenon\Billing\Obol\CustomerConverterInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
@@ -78,6 +78,7 @@ class PaymentDetailsController
         CustomerConverterInterface $customerConverter,
         PaymentDetailsRepositoryInterface $detailsRepository,
         SerializerInterface $serializer,
+        PaymentDetailsFactoryInterface $paymentDetailsFactory,
     ) {
         $customer = $customerProvider->getCurrentCustomer();
 
@@ -88,21 +89,7 @@ class PaymentDetailsController
 
         $response = $provider->payments()->createCardOnFile($billingDetails);
         $cardFile = $response->getCardFile();
-        $storedPaymentReference = $cardFile->getStoredPaymentReference();
-
-        $paymentDetails = new PaymentDetails();
-        $paymentDetails->setCustomer($customer);
-        $paymentDetails->setStoredCustomerReference($customer->getExternalCustomerReference());
-        $paymentDetails->setStoredPaymentReference($storedPaymentReference);
-        $paymentDetails->setProvider($provider->getName());
-        $paymentDetails->setDefaultPaymentOption(true);
-        $paymentDetails->setName('Default');
-        $paymentDetails->setBrand($cardFile->getBrand());
-        $paymentDetails->setLastFour($cardFile->getLastFour());
-        $paymentDetails->setExpiryMonth($cardFile->getExpiryMonth());
-        $paymentDetails->setExpiryYear($cardFile->getExpiryYear());
-        $paymentDetails->setDeleted(false);
-        $paymentDetails->setCreatedAt(new \DateTime());
+        $paymentDetails = $paymentDetailsFactory->buildFromCardFile($customer, $cardFile, $provider->getName());
 
         $detailsRepository->markAllCustomerDetailsAsNotDefault($customer);
         $detailsRepository->save($paymentDetails);
