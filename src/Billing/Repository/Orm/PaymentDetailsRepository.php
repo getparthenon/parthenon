@@ -23,7 +23,12 @@ class PaymentDetailsRepository extends DoctrineRepository implements PaymentDeta
 {
     public function getPaymentDetailsForCustomer(CustomerInterface $customer): array
     {
-        return $this->entityRepository->findBy(['customer' => $customer]);
+        $qb = $this->entityRepository->createQueryBuilder('pd');
+        $qb->where('pd.deleted = false')->andWhere('pd.customer = :customer')->setParameter('customer', $customer);
+        $query = $qb->getQuery();
+        $query->execute();
+
+        return $query->getResult();
     }
 
     public function markAllCustomerDetailsAsNotDefault(CustomerInterface $customer): void

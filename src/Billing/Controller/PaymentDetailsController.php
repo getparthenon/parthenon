@@ -18,10 +18,12 @@ use Obol\Model\CardDetails;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\CustomerProviderInterface;
+use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Factory\PaymentDetailsFactoryInterface;
 use Parthenon\Billing\Obol\CustomerConverterInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,5 +99,20 @@ class PaymentDetailsController
         $json = $serializer->serialize(['success' => true, 'payment_details' => $paymentDetails], 'json');
 
         return JsonResponse::fromJsonString($json, JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[Route('/billing/card/{id}', name: 'parthenon_billing_paymentdetails_deletecard', methods: ['DELETE'])]
+    public function deleteCard(Request $request, PaymentDetailsRepositoryInterface $paymentDetailsRepository)
+    {
+        try {
+            /** @var PaymentDetails $paymentDetails */
+            $paymentDetails = $paymentDetailsRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+        }
+        $paymentDetails->setDeleted(true);
+        $paymentDetailsRepository->save($paymentDetails);
+
+        return new JsonResponse(['success' => true], JsonResponse::HTTP_ACCEPTED);
     }
 }
