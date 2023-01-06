@@ -71,6 +71,6 @@ class BillingInformationController
         $customer->setBillingAddress($address);
         $customerRepository->save($customer);
 
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse(['success' => true], JsonResponse::HTTP_ACCEPTED);
     }
 }
