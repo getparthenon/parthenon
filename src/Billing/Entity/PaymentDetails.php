@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Entity;
 
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class PaymentDetails
 {
@@ -34,18 +35,24 @@ class PaymentDetails
 
     protected string $name;
 
+    #[SerializedName('default')]
     protected bool $defaultPaymentOption = true;
 
     protected ?string $brand = null;
 
+    #[SerializedName('last_four')]
     protected ?string $lastFour = null;
 
+    #[SerializedName('expiry_month')]
     protected ?string $expiryMonth = null;
 
+    #[SerializedName('expiry_year')]
     protected ?string $expiryYear = null;
 
+    #[SerializedName('created_at')]
     protected \DateTimeInterface $createdAt;
 
+    #[Ignore]
     protected bool $deleted = false;
 
     /**
