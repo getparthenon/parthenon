@@ -115,4 +115,21 @@ class PaymentDetailsController
 
         return new JsonResponse(['success' => true], JsonResponse::HTTP_ACCEPTED);
     }
+
+    #[Route('/billing/card/{id}/default', name: 'parthenon_billing_paymentdetails_defaultcard', methods: ['POST'])]
+    public function defaultCard(Request $request, CustomerProviderInterface $customerProvider, PaymentDetailsRepositoryInterface $paymentDetailsRepository)
+    {
+        $customer = $customerProvider->getCurrentCustomer();
+        try {
+            /** @var PaymentDetails $paymentDetails */
+            $paymentDetails = $paymentDetailsRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+        }
+        $paymentDetails->setDefaultPaymentOption(true);
+        $paymentDetailsRepository->markAllCustomerDetailsAsNotDefault($customer);
+        $paymentDetailsRepository->save($paymentDetails);
+
+        return new JsonResponse(['success' => true], JsonResponse::HTTP_ACCEPTED);
+    }
 }
