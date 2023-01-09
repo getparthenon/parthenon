@@ -46,7 +46,7 @@ class PaymentDetailsController
         return JsonResponse::fromJsonString($returnData);
     }
 
-    #[Route('/billing/card/token/start', name: 'parthenon_billing_paymentdetails_starttokenprocess', methods: ['GET'])]
+    #[Route('/billing/payment-details/token/start', name: 'parthenon_billing_paymentdetails_starttokenprocess', methods: ['GET'])]
     public function startTokenProcess(
         Request $request,
         LoggerInterface $logger,
@@ -72,7 +72,7 @@ class PaymentDetailsController
         ]);
     }
 
-    #[Route('/billing/card/token/add', name: 'parthenon_billing_paymentdetails_addcardbytoken', methods: ['POST'])]
+    #[Route('/billing/payment-details/token/add', name: 'parthenon_billing_paymentdetails_addcardbytoken', methods: ['POST'])]
     public function addCardByToken(
         Request $request,
         ProviderInterface $provider,
@@ -101,7 +101,7 @@ class PaymentDetailsController
         return JsonResponse::fromJsonString($json, JsonResponse::HTTP_ACCEPTED);
     }
 
-    #[Route('/billing/card/{id}', name: 'parthenon_billing_paymentdetails_deletecard', methods: ['DELETE'])]
+    #[Route('/billing/payment-details/{id}', name: 'parthenon_billing_paymentdetails_deletecard', methods: ['DELETE'])]
     public function deleteCard(Request $request, PaymentDetailsRepositoryInterface $paymentDetailsRepository)
     {
         try {
@@ -116,7 +116,7 @@ class PaymentDetailsController
         return new JsonResponse(['success' => true], JsonResponse::HTTP_ACCEPTED);
     }
 
-    #[Route('/billing/card/{id}/default', name: 'parthenon_billing_paymentdetails_defaultcard', methods: ['POST'])]
+    #[Route('/billing/payment-details/{id}/default', name: 'parthenon_billing_paymentdetails_defaultcard', methods: ['POST'])]
     public function defaultCard(Request $request, CustomerProviderInterface $customerProvider, PaymentDetailsRepositoryInterface $paymentDetailsRepository)
     {
         $customer = $customerProvider->getCurrentCustomer();
