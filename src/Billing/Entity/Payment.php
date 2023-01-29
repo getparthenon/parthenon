@@ -32,7 +32,7 @@ class Payment
 
     private bool $completed = false;
 
-    private bool $chargedback = false;
+    private bool $chargedBack = false;
 
     /**
      * @return mixed
@@ -120,13 +120,13 @@ class Payment
         $this->completed = $completed;
     }
 
-    public function isChargedback(): bool
+    public function isChargedBack(): bool
     {
-        return $this->chargedback;
+        return $this->chargedBack;
     }
 
-    public function setChargedback(bool $chargedback): void
+    public function setChargedBack(bool $chargedBack): void
     {
-        $this->chargedback = $chargedback;
+        $this->chargedBack = $chargedBack;
     }
 }
