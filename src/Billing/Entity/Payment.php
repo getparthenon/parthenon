@@ -26,7 +26,11 @@ class Payment
 
     private string $currency;
 
+    private CustomerInterface $customer;
+
     private \DateTimeInterface $createdAt;
+
+    private \DateTimeInterface $updatedAt;
 
     private bool $refunded = false;
 
@@ -128,5 +132,25 @@ class Payment
     public function setChargedBack(bool $chargedBack): void
     {
         $this->chargedBack = $chargedBack;
+    }
+
+    public function getUpdatedAt(): \DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    public function getCustomer(): CustomerInterface
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(CustomerInterface $customer): void
+    {
+        $this->customer = $customer;
     }
 }
