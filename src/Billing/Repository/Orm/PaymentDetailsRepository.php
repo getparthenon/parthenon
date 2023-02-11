@@ -17,14 +17,17 @@ namespace Parthenon\Billing\Repository\Orm;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\DoctrineRepository;
 
-class PaymentDetailsRepository extends DoctrineRepository implements PaymentDetailsRepositoryInterface
+final class PaymentDetailsRepository extends DoctrineRepository implements PaymentDetailsRepositoryInterface
 {
     public function getPaymentDetailsForCustomer(CustomerInterface $customer): array
     {
         $qb = $this->entityRepository->createQueryBuilder('pd');
-        $qb->where('pd.deleted = false')->andWhere('pd.customer = :customer')->setParameter('customer', $customer);
+        $qb->where('pd.deleted = false')
+            ->andWhere('pd.customer = :customer')
+            ->setParameter('customer', $customer);
         $query = $qb->getQuery();
         $query->execute();
 
@@ -39,5 +42,24 @@ class PaymentDetailsRepository extends DoctrineRepository implements PaymentDeta
             ->where('pd.customer = :customer')
             ->setParameter(':customer', $customer);
         $qb->getQuery()->execute();
+    }
+
+    public function getDefaultPaymentDetailsForCustomer(CustomerInterface $customer): PaymentDetails
+    {
+        $qb = $this->entityRepository->createQueryBuilder('pd');
+        $qb->where('pd.deleted = false')
+            ->andWhere('pd.defaultPaymentOption = true')
+            ->andWhere('pd.customer = :customer')
+            ->setParameter('customer', $customer);
+        $query = $qb->getQuery();
+        $query->execute();
+
+        $paymentDetails = $query->getOneOrNullResult();
+
+        if (!$paymentDetails instanceof PaymentDetails) {
+            throw new NoEntityFoundException();
+        }
+
+        return $paymentDetails;
     }
 }

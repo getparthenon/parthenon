@@ -15,24 +15,10 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Obol;
 
 use Obol\Model\Address as ObolAddress;
-use Obol\Model\BillingDetails;
 use Parthenon\Billing\Entity\CustomerInterface;
 
-final class CustomerConverter implements CustomerConverterInterface
+trait AddressTrait
 {
-    public function convertToBillingDetails(CustomerInterface $customer): BillingDetails
-    {
-        $billingDetails = new BillingDetails();
-        $billingDetails->setCustomerReference($customer->getExternalCustomerReference());
-
-        $address = $this->buildAddresss($customer);
-
-        $billingDetails->setAddress($address);
-        $billingDetails->setEmail($customer->getBillingEmail());
-
-        return $billingDetails;
-    }
-
     public function buildAddresss(CustomerInterface $customer): ObolAddress
     {
         $address = new ObolAddress();

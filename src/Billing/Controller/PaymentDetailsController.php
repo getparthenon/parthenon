@@ -93,7 +93,9 @@ class PaymentDetailsController
         $cardFile = $response->getCardFile();
         $paymentDetails = $paymentDetailsFactory->buildFromCardFile($customer, $cardFile, $provider->getName());
 
-        $detailsRepository->markAllCustomerDetailsAsNotDefault($customer);
+        if ($paymentDetails->isDefaultPaymentOption()) {
+            $detailsRepository->markAllCustomerDetailsAsNotDefault($customer);
+        }
         $detailsRepository->save($paymentDetails);
 
         $json = $serializer->serialize(['success' => true, 'payment_details' => $paymentDetails], 'json');

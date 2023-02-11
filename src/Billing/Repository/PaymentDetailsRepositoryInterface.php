@@ -16,6 +16,7 @@ namespace Parthenon\Billing\Repository;
 
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 interface PaymentDetailsRepositoryInterface extends RepositoryInterface
@@ -26,4 +27,9 @@ interface PaymentDetailsRepositoryInterface extends RepositoryInterface
     public function getPaymentDetailsForCustomer(CustomerInterface $customer): array;
 
     public function markAllCustomerDetailsAsNotDefault(CustomerInterface $customer): void;
+
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function getDefaultPaymentDetailsForCustomer(CustomerInterface $customer): PaymentDetails;
 }

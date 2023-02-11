@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Brick\Money\Currency;
+use Brick\Money\Money;
+
 class Payment
 {
     private $id;
@@ -152,5 +155,16 @@ class Payment
     public function setCustomer(CustomerInterface $customer): void
     {
         $this->customer = $customer;
+    }
+
+    public function getMoneyAmount(): Money
+    {
+        return Money::ofMinor($this->amount, Currency::of($this->currency));
+    }
+
+    public function setMoneyAmount(Money $money)
+    {
+        $this->amount = $money->getAmount()->getUnscaledValue()->toInt();
+        $this->currency = $money->getCurrency()->getCurrencyCode();
     }
 }
