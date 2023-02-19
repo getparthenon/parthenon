@@ -17,6 +17,7 @@ namespace Parthenon\Billing\Obol;
 use Brick\Money\Money;
 use Obol\Model\PaymentDetails;
 use Obol\Model\SubscriptionCreationResponse;
+use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -25,6 +26,8 @@ class PaymentFactoryTest extends TestCase
     public function testFromSubscriptionConfirm()
     {
         $customer = $this->createMock(CustomerInterface::class);
+        $customerProvider = $this->createMock(CustomerProviderInterface::class);
+        $customerProvider->method('getCurrentCustomer')->willReturn($customer);
 
         $amount = Money::of(1000, 'USD');
 
@@ -38,9 +41,9 @@ class PaymentFactoryTest extends TestCase
         $subscriptionCreation->setSubscriptionId('subscription-id');
         $subscriptionCreation->setPaymentDetails($paymentDetails);
 
-        $subject = new PaymentFactory();
+        $subject = new PaymentFactory($customerProvider);
 
-        $actual = $subject->fromSubscriptionConfirm($customer, $subscriptionCreation);
+        $actual = $subject->fromSubscriptionCreation($subscriptionCreation);
         $this->assertTrue($amount->isEqualTo($actual->getMoneyAmount()));
         $this->assertEquals('payment-reference', $actual->getPaymentReference());
         $this->assertSame($customer, $actual->getCustomer());

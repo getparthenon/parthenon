@@ -19,7 +19,7 @@ use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Common\Address;
 use PHPUnit\Framework\TestCase;
 
-class BillingDetailsFactory extends TestCase
+class BillingDetailsFactoryTest extends TestCase
 {
     public const EMAIL = 'iain.cambridge@example.org';
     public const CUSTOMER_REFERENCE = 'a-reference';

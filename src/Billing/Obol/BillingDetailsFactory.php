@@ -18,7 +18,7 @@ use Obol\Model\BillingDetails;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
 
-class BillingDetailsFactory
+class BillingDetailsFactory implements BillingDetailsFactoryInterface
 {
     use AddressTrait;
 

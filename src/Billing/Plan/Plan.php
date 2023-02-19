@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Plan;
 
-use Parthenon\Common\Exception\GeneralException;
 use Parthenon\Common\Exception\ParameterNotSetException;
 
 final class Plan
@@ -27,8 +26,7 @@ final class Plan
         private string $name,
         private array $limits,
         private array $features,
-        private string $yearlyPriceId,
-        private string $monthlyPriceId,
+        private array $prices,
         private bool $isFree,
         private bool $isPerSeat,
         private int $userCount,
@@ -65,39 +63,31 @@ final class Plan
         return $this->limits;
     }
 
-    public function getYearlyPriceId(): string
+    public function getPriceId(): ?string
     {
-        return $this->yearlyPriceId;
+        return $this->priceId;
     }
 
-    public function setYearlyPriceId(string $yearlyPriceId): void
+    public function setPriceId(string $priceId): void
     {
-        $this->yearlyPriceId = $yearlyPriceId;
+        $this->priceId = $priceId;
     }
 
-    public function getMonthlyPriceId(): string
+    public function setPaymentSchedule(string $paymentSchedule): void
     {
-        return $this->monthlyPriceId;
-    }
-
-    public function setMonthlyPriceId(string $monthlyPriceId): void
-    {
-        $this->monthlyPriceId = $monthlyPriceId;
+        $this->paymentSchedule = $paymentSchedule;
     }
 
     /**
      * @throws \InvalidArgumentException
      */
-    public function getPriceIdForPaymentSchedule(string $term): string
+    public function getPriceForPaymentSchedule(string $term): PlanPrice
     {
-        switch ($term) {
-            case static::PAY_YEARLY:
-                return $this->yearlyPriceId;
-            case static::PAY_MONTHLY:
-                return $this->monthlyPriceId;
-            default:
-                throw new GeneralException('Only yearly or monthly are currently supported');
+        if (!isset($this->prices[$term])) {
+            throw new \InvalidArgumentException(sprintf("No such '%s' term found", $term));
         }
+
+        return new PlanPrice($this->prices[$term]['amount'], $this->prices[$term]['currency'], $this->prices[$term]['price_id'] ?? null);
     }
 
     public function getFeatures(): array
@@ -118,5 +108,15 @@ final class Plan
     public function getUserCount(): int
     {
         return $this->userCount;
+    }
+
+    public function getPrices(): array
+    {
+        return $this->prices;
+    }
+
+    public function setPrices(array $prices): void
+    {
+        $this->prices = $prices;
     }
 }

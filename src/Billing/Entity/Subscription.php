@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Brick\Money\Currency;
+use Brick\Money\Money;
+
 class Subscription
 {
     public const STATUS_UNKNOWN = 'unknown';
@@ -41,8 +44,6 @@ class Subscription
 
     private ?bool $active;
 
-    private ?string $customerId = null;
-
     private ?string $status = self::STATUS_UNKNOWN;
 
     private ?\DateTimeInterface $startedAt;
@@ -54,6 +55,10 @@ class Subscription
     private ?\DateTimeInterface $updatedAt;
 
     private ?int $seats;
+
+    private int $amount;
+
+    private string $currency;
 
     public function getPlanName(): ?string
     {
@@ -158,5 +163,36 @@ class Subscription
     public function setSeats(int $seats): void
     {
         $this->seats = $seats;
+    }
+
+    public function getAmount(): int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(int $amount): void
+    {
+        $this->amount = $amount;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): void
+    {
+        $this->currency = $currency;
+    }
+
+    public function getMoneyAmount(): Money
+    {
+        return Money::ofMinor($this->amount, Currency::of($this->currency));
+    }
+
+    public function setMoneyAmount(Money $money)
+    {
+        $this->amount = $money->getAmount()->getUnscaledValue()->toInt();
+        $this->currency = $money->getCurrency()->getCurrencyCode();
     }
 }

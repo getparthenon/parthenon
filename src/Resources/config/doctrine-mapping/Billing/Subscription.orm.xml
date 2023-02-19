@@ -9,6 +9,8 @@
         <field name="paymentSchedule" column="payment_schedule" type="string"  nullable="true"  />
         <field name="active" column="active" type="boolean" nullable="true"  />
         <field name="status" column="status" type="string" nullable="true"  />
+        <field name="amount" column="amount" type="integer" nullable="true"/>
+        <field name="currency" column="currency" type="string" nullable="true" />
         <field name="startedAt" column="started_at" type="datetime" nullable="true"  />
         <field name="validUntil" column="valid_until" type="datetime" nullable="true" />
         <field name="updatedAt" column="updated_at" type="datetime" nullable="true" />
