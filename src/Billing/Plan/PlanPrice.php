@@ -21,7 +21,7 @@ class PlanPrice
 {
     public function __construct(
         private string $schedule,
-        private string|int $amount,
+        private string|int|float $amount,
         private string $currency,
         private ?string $priceId = null,
     ) {
