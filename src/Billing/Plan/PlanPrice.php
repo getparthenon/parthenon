@@ -20,10 +20,16 @@ use Brick\Money\Money;
 class PlanPrice
 {
     public function __construct(
-        private string $amount,
+        private string $schedule,
+        private string|int $amount,
         private string $currency,
         private ?string $priceId = null,
     ) {
+    }
+
+    public function getSchedule(): string
+    {
+        return $this->schedule;
     }
 
     public function getAmount(): string
@@ -48,6 +54,6 @@ class PlanPrice
 
     public function getPriceAsMoney(): Money
     {
-        return Money::of($this->amount, Currency::of($this->currency));
+        return Money::of($this->amount, Currency::of(strtoupper($this->currency)));
     }
 }

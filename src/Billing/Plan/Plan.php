@@ -87,7 +87,21 @@ final class Plan
             throw new \InvalidArgumentException(sprintf("No such '%s' term found", $term));
         }
 
-        return new PlanPrice($this->prices[$term]['amount'], $this->prices[$term]['currency'], $this->prices[$term]['price_id'] ?? null);
+        return new PlanPrice($term, $this->prices[$term]['amount'], $this->prices[$term]['currency'], $this->prices[$term]['price_id'] ?? null);
+    }
+
+    /**
+     * @return PlanPrice[]
+     */
+    public function getPrices()
+    {
+        $output = [];
+
+        foreach ($this->prices as $term => $data) {
+            $output[$term] = new PlanPrice($term, $data['amount'], $data['currency'], $data['price_id'] ?? null);
+        }
+
+        return $output;
     }
 
     public function getFeatures(): array
@@ -108,11 +122,6 @@ final class Plan
     public function getUserCount(): int
     {
         return $this->userCount;
-    }
-
-    public function getPrices(): array
-    {
-        return $this->prices;
     }
 
     public function setPrices(array $prices): void
