@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Plan;
 
+use Parthenon\Billing\Exception\NoPlanPriceFoundException;
 use Parthenon\Common\Exception\ParameterNotSetException;
 
 final class Plan
@@ -73,32 +74,28 @@ final class Plan
         $this->priceId = $priceId;
     }
 
-    public function setPaymentSchedule(string $paymentSchedule): void
-    {
-        $this->paymentSchedule = $paymentSchedule;
-    }
-
     /**
-     * @throws \InvalidArgumentException
+     * @throws NoPlanPriceFoundException
      */
-    public function getPriceForPaymentSchedule(string $term): PlanPrice
+    public function getPriceForPaymentSchedule(string $term, string $currency): PlanPrice
     {
-        if (!isset($this->prices[$term])) {
-            throw new \InvalidArgumentException(sprintf("No such '%s' term found", $term));
+        if (!isset($this->prices[$term][$currency])) {
+            throw new NoPlanPriceFoundException(sprintf("No currency '%s' found for '%s' schedule found", $currency, $term));
         }
 
-        return new PlanPrice($term, $this->prices[$term]['amount'], $this->prices[$term]['currency'], $this->prices[$term]['price_id'] ?? null);
+        return new PlanPrice($term, $this->prices[$term][$currency]['amount'], $currency, $this->prices[$term][$currency]['price_id'] ?? null);
     }
 
     /**
      * @return PlanPrice[]
      */
-    public function getPrices()
+    public function getPrices(): array
     {
         $output = [];
-
-        foreach ($this->prices as $term => $data) {
-            $output[$term] = new PlanPrice($term, $data['amount'], $data['currency'], $data['price_id'] ?? null);
+        foreach ($this->prices as $term => $currencyData) {
+            foreach ($currencyData as $currency => $data) {
+                $output[] = new PlanPrice($term, $data['amount'], $currency, $data['price_id'] ?? null);
+            }
         }
 
         return $output;

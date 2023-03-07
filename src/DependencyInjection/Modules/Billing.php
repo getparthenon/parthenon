@@ -111,6 +111,28 @@ class Billing implements ModuleConfigurationInterface
         $container->setParameter('parthenon_billing_plan_plans', $config['billing']['plan']);
     }
 
+    public function buildPricesNode()
+    {
+        $treeBuilder = new TreeBuilder('prices');
+        $node = $treeBuilder->getRootNode();
+
+        $priceNode = $node->requiresAtLeastOneElement()
+            ->useAttributeAsKey('payment_schedule')
+            ->prototype('array');
+        assert($priceNode instanceof ArrayNodeDefinition);
+
+        $priceNode
+            ->arrayPrototype()
+            ->children()
+            ->scalarNode('amount')->end()
+            ->scalarNode('id')->end()
+            ->end()
+            ->end()
+            ->end();
+
+        return $node;
+    }
+
     protected function handleTeamCustomer(array $config, ContainerBuilder $containerBuilder): void
     {
         $containerBuilder->setAlias(CustomerProviderInterface::class, TeamCustomerProvider::class);
@@ -218,16 +240,7 @@ class Billing implements ModuleConfigurationInterface
                     ->booleanNode('is_free')->defaultFalse()->end()
                     ?->booleanNode('is_per_seat')->defaultFalse()->end()
                     ?->scalarNode('user_count')->end()
-                    ?->arrayNode('prices')
-                        ->useAttributeAsKey('payment_schedule')
-                        ->prototype('array')
-                        ->children()
-                            ->scalarNode('amount')->end()
-                            ->scalarNode('currency')->end()
-                            ->scalarNode('id')->end()
-                        ->end()
-                        ->end()
-                    ->end()
+
                     ->arrayNode('features')
                         ->scalarPrototype()->end()
                     ->end()
@@ -240,6 +253,7 @@ class Billing implements ModuleConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+            ->append($this->buildPricesNode())
             ->end();
 
         return $node;
