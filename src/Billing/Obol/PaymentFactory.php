@@ -35,6 +35,7 @@ class PaymentFactory implements PaymentFactoryInterface
         $payment->setCompleted(true);
         $payment->setCreatedAt(new \DateTime('now'));
         $payment->setUpdatedAt(new \DateTime('now'));
+        $payment->setProvider('stripe');
 
         return $payment;
     }

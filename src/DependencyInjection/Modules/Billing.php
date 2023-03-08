@@ -123,11 +123,11 @@ class Billing implements ModuleConfigurationInterface
 
         $priceNode
             ->arrayPrototype()
-            ->children()
-            ->scalarNode('amount')->end()
-            ->scalarNode('id')->end()
-            ->end()
-            ->end()
+                ->children()
+                    ->scalarNode('amount')->end()
+                    ->scalarNode('price_id')->end()
+                ->end()
+                ->end()
             ->end();
 
         return $node;

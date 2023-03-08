@@ -15,17 +15,23 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Dto;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class StartSubscriptionDto
 {
+    #[Assert\NotBlank]
     #[SerializedName('plan_name')]
     private string $planName;
 
+    #[Assert\NotBlank]
     #[SerializedName('schedule')]
     private string $schedule;
 
     #[SerializedName('seat_numbers')]
     private int $seatNumbers = 1;
+
+    #[SerializedName('currency')]
+    private string $currency = 'usd';
 
     public function getPlanName(): string
     {
@@ -55,5 +61,15 @@ class StartSubscriptionDto
     public function setSchedule(string $schedule): void
     {
         $this->schedule = $schedule;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): void
+    {
+        $this->currency = $currency;
     }
 }
