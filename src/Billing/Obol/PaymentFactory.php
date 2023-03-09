@@ -15,13 +15,16 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Obol;
 
 use Obol\Model\SubscriptionCreationResponse;
+use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\Payment;
 
 class PaymentFactory implements PaymentFactoryInterface
 {
-    public function __construct(private CustomerProviderInterface $customerProvider)
-    {
+    public function __construct(
+        private CustomerProviderInterface $customerProvider,
+        private ProviderInterface $provider,
+    ) {
     }
 
     public function fromSubscriptionCreation(SubscriptionCreationResponse $subscriptionCreationResponse): Payment
@@ -35,7 +38,7 @@ class PaymentFactory implements PaymentFactoryInterface
         $payment->setCompleted(true);
         $payment->setCreatedAt(new \DateTime('now'));
         $payment->setUpdatedAt(new \DateTime('now'));
-        $payment->setProvider('stripe');
+        $payment->setProvider($this->provider->getName());
 
         return $payment;
     }

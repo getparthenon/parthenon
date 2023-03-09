@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Repository\Orm;
 
+use Parthenon\Athena\Repository\DoctrineCrudRepository;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
-use Parthenon\Common\Repository\DoctrineRepository;
 
-class PaymentRepository extends DoctrineRepository implements PaymentRepositoryInterface
+class PaymentRepository extends DoctrineCrudRepository implements PaymentRepositoryInterface
 {
 }
