@@ -154,6 +154,11 @@ class TeamCustomerProviderTest extends TestCase
             {
                 // TODO: Implement getBillingEmail() method.
             }
+
+            public function getDisplayName(): string
+            {
+                // TODO: Implement getDisplayName() method.
+            }
         };
 
         $teamRepository = $this->createMock(TeamRepositoryInterface::class);

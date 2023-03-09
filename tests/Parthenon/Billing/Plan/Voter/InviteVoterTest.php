@@ -113,6 +113,11 @@ class InviteVoterTest extends TestCase
             {
                 // TODO: Implement getId() method.
             }
+
+            public function getDisplayName(): string
+            {
+                // TODO: Implement getDisplayName() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -205,6 +210,11 @@ class InviteVoterTest extends TestCase
             public function getId()
             {
                 // TODO: Implement getId() method.
+            }
+
+            public function getDisplayName(): string
+            {
+                // TODO: Implement getDisplayName() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
@@ -299,6 +309,11 @@ class InviteVoterTest extends TestCase
             {
                 // TODO: Implement getId() method.
             }
+
+            public function getDisplayName(): string
+            {
+                // TODO: Implement getDisplayName() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -391,6 +406,11 @@ class InviteVoterTest extends TestCase
             public function getId()
             {
                 // TODO: Implement getId() method.
+            }
+
+            public function getDisplayName(): string
+            {
+                // TODO: Implement getDisplayName() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);

@@ -38,5 +38,11 @@ interface SectionManagerInterface
      */
     public function getByUrlTag(string $urlTag): SectionInterface;
 
+    /**
+     * @throws \InvalidArgumentException
+     * @throws NoSectionFoundException
+     */
+    public function getByEntity(mixed $entity): SectionInterface;
+
     public function getMenu(): array;
 }

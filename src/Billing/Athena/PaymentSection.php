@@ -54,7 +54,7 @@ class PaymentSection extends AbstractSection
     public function buildListView(ListView $listView): ListView
     {
         $listView
-            ->addField('customer.id', 'text')
+            ->addField('customer', 'entity')
             ->addField('provider', 'text')
             ->addField('moneyAmount', 'text')
             ->addField('completed', 'boolean');

@@ -15,12 +15,17 @@
         <service id="Parthenon\Athena\ViewTypeManager" alias="parthenon.athena.view_type_manager" public="true"  />
 
         <service id="parthenon.athena.view_type.text" class="Parthenon\Athena\ViewType\TextViewType" />
+        <service id="parthenon.athena.view_type.entity" class="Parthenon\Athena\ViewType\EntityViewType">
+            <argument type="service" id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" />
+            <argument type="service" id="Parthenon\Athena\SectionManagerInterface" />
+        </service>
         <service id="parthenon.athena.view_type.bool" class="Parthenon\Athena\ViewType\BooleanViewType" public="true" />
 
         <service id="parthenon.athena.section_manager" class="Parthenon\Athena\SectionManager" public="true">
             <argument type="service" id="Parthenon\Athena\AccessRightsManagerInterface" />
         </service>
         <service id="Parthenon\Athena\SectionManager" alias="parthenon.athena.section_manager" public="true"  />
+        <service id="Parthenon\Athena\SectionManagerInterface" alias="parthenon.athena.section_manager" public="true"  />
 
         <service id="parthenon.athena.dashboard_section_manager" class="Parthenon\Athena\DashboardSectionManager" public="true">
         </service>

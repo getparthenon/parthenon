@@ -14,9 +14,10 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Parthenon\Athena\Entity\CrudEntityInterface;
 use Parthenon\Common\Address;
 
-interface CustomerInterface
+interface CustomerInterface extends CrudEntityInterface
 {
     public function getId();
 

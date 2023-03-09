@@ -132,6 +132,11 @@ class UserCustomerProviderTest extends TestCase
             {
                 // TODO: Implement getId() method.
             }
+
+            public function getDisplayName(): string
+            {
+                // TODO: Implement getDisplayName() method.
+            }
         });
         $userCustomerProvider = new UserCustomerProvider($security);
         $actual = $userCustomerProvider->getCurrentCustomer();

@@ -75,6 +75,26 @@ final class SectionManager implements SectionManagerInterface
         throw new NoSectionFoundException(sprintf("No section found for url tag '%s'", $urlTag));
     }
 
+    /**
+     * @throws NoSectionFoundException
+     */
+    public function getByEntity(mixed $entity): SectionInterface
+    {
+        if (!is_object($entity)) {
+            throw new \InvalidArgumentException('Expected object');
+        }
+
+        foreach ($this->sections as $section) {
+            $rawEntity = $section->getEntity();
+            $rawEntityClass = get_class($rawEntity);
+            if (is_a($entity, $rawEntityClass)) {
+                return $section;
+            }
+        }
+
+        throw new NoSectionFoundException(sprintf('No section found for entity of class "%s"', get_class($entity)));
+    }
+
     public function getMenu(): array
     {
         $output = [];

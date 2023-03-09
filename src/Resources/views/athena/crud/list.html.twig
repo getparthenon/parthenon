@@ -111,7 +111,7 @@
                                             {% if listView.isLink(name) %}
                                                 <a href="{{ path('parthenon_athena_crud_' ~ section.urlTag ~ '_read',{'id': item.id}) }}">{{ field.htmlOutput }}</a>
                                             {% else %}
-                                                {{ field.htmlOutput }}
+                                                {{ field.htmlOutput | raw }}
                                             {% endif %}
                                         </td>
                                     {% endfor %}

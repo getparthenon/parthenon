@@ -130,6 +130,11 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getId() method.
             }
+
+            public function getDisplayName(): string
+            {
+                // TODO: Implement getDisplayName() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -215,6 +220,11 @@ class PlanVoterTest extends TestCase
             public function getId()
             {
                 // TODO: Implement getId() method.
+            }
+
+            public function getDisplayName(): string
+            {
+                // TODO: Implement getDisplayName() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
@@ -307,6 +317,11 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getId() method.
             }
+
+            public function getDisplayName(): string
+            {
+                // TODO: Implement getDisplayName() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -396,6 +411,11 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getId() method.
             }
+
+            public function getDisplayName(): string
+            {
+                // TODO: Implement getDisplayName() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -482,6 +502,11 @@ class PlanVoterTest extends TestCase
             public function getId()
             {
                 // TODO: Implement getId() method.
+            }
+
+            public function getDisplayName(): string
+            {
+                // TODO: Implement getDisplayName() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
