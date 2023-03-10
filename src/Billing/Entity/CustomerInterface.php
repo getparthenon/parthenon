@@ -38,7 +38,7 @@ interface CustomerInterface extends CrudEntityInterface
 
     public function hasBillingAddress(): bool;
 
-    public function setExternalCustomerReference($customerReference);
+    public function setExternalCustomerReference($externalCustomerReference);
 
     public function getExternalCustomerReference();
 

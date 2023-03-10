@@ -7,87 +7,106 @@
     <services>
         <defaults autoconfigure="true" />
 
-        <prototype namespace="Parthenon\Athena\Controller\" resource="../../Athena/Controller/*">
+        <prototype namespace="Parthenon\Billing\Controller\" resource="../../Billing/Controller/*">
             <tag name="controller.service_arguments"/>
         </prototype>
 
-        <service id="parthenon.athena.view_type_manager" class="Parthenon\Athena\ViewTypeManager" public="true" />
-        <service id="Parthenon\Athena\ViewTypeManager" alias="parthenon.athena.view_type_manager" public="true"  />
-
-        <service id="parthenon.athena.view_type.text" class="Parthenon\Athena\ViewType\TextViewType" />
-        <service id="parthenon.athena.view_type.entity" class="Parthenon\Athena\ViewType\EntityViewType">
-            <argument type="service" id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" />
-            <argument type="service" id="Parthenon\Athena\SectionManagerInterface" />
-        </service>
-        <service id="parthenon.athena.view_type.bool" class="Parthenon\Athena\ViewType\BooleanViewType" public="true" />
-
-        <service id="parthenon.athena.section_manager" class="Parthenon\Athena\SectionManager" public="true">
-            <argument type="service" id="Parthenon\Athena\AccessRightsManagerInterface" />
-        </service>
-        <service id="Parthenon\Athena\SectionManager" alias="parthenon.athena.section_manager" public="true"  />
-        <service id="Parthenon\Athena\SectionManagerInterface" alias="parthenon.athena.section_manager" public="true"  />
-
-        <service id="parthenon.athena.dashboard_section_manager" class="Parthenon\Athena\DashboardSectionManager" public="true">
-        </service>
-        <service id="Parthenon\Athena\DashboardSectionManager" alias="parthenon.athena.dashboard_section_manager" public="true"  />
-
-        <service id="parthenon.athena.filter.filter_manager" class="Parthenon\Athena\Filters\FilterManager" public="true" />
-        <service id="Parthenon\Athena\Filters\FilterManager" alias="parthenon.athena.filter.filter_manager" public="true"  />
-
-        <service id="parthenon.athena.filter.bool_filter" class="Parthenon\Athena\Filters\BoolFilter" public="true" />
-        <service id="parthenon.athena.filter.contains_filter" class="Parthenon\Athena\Filters\ContainsFilter" public="true" />
-        <service id="parthenon.athena.filter.exact_choice_filter" class="Parthenon\Athena\Filters\ExactChoiceFilter" public="true" />
-        <service id="parthenon.athena.filter.json_contains_filter" class="Parthenon\Athena\Filters\JsonContainsFilter" public="true" />
-
-
-        <service id="parthenon.athena.filter.list_filter" class="Parthenon\Athena\Filters\ListFilter">
-            <argument type="service" id="Parthenon\Athena\Filter\FilterManager" />
+        <service id="Obol\Provider\ProviderInterface" class="Obol\Provider\ProviderInterface">
+            <factory class="Obol\Factory" method="create" />
+            <argument>%parthenon_billing_payments_obol_config%</argument>
         </service>
 
-        <service id="parthenon.athena.repository.notification" class="Parthenon\Athena\Repository\Dummy\NotificationRepository" />
-        <service id="Parthenon\Athena\Repository\NotificationRepositoryInterface" alias="parthenon.athena.repository.notification" public="true"  />
-
-        <service id="parthenon.athena.twig.athena" class="Parthenon\Athena\Twig\AthenaExtension">
-            <argument type="service" id="Parthenon\Athena\SectionManager" />
-            <argument type="service" id="Parthenon\Athena\Repository\NotificationRepositoryInterface" />
-            <argument>%parthenon_athena_login_logo%</argument>
-            <argument>%parthenon_athena_dashboard_logo%</argument>
-            <tag name="twig.extension"/>
+        <service id="Parthenon\Billing\UserCustomerProvider" class="Parthenon\Billing\UserCustomerProvider">
+            <argument type="service" id="Symfony\Component\Security\Core\Security" />
         </service>
 
-        <service id="parthenon.athena.notifier" class="Parthenon\Athena\Notifier">
-            <argument type="service" id="Parthenon\Athena\Repository\NotificationRepositoryInterface" />
-        </service>
-        <service id="Parthenon\Athena\Notifier" alias="parthenon.athena.notifier" public="true"  />
-
-
-        <service id="parthenon.athena.edit.form_builder" class="Parthenon\Athena\Edit\FormBuilder">
-            <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
-        </service>
-        <service id="Parthenon\Athena\Edit\FormBuilder" alias="parthenon.athena.edit.form_builder" public="true"  />
-
-
-        <service id="Parthenon\Athena\NotifierInterface" alias="parthenon.athena.notifier" public="true"  />
-
-        <service id="parthenon.athena.routing.loader" class="Parthenon\Athena\Routing\AthenaRouteLoader">
-            <argument type="service" id="Parthenon\Athena\SectionManager" />
-            <argument>%parthenon_athena_host%</argument>
-            <tag name="routing.loader"/>
+        <service id="Parthenon\Billing\TeamCustomerProvider" class="Parthenon\Billing\TeamCustomerProvider">
+            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Parthenon\User\Repository\TeamRepositoryInterface" />
         </service>
 
-        <service id="parthenon.athena.default_access_rights" class="Parthenon\Athena\DefaultAccessRights" />
-        <service id="Parthenon\Athena\AccessRightsManagerInterface" alias="parthenon.athena.default_access_rights" />
 
-        <service id="Parthenon\Athena\Export\DefaultDataProvider" class="Parthenon\Athena\Export\DefaultDataProvider">
-            <argument type="service" id="Parthenon\Athena\SectionManager" />
-            <argument type="service" id="Parthenon\Athena\Filters\FilterManager" />
+        <service id="Parthenon\Billing\Athena\CustomerUserSection" class="Parthenon\Billing\Athena\CustomerUserSection">
+            <argument type="service"  id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
+        </service>
+        <service id="Parthenon\Billing\Athena\CustomerTeamSection" class="Parthenon\Billing\Athena\CustomerTeamSection">
+            <argument type="service"  id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
         </service>
 
-        <service id="Parthenon\Athena\Export\AthenaResponseConverter" class="Parthenon\Athena\Export\AthenaResponseConverter">
-            <argument type="service" id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" />
+
+        <!-- Plans -->
+
+        <service id="Parthenon\Billing\Plan\PlanManager" class="Parthenon\Billing\Plan\PlanManager">
+            <argument>%parthenon_billing_plan_plans%</argument>
+            <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Billing\Plan\PlanManagerInterface" alias="Parthenon\Billing\Plan\PlanManager" />
+
+        <service id="parthenon.payments.plan.counter_manager" class="Parthenon\Billing\Plan\CounterManager">
+        </service>
+        <service id="Parthenon\Billing\Plan\CounterManager" alias="parthenon.payments.plan.counter_manager" />
+
+        <service id="parthenon.plan.security.voter.plan_feature" class="Parthenon\Billing\Plan\Security\Voter\PlanFeatureVoter">
+            <argument type="service" id="Parthenon\Billing\Plan\CounterManager" />
+            <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
+            <tag name="security.voter" priority="20"/>
         </service>
 
-        <service id="Parthenon\Athena\Export\NormaliserFactory" class="Parthenon\Athena\Export\NormaliserFactory" />
-        <service id="Parthenon\Athena\Export\NormaliserFactoryInterface" alias="Parthenon\Athena\Export\NormaliserFactory" />
+        <service id="parthenon.plan.security.voter.plan" class="Parthenon\Billing\Plan\Security\Voter\PlanVoter">
+            <argument type="service" id="Parthenon\Billing\Plan\CounterManager" />
+            <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
+            <argument type="service" id="Parthenon\Billing\CustomerProviderInterface" />
+            <tag name="security.voter" priority="20"/>
+        </service>
+        <service id="Parthenon\Billing\Plan\Security\Voter\PlanVoter" alias="parthenon.plan.security.voter.plan" />
+
+        <service id="parthenon.plan.security.voter.invite" class="Parthenon\Billing\Plan\Security\Voter\InviteVoter">
+            <argument type="service" id="Parthenon\Billing\Plan\Counter\TeamInviteCounterInterface" />
+            <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
+            <argument type="service" id="Parthenon\Billing\CustomerProviderInterface" />
+            <tag name="security.voter" priority="20"/>
+        </service>
+        <service id="Parthenon\Billing\Plan\Security\Voter\InviteVoter" alias="parthenon.plan.security.voter.invite" />
+
+        <service id="Parthenon\Billing\Plan\Counter\TeamInviteCounter" class="Parthenon\Billing\Plan\Counter\TeamInviteCounter">
+            <argument type="service" id="Parthenon\User\Repository\TeamInviteCodeRepositoryInterface" />
+            <argument type="service" id="Parthenon\User\Repository\ActiveMembersRepositoryInterface" />
+            <argument type="service" id="Parthenon\User\Repository\TeamRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Billing\Plan\Counter\TeamInviteCounterInterface" alias="Parthenon\Billing\Plan\Counter\TeamInviteCounter" />
+
+        <service id="Parthenon\Billing\Obol\CustomerConverter" class="Parthenon\Billing\Obol\CustomerConverter">
+        </service>
+        <service id="Parthenon\Billing\Obol\CustomerConverterInterface" alias="Parthenon\Billing\Obol\CustomerConverter" />
+
+        <service id="Parthenon\Billing\Config\FrontendConfig" class="Parthenon\Billing\Config\FrontendConfig">
+            <argument>%parthenon_billing_config_frontend_info%</argument>
+        </service>
+
+        <service id="Parthenon\Billing\Factory\PaymentDetailsFactory" class="Parthenon\Billing\Factory\PaymentDetailsFactory" />
+        <service id="Parthenon\Billing\Factory\PaymentDetailsFactoryInterface" alias="Parthenon\Billing\Factory\PaymentDetailsFactory" />
+
+        <!-- OBOL -->
+        <service id="Parthenon\Billing\Obol\BillingDetailsFactory" class="Parthenon\Billing\Obol\BillingDetailsFactory" />
+        <service id="Parthenon\Billing\Obol\BillingDetailsFactoryInterface" alias="Parthenon\Billing\Obol\BillingDetailsFactory" />
+
+        <service id="Parthenon\Billing\Obol\CustomerConverter" class="Parthenon\Billing\Obol\CustomerConverter" />
+        <service id="Parthenon\Billing\Obol\CustomerConverterInterface" alias="Parthenon\Billing\Obol\CustomerConverter" />
+
+        <service id="Parthenon\Billing\Obol\PaymentFactory" class="Parthenon\Billing\Obol\PaymentFactory">
+            <argument type="service" id="Parthenon\Billing\CustomerProviderInterface" />
+            <argument type="service" id="Obol\Provider\ProviderInterface" />
+        </service>
+        <service id="Parthenon\Billing\Obol\PaymentFactoryInterface" alias="Parthenon\Billing\Obol\PaymentFactory" />
+
+        <service id="Parthenon\Billing\Obol\SubscriptionFactory" class="Parthenon\Billing\Obol\SubscriptionFactory" />
+        <service id="Parthenon\Billing\Obol\SubscriptionFactoryInterface" alias="Parthenon\Billing\Obol\SubscriptionFactory" />
+
+        <!-- Athena -->
+        <service id="Parthenon\Billing\Athena\PaymentSection" class="Parthenon\Billing\Athena\PaymentSection">
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
+        </service>
     </services>
 </container>
