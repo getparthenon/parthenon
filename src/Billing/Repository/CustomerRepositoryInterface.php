@@ -14,11 +14,11 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Repository;
 
+use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\Subscription;
-use Parthenon\Common\Repository\RepositoryInterface;
 use Parthenon\User\Entity\UserInterface;
 
-interface CustomerRepositoryInterface extends RepositoryInterface
+interface CustomerRepositoryInterface extends CrudRepositoryInterface
 {
     public function getSubscriptionForUser(UserInterface $user): Subscription;
 }
