@@ -61,6 +61,10 @@ class ParthenonBundle extends Bundle
             realpath(__DIR__.'/Resources/config/doctrine-mapping/User') => 'Parthenon\User\Entity',
         ];
 
+        $userTeamMappings = [
+            realpath(__DIR__.'/Resources/config/doctrine-mapping/UserTeam') => 'Parthenon\User\Entity',
+        ];
+
         $bundles = $container->getParameter('kernel.bundles');
 
         if (isset($bundles['DoctrineBundle'])) {

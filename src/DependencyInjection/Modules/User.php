@@ -133,6 +133,7 @@ final class User implements ModuleConfigurationInterface
     private function configureTeams(array $config, ContainerBuilder $container): void
     {
         if (isset($config['user']['teams_enabled']) && $config['user']['teams_enabled']) {
+            $container->setParameter('parthenon_user_teams_enabled_flag', true);
             $container->setParameter('parthenon_user_teams_enabled', $config['user']['teams_enabled']);
             if (!isset($config['user']['team_class']) || empty($config['user']['team_class'])) {
                 throw new ParameterNotSetException('When the user module is enabled and teams are enabled the team_class must be defined');
