@@ -31,6 +31,8 @@ trait QueryBuilderTrait
 
         if (!str_contains($this->fieldName, '.')) {
             $fieldName = $this->fieldName;
+        } elseif (str_starts_with($this->fieldName, '.')) {
+            $fieldName = substr($this->fieldName, 1);
         } else {
             [$joinName, $fieldName] = explode('.', $this->fieldName, 2);
             $joinAlias = strtolower($this->fieldName[0]);
