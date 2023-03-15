@@ -152,18 +152,19 @@
     <div>
         <ul class="pagination">
 
-            {% if stepBackKey is not null %}
-                <li class="pagination-item"><a href="?sort_key={{ currentSortKey }}&sort_type={{ currentSortType }}&last_key={{ stepBackKey }}{{ athena_crud_filters_link(listFilters) }}"
+            {% if currentLastKey is not null %}
+                <li class="pagination-item"><a href="?sort_key={{ currentSortKey }}&sort_type={{ currentSortType }}&first_key={{ results.firstKey }}{{ athena_crud_filters_link(listFilters) }}"
                                                aria-controls="dataTable"
                                                data-dt-idx="7"
                                                tabindex="0"
+                                               id="crud_list_back"
                                                class="page-link">{{ 'parthenon.athena.crud.list.links.previous'|trans }}</a>
                 </li>
             {% endif %}
 
             {% if results.hasMore %}
                 <li class="pagination-item">
-                    <a href="?sort_key={{ currentSortKey }}&sort_type={{ currentSortType }}&last_key={{ results.lastKey }}&step_back_key={{ currentLastKey }}{{ athena_crud_filters_link(listFilters) }}"
+                    <a href="?sort_key={{ currentSortKey }}&sort_type={{ currentSortType }}&last_key={{ results.lastKey }}{{ athena_crud_filters_link(listFilters) }}"
                        aria-controls="dataTable"
                        data-dt-idx="7"
                        tabindex="0"

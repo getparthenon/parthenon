@@ -19,7 +19,7 @@ use Parthenon\Athena\ResultSet;
 
 class NotificationRepository implements NotificationRepositoryInterface
 {
-    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null): ResultSet
+    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null): ResultSet
     {
         return new ResultSet([], '', '', 10);
     }

@@ -121,18 +121,18 @@ class CrudController
         $limit = (int) $request->get('limit', CrudRepositoryInterface::LIMIT);
         $sortKey = $request->get('sort_key', 'id');
         $lastKey = $request->get('last_key', null);
-        $stepBackKey = $request->get('step_back_key', null);
+        $firstId = $request->get('first_key', null);
         $sortType = strtoupper($request->get('sort_type', 'ASC'));
 
         $repository = $this->section->getRepository();
-        $results = $repository->getList($filters, $sortKey, $sortType, $limit, $lastKey);
+        $results = $repository->getList($filters, $sortKey, $sortType, $limit, $lastKey, $firstId);
 
         return [
             'section' => $this->section,
             'results' => $results,
             'listView' => $listView,
             'listFilters' => $listFilters,
-            'stepBackKey' => $stepBackKey,
+            'firstId' => $firstId,
             'currentLastKey' => $lastKey,
             'currentSortKey' => $sortKey,
             'currentSortType' => $sortType,

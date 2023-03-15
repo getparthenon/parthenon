@@ -23,13 +23,18 @@ use Parthenon\Common\Repository\DoctrineRepository;
 
 class DoctrineCrudRepository extends DoctrineRepository implements CrudRepositoryInterface
 {
-    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null): ResultSet
+    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null): ResultSet
     {
         $sortKey = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $sortKey))));
 
         $qb = $this->createQueryBuilder();
 
         $direction = 'DESC' === $sortType ? '<' : '>';
+        $firstDirection = 'DESC' === $sortType ? '>' : '<';
+        if ($firstId) {
+            $sortType = ('DESC' === $sortType) ? 'ASC' : 'DESC';
+        }
+
         $sortKey = preg_replace('/[^A-Za-z0-9_]+/', '', $sortKey);
         $em = $this->entityRepository->getEntityManager();
         $columns = $em->getClassMetadata($this->entityRepository->getClassName())->getColumnNames();
@@ -49,6 +54,9 @@ class DoctrineCrudRepository extends DoctrineRepository implements CrudRepositor
 
         if ($lastId) {
             $qb->where($qb->getRootAliases()[0].'.'.$sortKey.' '.$direction.' :lastId');
+        }
+        if ($firstId) {
+            $qb->where($qb->getRootAliases()[0].'.'.$sortKey.' '.$firstDirection.' :firstId');
         }
 
         if (is_a($this->entityRepository->getClassName(), DeletableInterface::class, true)) {
@@ -71,8 +79,17 @@ class DoctrineCrudRepository extends DoctrineRepository implements CrudRepositor
         if ($lastId) {
             $query->setParameter(':lastId', $lastId);
         }
+        if ($firstId) {
+            $query->setParameter(':firstId', $firstId);
+        }
 
-        return new ResultSet($query->getResult(), $sortKey, $sortType, $limit);
+        $results = $query->getResult();
+
+        if ($firstId) {
+            $results = array_reverse($results);
+        }
+
+        return new ResultSet($results, $sortKey, $sortType, $limit);
     }
 
     /**

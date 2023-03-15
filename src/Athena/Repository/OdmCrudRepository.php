@@ -23,7 +23,7 @@ use Parthenon\Common\Repository\OdmRepository;
 
 class OdmCrudRepository extends OdmRepository implements CrudRepositoryInterface
 {
-    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null): ResultSet
+    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null): ResultSet
     {
         $sortKey = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $sortKey))));
 
@@ -33,6 +33,12 @@ class OdmCrudRepository extends OdmRepository implements CrudRepositoryInterface
             ->limit($limit + 1); // Fetch one more than required for pagination.
 
         $direction = 'DESC' === $sortType ? '<' : '>';
+        $firstDirection = 'DESC' !== $sortType ? '<' : '>';
+
+        if ($firstId) {
+            $sortType = ('DESC' === $sortType) ? 'ASC' : 'DESC';
+        }
+
         $sortKey = preg_replace('/[^A-Za-z0-9_]+/', '', $sortKey);
         $dm = $this->documentRepository->getDocumentManager();
         $columns = $dm->getClassMetadata($this->documentRepository->getClassName())->getFieldNames();
@@ -43,6 +49,9 @@ class OdmCrudRepository extends OdmRepository implements CrudRepositoryInterface
 
         if ($lastId) {
             $qb->where($sortKey.' '.$direction.' '.$lastId);
+        }
+        if ($firstId) {
+            $qb->where($sortKey.' '.$firstDirection.' '.$firstId);
         }
 
         if (is_a($this->documentRepository->getClassName(), DeletableInterface::class, true)) {

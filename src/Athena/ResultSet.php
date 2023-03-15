@@ -57,6 +57,17 @@ final class ResultSet
         return count($this->results) > $this->limit;
     }
 
+    public function getFirstKey()
+    {
+        $results = $this->getResults();
+        $lastItem = current($results);
+        if (false === $lastItem) {
+            return null;
+        }
+
+        return $this->getFieldData($lastItem, $this->sortKey);
+    }
+
     /**
      * @throws InvalidSortKeyException
      */
