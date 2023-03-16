@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Controller;
 
 use Obol\Model\CardDetails;
+use Obol\Model\Customer as ObolCustomer;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\CustomerProviderInterface;
@@ -60,10 +61,21 @@ class PaymentDetailsController
 
         $customer = $customerProvider->getCurrentCustomer();
         $billingDetails = $customerConverter->convertToBillingDetails($customer);
+        if (!$customer->hasExternalCustomerReference()) {
+            $obolCustomer = new ObolCustomer();
+            $obolCustomer->setEmail($customer->getBillingEmail());
+            $obolCustomer->setAddress($address);
+            $customerCreation = $provider->customers()->create($obolCustomer);
+
+            $customer->setExternalCustomerReference($customerCreation->getReference());
+            $customer->setPaymentProviderDetailsUrl($customerCreation->getDetailsUrl());
+        }
 
         $tokenData = $provider->payments()->startFrontendCreateCardOnFile($billingDetails);
-        $customer->setExternalCustomerReference($tokenData->getCustomerReference());
-
+        if ($tokenData->hasCustomerCreation()) {
+            $customer->setPaymentProviderDetailsUrl($tokenData->getCustomerCreation()->getDetailsUrl());
+            $customer->setExternalCustomerReference($tokenData->getCustomerReference());
+        }
         $customerRepository->save($customer);
 
         return new JsonResponse([
@@ -92,6 +104,11 @@ class PaymentDetailsController
         $response = $provider->payments()->createCardOnFile($billingDetails);
         $cardFile = $response->getCardFile();
         $paymentDetails = $paymentDetailsFactory->buildFromCardFile($customer, $cardFile, $provider->getName());
+
+        if ($response->hasCustomerCreation()) {
+            $customer->setPaymentProviderDetailsUrl($response->getCustomerCreation()->getDetailsUrl());
+            $customer->setExternalCustomerReference($response->getCustomerReference());
+        }
 
         if ($paymentDetails->isDefaultPaymentOption()) {
             $detailsRepository->markAllCustomerDetailsAsNotDefault($customer);

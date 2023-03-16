@@ -140,6 +140,16 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getPaymentProviderDetailsUrl() method.
             }
+
+            public function hasExternalCustomerReference(): bool
+            {
+                return false;
+            }
+
+            public function setPaymentProviderDetailsUrl(?string $url)
+            {
+                // TODO: Implement setPaymentProviderDetailsUrl() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -235,6 +245,16 @@ class PlanVoterTest extends TestCase
             public function getPaymentProviderDetailsUrl()
             {
                 // TODO: Implement getPaymentProviderDetailsUrl() method.
+            }
+
+            public function hasExternalCustomerReference(): bool
+            {
+                return false;
+            }
+
+            public function setPaymentProviderDetailsUrl(?string $url)
+            {
+                // TODO: Implement setPaymentProviderDetailsUrl() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
@@ -337,6 +357,16 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getPaymentProviderDetailsUrl() method.
             }
+
+            public function hasExternalCustomerReference(): bool
+            {
+                return false;
+            }
+
+            public function setPaymentProviderDetailsUrl(?string $url)
+            {
+                // TODO: Implement setPaymentProviderDetailsUrl() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -436,6 +466,16 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getPaymentProviderDetailsUrl() method.
             }
+
+            public function hasExternalCustomerReference(): bool
+            {
+                return false;
+            }
+
+            public function setPaymentProviderDetailsUrl(?string $url)
+            {
+                // TODO: Implement setPaymentProviderDetailsUrl() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -532,6 +572,16 @@ class PlanVoterTest extends TestCase
             public function getPaymentProviderDetailsUrl()
             {
                 // TODO: Implement getPaymentProviderDetailsUrl() method.
+            }
+
+            public function hasExternalCustomerReference(): bool
+            {
+                return false;
+            }
+
+            public function setPaymentProviderDetailsUrl(?string $url)
+            {
+                // TODO: Implement setPaymentProviderDetailsUrl() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);

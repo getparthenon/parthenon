@@ -90,6 +90,10 @@ class SubscriptionController
             $obolSubscription = $subscriptionFactory->createSubscription($billingDetails, $planPrice, $subscriptionDto->getSeatNumbers());
 
             $subscriptionCreationResponse = $provider->payments()->startSubscription($obolSubscription);
+            if ($subscriptionCreationResponse->hasCustomerCreation()) {
+                $customer->setPaymentProviderDetailsUrl($subscriptionCreationResponse->getCustomerCreation()->getDetailsUrl());
+                $customer->setExternalCustomerReference($subscriptionCreationResponse->getCustomerCreation()->getReference());
+            }
             $payment = $paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse);
             $paymentRepository->save($payment);
 

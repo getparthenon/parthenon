@@ -164,6 +164,16 @@ class TeamCustomerProviderTest extends TestCase
             {
                 // TODO: Implement getPaymentProviderDetailsUrl() method.
             }
+
+            public function hasExternalCustomerReference(): bool
+            {
+                return false;
+            }
+
+            public function setPaymentProviderDetailsUrl(?string $url)
+            {
+                // TODO: Implement setPaymentProviderDetailsUrl() method.
+            }
         };
 
         $teamRepository = $this->createMock(TeamRepositoryInterface::class);

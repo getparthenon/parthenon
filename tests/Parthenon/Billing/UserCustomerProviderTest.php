@@ -142,6 +142,16 @@ class UserCustomerProviderTest extends TestCase
             {
                 // TODO: Implement getPaymentProviderDetailsUrl() method.
             }
+
+            public function hasExternalCustomerReference(): bool
+            {
+                return false;
+            }
+
+            public function setPaymentProviderDetailsUrl(?string $url)
+            {
+                // TODO: Implement setPaymentProviderDetailsUrl() method.
+            }
         });
         $userCustomerProvider = new UserCustomerProvider($security);
         $actual = $userCustomerProvider->getCurrentCustomer();

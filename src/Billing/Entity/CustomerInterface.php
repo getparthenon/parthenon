@@ -42,7 +42,11 @@ interface CustomerInterface extends CrudEntityInterface
 
     public function getExternalCustomerReference();
 
+    public function hasExternalCustomerReference(): bool;
+
     public function getBillingEmail();
+
+    public function setPaymentProviderDetailsUrl(?string $url);
 
     public function getPaymentProviderDetailsUrl();
 }
