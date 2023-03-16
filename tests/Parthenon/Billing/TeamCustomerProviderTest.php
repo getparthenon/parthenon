@@ -159,6 +159,11 @@ class TeamCustomerProviderTest extends TestCase
             {
                 // TODO: Implement getDisplayName() method.
             }
+
+            public function getPaymentProviderDetailsUrl()
+            {
+                // TODO: Implement getPaymentProviderDetailsUrl() method.
+            }
         };
 
         $teamRepository = $this->createMock(TeamRepositoryInterface::class);

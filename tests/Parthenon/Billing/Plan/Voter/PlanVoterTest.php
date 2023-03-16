@@ -135,6 +135,11 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getDisplayName() method.
             }
+
+            public function getPaymentProviderDetailsUrl()
+            {
+                // TODO: Implement getPaymentProviderDetailsUrl() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -225,6 +230,11 @@ class PlanVoterTest extends TestCase
             public function getDisplayName(): string
             {
                 // TODO: Implement getDisplayName() method.
+            }
+
+            public function getPaymentProviderDetailsUrl()
+            {
+                // TODO: Implement getPaymentProviderDetailsUrl() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
@@ -322,6 +332,11 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getDisplayName() method.
             }
+
+            public function getPaymentProviderDetailsUrl()
+            {
+                // TODO: Implement getPaymentProviderDetailsUrl() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -416,6 +431,11 @@ class PlanVoterTest extends TestCase
             {
                 // TODO: Implement getDisplayName() method.
             }
+
+            public function getPaymentProviderDetailsUrl()
+            {
+                // TODO: Implement getPaymentProviderDetailsUrl() method.
+            }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
 
@@ -507,6 +527,11 @@ class PlanVoterTest extends TestCase
             public function getDisplayName(): string
             {
                 // TODO: Implement getDisplayName() method.
+            }
+
+            public function getPaymentProviderDetailsUrl()
+            {
+                // TODO: Implement getPaymentProviderDetailsUrl() method.
             }
         };
         $currentSubscriberProvider->method('getCurrentCustomer')->willReturn($subscriber);
