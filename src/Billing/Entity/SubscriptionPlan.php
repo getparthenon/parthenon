@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Parthenon\Athena\Entity\CrudEntityInterface;
 
@@ -30,6 +31,11 @@ class SubscriptionPlan implements CrudEntityInterface
     private ?string $externalReferenceLink = null;
 
     private array|Collection $limits;
+
+    public function __construct()
+    {
+        $this->limits = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -108,9 +114,17 @@ class SubscriptionPlan implements CrudEntityInterface
         $this->limits = $limits;
     }
 
+    public function addLimit(SubscriptionPlanLimit $limit): void
+    {
+        if (!$this->limits->contains($limit)) {
+            $limit->setSubscriptionPlan($this);
+            $this->limits->add($limit);
+        }
+    }
+
     public function removeLimit(SubscriptionPlanLimit $limit): void
     {
-        $this->tags->removeElement($limit);
+        $this->limits->removeElement($limit);
     }
 
     public function getDisplayName(): string

@@ -31,7 +31,7 @@
                         </div>
                     {% elseif field.type == "collection" %}
                         {% set formField = attribute(form, field.name) %}
-                        <ul class="sub-form-{{ field.name }}"
+                        <ul class="sub-form-{{ field.name }} collection-list"
                             data-index="{{ formField|length > 0 ? formField|last.vars.id : 0 }}"
                             data-prototype="{{ form_widget(formField.vars.prototype)|e('html_attr') }}"
                         >
@@ -99,5 +99,10 @@
             .forEach(btn => {
                 btn.addEventListener("click", addFormToCollection)
             });
+        document
+            .querySelectorAll('ul.collection-list li')
+            .forEach((tag) => {
+                addTagFormDeleteLink(tag)
+            })
     </script>
 {% endblock %}
