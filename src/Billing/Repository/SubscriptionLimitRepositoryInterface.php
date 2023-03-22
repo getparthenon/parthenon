@@ -18,4 +18,5 @@ use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface SubscriptionLimitRepositoryInterface extends CrudRepositoryInterface
 {
+    public function getAll(): array;
 }

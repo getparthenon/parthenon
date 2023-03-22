@@ -14,10 +14,10 @@
         <field name="name" column="name" type="string" nullable="false"  />
         <field name="externalReference" column="external_reference" type="string" nullable="true"  />
         <field name="externalReferenceLink" column="external_referenceLink" type="string" nullable="true"  />
-        <many-to-one field="limits" target-entity="Parthenon\Billing\Entity\SubscriptionPlanLimit">
+        <one-to-many field="limits" target-entity="Parthenon\Billing\Entity\SubscriptionPlanLimit" mapped-by="subscriptionPlan">
             <cascade>
                 <cascade-persist />
             </cascade>
-        </many-to-one>
+        </one-to-many>
     </entity>
 </doctrine-mapping>

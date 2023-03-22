@@ -19,12 +19,16 @@ use Parthenon\Athena\EntityForm;
 use Parthenon\Athena\ListView;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\SubscriptionPlan;
+use Parthenon\Billing\Form\Type\SubscriptionPlanLimitType;
+use Parthenon\Billing\Repository\SubscriptionLimitRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 
 class SubscriptionPlanSection extends AbstractSection
 {
-    public function __construct(private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository)
-    {
+    public function __construct(
+        private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        private SubscriptionLimitRepositoryInterface $subscriptionLimitRepository,
+    ) {
     }
 
     public function getUrlTag(): string
@@ -52,12 +56,31 @@ class SubscriptionPlanSection extends AbstractSection
         return 'Subscription Plan';
     }
 
+    public function preSave($entity): void
+    {
+    }
+
     public function buildEntityForm(EntityForm $entityForm): EntityForm
     {
+        $choices = $this->subscriptionLimitRepository->getAll();
+
         $entityForm->section('Main')
-            ->field('name', 'text')
-            ->field('public', 'checkbox')
-            ->field('external_reference', 'text', ['required' => false])
+                ->field('name', 'text')
+                ->field('public', 'checkbox')
+                ->field('external_reference', 'text', ['required' => false])
+            ->end()
+            ->section('Limits')
+                ->field('limits', 'collection',
+                    [
+                        'entry_type' => SubscriptionPlanLimitType::class,
+                        'entry_options' => [
+                            'label' => false,
+                            'choices' => $choices,
+                        ],
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                    ]
+                )
             ->end();
 
         return $entityForm;

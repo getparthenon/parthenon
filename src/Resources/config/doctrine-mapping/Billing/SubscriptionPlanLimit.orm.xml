@@ -10,7 +10,7 @@
             <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
         </id>
 
-        <field name="limit" column="limit" type="string" nullable="false"  />
+        <field name="limit" column="limit_number" type="integer" nullable="false"  />
         <many-to-one field="subscriptionLimit" target-entity="Parthenon\Billing\Entity\SubscriptionLimit" />
         <many-to-one field="subscriptionPlan" target-entity="Parthenon\Billing\Entity\SubscriptionPlan">
         </many-to-one>

@@ -110,6 +110,7 @@
         </service>
         <service id="Parthenon\Billing\Athena\SubscriptionPlanSection" class="Parthenon\Billing\Athena\SubscriptionPlanSection">
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionLimitRepositoryInterface" />
         </service>
         <service id="Parthenon\Billing\Athena\SubscriptionLimitSection" class="Parthenon\Billing\Athena\SubscriptionLimitSection">
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionLimitRepositoryInterface" />

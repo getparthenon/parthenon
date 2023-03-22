@@ -73,6 +73,10 @@ final class FormBuilder
 
     private function getTypeClassName(string $type): string
     {
+        if (class_exists($type)) {
+            return $type;
+        }
+
         $typeName = str_replace(' ', '', ucwords(str_replace('_', ' ', $type)));
         $typeClass = '\\Symfony\\Component\\Form\\Extension\\Core\\Type\\'.$typeName.'Type';
 

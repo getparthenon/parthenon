@@ -67,9 +67,9 @@ class SubscriptionLimitSection extends AbstractSection
     public function buildEntityForm(EntityForm $entityForm): EntityForm
     {
         $entityForm->section('Main')
-            ->field('code')
-            ->field('name')
-            ->field('description')
+                ->field('code')
+                ->field('name')
+                ->field('description')
             ->end();
 
         return $entityForm;

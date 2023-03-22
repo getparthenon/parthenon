@@ -21,10 +21,31 @@
                     <h4 class="card-title">{{ section.headerName }}</h4>
                     <div class="card-body">
                     {% for field in section.fields %}
-                        <div class="row">
-                            <div class="col-lg-3 input-label">{{ form_label(attribute(form, field.name)) }}</div>
-                            <div class="col-lg-3">{{ form_widget(attribute(form, field.name),  {'attr': {"class": "form-control"}}) }}</div>
-                        </div>
+                        {% if field.hasSubEntity %}
+                            {% set fieldName = field.subName %}
+                            {% set subField = field.subField %}
+                            <div class="row">
+                                <div class="col-lg-4 input-label">{{ form_label(attribute(attribute(form, fieldName), subField.name)) }}</div>
+                                <div class="col-lg-8">{{ form_widget(attribute(attribute(form, fieldName), subField.name), {'attr': {'class': 'form-control'}}) }}</div>
+                            </div>
+                        {% elseif field.type == "collection" %}
+                            {% set formField = attribute(form, field.name) %}
+                            <ul class="sub-form-{{ field.name }}"
+                                data-index="{{ formField|length > 0 ? formField|last.vars.id : 0 }}"
+                                data-prototype="{{ form_widget(formField.vars.prototype)|e('html_attr') }}"
+                            >
+                                {% for subField in formField %}
+                                    <li>{{ form_row(subField) }}</li>
+                                {% endfor %}
+                            </ul>
+                            <button type="button" class="add_item_link" data-collection-holder-class="sub-form-{{ field.name }}">Add a {{ field.name }}</button>
+
+                        {% else %}
+                            <div class="row">
+                                <div class="col-lg-4 input-label">{{ form_label(attribute(form, field.name)) }}</div>
+                                <div class="col-lg-8">{{ form_widget(attribute(form, field.name, {'attr': {'class': 'form-control'}})) }}</div>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                     </div>
                 </div>
@@ -38,4 +59,44 @@
     {{ form_widget(form) }}
     <button class="btn btn-lg btn-primary" type="submit" id="crud_create_submit">{{ "parthenon.global.submit"|trans }}</button>
     {{ form_end(form) }}
+    <script>
+        const addTagFormDeleteLink = (item) => {
+            const removeFormButton = document.createElement('button');
+            removeFormButton.innerText = 'Delete';
+
+            item.append(removeFormButton);
+
+            removeFormButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                // remove the li for the tag form
+                item.remove();
+            });
+        }
+        const addFormToCollection = (e) => {
+            const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+            const item = document.createElement('li');
+
+            item.innerHTML = collectionHolder
+                .dataset
+                .prototype
+                .replace(
+                    /__name__/g,
+                    collectionHolder.dataset.index
+                );
+
+            collectionHolder.appendChild(item);
+
+            collectionHolder.dataset.index++;
+
+            // add a delete link to the new form
+            addTagFormDeleteLink(item);
+        };
+
+        document
+            .querySelectorAll('.add_item_link')
+            .forEach(btn => {
+                btn.addEventListener("click", addFormToCollection)
+            });
+    </script>
 {% endblock %}

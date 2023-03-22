@@ -19,4 +19,8 @@ use Parthenon\Billing\Repository\SubscriptionLimitRepositoryInterface;
 
 class SubscriptionLimitRepository extends DoctrineCrudRepository implements SubscriptionLimitRepositoryInterface
 {
+    public function getAll(): array
+    {
+        return $this->entityRepository->findAll();
+    }
 }

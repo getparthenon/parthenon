@@ -108,6 +108,11 @@ class SubscriptionPlan implements CrudEntityInterface
         $this->limits = $limits;
     }
 
+    public function removeLimit(SubscriptionPlanLimit $limit): void
+    {
+        $this->tags->removeElement($limit);
+    }
+
     public function getDisplayName(): string
     {
         return $this->name;
