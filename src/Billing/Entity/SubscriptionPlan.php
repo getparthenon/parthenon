@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Parthenon\Athena\Entity\CrudEntityInterface;
 
 class SubscriptionPlan implements CrudEntityInterface
@@ -27,6 +28,8 @@ class SubscriptionPlan implements CrudEntityInterface
     private ?string $externalReference = null;
 
     private ?string $externalReferenceLink = null;
+
+    private array|Collection $limits;
 
     /**
      * @return mixed
@@ -90,6 +93,19 @@ class SubscriptionPlan implements CrudEntityInterface
     public function setExternalReferenceLink(?string $externalReferenceLink): void
     {
         $this->externalReferenceLink = $externalReferenceLink;
+    }
+
+    public function getLimits(): Collection|array
+    {
+        return $this->limits;
+    }
+
+    /**
+     * @param SubscriptionPlanLimit[]|Collection $limits
+     */
+    public function setLimits(Collection|array $limits): void
+    {
+        $this->limits = $limits;
     }
 
     public function getDisplayName(): string

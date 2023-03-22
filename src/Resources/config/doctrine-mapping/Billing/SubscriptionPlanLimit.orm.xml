@@ -4,20 +4,15 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Parthenon\Billing\Entity\SubscriptionPlan">
+    <entity name="Parthenon\Billing\Entity\SubscriptionPlanLimit">
         <id name="id" type="uuid" column="id">
             <generator strategy="CUSTOM" />
             <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
         </id>
 
-        <field name="public" column="public" type="boolean" nullable="false"  />
-        <field name="name" column="name" type="string" nullable="false"  />
-        <field name="externalReference" column="external_reference" type="string" nullable="true"  />
-        <field name="externalReferenceLink" column="external_referenceLink" type="string" nullable="true"  />
-        <many-to-one field="limits" target-entity="Parthenon\Billing\Entity\SubscriptionPlanLimit">
-            <cascade>
-                <cascade-persist />
-            </cascade>
+        <field name="limit" column="limit" type="string" nullable="false"  />
+        <many-to-one field="subscriptionLimit" target-entity="Parthenon\Billing\Entity\SubscriptionLimit" />
+        <many-to-one field="subscriptionPlan" target-entity="Parthenon\Billing\Entity\SubscriptionPlan">
         </many-to-one>
     </entity>
 </doctrine-mapping>

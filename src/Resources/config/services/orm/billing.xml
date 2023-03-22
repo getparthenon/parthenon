@@ -33,5 +33,16 @@
         </service>
         <service alias="parthenon.billing.repository.orm.subscription_plan_repository_doctrine" id="Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository" />
 
+
+
+        <service id="Parthenon\Billing\Repository\SubscriptionLimitRepositoryInterface" alias="parthenon.billing.repository.subscription_limit_repository" />
+        <service id="parthenon.billing.repository.subscription_limit_repository" class="Parthenon\Billing\Repository\Orm\SubscriptionLimitRepository">
+            <argument type="service" id="parthenon.billing.repository.orm.subscription_limit_repository_doctrine" />
+        </service>
+        <service id="parthenon.billing.repository.orm.subscription_limit_repository_doctrine" class="Parthenon\Billing\Repository\Orm\SubscriptionLimitServiceRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+        <service alias="parthenon.billing.repository.orm.subscription_limit_repository_doctrine" id="Parthenon\Billing\Repository\Orm\SubscriptionLimitServiceRepository" />
+
     </services>
 </container>
