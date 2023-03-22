@@ -9,7 +9,6 @@
         <service id="parthenon.billing.repository.payment_details_repository" class="Parthenon\Billing\Repository\Orm\PaymentDetailsRepository">
             <argument type="service" id="parthenon.billing.repository.orm.payment_details_repository_doctrine" />
         </service>
-
         <service id="parthenon.billing.repository.orm.payment_details_repository_doctrine" class="Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository">
             <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
         </service>
@@ -19,11 +18,20 @@
         <service id="parthenon.billing.repository.payment_repository" class="Parthenon\Billing\Repository\Orm\PaymentRepository">
             <argument type="service" id="parthenon.billing.repository.orm.payment_repository_doctrine" />
         </service>
-
         <service id="parthenon.billing.repository.orm.payment_repository_doctrine" class="Parthenon\Billing\Repository\Orm\PaymentServiceRepository">
             <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
         </service>
         <service alias="parthenon.billing.repository.orm.payment_repository_doctrine" id="Parthenon\Billing\Repository\Orm\PaymentServiceRepository" />
+
+
+        <service id="Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface" alias="parthenon.billing.repository.subscription_plan_repository" />
+        <service id="parthenon.billing.repository.subscription_plan_repository" class="Parthenon\Billing\Repository\Orm\SubscriptionPlanRepository">
+            <argument type="service" id="parthenon.billing.repository.orm.subscription_plan_repository_doctrine" />
+        </service>
+        <service id="parthenon.billing.repository.orm.subscription_plan_repository_doctrine" class="Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+        <service alias="parthenon.billing.repository.orm.subscription_plan_repository_doctrine" id="Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository" />
 
     </services>
 </container>

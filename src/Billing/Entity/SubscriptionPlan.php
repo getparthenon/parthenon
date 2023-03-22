@@ -14,13 +14,86 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
-class SubscriptionPlan
+use Parthenon\Athena\Entity\CrudEntityInterface;
+
+class SubscriptionPlan implements CrudEntityInterface
 {
     private $id;
 
-    private bool $public;
+    private bool $public = false;
 
     private string $name;
 
-    private string $externalReference;
+    private ?string $externalReference = null;
+
+    private ?string $externalReferenceLink = null;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    public function isPublic(): bool
+    {
+        return $this->public;
+    }
+
+    public function setPublic(bool $public): void
+    {
+        $this->public = $public;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalReference(): ?string
+    {
+        return $this->externalReference;
+    }
+
+    public function setExternalReference(string $externalReference): void
+    {
+        $this->externalReference = $externalReference;
+    }
+
+    public function hasExternalReference(): bool
+    {
+        return isset($this->externalReference);
+    }
+
+    public function getExternalReferenceLink(): ?string
+    {
+        return $this->externalReferenceLink;
+    }
+
+    public function setExternalReferenceLink(?string $externalReferenceLink): void
+    {
+        $this->externalReferenceLink = $externalReferenceLink;
+    }
+
+    public function getDisplayName(): string
+    {
+        return $this->name;
+    }
 }

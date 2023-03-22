@@ -12,6 +12,7 @@
 
         <field name="public" column="public" type="boolean" nullable="false"  />
         <field name="name" column="name" type="string" nullable="false"  />
-        <field name="externalReference" column="external_reference" type="string" nullable="false"  />
+        <field name="externalReference" column="external_reference" type="string" nullable="true"  />
+        <field name="externalReferenceLink" column="external_referenceLink" type="string" nullable="true"  />
     </entity>
 </doctrine-mapping>

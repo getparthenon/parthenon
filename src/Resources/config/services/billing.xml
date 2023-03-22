@@ -108,5 +108,8 @@
         <service id="Parthenon\Billing\Athena\PaymentSection" class="Parthenon\Billing\Athena\PaymentSection">
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
         </service>
+        <service id="Parthenon\Billing\Athena\SubscriptionPlanSection" class="Parthenon\Billing\Athena\SubscriptionPlanSection">
+            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface" />
+        </service>
     </services>
 </container>
