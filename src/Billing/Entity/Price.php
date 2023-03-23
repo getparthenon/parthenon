@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Brick\Money\Currency;
+use Brick\Money\Money;
+
 class Price
 {
     private $id;
@@ -27,6 +30,8 @@ class Price
     private ?string $schedule = null;
 
     private ?string $externalReference = null;
+
+    private bool $includingTax = true;
 
     /**
      * @return mixed
@@ -74,6 +79,11 @@ class Price
         $this->externalReference = $externalReference;
     }
 
+    public function hasExternalReference(): bool
+    {
+        return isset($this->externalReference);
+    }
+
     public function isRecurring(): bool
     {
         return $this->recurring;
@@ -92,5 +102,20 @@ class Price
     public function setSchedule(?string $schedule): void
     {
         $this->schedule = $schedule;
+    }
+
+    public function isIncludingTax(): bool
+    {
+        return $this->includingTax;
+    }
+
+    public function setIncludingTax(bool $includingTax): void
+    {
+        $this->includingTax = $includingTax;
+    }
+
+    public function getAsMoney(): Money
+    {
+        return Money::ofMinor($this->amount, Currency::of($this->currency));
     }
 }

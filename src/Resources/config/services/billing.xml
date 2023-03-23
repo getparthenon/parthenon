@@ -121,6 +121,7 @@
         </service>
         <service id="Parthenon\Billing\Athena\PriceSection" class="Parthenon\Billing\Athena\PriceSection">
             <argument type="service" id="Parthenon\Billing\Repository\PriceRepositoryInterface" />
+            <argument type="service" id="Obol\Provider\ProviderInterface" />
         </service>
     </services>
 </container>

@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Athena;
 
+use Obol\Model\CreatePrice;
+use Obol\Provider\ProviderInterface;
 use Parthenon\Athena\AbstractSection;
 use Parthenon\Athena\EntityForm;
 use Parthenon\Athena\ListView;
@@ -25,6 +27,7 @@ class PriceSection extends AbstractSection
 {
     public function __construct(
         private PriceRepositoryInterface $priceRepository,
+        private ProviderInterface $provider,
     ) {
     }
 
@@ -53,6 +56,23 @@ class PriceSection extends AbstractSection
         return 'Prices';
     }
 
+    /**
+     * @param Price $entity
+     */
+    public function preSave($entity): void
+    {
+        if (!$entity->hasExternalReference()) {
+            $createPrice = new CreatePrice();
+            $createPrice->setMoney($entity->getAsMoney());
+            $createPrice->setIncludingTax($entity->isIncludingTax());
+            $createPrice->setPaymentSchedule($entity->getSchedule());
+            $createPrice->setRecurring($entity->isRecurring());
+            $createPrice->setProductReference('prod_K41oMALa5jMGjp');
+            $creation = $this->provider->prices()->createPrice($createPrice);
+            $entity->setExternalReference($creation->getReference());
+        }
+    }
+
     public function buildListView(ListView $listView): ListView
     {
         $listView->addField('amount', 'text')
@@ -66,9 +86,10 @@ class PriceSection extends AbstractSection
     {
         $entityForm->section('Main')
                 ->field('amount')
-                ->field('currency')
+                ->field('currency', 'choice', ['choices' => ['Euro' => 'EUR', 'British Pounds' => 'GBP', 'US Dollars' => 'USD', 'AU Dollars' => 'AUD']])
                 ->field('recurring', 'checkbox', ['required' => false])
-                ->field('schedule')
+                ->field('schedule', 'choice', ['choices' => ['Yearly' => 'year', 'Monthly' => 'month', 'Weekly' => 'week']])
+                ->field('includingTax', 'checkbox', ['required' => false])
             ->end();
 
         return $entityForm;
