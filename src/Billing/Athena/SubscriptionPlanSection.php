@@ -20,14 +20,17 @@ use Parthenon\Athena\ListView;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Form\Type\SubscriptionPlanLimitType;
+use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionLimitRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SubscriptionPlanSection extends AbstractSection
 {
     public function __construct(
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private SubscriptionLimitRepositoryInterface $subscriptionLimitRepository,
+        private SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
     ) {
     }
 
@@ -58,14 +61,15 @@ class SubscriptionPlanSection extends AbstractSection
 
     public function buildEntityForm(EntityForm $entityForm): EntityForm
     {
-        $choices = $this->subscriptionLimitRepository->getAll();
+        $limitChoices = $this->subscriptionLimitRepository->getAll();
+        $featureChoices = $this->subscriptionFeatureRepository->getAll();
 
         $entityForm->section('Main')
                 ->field('name', 'text')
-                ->field('public', 'checkbox')
+                ->field('public', 'checkbox', ['required' => false])
                 ->field('external_reference', 'text', ['required' => false])
-                ->field('is_free', 'checkbox')
-                ->field('is_per_seat', 'checkbox')
+                ->field('free', 'checkbox', ['required' => false])
+                ->field('per_seat', 'checkbox', ['required' => false])
                 ->field('user_count', 'text')
             ->end()
             ->section('Limits')
@@ -74,7 +78,24 @@ class SubscriptionPlanSection extends AbstractSection
                         'entry_type' => SubscriptionPlanLimitType::class,
                         'entry_options' => [
                             'label' => false,
-                            'choices' => $choices,
+                            'choices' => $limitChoices,
+                        ],
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                        'by_reference' => false,
+                        'delete_empty' => true,
+                    ]
+                )
+            ->end()
+            ->section('Features')
+                ->field('features', 'collection',
+                    [
+                        'entry_type' => ChoiceType::class,
+                        'entry_options' => [
+                            'label' => false,
+                            'choices' => $featureChoices,
+                            'choice_label' => 'name',
+                            'choice_value' => 'id',
                         ],
                         'allow_add' => true,
                         'allow_delete' => true,

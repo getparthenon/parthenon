@@ -136,6 +136,18 @@ class SubscriptionPlan implements CrudEntityInterface
         $this->limits->removeElement($limit);
     }
 
+    public function addFeature(SubscriptionFeature $subscriptionFeature): void
+    {
+        if (!$this->features->contains($subscriptionFeature)) {
+            $this->features->add($subscriptionFeature);
+        }
+    }
+
+    public function removeFeature(SubscriptionFeature $subscriptionFeature): void
+    {
+        $this->features->removeElement($subscriptionFeature);
+    }
+
     public function getDisplayName(): string
     {
         return $this->name;
