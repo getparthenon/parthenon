@@ -39,7 +39,9 @@
                                 <li>{{ form_row(subField) }}</li>
                             {% endfor %}
                         </ul>
-                        <button type="button" class="add_item_link" data-collection-holder-class="sub-form-{{ field.name }}">Add a {{ field.name }}</button>
+                        <button type="button" class="add_item_link btn btn-lg btn-primary" data-collection-holder-class="sub-form-{{ field.name }}">
+                            {{ 'parthenon.backoffice.crud.edit.add_to_collection'|trans }}
+                        </button>
 
                     {% else %}
                     <div class="row">
@@ -64,6 +66,7 @@
         const addTagFormDeleteLink = (item) => {
             const removeFormButton = document.createElement('button');
             removeFormButton.innerText = 'Delete';
+            removeFormButton.className = 'btn btn-lg btn-danger';
 
             item.append(removeFormButton);
 

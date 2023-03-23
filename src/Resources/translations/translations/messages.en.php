@@ -92,6 +92,7 @@ return [
 
     'parthenon.backoffice.crud.edit.title' => 'Edit Entity',
     'parthenon.backoffice.crud.edit.success' => 'Successfully updated entity',
+    'parthenon.backoffice.crud.edit.add_to_collection' => 'Add',
 
     'parthenon.backoffice.crud.create.title' => 'Create Entity',
     'parthenon.backoffice.crud.create.success' => 'Successfully created entity',
