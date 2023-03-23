@@ -32,9 +32,18 @@ class SubscriptionPlan implements CrudEntityInterface
 
     private array|Collection $limits;
 
+    private bool $perSeat;
+
+    private bool $free;
+
+    private int $userCount;
+
+    private array|Collection $features;
+
     public function __construct()
     {
         $this->limits = new ArrayCollection();
+        $this->features = new ArrayCollection();
     }
 
     /**
@@ -130,5 +139,45 @@ class SubscriptionPlan implements CrudEntityInterface
     public function getDisplayName(): string
     {
         return $this->name;
+    }
+
+    public function isPerSeat(): bool
+    {
+        return $this->perSeat;
+    }
+
+    public function setPerSeat(bool $perSeat): void
+    {
+        $this->perSeat = $perSeat;
+    }
+
+    public function isFree(): bool
+    {
+        return $this->free;
+    }
+
+    public function setFree(bool $free): void
+    {
+        $this->free = $free;
+    }
+
+    public function getUserCount(): int
+    {
+        return $this->userCount;
+    }
+
+    public function setUserCount(int $userCount): void
+    {
+        $this->userCount = $userCount;
+    }
+
+    public function getFeatures(): Collection|array
+    {
+        return $this->features;
+    }
+
+    public function setFeatures(Collection|array $features): void
+    {
+        $this->features = $features;
     }
 }

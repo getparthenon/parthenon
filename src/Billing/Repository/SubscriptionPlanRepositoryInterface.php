@@ -15,7 +15,12 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Billing\Entity\SubscriptionPlan;
 
 interface SubscriptionPlanRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return SubscriptionPlan[]
+     */
+    public function getAll(): array;
 }

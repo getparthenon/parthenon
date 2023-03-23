@@ -14,11 +14,20 @@
         <field name="name" column="name" type="string" nullable="false"  />
         <field name="externalReference" column="external_reference" type="string" nullable="true"  />
         <field name="externalReferenceLink" column="external_referenceLink" type="string" nullable="true"  />
+        <field name="perSeat" column="per_seat" type="boolean" nullable="true"  />
+        <field name="free" column="is_free" type="boolean" nullable="true"  />
+        <field name="userCount" column="user_count" type="integer" nullable="true"  />
         <one-to-many field="limits" target-entity="Parthenon\Billing\Entity\SubscriptionPlanLimit" mapped-by="subscriptionPlan" orphan-removal="true">
             <cascade>
                 <cascade-persist />
                 <cascade-remove />
             </cascade>
         </one-to-many>
+        <many-to-many field="features" target-entity="Parthenon\Billing\Entity\SubscriptionFeature" orphan-removal="true">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+        </many-to-many>
     </entity>
 </doctrine-mapping>

@@ -19,4 +19,8 @@ use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 
 class SubscriptionPlanRepository extends DoctrineCrudRepository implements SubscriptionPlanRepositoryInterface
 {
+    public function getAll(): array
+    {
+        return $this->entityRepository->findAll();
+    }
 }

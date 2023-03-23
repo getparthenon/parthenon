@@ -56,10 +56,6 @@ class SubscriptionPlanSection extends AbstractSection
         return 'Subscription Plan';
     }
 
-    public function preSave($entity): void
-    {
-    }
-
     public function buildEntityForm(EntityForm $entityForm): EntityForm
     {
         $choices = $this->subscriptionLimitRepository->getAll();
@@ -68,6 +64,9 @@ class SubscriptionPlanSection extends AbstractSection
                 ->field('name', 'text')
                 ->field('public', 'checkbox')
                 ->field('external_reference', 'text', ['required' => false])
+                ->field('is_free', 'checkbox')
+                ->field('is_per_seat', 'checkbox')
+                ->field('user_count', 'text')
             ->end()
             ->section('Limits')
                 ->field('limits', 'collection',

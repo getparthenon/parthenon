@@ -31,6 +31,7 @@ final class Plan
         private bool $isFree,
         private bool $isPerSeat,
         private int $userCount,
+        private bool $public = false,
     ) {
     }
 
@@ -124,5 +125,10 @@ final class Plan
     public function setPrices(array $prices): void
     {
         $this->prices = $prices;
+    }
+
+    public function isPublic(): bool
+    {
+        return $this->public;
     }
 }
