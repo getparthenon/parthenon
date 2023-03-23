@@ -96,6 +96,7 @@ return [
 
     'parthenon.backoffice.crud.create.title' => 'Create Entity',
     'parthenon.backoffice.crud.create.success' => 'Successfully created entity',
+    'parthenon.backoffice.crud.create.add_to_collection' => 'Add',
     'parthenon.backoffice.notifications.label' => 'Notifications',
 
     'parthenon.rule_engine.index.title' => 'Rule Engine',
