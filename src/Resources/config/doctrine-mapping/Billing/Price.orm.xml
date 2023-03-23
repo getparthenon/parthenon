@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Parthenon\Billing\Entity\Price">
+        <id name="id" type="uuid" column="id">
+            <generator strategy="CUSTOM" />
+            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
+        </id>
+
+        <field name="amount" column="amount" type="integer" nullable="false" />
+        <field name="currency" column="currency" type="string" nullable="false" />
+        <field name="recurring" column="recurring" type="boolean" nullable="true" />
+        <field name="schedule" column="schedule" type="string" nullable="true" />
+        <field name="externalReference" column="external_reference" type="string" nullable="true" />
+    </entity>
+</doctrine-mapping>

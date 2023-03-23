@@ -119,5 +119,8 @@
         <service id="Parthenon\Billing\Athena\SubscriptionFeatureSection" class="Parthenon\Billing\Athena\SubscriptionFeatureSection">
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface" />
         </service>
+        <service id="Parthenon\Billing\Athena\PriceSection" class="Parthenon\Billing\Athena\PriceSection">
+            <argument type="service" id="Parthenon\Billing\Repository\PriceRepositoryInterface" />
+        </service>
     </services>
 </container>

@@ -52,5 +52,15 @@
         </service>
         <service alias="parthenon.billing.repository.orm.subscription_feature_repository_doctrine" id="Parthenon\Billing\Repository\Orm\SubscriptionFeatureServiceRepository" />
 
+
+        <service id="Parthenon\Billing\Repository\PriceRepositoryInterface" alias="parthenon.billing.repository.price_repository" />
+        <service id="parthenon.billing.repository.price_repository" class="Parthenon\Billing\Repository\Orm\PriceRepository">
+            <argument type="service" id="parthenon.billing.repository.orm.price_repository_doctrine" />
+        </service>
+        <service id="parthenon.billing.repository.orm.price_repository_doctrine" class="Parthenon\Billing\Repository\Orm\PriceServiceRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+        <service alias="parthenon.billing.repository.orm.price_repository_doctrine" id="Parthenon\Billing\Repository\Orm\PriceServiceRepository" />
+
     </services>
 </container>

@@ -58,6 +58,7 @@ class Billing implements ModuleConfigurationInterface
                             ->children()
                                 ->scalarNode('private_api_key')->end()
                                 ?->scalarNode('public_api_key')->end()
+                                ?->scalarNode('product_id')->end()
                                 ?->arrayNode('payment_methods')
                                     ->scalarPrototype()->end()
                                 ?->end()
@@ -77,6 +78,7 @@ class Billing implements ModuleConfigurationInterface
         $container->setParameter('parthenon_billing_customer_type', 'team');
         $container->setParameter('parthenon_billing_config_frontend_info', '');
         $container->setParameter('parthenon_billing_plan_plans', []);
+        $container->setParameter('parthenon_billing_product_id', null);
     }
 
     public function handleConfiguration(array $config, ContainerBuilder $container): void
@@ -165,6 +167,7 @@ class Billing implements ModuleConfigurationInterface
             'pci_mode' => $pciMode,
         ];
 
+        $containerBuilder->setParameter('parthenon_billing_product_id', $paymentsConfig['stripe']['product_id'] ?? null);
         $containerBuilder->setParameter('parthenon_billing_config_frontend_info', $paymentsConfig['stripe']['public_api_key']);
 
         if (isset($paymentsConfig['stripe']['payment_methods'])) {
