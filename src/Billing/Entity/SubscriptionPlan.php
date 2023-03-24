@@ -39,11 +39,13 @@ class SubscriptionPlan implements CrudEntityInterface
     private int $userCount;
 
     private array|Collection $features;
+    private array|Collection $prices;
 
     public function __construct()
     {
         $this->limits = new ArrayCollection();
         $this->features = new ArrayCollection();
+        $this->prices = new ArrayCollection();
     }
 
     /**
@@ -146,6 +148,28 @@ class SubscriptionPlan implements CrudEntityInterface
     public function removeFeature(SubscriptionFeature $subscriptionFeature): void
     {
         $this->features->removeElement($subscriptionFeature);
+    }
+
+    public function addPrice(Price $price): void
+    {
+        if (!$this->prices->contains($price)) {
+            $this->prices->add($price);
+        }
+    }
+
+    public function removePrice(Price $price): void
+    {
+        $this->prices->removeElement($price);
+    }
+
+    public function getPrices(): Collection|array
+    {
+        return $this->prices;
+    }
+
+    public function setPrices(Collection|array $prices): void
+    {
+        $this->prices = $prices;
     }
 
     public function getDisplayName(): string

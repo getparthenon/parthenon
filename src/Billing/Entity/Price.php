@@ -16,8 +16,9 @@ namespace Parthenon\Billing\Entity;
 
 use Brick\Money\Currency;
 use Brick\Money\Money;
+use Parthenon\Athena\Entity\CrudEntityInterface;
 
-class Price
+class Price implements CrudEntityInterface
 {
     private $id;
 
@@ -129,5 +130,16 @@ class Price
     public function setProduct(Product $product): void
     {
         $this->product = $product;
+    }
+
+    public function getDisplayName(): string
+    {
+        if ($this->recurring) {
+            $type = 'Subscription - '.$this->schedule;
+        } else {
+            $type = 'one-off';
+        }
+
+        return (string) $this->getAsMoney().' - '.$type.' - '.$this->getProduct()?->getName();
     }
 }

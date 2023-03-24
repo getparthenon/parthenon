@@ -15,7 +15,12 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Billing\Entity\Price;
 
 interface PriceRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return Price[]
+     */
+    public function getAll(): array;
 }

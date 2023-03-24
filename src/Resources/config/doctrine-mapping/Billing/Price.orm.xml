@@ -15,5 +15,6 @@
         <field name="recurring" column="recurring" type="boolean" nullable="true" />
         <field name="schedule" column="schedule" type="string" nullable="true" />
         <field name="externalReference" column="external_reference" type="string" nullable="true" />
+        <many-to-one field="product" target-entity="Parthenon\Billing\Entity\Product" />
     </entity>
 </doctrine-mapping>

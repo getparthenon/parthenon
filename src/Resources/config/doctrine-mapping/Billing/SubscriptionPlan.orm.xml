@@ -29,5 +29,11 @@
                 <cascade-remove />
             </cascade>
         </many-to-many>
+        <many-to-many field="prices" target-entity="Parthenon\Billing\Entity\Price" orphan-removal="true">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+        </many-to-many>
     </entity>
 </doctrine-mapping>

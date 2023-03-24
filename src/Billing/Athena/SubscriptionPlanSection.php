@@ -20,6 +20,7 @@ use Parthenon\Athena\ListView;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Form\Type\SubscriptionPlanLimitType;
+use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionLimitRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -31,6 +32,7 @@ class SubscriptionPlanSection extends AbstractSection
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private SubscriptionLimitRepositoryInterface $subscriptionLimitRepository,
         private SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
+        private PriceRepositoryInterface $priceRepository,
     ) {
     }
 
@@ -63,6 +65,7 @@ class SubscriptionPlanSection extends AbstractSection
     {
         $limitChoices = $this->subscriptionLimitRepository->getAll();
         $featureChoices = $this->subscriptionFeatureRepository->getAll();
+        $prices = $this->priceRepository->getAll();
 
         $entityForm->section('Main')
                 ->field('name', 'text')
@@ -88,21 +91,38 @@ class SubscriptionPlanSection extends AbstractSection
                 )
             ->end()
             ->section('Features')
-                ->field('features', 'collection',
-                    [
-                        'entry_type' => ChoiceType::class,
-                        'entry_options' => [
-                            'label' => false,
-                            'choices' => $featureChoices,
-                            'choice_label' => 'name',
-                            'choice_value' => 'id',
-                        ],
-                        'allow_add' => true,
-                        'allow_delete' => true,
-                        'by_reference' => false,
-                        'delete_empty' => true,
-                    ]
-                )
+            ->field('features', 'collection',
+                [
+                    'entry_type' => ChoiceType::class,
+                    'entry_options' => [
+                        'label' => false,
+                        'choices' => $featureChoices,
+                        'choice_label' => 'name',
+                        'choice_value' => 'id',
+                    ],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'delete_empty' => true,
+                ]
+            )
+            ->end()
+            ->section('Prices')
+            ->field('prices', 'collection',
+                [
+                    'entry_type' => ChoiceType::class,
+                    'entry_options' => [
+                        'label' => false,
+                        'choices' => $prices,
+                        'choice_label' => 'displayName',
+                        'choice_value' => 'id',
+                    ],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'delete_empty' => true,
+                ]
+            )
             ->end();
 
         return $entityForm;
