@@ -39,13 +39,13 @@ final class EntityForm
         return $this;
     }
 
-    public function field(string $name, $type = 'text', array $extraOptions = []): self
+    public function field(string $name, $type = 'text', array $extraOptions = [], bool $editable = true): self
     {
         if (is_null($this->openSection)) {
             throw new NoSectionOpenException();
         }
 
-        $this->openSection->addField(new EditField($name, $type, $extraOptions));
+        $this->openSection->addField(new EditField($name, $type, $extraOptions, $editable));
 
         return $this;
     }

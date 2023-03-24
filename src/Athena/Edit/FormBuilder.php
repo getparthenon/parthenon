@@ -33,18 +33,22 @@ final class FormBuilder
         $this->formFactory = $formFactory;
     }
 
-    public function buildForm(EntityForm $entityForm, $entity)
+    public function buildForm(EntityForm $entityForm, $entity, bool $edit = false)
     {
         $formBuilder = $this->formFactory->createBuilder(AthenaType::class, $entity);
-        $this->handleForm($formBuilder, $entityForm->getFields(), $entity);
+        $this->handleForm($formBuilder, $entityForm->getFields(), $entity, $edit);
 
         return $formBuilder->getForm();
     }
 
-    private function handleForm(FormBuilderInterface $formBuilder, array $fields, $entity): void
+    private function handleForm(FormBuilderInterface $formBuilder, array $fields, $entity, bool $edit = false): void
     {
         $subForms = [];
         foreach ($fields as $field) {
+            if ($edit && !$field->isEditable()) {
+                continue;
+            }
+
             if ($field->hasSubEntity()) {
                 $subName = $field->getSubName();
                 $subField = $field->getSubField();

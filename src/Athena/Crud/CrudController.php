@@ -205,7 +205,7 @@ class CrudController
         $entityForm = new EntityForm();
         $entityForm = $this->section->buildEntityForm($entityForm);
 
-        $form = $formBuilder->buildForm($entityForm, $entity);
+        $form = $formBuilder->buildForm($entityForm, $entity, true);
         $process = false;
 
         if ($request->isMethod('POST')) {

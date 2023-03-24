@@ -86,7 +86,7 @@ class PriceSection extends AbstractSection
                 ->field('recurring', 'checkbox', ['required' => false])
                 ->field('schedule', 'choice', ['choices' => ['Yearly' => 'year', 'Monthly' => 'month', 'Weekly' => 'week']])
                 ->field('includingTax', 'checkbox', ['required' => false])
-                ->field('product', 'choice', ['choices' => $products, 'choice_label' => 'name', 'choice_value' => 'id'])
+                ->field('product', 'choice', ['choices' => $products, 'choice_label' => 'name', 'choice_value' => 'id'], false)
             ->end();
 
         return $entityForm;

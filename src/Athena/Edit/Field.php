@@ -16,15 +16,12 @@ namespace Parthenon\Athena\Edit;
 
 final class Field
 {
-    private string $name;
-    private string $type;
-    private array $extraOptions;
-
-    public function __construct(string $name, string $type, array $extraOptions = [])
+    public function __construct(
+        private string $name,
+        private string $type,
+        private array $extraOptions = [],
+        private bool $editable = true)
     {
-        $this->name = $name;
-        $this->type = $type;
-        $this->extraOptions = $extraOptions;
     }
 
     public function getName(): string
@@ -59,5 +56,10 @@ final class Field
         [$part, $name] = explode('.', $this->name, 2);
 
         return new static($name, $this->type, $this->extraOptions);
+    }
+
+    public function isEditable(): bool
+    {
+        return $this->editable;
     }
 }

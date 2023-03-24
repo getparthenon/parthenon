@@ -21,7 +21,7 @@
                     <h4 class="card-title">{{ section.headerName }}</h4>
                     <div class="card-body">
 
-                {% for field in section.fields %}
+                {% for field in section.fields|filter((v,k) => v.editable) %}
                     {% if field.hasSubEntity %}
                         {% set fieldName = field.subName %}
                         {% set subField = field.subField %}
