@@ -19,4 +19,8 @@ use Parthenon\Billing\Repository\ProductRepositoryInterface;
 
 class ProductRepository extends DoctrineCrudRepository implements ProductRepositoryInterface
 {
+    public function getAll(): array
+    {
+        return $this->entityRepository->findAll();
+    }
 }

@@ -14,20 +14,21 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Athena;
 
-use Obol\Model\CreatePrice;
-use Obol\Provider\ProviderInterface;
 use Parthenon\Athena\AbstractSection;
 use Parthenon\Athena\EntityForm;
 use Parthenon\Athena\ListView;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
+use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
+use Parthenon\Billing\Repository\ProductRepositoryInterface;
 
 class PriceSection extends AbstractSection
 {
     public function __construct(
         private PriceRepositoryInterface $priceRepository,
-        private ProviderInterface $provider,
+        private PriceRegisterInterface $priceRegister,
+        private ProductRepositoryInterface $productRepository,
     ) {
     }
 
@@ -62,14 +63,7 @@ class PriceSection extends AbstractSection
     public function preSave($entity): void
     {
         if (!$entity->hasExternalReference()) {
-            $createPrice = new CreatePrice();
-            $createPrice->setMoney($entity->getAsMoney());
-            $createPrice->setIncludingTax($entity->isIncludingTax());
-            $createPrice->setPaymentSchedule($entity->getSchedule());
-            $createPrice->setRecurring($entity->isRecurring());
-            $createPrice->setProductReference('prod_K41oMALa5jMGjp');
-            $creation = $this->provider->prices()->createPrice($createPrice);
-            $entity->setExternalReference($creation->getReference());
+            $this->priceRegister->registerPrice($entity);
         }
     }
 
@@ -84,12 +78,15 @@ class PriceSection extends AbstractSection
 
     public function buildEntityForm(EntityForm $entityForm): EntityForm
     {
+        $products = $this->productRepository->getAll();
+
         $entityForm->section('Main')
                 ->field('amount')
                 ->field('currency', 'choice', ['choices' => ['Euro' => 'EUR', 'British Pounds' => 'GBP', 'US Dollars' => 'USD', 'AU Dollars' => 'AUD']])
                 ->field('recurring', 'checkbox', ['required' => false])
                 ->field('schedule', 'choice', ['choices' => ['Yearly' => 'year', 'Monthly' => 'month', 'Weekly' => 'week']])
                 ->field('includingTax', 'checkbox', ['required' => false])
+                ->field('product', 'choice', ['choices' => $products, 'choice_label' => 'name', 'choice_value' => 'id'])
             ->end();
 
         return $entityForm;

@@ -12,15 +12,11 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Billing\Repository;
+namespace Parthenon\Billing\Obol;
 
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
-use Parthenon\Billing\Entity\Product;
+use Parthenon\Billing\Entity\Price;
 
-interface ProductRepositoryInterface extends CrudRepositoryInterface
+interface PriceRegisterInterface
 {
-    /**
-     * @return Product[]
-     */
-    public function getAll(): array;
+    public function registerPrice(Price $price): Price;
 }

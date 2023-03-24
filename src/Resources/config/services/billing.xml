@@ -104,6 +104,11 @@
         <service id="Parthenon\Billing\Obol\SubscriptionFactory" class="Parthenon\Billing\Obol\SubscriptionFactory" />
         <service id="Parthenon\Billing\Obol\SubscriptionFactoryInterface" alias="Parthenon\Billing\Obol\SubscriptionFactory" />
 
+        <service id="Parthenon\Billing\Obol\PriceRegister" class="Parthenon\Billing\Obol\PriceRegister">
+            <argument type="service" id="Obol\Provider\ProviderInterface" />
+        </service>
+        <service id="Parthenon\Billing\Obol\PriceRegisterInterface" alias="Parthenon\Billing\Obol\PriceRegister" />
+
         <!-- Athena -->
         <service id="Parthenon\Billing\Athena\PaymentSection" class="Parthenon\Billing\Athena\PaymentSection">
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
@@ -121,7 +126,8 @@
         </service>
         <service id="Parthenon\Billing\Athena\PriceSection" class="Parthenon\Billing\Athena\PriceSection">
             <argument type="service" id="Parthenon\Billing\Repository\PriceRepositoryInterface" />
-            <argument type="service" id="Obol\Provider\ProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\Obol\PriceRegisterInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\ProductRepositoryInterface" />
         </service>
         <service id="Parthenon\Billing\Athena\ProductSection" class="Parthenon\Billing\Athena\ProductSection">
             <argument type="service" id="Parthenon\Billing\Repository\ProductRepositoryInterface" />

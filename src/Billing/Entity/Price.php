@@ -33,6 +33,8 @@ class Price
 
     private bool $includingTax = true;
 
+    private Product $product;
+
     /**
      * @return mixed
      */
@@ -117,5 +119,15 @@ class Price
     public function getAsMoney(): Money
     {
         return Money::ofMinor($this->amount, Currency::of($this->currency));
+    }
+
+    public function getProduct(): Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(Product $product): void
+    {
+        $this->product = $product;
     }
 }

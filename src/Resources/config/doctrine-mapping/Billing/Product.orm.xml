@@ -10,7 +10,7 @@
             <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
         </id>
 
-        <field name="name" column="name" type="integer" nullable="false" />
+        <field name="name" column="name" type="string" nullable="false" />
         <field name="externalReference" column="external_reference" type="string" nullable="true" />
     </entity>
 </doctrine-mapping>
