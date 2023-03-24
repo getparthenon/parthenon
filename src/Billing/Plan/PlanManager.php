@@ -26,6 +26,8 @@ final class PlanManager implements PlanManagerInterface
 
     public function __construct(array $rawPlans, private CustomerRepositoryInterface $customerRepository)
     {
+        var_dump($rawPlans);
+        exit;
         foreach ($rawPlans as $planName => $planInfo) {
             $plan = new Plan(
                 $planName,

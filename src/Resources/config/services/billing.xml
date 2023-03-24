@@ -42,7 +42,15 @@
             <argument>%parthenon_billing_plan_plans%</argument>
             <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
         </service>
-        <service id="Parthenon\Billing\Plan\PlanManagerInterface" alias="Parthenon\Billing\Plan\PlanManager" />
+        <service id="Parthenon\Billing\Plan\DatabasePlanManager" class="Parthenon\Billing\Plan\DatabasePlanManager">
+            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Billing\Plan\CachedPlanManager" class="Parthenon\Billing\Plan\CachedPlanManager">
+            <argument type="service" id="Parthenon\Billing\Plan\DatabasePlanManager" />
+            <argument type="service" id="Redis" />
+
+        </service>
+        <service id="Parthenon\Billing\Plan\PlanManagerInterface" alias="Parthenon\Billing\Plan\CachedPlanManager" />
 
         <service id="parthenon.payments.plan.counter_manager" class="Parthenon\Billing\Plan\CounterManager">
         </service>
