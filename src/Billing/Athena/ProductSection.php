@@ -18,12 +18,15 @@ use Parthenon\Athena\AbstractSection;
 use Parthenon\Athena\EntityForm;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\Product;
+use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 
 class ProductSection extends AbstractSection
 {
-    public function __construct(private ProductRepositoryInterface $productRepository)
-    {
+    public function __construct(
+        private ProductRepositoryInterface $productRepository,
+        private ProductRegisterInterface $productRegister,
+    ) {
     }
 
     public function getUrlTag(): string
@@ -49,6 +52,16 @@ class ProductSection extends AbstractSection
     public function getMenuName(): string
     {
         return 'Product';
+    }
+
+    /**
+     * @param Product $entity
+     */
+    public function preSave($entity): void
+    {
+        if (!$entity->hasExternalReference()) {
+            $this->productRegister->registerProduct($entity);
+        }
     }
 
     public function buildEntityForm(EntityForm $entityForm): EntityForm

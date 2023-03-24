@@ -20,7 +20,7 @@ class Product
 
     private string $name;
 
-    private string $externalReference;
+    private ?string $externalReference = null;
 
     /**
      * @return mixed
@@ -48,13 +48,18 @@ class Product
         $this->name = $name;
     }
 
-    public function getExternalReference(): string
+    public function getExternalReference(): ?string
     {
         return $this->externalReference;
     }
 
-    public function setExternalReference(string $externalReference): void
+    public function setExternalReference(?string $externalReference): void
     {
         $this->externalReference = $externalReference;
+    }
+
+    public function hasExternalReference(): bool
+    {
+        return isset($this->externalReference);
     }
 }
