@@ -84,7 +84,7 @@ class PriceSection extends AbstractSection
                 ->field('amount')
                 ->field('currency', 'choice', ['choices' => ['Euro' => 'EUR', 'British Pounds' => 'GBP', 'US Dollars' => 'USD', 'AU Dollars' => 'AUD']])
                 ->field('recurring', 'checkbox', ['required' => false])
-                ->field('schedule', 'choice', ['choices' => ['Yearly' => 'year', 'Monthly' => 'month', 'Weekly' => 'week']])
+                ->field('schedule', 'choice', ['choices' => [null => null, 'Yearly' => 'year', 'Monthly' => 'month', 'Weekly' => 'week']])
                 ->field('includingTax', 'checkbox', ['required' => false])
                 ->field('product', 'choice', ['choices' => $products, 'choice_label' => 'name', 'choice_value' => 'id'], false)
             ->end();
