@@ -62,5 +62,14 @@
         </service>
         <service alias="parthenon.billing.repository.orm.price_repository_doctrine" id="Parthenon\Billing\Repository\Orm\PriceServiceRepository" />
 
+        <service id="Parthenon\Billing\Repository\ProductRepositoryInterface" alias="parthenon.billing.repository.product_repository" />
+        <service id="parthenon.billing.repository.product_repository" class="Parthenon\Billing\Repository\Orm\ProductRepository">
+            <argument type="service" id="parthenon.billing.repository.orm.product_repository_doctrine" />
+        </service>
+        <service id="parthenon.billing.repository.orm.product_repository_doctrine" class="Parthenon\Billing\Repository\Orm\ProductServiceRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+        <service alias="parthenon.billing.repository.orm.product_repository_doctrine" id="Parthenon\Billing\Repository\Orm\ProductServiceRepository" />
+
     </services>
 </container>
