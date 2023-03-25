@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Plan;
 
+use Parthenon\Billing\Exception\NoPlanFoundException;
+
 class CachedPlanManager implements PlanManagerInterface
 {
     public const REDIS_STORAGE_KEY = 'parthenon_plans';
@@ -44,11 +46,18 @@ class CachedPlanManager implements PlanManagerInterface
 
     public function getPlanForUser(LimitedUserInterface $limitedUser): Plan
     {
-        // TODO: Implement getPlanForUser() method.
+        return $this->getPlanByName($limitedUser->getPlanName());
     }
 
     public function getPlanByName(string $planName): Plan
     {
-        // TODO: Implement getPlanByName() method.
+        $plans = $this->getPlans();
+
+        foreach ($plans as $plan) {
+            if ($plan->getName() === $planName) {
+                return $plan;
+            }
+        }
+        throw new NoPlanFoundException();
     }
 }

@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Plan;
 
+use Parthenon\Billing\Entity\Price;
+use Parthenon\Billing\Entity\SubscriptionFeature;
+use Parthenon\Billing\Entity\SubscriptionLimit;
 use Parthenon\Billing\Entity\SubscriptionPlan;
+use Parthenon\Billing\Entity\SubscriptionPlanLimit;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -22,15 +26,35 @@ class DatabasePlanManagerTest extends TestCase
 {
     public function testFetchFromDatabase()
     {
+        $dummyFeature = new SubscriptionFeature();
+        $dummyFeature->setName('Dummy Feature');
+        $dummyFeature->setCode('dummy_feature');
+        $dummyFeature->setDescription('A dummy feature for this test');
+
+        $dummyLimit = new SubscriptionLimit();
+        $dummyLimit->setCode('dummy_limit');
+        $dummyLimit->setName('Dummy Limit');
+        $dummyLimit->setDescription('A dummy limit');
+
+        $dummyPlanLimit = new SubscriptionPlanLimit();
+        $dummyPlanLimit->setSubscriptionLimit($dummyLimit);
+        $dummyPlanLimit->setLimit(10);
+
+        $dummyPrice = new Price();
+        $dummyPrice->setAmount(1000);
+        $dummyPrice->setCurrency('USD');
+        $dummyPrice->setSchedule('week');
+        $dummyPrice->setRecurring(true);
+
         $dummyPlan = new SubscriptionPlan();
         $dummyPlan->setName('Dummy Plan');
         $dummyPlan->setFree(false);
         $dummyPlan->setPerSeat(false);
         $dummyPlan->setPublic(false);
         $dummyPlan->setUserCount(10);
-        $dummyPlan->setFeatures([]);
-        $dummyPlan->setLimits([]);
-        $dummyPlan->setPrices([]);
+        $dummyPlan->setFeatures([$dummyFeature]);
+        $dummyPlan->setLimits([$dummyPlanLimit]);
+        $dummyPlan->setPrices([$dummyPrice]);
 
         $plans = [
               $dummyPlan,
@@ -43,5 +67,21 @@ class DatabasePlanManagerTest extends TestCase
         $actual = $subject->getPlans();
 
         $this->assertCount(1, $actual);
+
+        /** @var Plan $actualPlan */
+        $actualPlan = current($actual);
+        $this->assertEquals('Dummy Plan', $actualPlan->getName());
+        $this->assertEquals(10, $actualPlan->getUserCount());
+        $this->assertFalse($actualPlan->isFree());
+        $this->assertFalse($actualPlan->isPublic());
+        $this->assertFalse($actualPlan->isPerSeat());
+
+        $actualPrices = $actualPlan->getPrices();
+        $this->assertCount(1, $actualPrices);
+
+        /** @var PlanPrice $actualPrice */
+        $actualPrice = current($actualPrices);
+        $this->assertEquals('10.00', $actualPrice->getAmount());
+        $this->assertEquals('USD', $actualPrice->getCurrency());
     }
 }

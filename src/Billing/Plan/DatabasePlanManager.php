@@ -134,7 +134,7 @@ class DatabasePlanManager implements PlanManagerInterface
             }
 
             $output[$schedule][$price->getCurrency()] = [
-                'amount' => $price->getAmount(),
+                'amount' => (string) $price->getAsMoney()->getAmount(),
                 'currency' => $price->getCurrency(),
                 'price_id' => $price->getExternalReference(),
             ];
