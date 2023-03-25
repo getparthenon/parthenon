@@ -125,26 +125,5 @@
         <service id="Parthenon\Billing\Athena\PaymentSection" class="Parthenon\Billing\Athena\PaymentSection">
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
         </service>
-        <service id="Parthenon\Billing\Athena\SubscriptionPlanSection" class="Parthenon\Billing\Athena\SubscriptionPlanSection">
-            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface" />
-            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionLimitRepositoryInterface" />
-            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface" />
-            <argument type="service" id="Parthenon\Billing\Repository\PriceRepositoryInterface" />
-        </service>
-        <service id="Parthenon\Billing\Athena\SubscriptionLimitSection" class="Parthenon\Billing\Athena\SubscriptionLimitSection">
-            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionLimitRepositoryInterface" />
-        </service>
-        <service id="Parthenon\Billing\Athena\SubscriptionFeatureSection" class="Parthenon\Billing\Athena\SubscriptionFeatureSection">
-            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface" />
-        </service>
-        <service id="Parthenon\Billing\Athena\PriceSection" class="Parthenon\Billing\Athena\PriceSection">
-            <argument type="service" id="Parthenon\Billing\Repository\PriceRepositoryInterface" />
-            <argument type="service" id="Parthenon\Billing\Obol\PriceRegisterInterface" />
-            <argument type="service" id="Parthenon\Billing\Repository\ProductRepositoryInterface" />
-        </service>
-        <service id="Parthenon\Billing\Athena\ProductSection" class="Parthenon\Billing\Athena\ProductSection">
-            <argument type="service" id="Parthenon\Billing\Repository\ProductRepositoryInterface" />
-            <argument type="service" id="Parthenon\Billing\Obol\ProductRegisterInterface" />
-        </service>
     </services>
 </container>

@@ -105,7 +105,8 @@ class Billing implements ModuleConfigurationInterface
             $this->handleUserCustomer($config, $container);
         }
 
-        if ('database' === strtolower($billingConfig['plan_management'])) {
+        if ('athena' === strtolower($billingConfig['plan_management'])) {
+            $loader->load('services/billing/athena_plans.xml');
             $container->setAlias(PlanManagerInterface::class, CachedPlanManager::class);
         } else {
             $container->setAlias(PlanManagerInterface::class, PlanManager::class);
