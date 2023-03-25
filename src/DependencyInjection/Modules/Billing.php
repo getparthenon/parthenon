@@ -17,6 +17,9 @@ namespace Parthenon\DependencyInjection\Modules;
 use Parthenon\Billing\Athena\CustomerTeamSection;
 use Parthenon\Billing\Athena\CustomerUserSection;
 use Parthenon\Billing\CustomerProviderInterface;
+use Parthenon\Billing\Plan\CachedPlanManager;
+use Parthenon\Billing\Plan\PlanManager;
+use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\TeamCustomerProvider;
 use Parthenon\Billing\UserCustomerProvider;
@@ -39,6 +42,7 @@ class Billing implements ModuleConfigurationInterface
             ->children()
                 ->booleanNode('enabled')->defaultFalse()->end()
                 ?->scalarNode('customer_type')->defaultValue('team')->end()
+                ?->scalarNode('plan_management')->defaultValue('config')->end()
                 ?->arrayNode('payments')
                     ->children()
                         ->scalarNode('provider')->end()
@@ -100,6 +104,13 @@ class Billing implements ModuleConfigurationInterface
         } elseif ('user' === strtolower($billingConfig['customer_type'])) {
             $this->handleUserCustomer($config, $container);
         }
+
+        if ('database' === strtolower($billingConfig['plan_management'])) {
+            $container->setAlias(PlanManagerInterface::class, CachedPlanManager::class);
+        } else {
+            $container->setAlias(PlanManagerInterface::class, PlanManager::class);
+        }
+
         $container->setParameter('parthenon_billing_plan_plans', $config['billing']['plan']);
 
         $obolConfig = match ($paymentsConfig['provider']) {
