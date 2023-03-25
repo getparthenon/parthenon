@@ -26,8 +26,9 @@ class DatabasePlanManager implements PlanManagerInterface
 {
     private ?array $plans = null;
 
-    public function __construct(private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository)
-    {
+    public function __construct(
+        private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+    ) {
     }
 
     /**
