@@ -16,6 +16,7 @@ namespace Parthenon\Billing\Plan;
 
 class CachedPlanManager implements PlanManagerInterface
 {
+    public const REDIS_STORAGE_KEY = 'parthenon_plans';
     private ?array $plans = null;
 
     public function __construct(
@@ -27,12 +28,12 @@ class CachedPlanManager implements PlanManagerInterface
     public function getPlans(): array
     {
         if (!isset($this->plans)) {
-            $rawData = $this->redis->get('parthenon_plans');
+            $rawData = $this->redis->get(self::REDIS_STORAGE_KEY);
 
             if (!$rawData) {
                 $this->plans = $this->planManager->getPlans();
                 $rawData = serialize($this->plans);
-                $this->redis->set('parthenon_plans', $rawData);
+                $this->redis->set(self::REDIS_STORAGE_KEY, $rawData);
             } else {
                 $this->plans = unserialize($rawData);
             }
