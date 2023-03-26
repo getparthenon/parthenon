@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Athena;
+
+use App\Entity\{{className}};
+use App\Repository\{{className}}RepositoryInterface;
+use Parthenon\Athena\AbstractSection;
+use Parthenon\Athena\Repository\CrudRepositoryInterface;
+
+class {{className}}Section extends AbstractSection
+{
+    public function __construct(private {{className}}RepositoryInterface $repository)
+    {
+    }
+
+    public function getUrlTag(): string
+    {
+        return '{{urlTag}}';
+    }
+
+    public function getRepository(): CrudRepositoryInterface
+    {
+        return $this->repository;
+    }
+
+    public function getEntity()
+    {
+        return new {{className}}();
+    }
+
+    public function getMenuSection(): string
+    {
+        return 'Default';
+    }
+
+    public function getMenuName(): string
+    {
+        return '{{className}}';
+    }
+}

@@ -1,0 +1,9 @@
+
+    ########################
+    ## Auto Generated
+    ########################
+    App\Repository\{{className}}RepositoryInterface: '@App\Repository\{{className}}Repository'
+    App\Repository\{{className}}Repository:
+        class: App\Repository\{{className}}Repository
+        arguments:
+            - '@App\Repository\{{className}}ServiceRepository'

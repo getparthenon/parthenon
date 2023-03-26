@@ -89,5 +89,14 @@
 
         <service id="Parthenon\Athena\Export\NormaliserFactory" class="Parthenon\Athena\Export\NormaliserFactory" />
         <service id="Parthenon\Athena\Export\NormaliserFactoryInterface" alias="Parthenon\Athena\Export\NormaliserFactory" />
+
+
+        <service id="Parthenon\Athena\Command\GenerateEntitySectionCommand">
+            <argument>%kernel.project_dir%</argument>
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <tag name="console.command"  />
+        </service>
     </services>
 </container>

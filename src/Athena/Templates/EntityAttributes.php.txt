@@ -1,0 +1,37 @@
+<?php
+
+
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
+use Ramsey\Uuid\UuidInterface;
+
+#[ORM\Entity]
+#[ORM\Table(name: '{{tableName}}')]
+class {{className}}
+{
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    protected UuidInterface $id;
+
+    /**
+     * @return UuidInterface
+     */
+    public function getId(): UuidInterface
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param UuidInterface $id
+     */
+    public function setId(UuidInterface $id): void
+    {
+        $this->id = $id;
+    }
+}
+}
