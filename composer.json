@@ -19,8 +19,6 @@
         "league/flysystem": "^2.4",
         "monolog/monolog": "^2.8 | ^3.0",
         "sendgrid/sendgrid": "~7.11.0",
-        "ramsey/uuid-doctrine": "^1.8.1",
-        "ramsey/uuid": "^4",
         "symfony/console": ">=v5.3.0",
         "symfony/expression-language": ">=v6.0.0",
         "stripe/stripe-php": "^v7.128",
@@ -56,9 +54,13 @@
         "symfony/mailer": ">=6.0.0",
         "elasticsearch/elasticsearch": "^7.17",
         "phpunit/phpunit": "^9.5",
-        "phpunit/php-code-coverage": "^9.2"
+        "phpunit/php-code-coverage": "^9.2",
+        "ramsey/uuid-doctrine": "^1.8.1",
+        "ramsey/uuid": "^4"
     },
     "suggest": {
+        "ramsey/uuid-doctrine": "^1.8.1",
+        "ramsey/uuid": "^4",
         "guzzlehttp/guzzle": "^7.0",
         "mailgun/mailgun-php": "^3.5",
         "knplabs/knp-snappy": "^1.2",
