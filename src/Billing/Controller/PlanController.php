@@ -66,7 +66,7 @@ class PlanController
     {
         $output = [];
 
-        foreach ($plan->getPrices() as $data) {
+        foreach ($plan->getPublicPrices() as $data) {
             $output[$data->getSchedule()][$data->getCurrency()] = [
                 'schedule' => $data->getSchedule(),
                 'amount' => $data->getPriceAsMoney()->getAmount(),

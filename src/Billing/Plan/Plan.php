@@ -90,11 +90,14 @@ final class Plan
     /**
      * @return PlanPrice[]
      */
-    public function getPrices(): array
+    public function getPublicPrices(): array
     {
         $output = [];
         foreach ($this->prices as $term => $currencyData) {
             foreach ($currencyData as $currency => $data) {
+                if (!$data['public']) {
+                    continue;
+                }
                 $output[] = new PlanPrice($term, $data['amount'], $currency, $data['price_id'] ?? null);
             }
         }

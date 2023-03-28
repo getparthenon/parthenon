@@ -137,6 +137,7 @@ class DatabasePlanManager implements PlanManagerInterface
                 'amount' => (string) $price->getAsMoney()->getAmount(),
                 'currency' => $price->getCurrency(),
                 'price_id' => $price->getExternalReference(),
+                'public' => $price->isPublic(),
             ];
         }
 

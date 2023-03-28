@@ -76,7 +76,7 @@ class DatabasePlanManagerTest extends TestCase
         $this->assertFalse($actualPlan->isPublic());
         $this->assertFalse($actualPlan->isPerSeat());
 
-        $actualPrices = $actualPlan->getPrices();
+        $actualPrices = $actualPlan->getPublicPrices();
         $this->assertCount(1, $actualPrices);
 
         /** @var PlanPrice $actualPrice */

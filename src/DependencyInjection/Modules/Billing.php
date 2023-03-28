@@ -140,6 +140,7 @@ class Billing implements ModuleConfigurationInterface
                 ->children()
                     ->scalarNode('amount')->end()
                     ->scalarNode('price_id')->end()
+                    ->booleanNode('public')->defaultTrue()->end()
                 ->end()
                 ->end()
             ->end();
