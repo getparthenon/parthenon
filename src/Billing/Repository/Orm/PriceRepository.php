@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository\Orm;
 
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 
 class PriceRepository extends DoctrineCrudRepository implements PriceRepositoryInterface
@@ -22,5 +23,10 @@ class PriceRepository extends DoctrineCrudRepository implements PriceRepositoryI
     public function getAll(): array
     {
         return $this->entityRepository->findAll();
+    }
+
+    public function getAllForProduct(Product $product): array
+    {
+        return $this->entityRepository->findBy(['product' => $product]);
     }
 }

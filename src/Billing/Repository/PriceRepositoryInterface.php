@@ -16,6 +16,7 @@ namespace Parthenon\Billing\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
+use Parthenon\Billing\Entity\Product;
 
 interface PriceRepositoryInterface extends CrudRepositoryInterface
 {
@@ -23,4 +24,9 @@ interface PriceRepositoryInterface extends CrudRepositoryInterface
      * @return Price[]
      */
     public function getAll(): array;
+
+    /**
+     * @return Price[]
+     */
+    public function getAllForProduct(Product $product): array;
 }
