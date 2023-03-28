@@ -37,6 +37,7 @@ class PriceRegister implements PriceRegisterInterface
             $creation = $this->provider->prices()->createPrice($createPrice);
 
             $price->setExternalReference($creation->getReference());
+            $price->setPaymentProviderDetailsUrl($creation->getDetailsUrl());
         }
 
         return $price;

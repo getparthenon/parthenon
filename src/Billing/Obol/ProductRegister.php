@@ -32,6 +32,7 @@ class ProductRegister implements ProductRegisterInterface
 
             $productCreation = $this->provider->products()->createProduct($obolProduct);
             $product->setExternalReference($productCreation->getReference());
+            $product->setPaymentProviderDetailsUrl($productCreation->getDetailsUrl());
         }
 
         return $product;

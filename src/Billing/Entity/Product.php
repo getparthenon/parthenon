@@ -16,7 +16,7 @@ namespace Parthenon\Billing\Entity;
 
 class Product
 {
-    protected ?string $paymentProviderDetailsUrl;
+    protected ?string $paymentProviderDetailsUrl = null;
     private $id;
 
     private string $name;
@@ -62,5 +62,15 @@ class Product
     public function hasExternalReference(): bool
     {
         return isset($this->externalReference);
+    }
+
+    public function getPaymentProviderDetailsUrl(): ?string
+    {
+        return $this->paymentProviderDetailsUrl;
+    }
+
+    public function setPaymentProviderDetailsUrl(?string $paymentProviderDetailsUrl): void
+    {
+        $this->paymentProviderDetailsUrl = $paymentProviderDetailsUrl;
     }
 }
