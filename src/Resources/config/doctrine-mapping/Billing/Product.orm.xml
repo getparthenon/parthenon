@@ -11,6 +11,7 @@
         </id>
 
         <field name="name" column="name" type="string" nullable="false" />
+        <field name="paymentProviderDetailsUrl" column="payment_provider_details_url" type="string" nullable="true" />
         <field name="externalReference" column="external_reference" type="string" nullable="true" />
     </entity>
 </doctrine-mapping>

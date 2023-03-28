@@ -20,6 +20,7 @@ use Parthenon\Athena\Entity\CrudEntityInterface;
 
 class Price implements CrudEntityInterface
 {
+    protected ?string $paymentProviderDetailsUrl;
     private $id;
 
     private int $amount;
@@ -142,6 +143,16 @@ class Price implements CrudEntityInterface
     public function setPublic(bool $public): void
     {
         $this->public = $public;
+    }
+
+    public function getPaymentProviderDetailsUrl(): ?string
+    {
+        return $this->paymentProviderDetailsUrl;
+    }
+
+    public function setPaymentProviderDetailsUrl(?string $paymentProviderDetailsUrl): void
+    {
+        $this->paymentProviderDetailsUrl = $paymentProviderDetailsUrl;
     }
 
     public function getDisplayName(): string

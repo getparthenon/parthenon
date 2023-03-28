@@ -16,6 +16,7 @@
         <field name="public" column="public" type="boolean" nullable="true" />
         <field name="schedule" column="schedule" type="string" nullable="true" />
         <field name="externalReference" column="external_reference" type="string" nullable="true" />
+        <field name="paymentProviderDetailsUrl" column="payment_provider_details_url" type="string" nullable="true" />
         <many-to-one field="product" target-entity="Parthenon\Billing\Entity\Product" />
     </entity>
 </doctrine-mapping>

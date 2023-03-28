@@ -19,6 +19,7 @@ use Brick\Money\Money;
 
 class Payment
 {
+    protected ?string $paymentProviderDetailsUrl;
     private $id;
 
     private string $paymentReference;

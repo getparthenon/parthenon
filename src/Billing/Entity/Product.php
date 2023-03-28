@@ -16,6 +16,7 @@ namespace Parthenon\Billing\Entity;
 
 class Product
 {
+    protected ?string $paymentProviderDetailsUrl;
     private $id;
 
     private string $name;

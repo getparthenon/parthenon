@@ -19,5 +19,6 @@
         <field name="chargedBack" column="charged_back" type="boolean" nullable="false" />
         <field name="createdAt" column="created_at" type="datetime" nullable="false" />
         <field name="updatedAt" column="updated_at" type="datetime" nullable="false" />
+        <field name="paymentProviderDetailsUrl" column="payment_provider_details_url" type="string" nullable="true" />
     </entity>
 </doctrine-mapping>
