@@ -15,12 +15,25 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository\Orm;
 
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Billing\Entity\SubscriptionFeature;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class SubscriptionFeatureRepository extends DoctrineCrudRepository implements SubscriptionFeatureRepositoryInterface
 {
     public function getAll(): array
     {
         return $this->entityRepository->findAll();
+    }
+
+    public function findByCode(string $code): SubscriptionFeature
+    {
+        $feature = $this->entityRepository->findOneBy(['name' => $code]);
+
+        if (!$feature instanceof SubscriptionFeature) {
+            throw new NoEntityFoundException();
+        }
+
+        return $feature;
     }
 }

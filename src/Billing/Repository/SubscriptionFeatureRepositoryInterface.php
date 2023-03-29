@@ -15,8 +15,15 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Billing\Entity\SubscriptionFeature;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface SubscriptionFeatureRepositoryInterface extends CrudRepositoryInterface
 {
     public function getAll(): array;
+
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function findByCode(string $code): SubscriptionFeature;
 }
