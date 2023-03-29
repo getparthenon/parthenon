@@ -28,7 +28,7 @@ class SubscriptionFeatureRepository extends DoctrineCrudRepository implements Su
 
     public function findByCode(string $code): SubscriptionFeature
     {
-        $feature = $this->entityRepository->findOneBy(['name' => $code]);
+        $feature = $this->entityRepository->findOneBy(['code' => $code]);
 
         if (!$feature instanceof SubscriptionFeature) {
             throw new NoEntityFoundException();
