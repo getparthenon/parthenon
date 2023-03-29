@@ -10,7 +10,7 @@
             <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
         </id>
 
-        <field name="code" column="code" type="string" nullable="false" />
+        <field name="code" column="code" type="string" nullable="false" unique="true" />
         <field name="name" column="name" type="string" nullable="false" />
         <field name="description" column="description" type="string" nullable="true" />
     </entity>
