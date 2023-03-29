@@ -16,7 +16,6 @@ namespace Parthenon\Billing\Plan;
 
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\SubscriptionFeature;
-use Parthenon\Billing\Entity\SubscriptionLimit;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Entity\SubscriptionPlanLimit;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -31,13 +30,13 @@ class DatabasePlanManagerTest extends TestCase
         $dummyFeature->setCode('dummy_feature');
         $dummyFeature->setDescription('A dummy feature for this test');
 
-        $dummyLimit = new SubscriptionLimit();
+        $dummyLimit = new SubscriptionFeature();
         $dummyLimit->setCode('dummy_limit');
         $dummyLimit->setName('Dummy Limit');
         $dummyLimit->setDescription('A dummy limit');
 
         $dummyPlanLimit = new SubscriptionPlanLimit();
-        $dummyPlanLimit->setSubscriptionLimit($dummyLimit);
+        $dummyPlanLimit->setSubscriptionFeature($dummyLimit);
         $dummyPlanLimit->setLimit(10);
 
         $dummyPrice = new Price();

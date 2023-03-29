@@ -18,7 +18,7 @@ class SubscriptionPlanLimit
 {
     protected $id;
 
-    protected SubscriptionLimit $subscriptionLimit;
+    protected SubscriptionFeature $subscriptionFeature;
 
     protected SubscriptionPlan $subscriptionPlan;
 
@@ -40,14 +40,14 @@ class SubscriptionPlanLimit
         $this->id = $id;
     }
 
-    public function getSubscriptionLimit(): SubscriptionLimit
+    public function getSubscriptionFeature(): SubscriptionFeature
     {
-        return $this->subscriptionLimit;
+        return $this->subscriptionFeature;
     }
 
-    public function setSubscriptionLimit(SubscriptionLimit $subscriptionLimit): void
+    public function setSubscriptionFeature(SubscriptionFeature $subscriptionFeature): void
     {
-        $this->subscriptionLimit = $subscriptionLimit;
+        $this->subscriptionFeature = $subscriptionFeature;
     }
 
     public function getLimit(): int

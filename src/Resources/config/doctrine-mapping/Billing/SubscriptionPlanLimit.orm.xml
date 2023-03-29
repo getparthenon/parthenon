@@ -11,7 +11,7 @@
         </id>
 
         <field name="limit" column="limit_number" type="integer" nullable="false"  />
-        <many-to-one field="subscriptionLimit" target-entity="Parthenon\Billing\Entity\SubscriptionLimit" />
+        <many-to-one field="subscriptionFeature" target-entity="Parthenon\Billing\Entity\SubscriptionFeature" />
         <many-to-one field="subscriptionPlan" target-entity="Parthenon\Billing\Entity\SubscriptionPlan">
         </many-to-one>
     </entity>

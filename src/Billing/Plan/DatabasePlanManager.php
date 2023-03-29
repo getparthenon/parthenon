@@ -90,11 +90,11 @@ class DatabasePlanManager implements PlanManagerInterface
         $output = [];
 
         foreach ($limits as $limit) {
-            $output[$limit->getSubscriptionLimit()->getCode()] = [
-                'name' => $limit->getSubscriptionLimit()->getName(),
-                'code' => $limit->getSubscriptionLimit()->getCode(),
+            $output[$limit->getSubscriptionFeature()->getCode()] = [
+                'name' => $limit->getSubscriptionFeature()->getName(),
+                'code' => $limit->getSubscriptionFeature()->getCode(),
                 'limit' => $limit->getLimit(),
-                'description' => $limit->getSubscriptionLimit()->getDescription(),
+                'description' => $limit->getSubscriptionFeature()->getDescription(),
             ];
         }
 

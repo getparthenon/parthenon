@@ -22,7 +22,6 @@ use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Form\Type\SubscriptionPlanLimitType;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
-use Parthenon\Billing\Repository\SubscriptionLimitRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -30,7 +29,6 @@ class SubscriptionPlanSection extends AbstractSection
 {
     public function __construct(
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
-        private SubscriptionLimitRepositoryInterface $subscriptionLimitRepository,
         private SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
         private PriceRepositoryInterface $priceRepository,
     ) {
@@ -63,7 +61,6 @@ class SubscriptionPlanSection extends AbstractSection
 
     public function buildEntityForm(EntityForm $entityForm): EntityForm
     {
-        $limitChoices = $this->subscriptionLimitRepository->getAll();
         $featureChoices = $this->subscriptionFeatureRepository->getAll();
         $prices = $this->priceRepository->getAll();
 
@@ -81,7 +78,7 @@ class SubscriptionPlanSection extends AbstractSection
                         'entry_type' => SubscriptionPlanLimitType::class,
                         'entry_options' => [
                             'label' => false,
-                            'choices' => $limitChoices,
+                            'choices' => $featureChoices,
                         ],
                         'allow_add' => true,
                         'allow_delete' => true,

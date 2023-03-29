@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Form\Type;
 
-use Parthenon\Billing\Entity\SubscriptionLimit;
+use Parthenon\Billing\Entity\SubscriptionFeature;
 use Parthenon\Billing\Entity\SubscriptionPlanLimit;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -36,11 +36,11 @@ class SubscriptionPlanLimitType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('limit', NumberType::class)
-            ->add('subscriptionLimit', ChoiceType::class, [
+            ->add('subscriptionFeature', ChoiceType::class, [
                 'choices' => $options['choices'],
                 'choice_value' => 'id',
-                'choice_label' => function (?SubscriptionLimit $subscriptionLimit) {
-                    return $subscriptionLimit->getName();
+                'choice_label' => function (?SubscriptionFeature $subscriptionFeature) {
+                    return $subscriptionFeature->getName();
                 },
             ]);
     }

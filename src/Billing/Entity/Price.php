@@ -37,7 +37,7 @@ class Price implements CrudEntityInterface
 
     private Product $product;
 
-    private bool $public = true;
+    private ?bool $public = true;
 
     /**
      * @return mixed
@@ -137,10 +137,10 @@ class Price implements CrudEntityInterface
 
     public function isPublic(): bool
     {
-        return $this->public;
+        return true === $this->public;
     }
 
-    public function setPublic(bool $public): void
+    public function setPublic(?bool $public): void
     {
         $this->public = $public;
     }
