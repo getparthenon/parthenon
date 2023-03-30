@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository\Orm;
 
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 
 class SubscriptionPlanRepository extends DoctrineCrudRepository implements SubscriptionPlanRepositoryInterface
@@ -22,5 +23,10 @@ class SubscriptionPlanRepository extends DoctrineCrudRepository implements Subsc
     public function getAll(): array
     {
         return $this->entityRepository->findAll();
+    }
+
+    public function findAllForProduct(Product $product): array
+    {
+        return $this->entityRepository->findBy(['product' => $product]);
     }
 }
