@@ -40,6 +40,7 @@ class SubscriptionPlan implements CrudEntityInterface
 
     private array|Collection $features;
     private array|Collection $prices;
+    private Product $product;
 
     public function __construct()
     {
@@ -215,5 +216,15 @@ class SubscriptionPlan implements CrudEntityInterface
     public function setFeatures(Collection|array $features): void
     {
         $this->features = $features;
+    }
+
+    public function getProduct(): Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(Product $product): void
+    {
+        $this->product = $product;
     }
 }

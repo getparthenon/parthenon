@@ -17,6 +17,7 @@
         <field name="perSeat" column="per_seat" type="boolean" nullable="true"  />
         <field name="free" column="is_free" type="boolean" nullable="true"  />
         <field name="userCount" column="user_count" type="integer" nullable="true"  />
+        <many-to-one field="product" target-entity="Parthenon\Billing\Entity\Product" />
         <one-to-many field="limits" target-entity="Parthenon\Billing\Entity\SubscriptionPlanLimit" mapped-by="subscriptionPlan" orphan-removal="true">
             <cascade>
                 <cascade-persist />
