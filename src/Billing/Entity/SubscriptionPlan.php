@@ -28,7 +28,7 @@ class SubscriptionPlan implements CrudEntityInterface
 
     private ?string $externalReference = null;
 
-    private ?string $externalReferenceLink = null;
+    private ?string $paymentProviderDetailsLink = null;
 
     private array|Collection $limits;
 
@@ -102,14 +102,14 @@ class SubscriptionPlan implements CrudEntityInterface
         return isset($this->externalReference);
     }
 
-    public function getExternalReferenceLink(): ?string
+    public function getPaymentProviderDetailsLink(): ?string
     {
-        return $this->externalReferenceLink;
+        return $this->paymentProviderDetailsLink;
     }
 
-    public function setExternalReferenceLink(?string $externalReferenceLink): void
+    public function setPaymentProviderDetailsLink(?string $paymentProviderDetailsLink): void
     {
-        $this->externalReferenceLink = $externalReferenceLink;
+        $this->paymentProviderDetailsLink = $paymentProviderDetailsLink;
     }
 
     public function getLimits(): Collection|array
