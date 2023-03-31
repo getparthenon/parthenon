@@ -15,8 +15,11 @@ declare(strict_types=1);
 namespace Parthenon\Billing\PaymentDetails;
 
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\PaymentDetails;
 
 interface AddCardByTokenDriverInterface
 {
     public function startTokenProcess(CustomerInterface $customer): string;
+
+    public function createPaymentDetailsFromToken(CustomerInterface $customer, string $token): PaymentDetails;
 }

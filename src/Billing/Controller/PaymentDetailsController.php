@@ -14,13 +14,9 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Controller;
 
-use Obol\Model\CardDetails;
-use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
-use Parthenon\Billing\Factory\PaymentDetailsFactoryInterface;
-use Parthenon\Billing\Obol\CustomerConverterInterface;
 use Parthenon\Billing\PaymentDetails\AddCardByTokenDriverInterface;
 use Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
@@ -69,34 +65,15 @@ class PaymentDetailsController
     #[Route('/billing/payment-details/token/add', name: 'parthenon_billing_paymentdetails_addcardbytoken', methods: ['POST'])]
     public function addCardByToken(
         Request $request,
-        ProviderInterface $provider,
         CustomerProviderInterface $customerProvider,
-        CustomerConverterInterface $customerConverter,
-        PaymentDetailsRepositoryInterface $detailsRepository,
         SerializerInterface $serializer,
-        PaymentDetailsFactoryInterface $paymentDetailsFactory,
+        AddCardByTokenDriverInterface $addCardByTokenDriver
     ) {
         $customer = $customerProvider->getCurrentCustomer();
 
         $data = json_decode($request->getContent(), true);
-        $billingDetails = $customerConverter->convertToBillingDetails($customer);
-        $billingDetails->setCardDetails(new CardDetails());
-        $billingDetails->getCardDetails()->setToken($data['token']);
 
-        $response = $provider->payments()->createCardOnFile($billingDetails);
-        $cardFile = $response->getCardFile();
-        $paymentDetails = $paymentDetailsFactory->buildFromCardFile($customer, $cardFile, $provider->getName());
-
-        if ($response->hasCustomerCreation()) {
-            $customer->setPaymentProviderDetailsUrl($response->getCustomerCreation()->getDetailsUrl());
-            $customer->setExternalCustomerReference($response->getCustomerReference());
-        }
-
-        if ($paymentDetails->isDefaultPaymentOption()) {
-            $detailsRepository->markAllCustomerDetailsAsNotDefault($customer);
-        }
-        $detailsRepository->save($paymentDetails);
-
+        $paymentDetails = $addCardByTokenDriver->createPaymentDetailsFromToken($customer, $data['token']);
         $json = $serializer->serialize(['success' => true, 'payment_details' => $paymentDetails], 'json');
 
         return JsonResponse::fromJsonString($json, JsonResponse::HTTP_ACCEPTED);

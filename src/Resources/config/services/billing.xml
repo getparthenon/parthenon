@@ -136,6 +136,8 @@
             <argument type="service" id="Obol\Provider\ProviderInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Obol\CustomerConverterInterface" />
+            <argument type="service" id="Parthenon\Billing\Factory\PaymentDetailsFactoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
         </service>
         <service id="Parthenon\Billing\PaymentDetails\AddCardByTokenDriverInterface" alias="Parthenon\Billing\PaymentDetails\AddCardByTokenDriver" />
     </services>

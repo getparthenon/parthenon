@@ -14,11 +14,15 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\PaymentDetails;
 
+use Obol\Model\CardDetails;
 use Obol\Model\Customer as ObolCustomer;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Factory\PaymentDetailsFactoryInterface;
 use Parthenon\Billing\Obol\CustomerConverterInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 
 class AddCardByTokenDriver implements AddCardByTokenDriverInterface
 {
@@ -26,6 +30,8 @@ class AddCardByTokenDriver implements AddCardByTokenDriverInterface
         private ProviderInterface $provider,
         private CustomerRepositoryInterface $customerRepository,
         private CustomerConverterInterface $customerConverter,
+        private PaymentDetailsFactoryInterface $paymentDetailsFactory,
+        private PaymentDetailsRepositoryInterface $paymentDetailsRepository,
     ) {
     }
 
@@ -50,5 +56,28 @@ class AddCardByTokenDriver implements AddCardByTokenDriverInterface
         $this->customerRepository->save($customer);
 
         return $tokenData->getToken();
+    }
+
+    public function createPaymentDetailsFromToken(CustomerInterface $customer, string $token): PaymentDetails
+    {
+        $billingDetails = $this->customerConverter->convertToBillingDetails($customer);
+        $billingDetails->setCardDetails(new CardDetails());
+        $billingDetails->getCardDetails()->setToken($token);
+
+        $response = $this->provider->payments()->createCardOnFile($billingDetails);
+        $cardFile = $response->getCardFile();
+        $paymentDetails = $this->paymentDetailsFactory->buildFromCardFile($customer, $cardFile, $this->provider->getName());
+
+        if ($response->hasCustomerCreation()) {
+            $customer->setPaymentProviderDetailsUrl($response->getCustomerCreation()->getDetailsUrl());
+            $customer->setExternalCustomerReference($response->getCustomerReference());
+        }
+
+        if ($paymentDetails->isDefaultPaymentOption()) {
+            $this->paymentDetailsRepository->markAllCustomerDetailsAsNotDefault($customer);
+        }
+        $this->paymentDetailsRepository->save($paymentDetails);
+
+        return $paymentDetails;
     }
 }
