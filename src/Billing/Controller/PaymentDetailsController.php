@@ -15,15 +15,14 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Controller;
 
 use Obol\Model\CardDetails;
-use Obol\Model\Customer as ObolCustomer;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Factory\PaymentDetailsFactoryInterface;
 use Parthenon\Billing\Obol\CustomerConverterInterface;
+use Parthenon\Billing\PaymentDetails\AddCardByTokenDriverInterface;
 use Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface;
-use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Psr\Log\LoggerInterface;
@@ -52,35 +51,17 @@ class PaymentDetailsController
     public function startTokenProcess(
         Request $request,
         LoggerInterface $logger,
-        ProviderInterface $provider,
         CustomerProviderInterface $customerProvider,
-        CustomerRepositoryInterface $customerRepository,
-        CustomerConverterInterface $customerConverter,
         FrontendConfig $config,
+        AddCardByTokenDriverInterface $addCardByTokenDriver,
     ) {
         $logger->info('Starting the card token process');
 
         $customer = $customerProvider->getCurrentCustomer();
-        $billingDetails = $customerConverter->convertToBillingDetails($customer);
-        if (!$customer->hasExternalCustomerReference()) {
-            $obolCustomer = new ObolCustomer();
-            $obolCustomer->setEmail($customer->getBillingEmail());
-            $obolCustomer->setAddress($address);
-            $customerCreation = $provider->customers()->create($obolCustomer);
-
-            $customer->setExternalCustomerReference($customerCreation->getReference());
-            $customer->setPaymentProviderDetailsUrl($customerCreation->getDetailsUrl());
-        }
-
-        $tokenData = $provider->payments()->startFrontendCreateCardOnFile($billingDetails);
-        if ($tokenData->hasCustomerCreation()) {
-            $customer->setPaymentProviderDetailsUrl($tokenData->getCustomerCreation()->getDetailsUrl());
-            $customer->setExternalCustomerReference($tokenData->getCustomerReference());
-        }
-        $customerRepository->save($customer);
+        $token = $addCardByTokenDriver->startTokenProcess($customer);
 
         return new JsonResponse([
-            'token' => $tokenData->getToken(),
+            'token' => $token,
             'api_info' => $config->getApiInfo(),
         ]);
     }

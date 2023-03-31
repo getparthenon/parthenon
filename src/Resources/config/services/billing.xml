@@ -131,5 +131,12 @@
             <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
         </service>
         <service id="Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface" alias="Parthenon\Billing\PaymentDetails\DefaultPaymentManager" />
+
+        <service id="Parthenon\Billing\PaymentDetails\AddCardByTokenDriver" class="Parthenon\Billing\PaymentDetails\AddCardByTokenDriver">
+            <argument type="service" id="Obol\Provider\ProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Obol\CustomerConverterInterface" />
+        </service>
+        <service id="Parthenon\Billing\PaymentDetails\AddCardByTokenDriverInterface" alias="Parthenon\Billing\PaymentDetails\AddCardByTokenDriver" />
     </services>
 </container>
