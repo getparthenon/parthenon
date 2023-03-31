@@ -125,5 +125,11 @@
         <service id="Parthenon\Billing\Athena\PaymentSection" class="Parthenon\Billing\Athena\PaymentSection">
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
         </service>
+
+        <!-- Payment Details -->
+        <service id="Parthenon\Billing\PaymentDetails\DefaultPaymentManager" class="Parthenon\Billing\PaymentDetails\DefaultPaymentManager">
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface" alias="Parthenon\Billing\PaymentDetails\DefaultPaymentManager" />
     </services>
 </container>

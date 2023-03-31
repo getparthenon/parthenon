@@ -22,6 +22,7 @@ use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Factory\PaymentDetailsFactoryInterface;
 use Parthenon\Billing\Obol\CustomerConverterInterface;
+use Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -136,7 +137,7 @@ class PaymentDetailsController
     }
 
     #[Route('/billing/payment-details/{id}/default', name: 'parthenon_billing_paymentdetails_defaultcard', methods: ['POST'])]
-    public function defaultCard(Request $request, CustomerProviderInterface $customerProvider, PaymentDetailsRepositoryInterface $paymentDetailsRepository)
+    public function defaultCard(Request $request, CustomerProviderInterface $customerProvider, PaymentDetailsRepositoryInterface $paymentDetailsRepository, DefaultPaymentManagerInterface $defaultPaymentManager)
     {
         $customer = $customerProvider->getCurrentCustomer();
         try {
@@ -145,9 +146,8 @@ class PaymentDetailsController
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
         }
-        $paymentDetails->setDefaultPaymentOption(true);
-        $paymentDetailsRepository->markAllCustomerDetailsAsNotDefault($customer);
-        $paymentDetailsRepository->save($paymentDetails);
+
+        $defaultPaymentManager->makePaymentDetailsDefault($customer, $paymentDetails);
 
         return new JsonResponse(['success' => true], JsonResponse::HTTP_ACCEPTED);
     }
