@@ -17,8 +17,8 @@ namespace Parthenon\Billing\Controller;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
-use Parthenon\Billing\PaymentDetails\AddCardByTokenDriverInterface;
 use Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface;
+use Parthenon\Billing\PaymentDetails\PaymentDetailsTokenProcessorInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Psr\Log\LoggerInterface;
@@ -49,7 +49,7 @@ class PaymentDetailsController
         LoggerInterface $logger,
         CustomerProviderInterface $customerProvider,
         FrontendConfig $config,
-        AddCardByTokenDriverInterface $addCardByTokenDriver,
+        PaymentDetailsTokenProcessorInterface $addCardByTokenDriver,
     ) {
         $logger->info('Starting the card token process');
 
@@ -67,7 +67,7 @@ class PaymentDetailsController
         Request $request,
         CustomerProviderInterface $customerProvider,
         SerializerInterface $serializer,
-        AddCardByTokenDriverInterface $addCardByTokenDriver
+        PaymentDetailsTokenProcessorInterface $addCardByTokenDriver
     ) {
         $customer = $customerProvider->getCurrentCustomer();
 
