@@ -25,7 +25,7 @@ class SubscriptionPlanRepository extends DoctrineCrudRepository implements Subsc
         return $this->entityRepository->findAll();
     }
 
-    public function findAllForProduct(Product $product): array
+    public function getAllForProduct(Product $product): array
     {
         return $this->entityRepository->findBy(['product' => $product]);
     }
