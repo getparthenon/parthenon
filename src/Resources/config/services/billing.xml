@@ -132,13 +132,13 @@
         </service>
         <service id="Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface" alias="Parthenon\Billing\PaymentDetails\DefaultPaymentManager" />
 
-        <service id="Parthenon\Billing\PaymentDetails\PaymentDetailsTokenProcessor" class="Parthenon\Billing\PaymentDetails\PaymentDetailsTokenProcessor">
+        <service id="Parthenon\Billing\PaymentDetails\FrontendAddProcessor" class="Parthenon\Billing\PaymentDetails\FrontendAddProcessor">
             <argument type="service" id="Obol\Provider\ProviderInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Obol\CustomerConverterInterface" />
             <argument type="service" id="Parthenon\Billing\Factory\PaymentDetailsFactoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
         </service>
-        <service id="Parthenon\Billing\PaymentDetails\PaymentDetailsTokenProcessorInterface" alias="Parthenon\Billing\PaymentDetails\PaymentDetailsTokenProcessor" />
+        <service id="Parthenon\Billing\PaymentDetails\FrontendAddProcessorInterface" alias="Parthenon\Billing\PaymentDetails\FrontendAddProcessor" />
     </services>
 </container>
