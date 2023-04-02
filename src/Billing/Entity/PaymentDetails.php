@@ -33,7 +33,7 @@ class PaymentDetails
     #[Ignore]
     protected string $storedPaymentReference;
 
-    protected string $name = '';
+    protected ?string $name = null;
 
     #[SerializedName('default')]
     protected bool $defaultPaymentOption = true;
