@@ -77,6 +77,8 @@ class DatabasePlanManager implements PlanManagerInterface
             $subscriptionPlan->isPerSeat(),
             $subscriptionPlan->getUserCount(),
             $subscriptionPlan->isPublic(),
+            $subscriptionPlan->getHasTrial(),
+            $subscriptionPlan->getTrialLengthDays(),
         );
 
         return $plan;

@@ -32,6 +32,8 @@ final class Plan
         private bool $isPerSeat,
         private int $userCount,
         private bool $public = false,
+        private ?bool $hasTrial = false,
+        private ?int $trialLengthDays = 0,
     ) {
     }
 
@@ -133,5 +135,25 @@ final class Plan
     public function isPublic(): bool
     {
         return $this->public;
+    }
+
+    public function getHasTrial(): ?bool
+    {
+        return $this->hasTrial;
+    }
+
+    public function setHasTrial(?bool $hasTrial): void
+    {
+        $this->hasTrial = $hasTrial;
+    }
+
+    public function getTrialLengthDays(): ?int
+    {
+        return $this->trialLengthDays;
+    }
+
+    public function setTrialLengthDays(?int $trialLengthDays): void
+    {
+        $this->trialLengthDays = $trialLengthDays;
     }
 }

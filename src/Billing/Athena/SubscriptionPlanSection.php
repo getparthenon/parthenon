@@ -71,6 +71,8 @@ class SubscriptionPlanSection extends AbstractSection
                 ->field('free', 'checkbox', ['required' => false])
                 ->field('per_seat', 'checkbox', ['required' => false])
                 ->field('user_count', 'text')
+                ->field('has_trial', 'checkbox', ['required' => false])
+                ->field('trial_length_days', 'number')
             ->end()
             ->section('Limits')
                 ->field('limits', 'collection',

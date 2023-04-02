@@ -255,8 +255,10 @@ class Billing implements ModuleConfigurationInterface
                 ->children()
                     ->booleanNode('is_free')->defaultFalse()->end()
                     ?->booleanNode('is_per_seat')->defaultFalse()->end()
+                    ?->booleanNode('public')->defaultTrue()->end()
+                    ?->booleanNode('has_trial')->defaultFalse()->end()
+                    ?->scalarNode('trial_length_days')->defaultValue(0)->end()
                     ?->scalarNode('user_count')->end()
-
                     ->arrayNode('features')
                         ->scalarPrototype()->end()
                     ->end()

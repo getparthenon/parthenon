@@ -38,8 +38,14 @@ class SubscriptionPlan implements CrudEntityInterface
 
     private int $userCount;
 
+    private ?bool $hasTrial = false;
+
+    private ?int $trialLengthDays = 0;
+
     private array|Collection $features;
+
     private array|Collection $prices;
+
     private Product $product;
 
     public function __construct()
@@ -226,5 +232,25 @@ class SubscriptionPlan implements CrudEntityInterface
     public function setProduct(Product $product): void
     {
         $this->product = $product;
+    }
+
+    public function getHasTrial(): ?bool
+    {
+        return $this->hasTrial;
+    }
+
+    public function setHasTrial(?bool $hasTrial): void
+    {
+        $this->hasTrial = $hasTrial;
+    }
+
+    public function getTrialLengthDays(): ?int
+    {
+        return $this->trialLengthDays;
+    }
+
+    public function setTrialLengthDays(?int $trialLengthDays): void
+    {
+        $this->trialLengthDays = $trialLengthDays;
     }
 }

@@ -34,7 +34,10 @@ final class PlanManager implements PlanManagerInterface
                 $planInfo['prices'] ?? [],
                 $planInfo['is_free'] ?? false,
                 $planInfo['is_per_seat'] ?? false,
-                $planInfo['user_count'] ?? 1
+                $planInfo['user_count'] ?? 1,
+                $planInfo['public'] ?? true,
+                $planInfo['has_trial'] ?? false,
+                $planName['trial_length_days'] ?? 0,
             );
             $this->plans[] = $plan;
         }
