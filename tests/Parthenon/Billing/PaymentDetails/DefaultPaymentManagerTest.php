@@ -23,7 +23,9 @@ class DefaultPaymentManagerTest extends TestCase
 {
     public function testRepositoryIsCalled()
     {
+        $id = 'id-here';
         $paymentDetails = $this->createMock(PaymentDetails::class);
+        $paymentDetails->method('getId')->willReturn($id);
         $customer = $this->createMock(CustomerInterface::class);
         $repository = $this->createMock(PaymentDetailsRepositoryInterface::class);
 
@@ -31,6 +33,7 @@ class DefaultPaymentManagerTest extends TestCase
 
         $repository->expects($this->once())->method('markAllCustomerDetailsAsNotDefault')->with($customer);
         $repository->expects($this->once())->method('save')->with($paymentDetails);
+        $repository->method('findById')->with($id)->willReturn($paymentDetails);
 
         $subject = new DefaultPaymentManager($repository);
         $subject->makePaymentDetailsDefault($customer, $paymentDetails);

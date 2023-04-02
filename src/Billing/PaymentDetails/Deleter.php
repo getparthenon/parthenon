@@ -14,21 +14,18 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\PaymentDetails;
 
-use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 
-class DefaultPaymentManager implements DefaultPaymentManagerInterface
+class Deleter implements DeleterInterface
 {
     public function __construct(private PaymentDetailsRepositoryInterface $paymentDetailsRepository)
     {
     }
 
-    public function makePaymentDetailsDefault(CustomerInterface $customer, PaymentDetails $paymentDetails): void
+    public function delete(PaymentDetails $paymentDetails): void
     {
-        $this->paymentDetailsRepository->markAllCustomerDetailsAsNotDefault($customer);
-        $paymentDetails = $this->paymentDetailsRepository->findById($paymentDetails->getId());
-        $paymentDetails->setDefaultPaymentOption(true);
+        $paymentDetails->setDeleted(true);
         $this->paymentDetailsRepository->save($paymentDetails);
     }
 }

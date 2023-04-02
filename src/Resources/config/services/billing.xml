@@ -140,5 +140,10 @@
             <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
         </service>
         <service id="Parthenon\Billing\PaymentDetails\FrontendAddProcessorInterface" alias="Parthenon\Billing\PaymentDetails\FrontendAddProcessor" />
+
+        <service id="Parthenon\Billing\PaymentDetails\Deleter" class="Parthenon\Billing\PaymentDetails\Deleter">
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Billing\PaymentDetails\DeleterInterface" alias="Parthenon\Billing\PaymentDetails\Deleter" />
     </services>
 </container>

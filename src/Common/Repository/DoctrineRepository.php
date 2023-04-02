@@ -54,6 +54,8 @@ class DoctrineRepository implements RepositoryInterface
             throw new NoEntityFoundException('No entity found for id '.$id);
         }
 
+        $this->entityRepository->getEntityManager()->refresh($entity);
+
         return $entity;
     }
 

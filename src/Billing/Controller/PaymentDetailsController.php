@@ -18,6 +18,7 @@ use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface;
+use Parthenon\Billing\PaymentDetails\DeleterInterface;
 use Parthenon\Billing\PaymentDetails\FrontendAddProcessorInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -80,7 +81,7 @@ class PaymentDetailsController
     }
 
     #[Route('/billing/payment-details/{id}', name: 'parthenon_billing_paymentdetails_deletecard', methods: ['DELETE'])]
-    public function deleteCard(Request $request, PaymentDetailsRepositoryInterface $paymentDetailsRepository)
+    public function deleteCard(Request $request, PaymentDetailsRepositoryInterface $paymentDetailsRepository, DeleterInterface $deleter)
     {
         try {
             /** @var PaymentDetails $paymentDetails */
@@ -88,8 +89,7 @@ class PaymentDetailsController
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
         }
-        $paymentDetails->setDeleted(true);
-        $paymentDetailsRepository->save($paymentDetails);
+        $deleter->delete($paymentDetails);
 
         return new JsonResponse(['success' => true], JsonResponse::HTTP_ACCEPTED);
     }
