@@ -107,7 +107,7 @@ class PaymentDetails
         $this->storedPaymentReference = $storedPaymentReference;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
