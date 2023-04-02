@@ -15,6 +15,7 @@
         <field name="storedPaymentReference" column="stored_payment_reference" type="string" nullable="true"  />
         <field name="defaultPaymentOption" column="default_payment_option" type="boolean" nullable="false"  />
         <field name="brand" column="brand" type="string" nullable="true" />
+        <field name="name" column="name" type="string" nullable="true" />
         <field name="lastFour" column="last_four" type="string" nullable="true" />
         <field name="expiryMonth" column="expiry_month" type="string" nullable="true" />
         <field name="expiryYear" column="expiry_year" type="string" nullable="true" />
