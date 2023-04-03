@@ -54,7 +54,6 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $obolSubscription = $this->subscriptionFactory->createSubscription($billingDetails, $planPrice, $seatNumbers);
 
         if ($this->subscriptionRepository->hasActiveSubscription($customer)) {
-            $main = false;
             $subscription = $this->subscriptionRepository->getOneActiveSubscriptionForCustomer($customer);
 
             if ($subscription->getCurrency() != $planPrice->getCurrency()) {
@@ -62,8 +61,6 @@ final class SubscriptionManager implements SubscriptionManagerInterface
             }
 
             $obolSubscription->setParentReference($subscription->getMainExternalReference());
-        } else {
-            $main = true;
         }
 
         $subscriptionCreationResponse = $this->provider->payments()->startSubscription($obolSubscription);
@@ -86,7 +83,6 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setCreatedAt(new \DateTime());
         $subscription->setUpdatedAt(new \DateTime());
         $subscription->setCustomer($customer);
-        $subscription->setMainSubscription($main);
 
         if ($plan->hasEntityId()) {
             $subscriptionPlan = $this->subscriptionPlanRepository->findById($plan->getEntityId());

@@ -119,16 +119,6 @@ class Subscription
         $this->subscriptionPlan = $subscriptionPlan;
     }
 
-    public function isMainSubscription(): bool
-    {
-        return $this->mainSubscription;
-    }
-
-    public function setMainSubscription(bool $mainSubscription): void
-    {
-        $this->mainSubscription = $mainSubscription;
-    }
-
     public function getMainExternalReference(): string
     {
         return $this->mainExternalReference;
