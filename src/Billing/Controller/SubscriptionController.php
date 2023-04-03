@@ -65,7 +65,7 @@ class SubscriptionController
                 return new JsonResponse(StartSubscriptionResponse::createInvalidRequestResponse($errors), JsonResponse::HTTP_BAD_REQUEST);
             }
 
-            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionDto);
+            $subscription = $subscriptionManager->startSubscriptionWithDto($customer, $subscriptionDto);
 
             $customerRepository->save($customer);
         } catch (NoEntityFoundException $exception) {
@@ -84,6 +84,7 @@ class SubscriptionController
             return new JsonResponse(StartSubscriptionResponse::createUnsupportedPaymentProvider(), JsonResponse::HTTP_BAD_REQUEST);
         } catch (\Throwable $t) {
             $this->getLogger()->error('Unknown error while starting a subscription');
+            var_dump($t);
 
             return new JsonResponse(StartSubscriptionResponse::createGeneralError(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }

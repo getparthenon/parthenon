@@ -15,7 +15,21 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface SubscriptionRepositoryInterface extends CrudRepositoryInterface
 {
+    public function hasActiveMainSubscription(CustomerInterface $customer): bool;
+
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function getActiveMainSubscription(CustomerInterface $customer): Subscription;
+
+    /**
+     * @return Subscription[]
+     */
+    public function getAllForCustomer(CustomerInterface $customer): array;
 }

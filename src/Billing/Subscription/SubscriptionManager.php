@@ -17,16 +17,20 @@ namespace Parthenon\Billing\Subscription;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Obol\SubscriptionFactoryInterface;
+use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanManagerInterface;
+use Parthenon\Billing\Plan\PlanPrice;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Common\Exception\GeneralException;
 
 class SubscriptionManager implements SubscriptionManagerInterface
 {
@@ -44,19 +48,23 @@ class SubscriptionManager implements SubscriptionManagerInterface
     ) {
     }
 
-    public function startSubscription(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription
+    public function startSubscription(CustomerInterface $customer, Plan $plan, PlanPrice $planPrice, PaymentDetails $paymentDetails, int $seatNumbers): Subscription
     {
-        if (!$startSubscriptionDto->hasPaymentDetailsId()) {
-            $paymentDetails = $this->paymentDetailsRepository->getDefaultPaymentDetailsForCustomer($customer);
-        } else {
-            $paymentDetails = $this->paymentDetailsRepository->findById($startSubscriptionDto->getPaymentDetailsId());
-        }
         $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($customer, $paymentDetails);
+        $obolSubscription = $this->subscriptionFactory->createSubscription($billingDetails, $planPrice, $seatNumbers);
 
-        $plan = $this->planManager->getPlanByName($startSubscriptionDto->getPlanName());
-        $planPrice = $plan->getPriceForPaymentSchedule($startSubscriptionDto->getSchedule(), $startSubscriptionDto->getCurrency());
+        if ($this->subscriptionRepository->hasActiveMainSubscription($customer)) {
+            $main = false;
+            $subscription = $this->subscriptionRepository->getActiveMainSubscription($customer);
 
-        $obolSubscription = $this->subscriptionFactory->createSubscription($billingDetails, $planPrice, $startSubscriptionDto->getSeatNumbers());
+            if ($subscription->getCurrency() != $planPrice->getCurrency()) {
+                throw new GeneralException("Can't add a child subscription for a different currency");
+            }
+
+            $obolSubscription->setParentReference($subscription->getExternalReference());
+        } else {
+            $main = true;
+        }
 
         $subscriptionCreationResponse = $this->provider->payments()->startSubscription($obolSubscription);
         if ($subscriptionCreationResponse->hasCustomerCreation()) {
@@ -68,16 +76,16 @@ class SubscriptionManager implements SubscriptionManagerInterface
 
         $subscription = new Subscription();
         $subscription->setPlanName($plan->getName());
-        $subscription->setPaymentSchedule($startSubscriptionDto->getSchedule());
+        $subscription->setPaymentSchedule($planPrice->getSchedule());
         $subscription->setActive(true);
         $subscription->setMoneyAmount($planPrice->getPriceAsMoney());
         $subscription->setStatus(\Parthenon\Billing\Entity\EmbeddedSubscription::STATUS_ACTIVE);
         $subscription->setExternalReference($subscriptionCreationResponse->getSubscriptionId());
-        $subscription->setMainSubscription(true);
-        $subscription->setSeats($startSubscriptionDto->getSeatNumbers());
+        $subscription->setSeats($seatNumbers);
         $subscription->setCreatedAt(new \DateTime());
         $subscription->setUpdatedAt(new \DateTime());
         $subscription->setCustomer($customer);
+        $subscription->setMainSubscription($main);
 
         if ($plan->hasEntityId()) {
             $subscriptionPlan = $this->subscriptionPlanRepository->findById($plan->getEntityId());
@@ -92,5 +100,19 @@ class SubscriptionManager implements SubscriptionManagerInterface
         $this->subscriptionRepository->save($subscription);
 
         return $subscription;
+    }
+
+    public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription
+    {
+        if (!$startSubscriptionDto->getPaymentDetailsId()) {
+            $paymentDetails = $this->paymentDetailsRepository->getDefaultPaymentDetailsForCustomer($customer);
+        } else {
+            $paymentDetails = $this->paymentDetailsRepository->findById($startSubscriptionDto->getPaymentDetailsId());
+        }
+
+        $plan = $this->planManager->getPlanByName($startSubscriptionDto->getPlanName());
+        $planPrice = $plan->getPriceForPaymentSchedule($startSubscriptionDto->getSchedule(), $startSubscriptionDto->getCurrency());
+
+        return $this->startSubscription($customer, $plan, $planPrice, $paymentDetails, $startSubscriptionDto->getSeatNumbers());
     }
 }

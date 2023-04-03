@@ -18,7 +18,7 @@ use Parthenon\Billing\Exception\NoPlanFoundException;
 
 class CachedPlanManager implements PlanManagerInterface
 {
-    public const REDIS_STORAGE_KEY = 'parthenon_plans_sds';
+    public const REDIS_STORAGE_KEY = 'parthenon_plan';
     private ?array $plans = null;
 
     public function __construct(
