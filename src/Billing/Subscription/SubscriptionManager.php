@@ -61,7 +61,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
                 throw new GeneralException("Can't add a child subscription for a different currency");
             }
 
-            $obolSubscription->setParentReference($subscription->getExternalReference());
+            $obolSubscription->setParentReference($subscription->getMainExternalReference());
         } else {
             $main = true;
         }
@@ -80,7 +80,8 @@ class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setActive(true);
         $subscription->setMoneyAmount($planPrice->getPriceAsMoney());
         $subscription->setStatus(\Parthenon\Billing\Entity\EmbeddedSubscription::STATUS_ACTIVE);
-        $subscription->setExternalReference($subscriptionCreationResponse->getSubscriptionId());
+        $subscription->setMainExternalReference($subscriptionCreationResponse->getSubscriptionId());
+        $subscription->setChildExternalReference($subscriptionCreationResponse->getLineId());
         $subscription->setSeats($seatNumbers);
         $subscription->setCreatedAt(new \DateTime());
         $subscription->setUpdatedAt(new \DateTime());

@@ -39,7 +39,9 @@ class Subscription
 
     private ?string $currency = null;
 
-    private string $externalReference;
+    private string $mainExternalReference;
+
+    private string $childExternalReference;
 
     private ?SubscriptionPlan $subscriptionPlan = null;
 
@@ -129,14 +131,24 @@ class Subscription
         $this->mainSubscription = $mainSubscription;
     }
 
-    public function getExternalReference(): string
+    public function getMainExternalReference(): string
     {
-        return $this->externalReference;
+        return $this->mainExternalReference;
     }
 
-    public function setExternalReference(string $externalReference): void
+    public function setMainExternalReference(string $mainExternalReference): void
     {
-        $this->externalReference = $externalReference;
+        $this->mainExternalReference = $mainExternalReference;
+    }
+
+    public function getChildExternalReference(): string
+    {
+        return $this->childExternalReference;
+    }
+
+    public function setChildExternalReference(string $childExternalReference): void
+    {
+        $this->childExternalReference = $childExternalReference;
     }
 
     public function getAmount(): ?int
