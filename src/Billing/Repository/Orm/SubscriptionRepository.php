@@ -22,10 +22,10 @@ use Parthenon\Common\Exception\NoEntityFoundException;
 
 class SubscriptionRepository extends DoctrineCrudRepository implements SubscriptionRepositoryInterface
 {
-    public function hasActiveMainSubscription(CustomerInterface $customer): bool
+    public function hasActiveSubscription(CustomerInterface $customer): bool
     {
         try {
-            $this->getActiveMainSubscription($customer);
+            $this->getOneActiveSubscriptionForCustomer($customer);
         } catch (NoEntityFoundException $exception) {
             return false;
         }
@@ -33,9 +33,9 @@ class SubscriptionRepository extends DoctrineCrudRepository implements Subscript
         return true;
     }
 
-    public function getActiveMainSubscription(CustomerInterface $customer): Subscription
+    public function getOneActiveSubscriptionForCustomer(CustomerInterface $customer): Subscription
     {
-        $subscription = $this->entityRepository->findOneBy(['customer' => $customer, 'active' => true, 'mainSubscription' => true]);
+        $subscription = $this->entityRepository->findOneBy(['customer' => $customer, 'active' => true]);
 
         if (!$subscription instanceof Subscription) {
             throw new NoEntityFoundException();
@@ -47,5 +47,10 @@ class SubscriptionRepository extends DoctrineCrudRepository implements Subscript
     public function getAllForCustomer(CustomerInterface $customer): array
     {
         return $this->entityRepository->findBy(['customer' => $customer]);
+    }
+
+    public function getAllActiveForCustomer(CustomerInterface $customer): array
+    {
+        return $this->entityRepository->findBy(['customer' => $customer, 'active' => true]);
     }
 }

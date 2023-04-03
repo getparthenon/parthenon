@@ -12,7 +12,6 @@
         <many-to-one field="customer" target-entity="Parthenon\Billing\Entity\CustomerInterface" />
         <field name="planName" column="plan_name" type="string" nullable="true"  />
         <field name="paymentSchedule" column="payment_schedule" type="string"  nullable="true"  />
-        <field name="mainSubscription" column="main_subscription" type="boolean" />
         <field name="seats" column="seats" type="integer" nullable="true" />
         <field name="active" column="active" type="boolean" nullable="true"  />
         <field name="status" column="status" type="string" nullable="true"  />

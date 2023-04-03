@@ -27,8 +27,6 @@ class Subscription
 
     private string $paymentSchedule;
 
-    private bool $mainSubscription = true;
-
     private ?int $seats = 1;
 
     private bool $active;
@@ -119,16 +117,6 @@ class Subscription
     public function setSubscriptionPlan(?SubscriptionPlan $subscriptionPlan): void
     {
         $this->subscriptionPlan = $subscriptionPlan;
-    }
-
-    public function isMainSubscription(): bool
-    {
-        return $this->mainSubscription;
-    }
-
-    public function setMainSubscription(bool $mainSubscription): void
-    {
-        $this->mainSubscription = $mainSubscription;
     }
 
     public function getMainExternalReference(): string

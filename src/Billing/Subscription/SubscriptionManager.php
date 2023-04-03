@@ -19,6 +19,7 @@ use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Exception\SubscriptionCreationException;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Obol\SubscriptionFactoryInterface;
@@ -30,9 +31,8 @@ use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
-use Parthenon\Common\Exception\GeneralException;
 
-class SubscriptionManager implements SubscriptionManagerInterface
+final class SubscriptionManager implements SubscriptionManagerInterface
 {
     public function __construct(
         private PaymentDetailsRepositoryInterface $paymentDetailsRepository,
@@ -53,12 +53,12 @@ class SubscriptionManager implements SubscriptionManagerInterface
         $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($customer, $paymentDetails);
         $obolSubscription = $this->subscriptionFactory->createSubscription($billingDetails, $planPrice, $seatNumbers);
 
-        if ($this->subscriptionRepository->hasActiveMainSubscription($customer)) {
+        if ($this->subscriptionRepository->hasActiveSubscription($customer)) {
             $main = false;
-            $subscription = $this->subscriptionRepository->getActiveMainSubscription($customer);
+            $subscription = $this->subscriptionRepository->getOneActiveSubscriptionForCustomer($customer);
 
             if ($subscription->getCurrency() != $planPrice->getCurrency()) {
-                throw new GeneralException("Can't add a child subscription for a different currency");
+                throw new SubscriptionCreationException("Can't add a child subscription for a different currency");
             }
 
             $obolSubscription->setParentReference($subscription->getMainExternalReference());
@@ -86,7 +86,6 @@ class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setCreatedAt(new \DateTime());
         $subscription->setUpdatedAt(new \DateTime());
         $subscription->setCustomer($customer);
-        $subscription->setMainSubscription($main);
 
         if ($plan->hasEntityId()) {
             $subscriptionPlan = $this->subscriptionPlanRepository->findById($plan->getEntityId());

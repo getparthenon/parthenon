@@ -21,15 +21,20 @@ use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface SubscriptionRepositoryInterface extends CrudRepositoryInterface
 {
-    public function hasActiveMainSubscription(CustomerInterface $customer): bool;
+    public function hasActiveSubscription(CustomerInterface $customer): bool;
 
     /**
      * @throws NoEntityFoundException
      */
-    public function getActiveMainSubscription(CustomerInterface $customer): Subscription;
+    public function getOneActiveSubscriptionForCustomer(CustomerInterface $customer): Subscription;
 
     /**
      * @return Subscription[]
      */
     public function getAllForCustomer(CustomerInterface $customer): array;
+
+    /**
+     * @return Subscription[]
+     */
+    public function getAllActiveForCustomer(CustomerInterface $customer): array;
 }
