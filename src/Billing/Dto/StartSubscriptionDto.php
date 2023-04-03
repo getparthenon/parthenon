@@ -20,18 +20,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 class StartSubscriptionDto
 {
     #[Assert\NotBlank]
+    #[Assert\Type('string')]
     #[SerializedName('plan_name')]
-    private string $planName;
+    private $planName;
 
     #[Assert\NotBlank]
     #[SerializedName('schedule')]
-    private string $schedule;
+    #[Assert\Type('string')]
+    private $schedule;
 
     #[SerializedName('seat_numbers')]
-    private int $seatNumbers = 1;
+    private $seatNumbers = 1;
 
     #[SerializedName('currency')]
-    private string $currency = 'usd';
+    #[Assert\Currency]
+    private $currency = 'usd';
+
+    #[SerializedName('payment_details')]
+    private $paymentDetailsId = null;
 
     public function getPlanName(): string
     {
@@ -71,5 +77,23 @@ class StartSubscriptionDto
     public function setCurrency(string $currency): void
     {
         $this->currency = $currency;
+    }
+
+    public function getPaymentDetailsId(): ?string
+    {
+        return $this->paymentDetailsId;
+    }
+
+    /**
+     * @param null $paymentDetailsId
+     */
+    public function setPaymentDetailsId($paymentDetailsId): void
+    {
+        $this->paymentDetailsId = $paymentDetailsId;
+    }
+
+    public function hasPaymentDetailsId(): bool
+    {
+        return isset($this->paymentDetailsId);
     }
 }

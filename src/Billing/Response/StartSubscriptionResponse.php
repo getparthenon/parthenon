@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Response;
 
 use Parthenon\Billing\Entity\Subscription;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class StartSubscriptionResponse
@@ -36,9 +37,17 @@ class StartSubscriptionResponse
 
     public static function createInvalidRequestResponse(ConstraintViolationListInterface $errors): array
     {
+        $errorOutput = [];
+
+        /** @var ConstraintViolationInterface $error */
+        foreach ($errors as $error) {
+            $errorOutput[$error->getPropertyPath()] = $error->getMessage();
+        }
+
         return [
             'success' => false,
             'code' => static::CODE_REQUEST_INVALID,
+            'errors' => $errorOutput,
         ];
     }
 

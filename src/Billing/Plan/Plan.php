@@ -14,10 +14,11 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Plan;
 
+use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Exception\NoPlanPriceFoundException;
 use Parthenon\Common\Exception\ParameterNotSetException;
 
-final class Plan
+final class Plan implements PlanInterface
 {
     public const PAY_YEARLY = 'yearly';
     public const PAY_MONTHLY = 'monthly';
@@ -34,6 +35,7 @@ final class Plan
         private bool $public = false,
         private ?bool $hasTrial = false,
         private ?int $trialLengthDays = 0,
+        private ?SubscriptionPlan $entity = null,
     ) {
     }
 
@@ -82,6 +84,7 @@ final class Plan
      */
     public function getPriceForPaymentSchedule(string $term, string $currency): PlanPrice
     {
+        $currency = strtolower($currency);
         if (!isset($this->prices[$term][$currency])) {
             throw new NoPlanPriceFoundException(sprintf("No currency '%s' found for '%s' schedule found", $currency, $term));
         }
@@ -155,5 +158,20 @@ final class Plan
     public function setTrialLengthDays(?int $trialLengthDays): void
     {
         $this->trialLengthDays = $trialLengthDays;
+    }
+
+    public function getEntity(): ?SubscriptionPlan
+    {
+        return $this->entity;
+    }
+
+    public function setEntity(?SubscriptionPlan $entity): void
+    {
+        $this->entity = $entity;
+    }
+
+    public function hasEntity(): bool
+    {
+        return isset($this->entity);
     }
 }

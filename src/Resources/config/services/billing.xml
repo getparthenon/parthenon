@@ -145,5 +145,18 @@
             <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
         </service>
         <service id="Parthenon\Billing\PaymentDetails\DeleterInterface" alias="Parthenon\Billing\PaymentDetails\Deleter" />
+
+        <!--- Subscriptions -->
+        <service id="Parthenon\Billing\Subscription\SubscriptionManager" class="Parthenon\Billing\Subscription\SubscriptionManager">
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
+            <argument type="service" id="Obol\Provider\ProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\Obol\BillingDetailsFactoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Obol\PaymentFactoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Obol\SubscriptionFactoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
+        </service>
+        <service id="Parthenon\Billing\Subscription\SubscriptionManagerInterface" alias="Parthenon\Billing\Subscription\SubscriptionManager" />
+
     </services>
 </container>

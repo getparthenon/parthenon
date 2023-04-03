@@ -15,20 +15,14 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Controller;
 
 use Obol\Exception\UnsupportedFunctionalityException;
-use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Billing\Exception\NoPlanFoundException;
 use Parthenon\Billing\Exception\NoPlanPriceFoundException;
-use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
-use Parthenon\Billing\Obol\PaymentFactoryInterface;
-use Parthenon\Billing\Obol\SubscriptionFactoryInterface;
-use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
-use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
-use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Response\StartSubscriptionResponse;
+use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,16 +40,10 @@ class SubscriptionController
     public function startSubscriptionWithPaymentDetails(
         Request $request,
         CustomerProviderInterface $customerProvider,
-        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
-        BillingDetailsFactoryInterface $billingDetailsFactory,
-        PaymentFactoryInterface $paymentFactory,
-        PaymentRepositoryInterface $paymentRepository,
-        PlanManagerInterface $planManager,
         SerializerInterface $serializer,
-        ProviderInterface $provider,
         CustomerRepositoryInterface $customerRepository,
         ValidatorInterface $validator,
-        SubscriptionFactoryInterface $subscriptionFactory,
+        SubscriptionManagerInterface $subscriptionManager,
     ): Response {
         $this->getLogger()->info('Starting the subscription');
 
@@ -77,32 +65,7 @@ class SubscriptionController
                 return new JsonResponse(StartSubscriptionResponse::createInvalidRequestResponse($errors), JsonResponse::HTTP_BAD_REQUEST);
             }
 
-            try {
-                $paymentDetails = $paymentDetailsRepository->getDefaultPaymentDetailsForCustomer($customer);
-            } catch (NoEntityFoundException $e) {
-                return new JsonResponse(StartSubscriptionResponse::createNoBillingDetails());
-            }
-            $billingDetails = $billingDetailsFactory->createFromCustomerAndPaymentDetails($customer, $paymentDetails);
-
-            $plan = $planManager->getPlanByName($subscriptionDto->getPlanName());
-            $planPrice = $plan->getPriceForPaymentSchedule($subscriptionDto->getSchedule(), $subscriptionDto->getCurrency());
-
-            $obolSubscription = $subscriptionFactory->createSubscription($billingDetails, $planPrice, $subscriptionDto->getSeatNumbers());
-
-            $subscriptionCreationResponse = $provider->payments()->startSubscription($obolSubscription);
-            if ($subscriptionCreationResponse->hasCustomerCreation()) {
-                $customer->setPaymentProviderDetailsUrl($subscriptionCreationResponse->getCustomerCreation()->getDetailsUrl());
-                $customer->setExternalCustomerReference($subscriptionCreationResponse->getCustomerCreation()->getReference());
-            }
-            $payment = $paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse);
-            $paymentRepository->save($payment);
-
-            $subscription = $customer->getSubscription();
-            $subscription->setPlanName($plan->getName());
-            $subscription->setPaymentSchedule($subscriptionDto->getSchedule());
-            $subscription->setActive(true);
-            $subscription->setMoneyAmount($planPrice->getPriceAsMoney());
-            $subscription->setStatus(\Parthenon\Billing\Entity\Subscription::STATUS_ACTIVE);
+            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionDto);
 
             $customerRepository->save($customer);
         } catch (NoEntityFoundException $exception) {
@@ -119,6 +82,10 @@ class SubscriptionController
             $this->getLogger()->error('Payment provider does not support payment details');
 
             return new JsonResponse(StartSubscriptionResponse::createUnsupportedPaymentProvider(), JsonResponse::HTTP_BAD_REQUEST);
+        } catch (\Throwable $t) {
+            $this->getLogger()->error('Unknown error while starting a subscription');
+
+            return new JsonResponse(StartSubscriptionResponse::createGeneralError(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return new JsonResponse(StartSubscriptionResponse::createSuccessResponse($subscription), JsonResponse::HTTP_CREATED);
