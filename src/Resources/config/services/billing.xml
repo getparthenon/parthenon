@@ -155,6 +155,9 @@
             <argument type="service" id="Parthenon\Billing\Obol\SubscriptionFactoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\PriceRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
         </service>
         <service id="Parthenon\Billing\Subscription\SubscriptionManagerInterface" alias="Parthenon\Billing\Subscription\SubscriptionManager" />
 

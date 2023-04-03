@@ -12,13 +12,10 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Billing\Subscription;
+namespace Parthenon\Billing\Repository;
 
-use Parthenon\Billing\Dto\StartSubscriptionDto;
-use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
-interface SubscriptionManagerInterface
+interface SubscriptionRepositoryInterface extends CrudRepositoryInterface
 {
-    public function startSubscription(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription;
 }

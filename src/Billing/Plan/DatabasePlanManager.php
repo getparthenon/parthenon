@@ -79,6 +79,7 @@ class DatabasePlanManager implements PlanManagerInterface
             $subscriptionPlan->isPublic(),
             $subscriptionPlan->getHasTrial(),
             $subscriptionPlan->getTrialLengthDays(),
+            $subscriptionPlan->getId()
         );
 
         return $plan;
@@ -140,6 +141,7 @@ class DatabasePlanManager implements PlanManagerInterface
                 'currency' => $price->getCurrency(),
                 'price_id' => $price->getExternalReference(),
                 'public' => $price->isPublic(),
+                'entity_id' => $price->getId(),
             ];
         }
 

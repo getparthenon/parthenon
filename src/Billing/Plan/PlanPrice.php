@@ -24,6 +24,7 @@ class PlanPrice
         private string|int|float $amount,
         private string $currency,
         private ?string $priceId = null,
+        private $entityId = null,
     ) {
     }
 
@@ -55,5 +56,20 @@ class PlanPrice
     public function getPriceAsMoney(): Money
     {
         return Money::of($this->amount, Currency::of(strtoupper($this->currency)));
+    }
+
+    public function getEntityId(): mixed
+    {
+        return $this->entityId;
+    }
+
+    public function setEntityId(mixed $entityId): void
+    {
+        $this->entityId = $entityId;
+    }
+
+    public function hasEntityId(): bool
+    {
+        return isset($this->entityId);
     }
 }

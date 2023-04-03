@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Plan;
 
-use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Exception\NoPlanPriceFoundException;
 use Parthenon\Common\Exception\ParameterNotSetException;
 
@@ -35,7 +34,7 @@ final class Plan implements PlanInterface
         private bool $public = false,
         private ?bool $hasTrial = false,
         private ?int $trialLengthDays = 0,
-        private ?SubscriptionPlan $entity = null,
+        private mixed $entityId = null,
     ) {
     }
 
@@ -84,12 +83,11 @@ final class Plan implements PlanInterface
      */
     public function getPriceForPaymentSchedule(string $term, string $currency): PlanPrice
     {
-        $currency = strtolower($currency);
         if (!isset($this->prices[$term][$currency])) {
             throw new NoPlanPriceFoundException(sprintf("No currency '%s' found for '%s' schedule found", $currency, $term));
         }
 
-        return new PlanPrice($term, $this->prices[$term][$currency]['amount'], $currency, $this->prices[$term][$currency]['price_id'] ?? null);
+        return new PlanPrice($term, $this->prices[$term][$currency]['amount'], $currency, $this->prices[$term][$currency]['price_id'] ?? null, $this->prices[$term][$currency]['entity_id'] ?? null);
     }
 
     /**
@@ -103,7 +101,7 @@ final class Plan implements PlanInterface
                 if (!$data['public']) {
                     continue;
                 }
-                $output[] = new PlanPrice($term, $data['amount'], $currency, $data['price_id'] ?? null);
+                $output[] = new PlanPrice($term, $data['amount'], $currency, $data['price_id'] ?? null, $data['entity_id'] ?? null);
             }
         }
 
@@ -160,18 +158,18 @@ final class Plan implements PlanInterface
         $this->trialLengthDays = $trialLengthDays;
     }
 
-    public function getEntity(): ?SubscriptionPlan
+    public function getEntityId(): mixed
     {
-        return $this->entity;
+        return $this->entityId;
     }
 
-    public function setEntity(?SubscriptionPlan $entity): void
+    public function setEntityId(mixed $entityId): void
     {
-        $this->entity = $entity;
+        $this->entityId = $entityId;
     }
 
-    public function hasEntity(): bool
+    public function hasEntityId(): bool
     {
-        return isset($this->entity);
+        return isset($this->entityId);
     }
 }

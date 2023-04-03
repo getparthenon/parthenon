@@ -17,16 +17,16 @@ namespace Parthenon\Billing\Subscription;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\EmbeddedSubscription;
+use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Obol\SubscriptionFactoryInterface;
 use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
-use Parthenon\Billing\Response\StartSubscriptionResponse;
-use Parthenon\Common\Exception\NoEntityFoundException;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Parthenon\Billing\Repository\PriceRepositoryInterface;
+use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
+use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 
 class SubscriptionManager implements SubscriptionManagerInterface
 {
@@ -38,21 +38,19 @@ class SubscriptionManager implements SubscriptionManagerInterface
         private SubscriptionFactoryInterface $subscriptionFactory,
         private PaymentRepositoryInterface $paymentRepository,
         private PlanManagerInterface $planManager,
+        private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        private PriceRepositoryInterface $priceRepository,
+        private SubscriptionRepositoryInterface $subscriptionRepository,
     ) {
     }
 
-    public function startSubscription(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): EmbeddedSubscription
+    public function startSubscription(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription
     {
-        try {
-            if (!$startSubscriptionDto->hasPaymentDetailsId()) {
-                $paymentDetails = $this->paymentDetailsRepository->getDefaultPaymentDetailsForCustomer($customer);
-            } else {
-                $paymentDetails = $this->paymentDetailsRepository->findById($startSubscriptionDto->getPaymentDetailsId());
-            }
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse(StartSubscriptionResponse::createNoBillingDetails());
+        if (!$startSubscriptionDto->hasPaymentDetailsId()) {
+            $paymentDetails = $this->paymentDetailsRepository->getDefaultPaymentDetailsForCustomer($customer);
+        } else {
+            $paymentDetails = $this->paymentDetailsRepository->findById($startSubscriptionDto->getPaymentDetailsId());
         }
-
         $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($customer, $paymentDetails);
 
         $plan = $this->planManager->getPlanByName($startSubscriptionDto->getPlanName());
@@ -68,12 +66,30 @@ class SubscriptionManager implements SubscriptionManagerInterface
         $payment = $this->paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse);
         $this->paymentRepository->save($payment);
 
-        $subscription = $customer->getSubscription();
+        $subscription = new Subscription();
         $subscription->setPlanName($plan->getName());
         $subscription->setPaymentSchedule($startSubscriptionDto->getSchedule());
         $subscription->setActive(true);
         $subscription->setMoneyAmount($planPrice->getPriceAsMoney());
         $subscription->setStatus(\Parthenon\Billing\Entity\EmbeddedSubscription::STATUS_ACTIVE);
+        $subscription->setExternalReference($subscriptionCreationResponse->getSubscriptionId());
+        $subscription->setMainSubscription(true);
+        $subscription->setSeats($startSubscriptionDto->getSeatNumbers());
+        $subscription->setCreatedAt(new \DateTime());
+        $subscription->setUpdatedAt(new \DateTime());
+        $subscription->setCustomer($customer);
+
+        if ($plan->hasEntityId()) {
+            $subscriptionPlan = $this->subscriptionPlanRepository->findById($plan->getEntityId());
+            $subscription->setSubscriptionPlan($subscriptionPlan);
+        }
+
+        if ($planPrice->hasEntityId()) {
+            $price = $this->priceRepository->findById($planPrice->getEntityId());
+            $subscription->setPrice($price);
+        }
+
+        $this->subscriptionRepository->save($subscription);
 
         return $subscription;
     }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Response;
 
-use Parthenon\Billing\Entity\EmbeddedSubscription;
+use Parthenon\Billing\Entity\Subscription;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -83,7 +83,7 @@ class StartSubscriptionResponse
         ];
     }
 
-    public static function createSuccessResponse(EmbeddedSubscription $subscription): array
+    public static function createSuccessResponse(Subscription $subscription): array
     {
         return [
             'success' => true,

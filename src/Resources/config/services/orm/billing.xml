@@ -33,6 +33,15 @@
         </service>
         <service alias="parthenon.billing.repository.orm.subscription_plan_repository_doctrine" id="Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository" />
 
+        <service id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" alias="parthenon.billing.repository.subscription_repository" />
+        <service id="parthenon.billing.repository.subscription_repository" class="Parthenon\Billing\Repository\Orm\SubscriptionRepository">
+            <argument type="service" id="parthenon.billing.repository.orm.subscription_repository_doctrine" />
+        </service>
+        <service id="parthenon.billing.repository.orm.subscription_repository_doctrine" class="Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+        <service alias="parthenon.billing.repository.orm.subscription_repository_doctrine" id="Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository" />
+
         <service id="Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface" alias="parthenon.billing.repository.subscription_feature_repository" />
         <service id="parthenon.billing.repository.subscription_feature_repository" class="Parthenon\Billing\Repository\Orm\SubscriptionFeatureRepository">
             <argument type="service" id="parthenon.billing.repository.orm.subscription_feature_repository_doctrine" />

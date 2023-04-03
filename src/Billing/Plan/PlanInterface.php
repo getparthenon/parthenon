@@ -60,5 +60,5 @@ interface PlanInterface
 
     public function setTrialLengthDays(?int $trialLengthDays): void;
 
-    public function hasEntity(): bool;
+    public function hasEntityId(): bool;
 }
