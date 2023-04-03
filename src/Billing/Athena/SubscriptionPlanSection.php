@@ -56,7 +56,7 @@ class SubscriptionPlanSection extends AbstractSection
 
     public function getMenuName(): string
     {
-        return 'Subscription Plan';
+        return 'EmbeddedSubscription Plan';
     }
 
     public function buildEntityForm(EntityForm $entityForm): EntityForm

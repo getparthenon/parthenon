@@ -16,7 +16,7 @@ namespace Parthenon\Billing\Athena;
 
 use Parthenon\Athena\EntityForm;
 use Parthenon\Athena\ReadView;
-use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\EmbeddedSubscription;
 use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
@@ -40,7 +40,7 @@ class CustomerTeamSection extends TeamSection
 
         $entityForm->section('plan')
             ->field('subscription.planName', 'choice', ['choices' => array_combine($planNames, $planNames)])
-            ->field('subscription.status', 'choice', ['choices' => array_combine(Subscription::STATUS_ARRAY, Subscription::STATUS_ARRAY)])
+            ->field('subscription.status', 'choice', ['choices' => array_combine(EmbeddedSubscription::STATUS_ARRAY, EmbeddedSubscription::STATUS_ARRAY)])
             ->field('subscription.validUntil', 'date')
             ->end();
 

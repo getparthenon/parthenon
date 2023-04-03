@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing;
 
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\EmbeddedSubscription;
 use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Common\Address;
 use PHPUnit\Framework\TestCase;
@@ -83,12 +83,12 @@ class UserCustomerProviderTest extends TestCase
                 // TODO: Implement hasSubscription() method.
             }
 
-            public function getSubscription(): Subscription
+            public function getSubscription(): EmbeddedSubscription
             {
                 // TODO: Implement getSubscription() method.
             }
 
-            public function setSubscription(Subscription $subscription)
+            public function setSubscription(EmbeddedSubscription $subscription)
             {
                 // TODO: Implement setSubscription() method.
             }

@@ -49,8 +49,8 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $stripeSubscription = $this->client->subscriptions->retrieve($subscription->getPaymentId());
 
         if (!isset($stripeSubscription->items->data[0]->id)) {
-            $this->getLogger()->error('Subscription is itemless', ['subscription_payment_id' => $subscription->getPaymentId()]);
-            throw new GeneralException('Subscription is itemless');
+            $this->getLogger()->error('EmbeddedSubscription is itemless', ['subscription_payment_id' => $subscription->getPaymentId()]);
+            throw new GeneralException('EmbeddedSubscription is itemless');
         }
         try {
             $this->client->subscriptions->update($subscription->getPaymentId(), [

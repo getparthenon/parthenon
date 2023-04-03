@@ -158,7 +158,7 @@ class Price implements CrudEntityInterface
     public function getDisplayName(): string
     {
         if ($this->recurring) {
-            $type = 'Subscription - '.$this->schedule;
+            $type = 'EmbeddedSubscription - '.$this->schedule;
         } else {
             $type = 'one-off';
         }

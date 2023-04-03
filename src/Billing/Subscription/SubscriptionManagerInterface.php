@@ -16,9 +16,9 @@ namespace Parthenon\Billing\Subscription;
 
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\EmbeddedSubscription;
 
 interface SubscriptionManagerInterface
 {
-    public function startSubscription(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription;
+    public function startSubscription(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): EmbeddedSubscription;
 }

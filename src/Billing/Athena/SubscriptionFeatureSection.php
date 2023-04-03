@@ -50,7 +50,7 @@ class SubscriptionFeatureSection extends AbstractSection
 
     public function getMenuName(): string
     {
-        return 'Subscription Features';
+        return 'EmbeddedSubscription Features';
     }
 
     public function buildReadView(ReadView $readView): ReadView

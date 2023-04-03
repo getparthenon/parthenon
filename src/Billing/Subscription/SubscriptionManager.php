@@ -17,7 +17,7 @@ namespace Parthenon\Billing\Subscription;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\EmbeddedSubscription;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Obol\SubscriptionFactoryInterface;
@@ -41,7 +41,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
     ) {
     }
 
-    public function startSubscription(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription
+    public function startSubscription(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): EmbeddedSubscription
     {
         try {
             if (!$startSubscriptionDto->hasPaymentDetailsId()) {
@@ -73,7 +73,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setPaymentSchedule($startSubscriptionDto->getSchedule());
         $subscription->setActive(true);
         $subscription->setMoneyAmount($planPrice->getPriceAsMoney());
-        $subscription->setStatus(\Parthenon\Billing\Entity\Subscription::STATUS_ACTIVE);
+        $subscription->setStatus(\Parthenon\Billing\Entity\EmbeddedSubscription::STATUS_ACTIVE);
 
         return $subscription;
     }

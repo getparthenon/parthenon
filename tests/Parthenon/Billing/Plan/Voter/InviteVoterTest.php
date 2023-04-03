@@ -16,7 +16,7 @@ namespace Parthenon\Billing\Plan\Security\Voter;
 
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\EmbeddedSubscription;
 use Parthenon\Billing\Plan\Counter\TeamInviteCounterInterface;
 use Parthenon\Billing\Plan\LimitedUserInterface;
 use Parthenon\Billing\Plan\Plan;
@@ -54,12 +54,12 @@ class InviteVoterTest extends TestCase
         $currentSubscriberProvider = $this->createMock(CustomerProviderInterface::class);
 
         $subscriber = new class() implements CustomerInterface {
-            public function setSubscription(Subscription $subscription)
+            public function setSubscription(EmbeddedSubscription $subscription)
             {
                 // TODO: Implement setSubscription() method.
             }
 
-            public function getSubscription(): Subscription
+            public function getSubscription(): EmbeddedSubscription
             {
                 // TODO: Implement getSubscription() method.
             }
@@ -164,14 +164,14 @@ class InviteVoterTest extends TestCase
         $currentSubscriberProvider = $this->createMock(CustomerProviderInterface::class);
 
         $subscriber = new class() implements CustomerInterface {
-            public function setSubscription(Subscription $subscription)
+            public function setSubscription(EmbeddedSubscription $subscription)
             {
                 // TODO: Implement setSubscription() method.
             }
 
-            public function getSubscription(): Subscription
+            public function getSubscription(): EmbeddedSubscription
             {
-                $subscription = new Subscription();
+                $subscription = new EmbeddedSubscription();
                 $subscription->setSeats(1);
 
                 return $subscription;
@@ -277,14 +277,14 @@ class InviteVoterTest extends TestCase
         $currentSubscriberProvider = $this->createMock(CustomerProviderInterface::class);
 
         $subscriber = new class() implements CustomerInterface {
-            public function setSubscription(Subscription $subscription)
+            public function setSubscription(EmbeddedSubscription $subscription)
             {
                 // TODO: Implement setSubscription() method.
             }
 
-            public function getSubscription(): Subscription
+            public function getSubscription(): EmbeddedSubscription
             {
-                $subscription = new Subscription();
+                $subscription = new EmbeddedSubscription();
                 $subscription->setSeats(10);
 
                 return $subscription;
@@ -390,14 +390,14 @@ class InviteVoterTest extends TestCase
         $currentSubscriberProvider = $this->createMock(CustomerProviderInterface::class);
 
         $subscriber = new class() implements CustomerInterface {
-            public function setSubscription(Subscription $subscription)
+            public function setSubscription(EmbeddedSubscription $subscription)
             {
                 // TODO: Implement setSubscription() method.
             }
 
-            public function getSubscription(): Subscription
+            public function getSubscription(): EmbeddedSubscription
             {
-                $subscription = new Subscription();
+                $subscription = new EmbeddedSubscription();
                 $subscription->setSeats(1);
 
                 return $subscription;
