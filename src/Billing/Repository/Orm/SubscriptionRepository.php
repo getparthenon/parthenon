@@ -53,4 +53,21 @@ class SubscriptionRepository extends DoctrineCrudRepository implements Subscript
     {
         return $this->entityRepository->findBy(['customer' => $customer, 'active' => true]);
     }
+
+    public function updateValidUntilForAllActiveSubscriptions(CustomerInterface $customer, string $mainExternalReference, \DateTimeInterface $validUntil): void
+    {
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->update()
+            ->set('s.validUntil', ':validUntil')
+            ->set('s.updatedAt', ':now')
+            ->where('s.customer = :customer')
+            ->andWhere('s.active = true')
+            ->andWhere('s.mainExternalReference = :mainExternalReference')
+            ->setParameter('customer', $customer)
+            ->setParameter('mainExternalReference', $mainExternalReference)
+            ->setParameter(':validUntil', $validUntil)
+            ->setParameter('now', new \DateTime());
+        $query = $qb->getQuery();
+        $query->execute();
+    }
 }

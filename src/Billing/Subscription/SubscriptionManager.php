@@ -82,6 +82,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setSeats($seatNumbers);
         $subscription->setCreatedAt(new \DateTime());
         $subscription->setUpdatedAt(new \DateTime());
+        $subscription->setValidUntil($subscriptionCreationResponse->getBilledUntil());
         $subscription->setCustomer($customer);
 
         if ($plan->hasEntityId()) {
@@ -95,6 +96,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         }
 
         $this->subscriptionRepository->save($subscription);
+        $this->subscriptionRepository->updateValidUntilForAllActiveSubscriptions($customer, $subscription->getMainExternalReference(), $subscriptionCreationResponse->getBilledUntil());
 
         return $subscription;
     }

@@ -37,4 +37,6 @@ interface SubscriptionRepositoryInterface extends CrudRepositoryInterface
      * @return Subscription[]
      */
     public function getAllActiveForCustomer(CustomerInterface $customer): array;
+
+    public function updateValidUntilForAllActiveSubscriptions(CustomerInterface $customer, string $mainExternalReference, \DateTimeInterface $validUntil): void;
 }

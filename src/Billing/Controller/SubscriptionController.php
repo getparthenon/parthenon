@@ -84,9 +84,8 @@ class SubscriptionController
             return new JsonResponse(StartSubscriptionResponse::createUnsupportedPaymentProvider(), JsonResponse::HTTP_BAD_REQUEST);
         } catch (\Throwable $t) {
             $this->getLogger()->error('Unknown error while starting a subscription');
-            var_dump($t);
 
-            return new JsonResponse(StartSubscriptionResponse::createGeneralError(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            throw $t;
         }
 
         return new JsonResponse(StartSubscriptionResponse::createSuccessResponse($subscription), JsonResponse::HTTP_CREATED);
