@@ -18,6 +18,7 @@
         <field name="amount" column="amount" type="integer" nullable="true"/>
         <field name="currency" column="currency" type="string" nullable="true" />
         <field name="mainExternalReference" column="main_external_reference" type="string" nullable="true" />
+        <field name="mainExternalReferenceDetailsUrl" column="main_external_reference_details_url" type="string" nullable="true" />
         <field name="childExternalReference" column="child_external_reference" type="string" nullable="true" />
         <many-to-one field="price" target-entity="Parthenon\Billing\Entity\Price" />
         <many-to-one field="subscriptionPlan" target-entity="Parthenon\Billing\Entity\SubscriptionPlan" />

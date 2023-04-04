@@ -39,6 +39,8 @@ class Subscription
 
     private string $mainExternalReference;
 
+    private string $mainExternalReferenceDetailsUrl;
+
     private string $childExternalReference;
 
     private ?SubscriptionPlan $subscriptionPlan = null;
@@ -238,5 +240,15 @@ class Subscription
     public function setCustomer(CustomerInterface $customer): void
     {
         $this->customer = $customer;
+    }
+
+    public function getMainExternalReferenceDetailsUrl(): string
+    {
+        return $this->mainExternalReferenceDetailsUrl;
+    }
+
+    public function setMainExternalReferenceDetailsUrl(string $mainExternalReferenceDetailsUrl): void
+    {
+        $this->mainExternalReferenceDetailsUrl = $mainExternalReferenceDetailsUrl;
     }
 }
