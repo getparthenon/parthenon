@@ -16,6 +16,7 @@ namespace Parthenon\Billing\Obol;
 
 use Obol\Model\BillingDetails;
 use Obol\Model\Subscription;
+use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Plan\PlanPrice;
 
 class SubscriptionFactory implements SubscriptionFactoryInterface
@@ -32,6 +33,17 @@ class SubscriptionFactory implements SubscriptionFactoryInterface
         if ($planPrice->hasPriceId()) {
             $obolSubscription->setPriceId($planPrice->getPriceId());
         }
+
+        return $obolSubscription;
+    }
+
+    public function createSubscriptionWithPrice(BillingDetails $billingDetails, Price $price, int $seatNumbers): Subscription
+    {
+        $obolSubscription = new \Obol\Model\Subscription();
+        $obolSubscription->setBillingDetails($billingDetails);
+        $obolSubscription->setSeats($seatNumbers);
+        $obolSubscription->setCostPerSeat($price->getAsMoney());
+        $obolSubscription->setPriceId($price->getExternalReference());
 
         return $obolSubscription;
     }

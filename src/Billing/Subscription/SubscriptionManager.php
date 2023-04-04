@@ -18,7 +18,9 @@ use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Exception\SubscriptionCreationException;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
@@ -48,10 +50,58 @@ final class SubscriptionManager implements SubscriptionManagerInterface
     ) {
     }
 
+    public function startSubscriptionWithEntities(CustomerInterface $customer, SubscriptionPlan $subscriptionPlan, Price $price, PaymentDetails $paymentDetails, int $seatNumbers): Subscription
+    {
+        $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($customer, $paymentDetails);
+        $obolSubscription = $this->subscriptionFactory->createSubscriptionWithPrice($billingDetails, $price, $seatNumbers);
+        $obolSubscription->setStoredPaymentReference($paymentDetails->getStoredPaymentReference());
+
+        if ($this->subscriptionRepository->hasActiveSubscription($customer)) {
+            $subscription = $this->subscriptionRepository->getOneActiveSubscriptionForCustomer($customer);
+
+            if ($subscription->getCurrency() != $planPrice->getCurrency()) {
+                throw new SubscriptionCreationException("Can't add a child subscription for a different currency");
+            }
+
+            $obolSubscription->setParentReference($subscription->getMainExternalReference());
+        }
+
+        $subscriptionCreationResponse = $this->provider->payments()->startSubscription($obolSubscription);
+        if ($subscriptionCreationResponse->hasCustomerCreation()) {
+            $customer->setPaymentProviderDetailsUrl($subscriptionCreationResponse->getCustomerCreation()->getDetailsUrl());
+            $customer->setExternalCustomerReference($subscriptionCreationResponse->getCustomerCreation()->getReference());
+        }
+        $payment = $this->paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse);
+        $this->paymentRepository->save($payment);
+
+        $subscription = new Subscription();
+        $subscription->setPlanName($subscriptionPlan->getName());
+        $subscription->setPaymentSchedule($price->getSchedule());
+        $subscription->setActive(true);
+        $subscription->setMoneyAmount($price->getAsMoney());
+        $subscription->setStatus(\Parthenon\Billing\Entity\EmbeddedSubscription::STATUS_ACTIVE);
+        $subscription->setMainExternalReference($subscriptionCreationResponse->getSubscriptionId());
+        $subscription->setChildExternalReference($subscriptionCreationResponse->getLineId());
+        $subscription->setSeats($seatNumbers);
+        $subscription->setCreatedAt(new \DateTime());
+        $subscription->setUpdatedAt(new \DateTime());
+        $subscription->setValidUntil($subscriptionCreationResponse->getBilledUntil());
+        $subscription->setCustomer($customer);
+        $subscription->setMainExternalReferenceDetailsUrl($subscriptionCreationResponse->getDetailsUrl());
+        $subscription->setSubscriptionPlan($subscriptionPlan);
+        $subscription->setPrice($price);
+
+        $this->subscriptionRepository->save($subscription);
+        $this->subscriptionRepository->updateValidUntilForAllActiveSubscriptions($customer, $subscription->getMainExternalReference(), $subscriptionCreationResponse->getBilledUntil());
+
+        return $subscription;
+    }
+
     public function startSubscription(CustomerInterface $customer, Plan $plan, PlanPrice $planPrice, PaymentDetails $paymentDetails, int $seatNumbers): Subscription
     {
         $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($customer, $paymentDetails);
         $obolSubscription = $this->subscriptionFactory->createSubscription($billingDetails, $planPrice, $seatNumbers);
+        $obolSubscription->setStoredPaymentReference($paymentDetails->getStoredPaymentReference());
 
         if ($this->subscriptionRepository->hasActiveSubscription($customer)) {
             $subscription = $this->subscriptionRepository->getOneActiveSubscriptionForCustomer($customer);

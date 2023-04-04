@@ -17,12 +17,16 @@ namespace Parthenon\Billing\Subscription;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanPrice;
 
 interface SubscriptionManagerInterface
 {
+    public function startSubscriptionWithEntities(CustomerInterface $customer, SubscriptionPlan $subscriptionPlan, Price $price, PaymentDetails $paymentDetails, int $seatNumbers): Subscription;
+
     public function startSubscription(CustomerInterface $customer, Plan $plan, PlanPrice $planPrice, PaymentDetails $paymentDetails, int $seatNumbers): Subscription;
 
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription;
