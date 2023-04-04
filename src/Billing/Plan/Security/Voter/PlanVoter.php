@@ -16,11 +16,10 @@ namespace Parthenon\Billing\Plan\Security\Voter;
 
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Exception\NoCounterException;
-use Parthenon\Billing\Exception\NoPlanFoundException;
 use Parthenon\Billing\Plan\CounterManager;
+use Parthenon\Billing\Plan\CustomerPlanInfoInterface;
 use Parthenon\Billing\Plan\LimitableInterface;
 use Parthenon\Billing\Plan\LimitedUserInterface;
-use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\User\Entity\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -32,8 +31,11 @@ final class PlanVoter extends Voter
 
     public const SUPPORTED_ATTRIBUTES = ['create', 'enable', 'enabled'];
 
-    public function __construct(private CounterManager $counterManager, private PlanManagerInterface $planManager, private CustomerProviderInterface $customerProvider)
-    {
+    public function __construct(
+        private CounterManager $counterManager,
+        private CustomerProviderInterface $customerProvider,
+        private CustomerPlanInfoInterface $customersPlanInfo,
+    ) {
     }
 
     protected function supports(string $attribute, $subject): bool
@@ -63,19 +65,7 @@ final class PlanVoter extends Voter
 
         $subscriber = $this->customerProvider->getCurrentCustomer();
 
-        if (!$subscriber->hasActiveSubscription()) {
-            return false;
-        }
-
-        try {
-            $plan = $this->planManager->getPlanForUser($user);
-        } catch (NoPlanFoundException $exception) {
-            $this->getLogger()->warning('No plan for user', ['plan_name' => $user->getPlanName()]);
-
-            return true;
-        }
-
-        $limit = $plan->getLimit($subject);
+        $limit = $this->customersPlanInfo->getLimitCount($subscriber, $subject->getLimitableName());
 
         if (-1 === $limit) {
             return true;

@@ -58,14 +58,15 @@
 
         <service id="parthenon.plan.security.voter.plan_feature" class="Parthenon\Billing\Plan\Security\Voter\PlanFeatureVoter">
             <argument type="service" id="Parthenon\Billing\Plan\CounterManager" />
-            <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
+            <argument type="service" id="Parthenon\Billing\CustomerProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\Plan\CustomerPlanInfoInterface" />
             <tag name="security.voter" priority="20"/>
         </service>
 
         <service id="parthenon.plan.security.voter.plan" class="Parthenon\Billing\Plan\Security\Voter\PlanVoter">
             <argument type="service" id="Parthenon\Billing\Plan\CounterManager" />
-            <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
             <argument type="service" id="Parthenon\Billing\CustomerProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\Plan\CustomerPlanInfoInterface" />
             <tag name="security.voter" priority="20"/>
         </service>
         <service id="Parthenon\Billing\Plan\Security\Voter\PlanVoter" alias="parthenon.plan.security.voter.plan" />
@@ -74,6 +75,7 @@
             <argument type="service" id="Parthenon\Billing\Plan\Counter\TeamInviteCounterInterface" />
             <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
             <argument type="service" id="Parthenon\Billing\CustomerProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
             <tag name="security.voter" priority="20"/>
         </service>
         <service id="Parthenon\Billing\Plan\Security\Voter\InviteVoter" alias="parthenon.plan.security.voter.invite" />
@@ -160,6 +162,12 @@
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
         </service>
         <service id="Parthenon\Billing\Subscription\SubscriptionManagerInterface" alias="Parthenon\Billing\Subscription\SubscriptionManager" />
+
+        <service id="Parthenon\Billing\Plan\CustomerPlanInfo" class="Parthenon\Billing\Plan\CustomerPlanInfo">
+            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Plan\PlanManager" />
+        </service>
+        <service id="Parthenon\Billing\Plan\CustomerPlanInfoInterface" alias="Parthenon\Billing\Plan\CustomerPlanInfo" />
 
     </services>
 </container>

@@ -21,17 +21,6 @@ interface CustomerInterface extends CrudEntityInterface
 {
     public function getId();
 
-    public function hasSubscription(): bool;
-
-    public function hasActiveSubscription(): bool;
-
-    /**
-     * @throw NoSubscriptionException
-     */
-    public function getSubscription(): EmbeddedSubscription;
-
-    public function setSubscription(EmbeddedSubscription $subscription);
-
     public function setBillingAddress(Address $address);
 
     public function getBillingAddress(): Address;

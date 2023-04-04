@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Plan\Security\Voter;
 
-use Parthenon\Billing\Exception\NoPlanFoundException;
+use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Plan\CounterManager;
+use Parthenon\Billing\Plan\CustomerPlanInfo;
 use Parthenon\Billing\Plan\LimitedUserInterface;
-use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\User\Entity\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -28,13 +28,12 @@ final class PlanFeatureVoter extends Voter
     use LoggerAwareTrait;
 
     public const SUPPORTED_ATTRIBUTES = ['feature_enabled'];
-    private CounterManager $counterManager;
-    private PlanManagerInterface $planManager;
 
-    public function __construct(CounterManager $counterManager, PlanManagerInterface $planManager)
-    {
-        $this->counterManager = $counterManager;
-        $this->planManager = $planManager;
+    public function __construct(
+        private CounterManager $counterManager,
+        private CustomerProviderInterface $customerProvider,
+        private CustomerPlanInfo $planInfo,
+    ) {
     }
 
     protected function supports(string $attribute, $subject): bool
@@ -62,14 +61,6 @@ final class PlanFeatureVoter extends Voter
             return true;
         }
 
-        try {
-            $plan = $this->planManager->getPlanForUser($user);
-        } catch (NoPlanFoundException $exception) {
-            $this->getLogger()->warning('No plan for user', ['plan_name' => $user->getPlanName()]);
-
-            return true;
-        }
-
-        return $plan->hasFeature($subject);
+        return $this->planInfo->hasFeature($this->customerProvider->getCurrentCustomer(), $subject);
     }
 }

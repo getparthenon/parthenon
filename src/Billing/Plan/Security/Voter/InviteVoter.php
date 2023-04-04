@@ -18,6 +18,7 @@ use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Plan\Counter\TeamInviteCounterInterface;
 use Parthenon\Billing\Plan\LimitedUserInterface;
 use Parthenon\Billing\Plan\PlanManagerInterface;
+use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\User\Entity\MemberInterface;
 use Parthenon\User\Entity\TeamInviteCode;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -28,7 +29,8 @@ final class InviteVoter extends Voter
     public function __construct(
         private TeamInviteCounterInterface $teamInviteCounter,
         private PlanManagerInterface $planManager,
-        private CustomerProviderInterface $customerProvider
+        private CustomerProviderInterface $customerProvider,
+        private SubscriptionRepositoryInterface $subscriptionRepository,
     ) {
     }
 
@@ -48,16 +50,21 @@ final class InviteVoter extends Voter
             return false;
         }
 
-        $plan = $this->planManager->getPlanForUser($user);
+        $customer = $this->customerProvider->getCurrentCustomer();
+        $subscriptions = $this->subscriptionRepository->getAllActiveForCustomer($customer);
+        $inviteLimit = 0;
 
-        if ($plan->isPerSeat()) {
-            $subscriber = $this->customerProvider->getCurrentCustomer();
-            if (!$subscriber->hasActiveSubscription()) {
-                return false;
+        foreach ($subscriptions as $subscription) {
+            $plan = $this->planManager->getPlanByName($subscription->getPlanName());
+            if ($plan->isPerSeat()) {
+                $subscriber = $this->customerProvider->getCurrentCustomer();
+                if (!$subscriber->hasActiveSubscription()) {
+                    return false;
+                }
+                $inviteLimit += $subscriber->getSubscription()->getSeats();
+            } else {
+                $inviteLimit += $plan->getUserCount();
             }
-            $inviteLimit = $subscriber->getSubscription()->getSeats();
-        } else {
-            $inviteLimit = $plan->getUserCount();
         }
 
         $inviteCount = $this->teamInviteCounter->getCount($user);
