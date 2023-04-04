@@ -15,8 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Plan\Security\Voter;
 
 use Parthenon\Billing\CustomerProviderInterface;
-use Parthenon\Billing\Plan\CounterManager;
-use Parthenon\Billing\Plan\CustomerPlanInfo;
+use Parthenon\Billing\Plan\CustomerPlanInfoInterface;
 use Parthenon\Billing\Plan\LimitedUserInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\User\Entity\UserInterface;
@@ -30,9 +29,8 @@ final class PlanFeatureVoter extends Voter
     public const SUPPORTED_ATTRIBUTES = ['feature_enabled'];
 
     public function __construct(
-        private CounterManager $counterManager,
         private CustomerProviderInterface $customerProvider,
-        private CustomerPlanInfo $planInfo,
+        private CustomerPlanInfoInterface $planInfo,
     ) {
     }
 

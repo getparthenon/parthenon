@@ -19,4 +19,6 @@ use Parthenon\Billing\Entity\CustomerInterface;
 interface CustomerPlanInfoInterface
 {
     public function getLimitCount(CustomerInterface $customer, string $limitCode): int;
+
+    public function hasFeature(CustomerInterface $customer, string $featureCode): bool;
 }

@@ -57,7 +57,6 @@
         <service id="Parthenon\Billing\Plan\CounterManager" alias="parthenon.payments.plan.counter_manager" />
 
         <service id="parthenon.plan.security.voter.plan_feature" class="Parthenon\Billing\Plan\Security\Voter\PlanFeatureVoter">
-            <argument type="service" id="Parthenon\Billing\Plan\CounterManager" />
             <argument type="service" id="Parthenon\Billing\CustomerProviderInterface" />
             <argument type="service" id="Parthenon\Billing\Plan\CustomerPlanInfoInterface" />
             <tag name="security.voter" priority="20"/>
