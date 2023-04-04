@@ -17,6 +17,7 @@ namespace Parthenon\Billing\Obol;
 use Obol\Model\SubscriptionCreationResponse;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\CustomerProviderInterface;
+use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
 
 class PaymentFactory implements PaymentFactoryInterface
@@ -27,9 +28,11 @@ class PaymentFactory implements PaymentFactoryInterface
     ) {
     }
 
-    public function fromSubscriptionCreation(SubscriptionCreationResponse $subscriptionCreationResponse): Payment
+    public function fromSubscriptionCreation(SubscriptionCreationResponse $subscriptionCreationResponse, ?CustomerInterface $customer = null): Payment
     {
-        $customer = $this->customerProvider->getCurrentCustomer();
+        if (!$customer) {
+            $customer = $this->customerProvider->getCurrentCustomer();
+        }
 
         $payment = new Payment();
         $payment->setPaymentReference($subscriptionCreationResponse->getPaymentDetails()->getPaymentReference());

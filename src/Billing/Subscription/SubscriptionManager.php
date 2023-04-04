@@ -71,7 +71,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
             $customer->setPaymentProviderDetailsUrl($subscriptionCreationResponse->getCustomerCreation()->getDetailsUrl());
             $customer->setExternalCustomerReference($subscriptionCreationResponse->getCustomerCreation()->getReference());
         }
-        $payment = $this->paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse);
+        $payment = $this->paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse, $customer);
         $this->paymentRepository->save($payment);
 
         $subscription = new Subscription();
@@ -118,7 +118,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
             $customer->setPaymentProviderDetailsUrl($subscriptionCreationResponse->getCustomerCreation()->getDetailsUrl());
             $customer->setExternalCustomerReference($subscriptionCreationResponse->getCustomerCreation()->getReference());
         }
-        $payment = $this->paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse);
+        $payment = $this->paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse, $customer);
         $this->paymentRepository->save($payment);
 
         $subscription = new Subscription();
