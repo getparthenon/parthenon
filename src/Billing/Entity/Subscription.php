@@ -39,7 +39,7 @@ class Subscription
 
     private string $mainExternalReference;
 
-    private string $mainExternalReferenceDetailsUrl;
+    private ?string $mainExternalReferenceDetailsUrl = null;
 
     private string $childExternalReference;
 
@@ -247,7 +247,7 @@ class Subscription
         return $this->mainExternalReferenceDetailsUrl;
     }
 
-    public function setMainExternalReferenceDetailsUrl(string $mainExternalReferenceDetailsUrl): void
+    public function setMainExternalReferenceDetailsUrl(?string $mainExternalReferenceDetailsUrl): void
     {
         $this->mainExternalReferenceDetailsUrl = $mainExternalReferenceDetailsUrl;
     }

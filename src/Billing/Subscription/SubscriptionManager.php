@@ -106,7 +106,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         if ($this->subscriptionRepository->hasActiveSubscription($customer)) {
             $subscription = $this->subscriptionRepository->getOneActiveSubscriptionForCustomer($customer);
 
-            if ($subscription->getCurrency() != $planPrice->getCurrency()) {
+            if ($subscription->getCurrency() != $price->getCurrency()) {
                 throw new SubscriptionCreationException("Can't add a child subscription for a different currency");
             }
 
