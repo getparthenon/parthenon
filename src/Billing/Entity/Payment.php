@@ -42,6 +42,8 @@ class Payment
 
     private bool $chargedBack = false;
 
+    private ?Subscription $subscription = null;
+
     /**
      * @return mixed
      */
@@ -167,5 +169,15 @@ class Payment
     {
         $this->amount = $money->getAmount()->getUnscaledValue()->toInt();
         $this->currency = $money->getCurrency()->getCurrencyCode();
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(?Subscription $subscription): void
+    {
+        $this->subscription = $subscription;
     }
 }

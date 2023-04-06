@@ -15,8 +15,20 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository\Orm;
 
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 
 class PaymentRepository extends DoctrineCrudRepository implements PaymentRepositoryInterface
 {
+    public function getLastPaymentForSubscription(Subscription $subscription): Payment
+    {
+        return $this->entityRepository->findOneBy(['subscription' => $subscription], ['createdAt' => 'DESC']);
+    }
+
+    public function getLastPaymentForCustomer(CustomerInterface $customer): Payment
+    {
+        return $this->entityRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+    }
 }

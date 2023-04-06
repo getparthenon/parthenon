@@ -64,6 +64,8 @@ class SubscriptionFactory implements SubscriptionFactoryInterface
         $obolSubscription->setBillingDetails($billingDetails);
         $obolSubscription->setId($subscription->getMainExternalReference());
         $obolSubscription->setLineId($subscription->getChildExternalReference());
+        $obolSubscription->setCostPerSeat($subscription->getMoneyAmount());
+        $obolSubscription->setSeats($subscription->getSeats());
 
         return $obolSubscription;
     }

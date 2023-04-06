@@ -61,6 +61,7 @@ class AthenaController
         } catch (NoEntityFoundException $e) {
             return new RedirectResponse($urlGenerator->generate('parthenon_athena_crud_subscriptions_list'));
         }
+
         $subscriptionManager->cancelSubscriptionWithFullRefund($subscription, $security->getUser());
         $subscriptionRepository->save($subscription);
         $request->getSession()->getFlashBag()->add('success', 'Cancelled and refunded');

@@ -53,7 +53,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private PriceRepositoryInterface $priceRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
-        private RefundRepositoryInterface $refundRepository
+        private RefundRepositoryInterface $refundRepository,
     ) {
     }
 
@@ -125,9 +125,6 @@ final class SubscriptionManager implements SubscriptionManagerInterface
             $customer->setPaymentProviderDetailsUrl($subscriptionCreationResponse->getCustomerCreation()->getDetailsUrl());
             $customer->setExternalCustomerReference($subscriptionCreationResponse->getCustomerCreation()->getReference());
         }
-        $payment = $this->paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse, $customer);
-        $this->paymentRepository->save($payment);
-
         $subscription = new Subscription();
         $subscription->setPlanName($plan->getName());
         $subscription->setPaymentSchedule($planPrice->getSchedule());
@@ -153,9 +150,12 @@ final class SubscriptionManager implements SubscriptionManagerInterface
             $price = $this->priceRepository->findById($planPrice->getEntityId());
             $subscription->setPrice($price);
         }
-
         $this->subscriptionRepository->save($subscription);
         $this->subscriptionRepository->updateValidUntilForAllActiveSubscriptions($customer, $subscription->getMainExternalReference(), $subscriptionCreationResponse->getBilledUntil());
+
+        $payment = $this->paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse, $customer);
+        $payment->setSubscription($subscription);
+        $this->paymentRepository->save($payment);
 
         return $subscription;
     }
@@ -194,10 +194,13 @@ final class SubscriptionManager implements SubscriptionManagerInterface
     {
         $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
 
+        $payment = $this->paymentRepository->getLastPaymentForSubscription($subscription);
+
         $cancelRequest = new CancelSubscription();
         $cancelRequest->setSubscription($obolSubscription);
         $cancelRequest->setInstantCancel(true);
         $cancelRequest->setRefundType(RefundType::FULL);
+        $cancelRequest->setPaymentReference($payment->getPaymentReference());
 
         $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
 
@@ -208,6 +211,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
             $refund->setExternalReference($cancellation->getRefund()->getId());
             $refund->setStatus('refunded');
             $refund->setBillingAdmin($billingAdmin);
+            $refund->setPayment($payment);
             $refund->setCustomer($subscription->getCustomer());
 
             $this->refundRepository->save($refund);

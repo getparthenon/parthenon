@@ -15,7 +15,13 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\Subscription;
 
 interface PaymentRepositoryInterface extends CrudRepositoryInterface
 {
+    public function getLastPaymentForSubscription(Subscription $subscription): Payment;
+
+    public function getLastPaymentForCustomer(CustomerInterface $customer): Payment;
 }
