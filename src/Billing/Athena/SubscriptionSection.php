@@ -54,6 +54,7 @@ class SubscriptionSection extends AbstractSection
     {
         return [
             new Button('subscription_cancel', 'Cancel Subscription', 'parthenon_billing_athena_subscription_cancel'),
+            new Button('subscription_cancel_refund', 'Cancel and Refund Subscription', 'parthenon_billing_athena_subscription_cancel_refund'),
         ];
     }
 

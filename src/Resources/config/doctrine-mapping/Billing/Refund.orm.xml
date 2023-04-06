@@ -13,6 +13,7 @@
         <field name="amount" column="amount" type="integer" nullable="false" />
         <field name="currency" column="currency" type="string" nullable="false" />
         <field name="status" column="status" type="string" nullable="false" />
+        <field name="externalReference" column="external_reference" type="string" nullable="false" />
         <field name="reason" column="reason" type="string" nullable="true" />
         <many-to-one field="payment" target-entity="Parthenon\Billing\Entity\Payment" />
         <many-to-one field="customer" target-entity="Parthenon\Billing\Entity\CustomerInterface" />

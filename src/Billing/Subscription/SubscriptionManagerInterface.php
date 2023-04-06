@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Subscription;
 
 use Parthenon\Billing\Dto\StartSubscriptionDto;
+use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Price;
@@ -32,4 +33,6 @@ interface SubscriptionManagerInterface
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription;
 
     public function cancelSubscriptionAtEndOfCurrentPeriod(Subscription $subscription): Subscription;
+
+    public function cancelSubscriptionWithFullRefund(Subscription $subscription, BillingAdminInterface $billingAdmin): Subscription;
 }

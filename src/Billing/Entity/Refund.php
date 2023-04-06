@@ -28,6 +28,8 @@ class Refund
 
     private string $status;
 
+    private string $externalReference;
+
     private BillingAdminInterface $billingAdmin;
 
     private ?string $reason = null;
@@ -128,5 +130,15 @@ class Refund
     public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getExternalReference(): string
+    {
+        return $this->externalReference;
+    }
+
+    public function setExternalReference(string $externalReference): void
+    {
+        $this->externalReference = $externalReference;
     }
 }

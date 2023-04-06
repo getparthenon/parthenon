@@ -18,6 +18,7 @@ use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,6 +43,27 @@ class AthenaController
         $subscriptionManager->cancelSubscriptionAtEndOfCurrentPeriod($subscription);
         $subscriptionRepository->save($subscription);
         $request->getSession()->getFlashBag()->add('success', 'Cancelled');
+
+        return new RedirectResponse($urlGenerator->generate('parthenon_athena_crud_subscriptions_read', ['id' => $request->get('id')]));
+    }
+
+    #[Route('/athena/billing/subscription/{id}/cancel-refund', name: 'parthenon_billing_athena_subscription_cancel_refund', methods: ['GET'])]
+    public function cancelAndRefundSubscription(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionManagerInterface $subscriptionManager,
+        UrlGeneratorInterface $urlGenerator,
+        Security $security,
+    ): Response {
+        try {
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new RedirectResponse($urlGenerator->generate('parthenon_athena_crud_subscriptions_list'));
+        }
+        $subscriptionManager->cancelSubscriptionWithFullRefund($subscription, $security->getUser());
+        $subscriptionRepository->save($subscription);
+        $request->getSession()->getFlashBag()->add('success', 'Cancelled and refunded');
 
         return new RedirectResponse($urlGenerator->generate('parthenon_athena_crud_subscriptions_read', ['id' => $request->get('id')]));
     }

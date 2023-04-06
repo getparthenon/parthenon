@@ -18,10 +18,12 @@ use Obol\Model\CancelSubscription;
 use Obol\Model\Enum\RefundType;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
+use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\EmbeddedSubscription;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Price;
+use Parthenon\Billing\Entity\Refund;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Exception\SubscriptionCreationException;
@@ -34,6 +36,7 @@ use Parthenon\Billing\Plan\PlanPrice;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
+use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 
@@ -50,6 +53,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private PriceRepositoryInterface $priceRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
+        private RefundRepositoryInterface $refundRepository
     ) {
     }
 
@@ -180,6 +184,34 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $cancelRequest->setRefundType(RefundType::NONE);
 
         $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
+
+        $subscription->setStatus(EmbeddedSubscription::STATUS_CANCELLED);
+
+        return $subscription;
+    }
+
+    public function cancelSubscriptionWithFullRefund(Subscription $subscription, BillingAdminInterface $billingAdmin): Subscription
+    {
+        $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
+
+        $cancelRequest = new CancelSubscription();
+        $cancelRequest->setSubscription($obolSubscription);
+        $cancelRequest->setInstantCancel(true);
+        $cancelRequest->setRefundType(RefundType::FULL);
+
+        $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
+
+        if ($cancellation->hasRefund()) {
+            $refund = new Refund();
+            $refund->setAmount($cancellation->getRefund()->getAmount());
+            $refund->setCurrency($cancellation->getRefund()->getCurrency());
+            $refund->setExternalReference($cancellation->getRefund()->getId());
+            $refund->setStatus('refunded');
+            $refund->setBillingAdmin($billingAdmin);
+            $refund->setCustomer($subscription->getCustomer());
+
+            $this->refundRepository->save($refund);
+        }
 
         $subscription->setStatus(EmbeddedSubscription::STATUS_CANCELLED);
 
