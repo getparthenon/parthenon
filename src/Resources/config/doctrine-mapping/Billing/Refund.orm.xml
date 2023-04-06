@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Parthenon\Billing\Entity\Refund">
+        <id name="id" type="uuid" column="id">
+            <generator strategy="CUSTOM" />
+            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
+        </id>
+
+        <field name="amount" column="amount" type="integer" nullable="false" />
+        <field name="currency" column="currency" type="string" nullable="false" />
+        <field name="status" column="status" type="string" nullable="false" />
+        <field name="reason" column="reason" type="string" nullable="true" />
+        <many-to-one field="payment" target-entity="Parthenon\Billing\Entity\Payment" />
+        <many-to-one field="customer" target-entity="Parthenon\Billing\Entity\CustomerInterface" />
+        <many-to-one field="billingAdmin" target-entity="Parthenon\Billing\Entity\BillingAdminInterface" />
+        <field name="createdAt" column="started_at" type="datetime" nullable="true"  />
+    </entity>
+</doctrine-mapping>

@@ -132,6 +132,9 @@
         <service id="Parthenon\Billing\Athena\SubscriptionSection" class="Parthenon\Billing\Athena\SubscriptionSection">
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
         </service>
+        <service id="Parthenon\Billing\Athena\RefundSection" class="Parthenon\Billing\Athena\RefundSection">
+            <argument type="service" id="Parthenon\Billing\Repository\RefundRepositoryInterface" />
+        </service>
 
         <!-- Payment Details -->
         <service id="Parthenon\Billing\PaymentDetails\DefaultPaymentManager" class="Parthenon\Billing\PaymentDetails\DefaultPaymentManager">

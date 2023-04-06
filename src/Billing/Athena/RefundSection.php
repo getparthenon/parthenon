@@ -16,30 +16,31 @@ namespace Parthenon\Billing\Athena;
 
 use Parthenon\Athena\AbstractSection;
 use Parthenon\Athena\ListView;
+use Parthenon\Athena\ReadView;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Athena\Settings;
-use Parthenon\Billing\Entity\Payment;
-use Parthenon\Billing\Repository\PaymentRepositoryInterface;
+use Parthenon\Billing\Entity\Refund;
+use Parthenon\Billing\Repository\RefundRepositoryInterface;
 
-class PaymentSection extends AbstractSection
+class RefundSection extends AbstractSection
 {
-    public function __construct(private PaymentRepositoryInterface $paymentRepository)
+    public function __construct(private RefundRepositoryInterface $refundRepository)
     {
     }
 
     public function getUrlTag(): string
     {
-        return 'billing-payments';
+        return 'refund';
     }
 
     public function getRepository(): CrudRepositoryInterface
     {
-        return $this->paymentRepository;
+        return $this->refundRepository;
     }
 
     public function getEntity()
     {
-        return new Payment();
+        return new Refund();
     }
 
     public function getMenuSection(): string
@@ -49,22 +50,33 @@ class PaymentSection extends AbstractSection
 
     public function getMenuName(): string
     {
-        return 'Payments';
+        return 'Refunds';
     }
 
     public function buildListView(ListView $listView): ListView
     {
-        $listView
-            ->addField('customer', 'entity')
-            ->addField('provider', 'text')
-            ->addField('moneyAmount', 'text')
-            ->addField('completed', 'boolean');
+        $listView->addField('customer', 'text')
+            ->addField('amount', 'text')
+            ->addField('currency', 'text')
+            ->addField('createdAt', 'text');
 
         return $listView;
     }
 
+    public function buildReadView(ReadView $readView): ReadView
+    {
+        $readView->section('Main')
+            ->field('customer')
+            ->field('amount')
+            ->field('currency')
+            ->field('createdAt')
+            ->end();
+
+        return $readView;
+    }
+
     public function getSettings(): Settings
     {
-        return new Settings(['edit' => false, 'create' => false]);
+        return new Settings(['create' => false, 'edit' => false]);
     }
 }

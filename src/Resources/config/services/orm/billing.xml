@@ -70,5 +70,14 @@
         </service>
         <service alias="parthenon.billing.repository.orm.product_repository_doctrine" id="Parthenon\Billing\Repository\Orm\ProductServiceRepository" />
 
+        <service id="Parthenon\Billing\Repository\RefundRepositoryInterface" alias="parthenon.billing.repository.refund_repository" />
+        <service id="parthenon.billing.repository.refund_repository" class="Parthenon\Billing\Repository\Orm\RefundRepository">
+            <argument type="service" id="parthenon.billing.repository.orm.refund_repository_doctrine" />
+        </service>
+        <service id="parthenon.billing.repository.orm.refund_repository_doctrine" class="Parthenon\Billing\Repository\Orm\RefundServiceRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+        <service alias="parthenon.billing.repository.orm.refund_repository_doctrine" id="Parthenon\Billing\Repository\Orm\RefundServiceRepository" />
+
     </services>
 </container>
