@@ -70,4 +70,9 @@ class SubscriptionRepository extends DoctrineCrudRepository implements Subscript
         $query = $qb->getQuery();
         $query->execute();
     }
+
+    public function getActiveSubscriptionCount(CustomerInterface $customer): int
+    {
+        return $this->entityRepository->count(['customer' => $customer, 'active' => true]);
+    }
 }

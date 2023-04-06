@@ -22,6 +22,11 @@ use Parthenon\Common\Repository\RepositoryInterface;
 interface PaymentDetailsRepositoryInterface extends RepositoryInterface
 {
     /**
+     * @throws NoEntityFoundException
+     */
+    public function getPaymentDetailsForCustomerAndReference(CustomerInterface $customer, string $reference): PaymentDetails;
+
+    /**
      * @return PaymentDetails[]
      */
     public function getPaymentDetailsForCustomer(CustomerInterface $customer): array;

@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Parthenon\Athena\ViewType;
 
+use Parthenon\Athena\Entity\CrudEntityInterface;
+
 final class TextViewType implements ViewTypeInterface
 {
     private $data;
@@ -26,6 +28,10 @@ final class TextViewType implements ViewTypeInterface
 
         if (is_array($this->data)) {
             return implode(',', $this->data);
+        }
+
+        if ($this->data instanceof CrudEntityInterface) {
+            return $this->data->getDisplayName();
         }
 
         return (string) $this->data;

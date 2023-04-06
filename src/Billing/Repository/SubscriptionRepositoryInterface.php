@@ -21,6 +21,8 @@ use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface SubscriptionRepositoryInterface extends CrudRepositoryInterface
 {
+    public function getActiveSubscriptionCount(CustomerInterface $customer): int;
+
     public function hasActiveSubscription(CustomerInterface $customer): bool;
 
     /**

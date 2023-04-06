@@ -14,9 +14,12 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Subscription;
 
+use Obol\Model\CancelSubscription;
+use Obol\Model\Enum\RefundType;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\EmbeddedSubscription;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
@@ -59,7 +62,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         if ($this->subscriptionRepository->hasActiveSubscription($customer)) {
             $subscription = $this->subscriptionRepository->getOneActiveSubscriptionForCustomer($customer);
 
-            if ($subscription->getCurrency() != $planPrice->getCurrency()) {
+            if ($subscription->getCurrency() != $price->getCurrency()) {
                 throw new SubscriptionCreationException("Can't add a child subscription for a different currency");
             }
 
@@ -106,7 +109,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         if ($this->subscriptionRepository->hasActiveSubscription($customer)) {
             $subscription = $this->subscriptionRepository->getOneActiveSubscriptionForCustomer($customer);
 
-            if ($subscription->getCurrency() != $price->getCurrency()) {
+            if ($subscription->getCurrency() != $planPrice->getCurrency()) {
                 throw new SubscriptionCreationException("Can't add a child subscription for a different currency");
             }
 
@@ -135,6 +138,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setValidUntil($subscriptionCreationResponse->getBilledUntil());
         $subscription->setCustomer($customer);
         $subscription->setMainExternalReferenceDetailsUrl($subscriptionCreationResponse->getDetailsUrl());
+        $subscription->setPaymentExternalReference($subscriptionCreationResponse->getPaymentDetails()->getStoredPaymentReference());
 
         if ($plan->hasEntityId()) {
             $subscriptionPlan = $this->subscriptionPlanRepository->findById($plan->getEntityId());
@@ -164,5 +168,21 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $planPrice = $plan->getPriceForPaymentSchedule($startSubscriptionDto->getSchedule(), $startSubscriptionDto->getCurrency());
 
         return $this->startSubscription($customer, $plan, $planPrice, $paymentDetails, $startSubscriptionDto->getSeatNumbers());
+    }
+
+    public function cancelSubscriptionAtEndOfCurrentPeriod(Subscription $subscription): Subscription
+    {
+        $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
+
+        $cancelRequest = new CancelSubscription();
+        $cancelRequest->setSubscription($obolSubscription);
+        $cancelRequest->setInstantCancel(false);
+        $cancelRequest->setRefundType(RefundType::NONE);
+
+        $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
+
+        $subscription->setStatus(EmbeddedSubscription::STATUS_CANCELLED);
+
+        return $subscription;
     }
 }

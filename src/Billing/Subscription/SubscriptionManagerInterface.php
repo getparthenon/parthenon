@@ -30,4 +30,6 @@ interface SubscriptionManagerInterface
     public function startSubscription(CustomerInterface $customer, Plan $plan, PlanPrice $planPrice, PaymentDetails $paymentDetails, int $seatNumbers): Subscription;
 
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription;
+
+    public function cancelSubscriptionAtEndOfCurrentPeriod(Subscription $subscription): Subscription;
 }

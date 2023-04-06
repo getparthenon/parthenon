@@ -62,4 +62,18 @@ final class PaymentDetailsRepository extends DoctrineRepository implements Payme
 
         return $paymentDetails;
     }
+
+    public function getPaymentDetailsForCustomerAndReference(CustomerInterface $customer, string $reference): PaymentDetails
+    {
+        $qb = $this->entityRepository->createQueryBuilder('pd');
+        $qb->where('pd.deleted = false')
+            ->andWhere('pd.customer = :customer')
+            ->andWhere('pd.storedPaymentReference = :reference')
+            ->setParameter('customer', $customer)
+            ->setParameter('reference', $reference);
+        $query = $qb->getQuery();
+        $query->execute();
+
+        return $query->getResult()[0] ?? throw new NoEntityFoundException();
+    }
 }

@@ -43,6 +43,8 @@ class Subscription
 
     private string $childExternalReference;
 
+    private string $paymentExternalReference;
+
     private ?SubscriptionPlan $subscriptionPlan = null;
 
     private ?Price $price = null;
@@ -242,7 +244,7 @@ class Subscription
         $this->customer = $customer;
     }
 
-    public function getMainExternalReferenceDetailsUrl(): string
+    public function getMainExternalReferenceDetailsUrl(): ?string
     {
         return $this->mainExternalReferenceDetailsUrl;
     }
@@ -250,5 +252,15 @@ class Subscription
     public function setMainExternalReferenceDetailsUrl(?string $mainExternalReferenceDetailsUrl): void
     {
         $this->mainExternalReferenceDetailsUrl = $mainExternalReferenceDetailsUrl;
+    }
+
+    public function getPaymentExternalReference(): string
+    {
+        return $this->paymentExternalReference;
+    }
+
+    public function setPaymentExternalReference(?string $paymentExternalReference): void
+    {
+        $this->paymentExternalReference = $paymentExternalReference;
     }
 }
