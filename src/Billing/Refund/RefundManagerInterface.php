@@ -20,4 +20,6 @@ use Parthenon\Billing\Entity\Subscription;
 interface RefundManagerInterface
 {
     public function issueFullRefundForSubscription(Subscription $subscription, BillingAdminInterface $billingAdmin): void;
+
+    public function issueProrateRefundForSubscription(Subscription $subscription, BillingAdminInterface $billingAdmin, \DateTimeInterface $start, \DateTimeInterface $end): void;
 }
