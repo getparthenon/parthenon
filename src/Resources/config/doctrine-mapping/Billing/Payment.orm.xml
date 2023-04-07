@@ -20,6 +20,6 @@
         <field name="createdAt" column="created_at" type="datetime" nullable="false" />
         <field name="updatedAt" column="updated_at" type="datetime" nullable="false" />
         <field name="paymentProviderDetailsUrl" column="payment_provider_details_url" type="string" nullable="true" />
-        <many-to-one field="subscription" target-entity="Parthenon\Billing\Entity\Subscription" />
+        <many-to-many field="subscriptions" target-entity="Parthenon\Billing\Entity\Subscription" />
     </entity>
 </doctrine-mapping>

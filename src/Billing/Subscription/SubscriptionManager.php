@@ -129,7 +129,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setPlanName($plan->getName());
         $subscription->setPaymentSchedule($planPrice->getSchedule());
         $subscription->setActive(true);
-        $subscription->setMoneyAmount($planPrice->getPriceAsMoney());
+        $subscription->setMoneyAmount($subscriptionCreationResponse->getPaymentDetails()->getAmount());
         $subscription->setStatus(\Parthenon\Billing\Entity\EmbeddedSubscription::STATUS_ACTIVE);
         $subscription->setMainExternalReference($subscriptionCreationResponse->getSubscriptionId());
         $subscription->setChildExternalReference($subscriptionCreationResponse->getLineId());
@@ -154,7 +154,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $this->subscriptionRepository->updateValidUntilForAllActiveSubscriptions($customer, $subscription->getMainExternalReference(), $subscriptionCreationResponse->getBilledUntil());
 
         $payment = $this->paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse, $customer);
-        $payment->setSubscription($subscription);
+        $payment->addSubscription($subscription);
         $this->paymentRepository->save($payment);
 
         return $subscription;

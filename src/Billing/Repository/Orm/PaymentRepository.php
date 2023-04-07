@@ -22,9 +22,29 @@ use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 
 class PaymentRepository extends DoctrineCrudRepository implements PaymentRepositoryInterface
 {
+    public function getPaymentsForSubscription(Subscription $subscription): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('p');
+        $qb->where(':subscription MEMBER OF p.subscriptions')
+            ->setParameter('subscription', $subscription)
+            ->orderBy('p.createdAt', 'DESC');
+
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
+    }
+
     public function getLastPaymentForSubscription(Subscription $subscription): Payment
     {
-        return $this->entityRepository->findOneBy(['subscription' => $subscription], ['createdAt' => 'DESC']);
+        $qb = $this->entityRepository->createQueryBuilder('p');
+        $qb->where(':subscription MEMBER OF p.subscriptions')
+            ->setParameter('subscription', $subscription)
+            ->orderBy('p.createdAt', 'DESC')
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getSingleResult();
+
+        return $result;
     }
 
     public function getLastPaymentForCustomer(CustomerInterface $customer): Payment

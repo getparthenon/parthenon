@@ -16,6 +16,8 @@ namespace Parthenon\Billing\Entity;
 
 use Brick\Money\Currency;
 use Brick\Money\Money;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Payment
 {
@@ -42,7 +44,12 @@ class Payment
 
     private bool $chargedBack = false;
 
-    private ?Subscription $subscription = null;
+    private Collection $subscriptions;
+
+    public function __construct()
+    {
+        $this->subscriptions = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -179,5 +186,30 @@ class Payment
     public function setSubscription(?Subscription $subscription): void
     {
         $this->subscription = $subscription;
+    }
+
+    public function getPaymentProviderDetailsUrl(): ?string
+    {
+        return $this->paymentProviderDetailsUrl;
+    }
+
+    public function setPaymentProviderDetailsUrl(?string $paymentProviderDetailsUrl): void
+    {
+        $this->paymentProviderDetailsUrl = $paymentProviderDetailsUrl;
+    }
+
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
+    }
+
+    public function setSubscriptions(Collection|array $subscriptions): void
+    {
+        $this->subscriptions = $subscriptions;
+    }
+
+    public function addSubscription(Subscription $subscription): void
+    {
+        $this->subscriptions->add($subscription);
     }
 }
