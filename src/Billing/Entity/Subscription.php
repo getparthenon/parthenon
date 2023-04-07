@@ -51,6 +51,8 @@ class Subscription
 
     private \DateTimeInterface $createdAt;
 
+    private ?\DateTimeInterface $startOfCurrentPeriod = null;
+
     private ?\DateTimeInterface $validUntil = null;
 
     private \DateTimeInterface $updatedAt;
@@ -273,5 +275,15 @@ class Subscription
     public function setPaymentExternalReference(?string $paymentExternalReference): void
     {
         $this->paymentExternalReference = $paymentExternalReference;
+    }
+
+    public function getStartOfCurrentPeriod(): ?\DateTimeInterface
+    {
+        return $this->startOfCurrentPeriod;
+    }
+
+    public function setStartOfCurrentPeriod(?\DateTimeInterface $startOfCurrentPeriod): void
+    {
+        $this->startOfCurrentPeriod = $startOfCurrentPeriod;
     }
 }

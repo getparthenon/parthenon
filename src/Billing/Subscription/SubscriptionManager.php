@@ -134,6 +134,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setSeats($seatNumbers);
         $subscription->setCreatedAt(new \DateTime());
         $subscription->setUpdatedAt(new \DateTime());
+        $subscription->setStartOfCurrentPeriod(new \DateTime());
         $subscription->setValidUntil($subscriptionCreationResponse->getBilledUntil());
         $subscription->setCustomer($customer);
         $subscription->setMainExternalReferenceDetailsUrl($subscriptionCreationResponse->getDetailsUrl());

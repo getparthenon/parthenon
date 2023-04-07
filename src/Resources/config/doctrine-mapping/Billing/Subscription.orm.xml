@@ -25,6 +25,7 @@
         <many-to-one field="subscriptionPlan" target-entity="Parthenon\Billing\Entity\SubscriptionPlan" />
         <field name="createdAt" column="started_at" type="datetime" nullable="true"  />
         <field name="validUntil" column="valid_until" type="datetime" nullable="true" />
+        <field name="startOfCurrentPeriod" column="start_of_current_period" type="datetime" nullable="true" />
         <field name="updatedAt" column="updated_at" type="datetime" nullable="true" />
         <field name="endedAt" column="ended_at" type="datetime" nullable="true" />
     </entity>
