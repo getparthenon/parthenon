@@ -200,7 +200,24 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
 
         $subscription->setStatus(EmbeddedSubscription::STATUS_CANCELLED);
-        $subscription->setEndedAt(new \DateTime('now'));
+        $subscription->endNow();
+
+        return $subscription;
+    }
+
+    public function cancelSubscriptionOnDate(Subscription $subscription, \DateTime $dateTime): Subscription
+    {
+        $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
+
+        $cancelRequest = new CancelSubscription();
+        $cancelRequest->setSubscription($obolSubscription);
+        $cancelRequest->setInstantCancel(false);
+
+        $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
+
+        $subscription->setStatus(EmbeddedSubscription::STATUS_CANCELLED);
+        $subscription->setEndedAt($dateTime);
+        $subscription->setValidUntil($dateTime);
 
         return $subscription;
     }

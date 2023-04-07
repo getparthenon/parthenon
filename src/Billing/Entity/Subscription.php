@@ -208,6 +208,12 @@ class Subscription
         $this->endedAt = clone $this->validUntil;
     }
 
+    public function endNow(): void
+    {
+        $this->endedAt = new \DateTime('now');
+        $this->validUntil = new \DateTime('now');
+    }
+
     public function isActive(): bool
     {
         return $this->active;
