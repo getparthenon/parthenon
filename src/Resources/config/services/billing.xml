@@ -178,5 +178,13 @@
         </service>
         <service id="Parthenon\Billing\Plan\CustomerPlanInfoInterface" alias="Parthenon\Billing\Plan\CustomerPlanInfo" />
 
+        <!--- Refund -->
+        <service id="Parthenon\Billing\Refund\RefundManager" class="Parthenon\Billing\Refund\RefundManager">
+            <argument type="service" id="Obol\Provider\ProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\RefundRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Billing\Refund\RefundManagerInterface" alias="Parthenon\Billing\Refund\RefundManager" />
+
     </services>
 </container>

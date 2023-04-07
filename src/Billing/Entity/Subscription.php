@@ -203,6 +203,11 @@ class Subscription
         $this->endedAt = $endedAt;
     }
 
+    public function endAtEndOfPeriod(): void
+    {
+        $this->endedAt = clone $this->validUntil;
+    }
+
     public function isActive(): bool
     {
         return $this->active;

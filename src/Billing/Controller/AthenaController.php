@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Controller;
 
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Refund\RefundManagerInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -52,6 +53,7 @@ class AthenaController
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionManagerInterface $subscriptionManager,
+        RefundManagerInterface $refundManager,
         UrlGeneratorInterface $urlGenerator,
         Security $security,
     ): Response {
@@ -62,8 +64,11 @@ class AthenaController
             return new RedirectResponse($urlGenerator->generate('parthenon_athena_crud_subscriptions_list'));
         }
 
-        $subscriptionManager->cancelSubscriptionWithFullRefund($subscription, $security->getUser());
+        $subscriptionManager->cancelSubscriptionInstantly($subscription);
         $subscriptionRepository->save($subscription);
+
+        $refundManager->issueFullRefundForSubscription($subscription, $security->getUser());
+
         $request->getSession()->getFlashBag()->add('success', 'Cancelled and refunded');
 
         return new RedirectResponse($urlGenerator->generate('parthenon_athena_crud_subscriptions_read', ['id' => $request->get('id')]));
