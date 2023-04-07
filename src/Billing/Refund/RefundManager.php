@@ -49,6 +49,7 @@ class RefundManager implements RefundManagerInterface
         $refundEn->setBillingAdmin($billingAdmin);
         $refundEn->setPayment($payment);
         $refundEn->setCustomer($subscription->getCustomer());
+        $refundEn->setCreatedAt(new \DateTime());
 
         $this->refundRepository->save($refundEn);
     }
