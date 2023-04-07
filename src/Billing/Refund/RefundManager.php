@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Refund;
 
+use Brick\Math\RoundingMode;
 use Obol\Model\Refund\IssueRefund;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\BillingAdminInterface;
@@ -61,8 +62,8 @@ class RefundManager implements RefundManagerInterface
 
         $payment = $this->paymentRepository->getLastPaymentForSubscription($subscription);
 
-        $perDay = $subscription->getMoneyAmount()->dividedBy($days);
-        $totalAmount = $perDay->multipliedBy(abs($interval->days))->multipliedBy($subscription->getSeats());
+        $perDay = $subscription->getMoneyAmount()->dividedBy($days, RoundingMode::HALF_UP);
+        $totalAmount = $perDay->multipliedBy(abs($interval->days), RoundingMode::HALF_UP)->multipliedBy($subscription->getSeats(), RoundingMode::HALF_UP);
 
         $issueRefund = new IssueRefund();
         $issueRefund->setAmount($totalAmount);
