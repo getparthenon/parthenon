@@ -41,6 +41,40 @@ class RefundManager implements RefundManagerInterface
 
         $refund = $this->provider->refunds()->issueRefund($issueRefund);
 
+        $this->createEntityRecord($refund, $billingAdmin, $payment, $subscription);
+    }
+
+    public function issueProrateRefundForSubscription(Subscription $subscription, BillingAdminInterface $billingAdmin, \DateTimeInterface $start, \DateTimeInterface $end): void
+    {
+        if ('month' === $subscription->getPaymentSchedule()) {
+            $days = date('t');
+        } elseif ('year' === $subscription->getPaymentSchedule()) {
+            $days = 365;
+        } else {
+            $days = 7;
+        }
+
+        $interval = $start->diff($end);
+        if (!is_int($interval->days)) {
+            return;
+        }
+
+        $payment = $this->paymentRepository->getLastPaymentForSubscription($subscription);
+
+        $perDay = $subscription->getMoneyAmount()->dividedBy($days);
+        $totalAmount = $perDay->multipliedBy(abs($interval->days))->multipliedBy($subscription->getSeats());
+
+        $issueRefund = new IssueRefund();
+        $issueRefund->setAmount($totalAmount);
+        $issueRefund->setPaymentExternalReference($payment->getPaymentReference());
+
+        $refund = $this->provider->refunds()->issueRefund($issueRefund);
+
+        $this->createEntityRecord($refund, $billingAdmin, $payment, $subscription);
+    }
+
+    public function createEntityRecord(\Obol\Model\Refund $refund, BillingAdminInterface $billingAdmin, \Parthenon\Billing\Entity\Payment $payment, Subscription $subscription): void
+    {
         $refundEn = new Refund();
         $refundEn->setAmount($refund->getAmount());
         $refundEn->setCurrency($refund->getCurrency());
