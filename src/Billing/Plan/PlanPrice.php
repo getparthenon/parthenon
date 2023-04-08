@@ -53,7 +53,7 @@ class PlanPrice
         return isset($this->priceId);
     }
 
-    public function getPriceAsMoney(): Money
+    public function getAsMoney(): Money
     {
         return Money::of($this->amount, Currency::of(strtoupper($this->currency)));
     }

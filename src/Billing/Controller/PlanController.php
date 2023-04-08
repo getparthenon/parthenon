@@ -69,7 +69,7 @@ class PlanController
         foreach ($plan->getPublicPrices() as $data) {
             $output[$data->getSchedule()][strtoupper($data->getCurrency())] = [
                 'schedule' => $data->getSchedule(),
-                'amount' => $data->getPriceAsMoney()->getAmount(),
+                'amount' => $data->getAsMoney()->getAmount(),
                 'currency' => strtoupper($data->getCurrency()),
             ];
         }
