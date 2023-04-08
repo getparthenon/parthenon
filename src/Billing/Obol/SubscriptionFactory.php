@@ -37,7 +37,9 @@ class SubscriptionFactory implements SubscriptionFactoryInterface
         $obolSubscription->setBillingDetails($billingDetails);
         $obolSubscription->setSeats($seatNumbers);
         $obolSubscription->setCostPerSeat($planPrice->getAsMoney());
-        if ($planPrice->hasPriceId()) {
+        if ($planPrice instanceof Price) {
+            $obolSubscription->setPriceId($planPrice->getExternalReference());
+        } elseif ($planPrice->hasPriceId()) {
             $obolSubscription->setPriceId($planPrice->getPriceId());
         }
 
