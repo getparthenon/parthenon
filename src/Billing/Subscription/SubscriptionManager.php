@@ -162,7 +162,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         return $subscription;
     }
 
-    public function cancelSubscriptionOnDate(Subscription $subscription, \DateTime $dateTime): Subscription
+    public function cancelSubscriptionOnDate(Subscription $subscription, \DateTimeInterface $dateTime): Subscription
     {
         $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
 
@@ -177,13 +177,5 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setValidUntil($dateTime);
 
         return $subscription;
-    }
-
-    /**
-     * @param Plan      $plan
-     * @param PlanPrice $planPrice
-     */
-    public function createSubscription(SubscriptionPlan|Plan $plan, PlanPrice|Price $planPrice, \Obol\Model\SubscriptionCreationResponse $subscriptionCreationResponse, int $seatNumbers, CustomerInterface $customer): Subscription
-    {
     }
 }
