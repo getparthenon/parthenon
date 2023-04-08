@@ -155,6 +155,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
 
         $subscription->setStatus(EmbeddedSubscription::STATUS_CANCELLED);
+        $subscription->setActive(false);
         $subscription->endNow();
 
         return $subscription;

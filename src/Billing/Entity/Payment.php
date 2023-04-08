@@ -174,7 +174,7 @@ class Payment
 
     public function setMoneyAmount(Money $money)
     {
-        $this->amount = $money->getAmount()->getUnscaledValue()->toInt();
+        $this->amount = $money->getMinorAmount()->toInt();
         $this->currency = $money->getCurrency()->getCurrencyCode();
     }
 
