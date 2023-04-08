@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Subscription;
 
 use Obol\Model\CancelSubscription;
-use Obol\Model\Enum\RefundType;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -136,7 +135,6 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $cancelRequest = new CancelSubscription();
         $cancelRequest->setSubscription($obolSubscription);
         $cancelRequest->setInstantCancel(false);
-        $cancelRequest->setRefundType(RefundType::NONE);
 
         $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
 
