@@ -168,7 +168,6 @@
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\PriceRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
-            <argument type="service" id="Parthenon\Billing\Repository\RefundRepositoryInterface" />
         </service>
         <service id="Parthenon\Billing\Subscription\SubscriptionManagerInterface" alias="Parthenon\Billing\Subscription\SubscriptionManager" />
 
