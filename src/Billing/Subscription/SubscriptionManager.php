@@ -91,7 +91,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setMainExternalReferenceDetailsUrl($subscriptionCreationResponse->getDetailsUrl());
         $subscription->setPaymentExternalReference($subscriptionCreationResponse->getPaymentDetails()?->getStoredPaymentReference());
         $subscription->setTrialLengthDays($obolSubscription->getTrialLengthDays());
-        $subscription->setHasTrial($obolSubscription->getHasTrial());
+        $subscription->setHasTrial($obolSubscription->hasTrial());
 
         if ($plan instanceof SubscriptionPlan) {
             $subscription->setSubscriptionPlan($plan);
