@@ -43,7 +43,7 @@ class Subscription
 
     private string $childExternalReference;
 
-    private string $paymentExternalReference;
+    private ?string $paymentExternalReference = null;
 
     private ?SubscriptionPlan $subscriptionPlan = null;
 
@@ -245,8 +245,12 @@ class Subscription
         return Money::ofMinor($this->amount, Currency::of($this->currency));
     }
 
-    public function setMoneyAmount(Money $money)
+    public function setMoneyAmount(?Money $money)
     {
+        if (!$money) {
+            return;
+        }
+
         $this->amount = $money->getMinorAmount()->toInt();
         $this->currency = $money->getCurrency()->getCurrencyCode();
     }

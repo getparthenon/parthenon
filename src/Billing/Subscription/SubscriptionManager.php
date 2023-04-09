@@ -78,7 +78,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setPlanName($plan->getName());
         $subscription->setPaymentSchedule($planPrice->getSchedule());
         $subscription->setActive(true);
-        $subscription->setMoneyAmount($subscriptionCreationResponse->getPaymentDetails()->getAmount());
+        $subscription->setMoneyAmount($subscriptionCreationResponse->getPaymentDetails()?->getAmount());
         $subscription->setStatus(\Parthenon\Billing\Entity\EmbeddedSubscription::STATUS_ACTIVE);
         $subscription->setMainExternalReference($subscriptionCreationResponse->getSubscriptionId());
         $subscription->setChildExternalReference($subscriptionCreationResponse->getLineId());
@@ -89,7 +89,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setValidUntil($subscriptionCreationResponse->getBilledUntil());
         $subscription->setCustomer($customer);
         $subscription->setMainExternalReferenceDetailsUrl($subscriptionCreationResponse->getDetailsUrl());
-        $subscription->setPaymentExternalReference($subscriptionCreationResponse->getPaymentDetails()->getStoredPaymentReference());
+        $subscription->setPaymentExternalReference($subscriptionCreationResponse->getPaymentDetails()?->getStoredPaymentReference());
         $subscription->setTrialLengthDays($obolSubscription->getTrialLengthDays());
         $subscription->setHasTrial($obolSubscription->getHasTrial());
 
