@@ -55,7 +55,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
     public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentDetails $paymentDetails, int $seatNumbers): Subscription
     {
         $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($customer, $paymentDetails);
-        $obolSubscription = $this->subscriptionFactory->createSubscription($billingDetails, $planPrice, $seatNumbers);
+        $obolSubscription = $this->subscriptionFactory->createSubscription($billingDetails, $plan, $planPrice, $seatNumbers);
         $obolSubscription->setStoredPaymentReference($paymentDetails->getStoredPaymentReference());
 
         if ($this->subscriptionRepository->hasActiveSubscription($customer)) {
