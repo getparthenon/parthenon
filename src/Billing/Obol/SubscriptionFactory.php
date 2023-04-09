@@ -17,8 +17,6 @@ namespace Parthenon\Billing\Obol;
 use Obol\Model\BillingDetails;
 use Obol\Model\Subscription;
 use Parthenon\Billing\Entity\Price;
-use Parthenon\Billing\Entity\SubscriptionPlan;
-use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanPrice;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 
@@ -32,20 +30,18 @@ class SubscriptionFactory implements SubscriptionFactoryInterface
 
     public function createSubscription(
         BillingDetails $billingDetails,
-        SubscriptionPlan|Plan $plan,
         PlanPrice|Price $planPrice,
         int $seatNumbers,
-        bool $enforceTrial = true
+        bool $hasTrial = false,
+        int $trialLengthDays = 0,
     ): Subscription {
         $obolSubscription = new \Obol\Model\Subscription();
         $obolSubscription->setBillingDetails($billingDetails);
         $obolSubscription->setSeats($seatNumbers);
         $obolSubscription->setCostPerSeat($planPrice->getAsMoney());
 
-        if ($enforceTrial) {
-            $obolSubscription->setHasTrial($plan->getHasTrial());
-            $obolSubscription->setTrialLengthDays($plan->getTrialLengthDays());
-        }
+        $obolSubscription->setHasTrial($hasTrial);
+        $obolSubscription->setTrialLengthDays($trialLengthDays);
 
         if ($planPrice instanceof Price) {
             $obolSubscription->setPriceId($planPrice->getExternalReference());

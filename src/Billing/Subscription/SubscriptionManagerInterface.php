@@ -25,7 +25,7 @@ use Parthenon\Billing\Plan\PlanPrice;
 
 interface SubscriptionManagerInterface
 {
-    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentDetails $paymentDetails, int $seatNumbers): Subscription;
+    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentDetails $paymentDetails, int $seatNumbers, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription;
 
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription;
 
