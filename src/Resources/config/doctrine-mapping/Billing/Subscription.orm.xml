@@ -16,6 +16,8 @@
         <field name="active" column="active" type="boolean" nullable="true"  />
         <field name="status" column="status" type="string" nullable="true"  />
         <field name="amount" column="amount" type="integer" nullable="true"/>
+        <field name="hasTrial" column="has_trial" type="boolean" nullable="false" />
+        <field name="trialLengthDays" column="trial_length_days" type="integer" nullable="true"/>
         <field name="currency" column="currency" type="string" nullable="true" />
         <field name="mainExternalReference" column="main_external_reference" type="string" nullable="true" />
         <field name="mainExternalReferenceDetailsUrl" column="main_external_reference_details_url" type="string" nullable="true" />

@@ -59,6 +59,10 @@ class Subscription
 
     private ?\DateTimeInterface $endedAt = null;
 
+    private bool $hasTrial = false;
+
+    private ?int $trialLengthDays = 0;
+
     /**
      * @return mixed
      */
@@ -285,5 +289,25 @@ class Subscription
     public function setStartOfCurrentPeriod(?\DateTimeInterface $startOfCurrentPeriod): void
     {
         $this->startOfCurrentPeriod = $startOfCurrentPeriod;
+    }
+
+    public function isHasTrial(): bool
+    {
+        return $this->hasTrial;
+    }
+
+    public function setHasTrial(bool $hasTrial): void
+    {
+        $this->hasTrial = $hasTrial;
+    }
+
+    public function getTrialLengthDays(): ?int
+    {
+        return $this->trialLengthDays;
+    }
+
+    public function setTrialLengthDays(?int $trialLengthDays): void
+    {
+        $this->trialLengthDays = $trialLengthDays;
     }
 }

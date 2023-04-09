@@ -52,10 +52,10 @@ final class SubscriptionManager implements SubscriptionManagerInterface
     ) {
     }
 
-    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentDetails $paymentDetails, int $seatNumbers): Subscription
+    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentDetails $paymentDetails, int $seatNumbers, bool $enforceTrial = true): Subscription
     {
         $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($customer, $paymentDetails);
-        $obolSubscription = $this->subscriptionFactory->createSubscription($billingDetails, $plan, $planPrice, $seatNumbers);
+        $obolSubscription = $this->subscriptionFactory->createSubscription($billingDetails, $plan, $planPrice, $seatNumbers, $enforceTrial);
         $obolSubscription->setStoredPaymentReference($paymentDetails->getStoredPaymentReference());
 
         if ($this->subscriptionRepository->hasActiveSubscription($customer)) {
@@ -90,6 +90,8 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setCustomer($customer);
         $subscription->setMainExternalReferenceDetailsUrl($subscriptionCreationResponse->getDetailsUrl());
         $subscription->setPaymentExternalReference($subscriptionCreationResponse->getPaymentDetails()->getStoredPaymentReference());
+        $subscription->setTrialLengthDays($obolSubscription->getTrialLengthDays());
+        $subscription->setHasTrial($obolSubscription->getHasTrial());
 
         if ($plan instanceof SubscriptionPlan) {
             $subscription->setSubscriptionPlan($plan);
