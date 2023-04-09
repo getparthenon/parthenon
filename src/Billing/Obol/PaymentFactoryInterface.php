@@ -14,11 +14,11 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Obol;
 
-use Obol\Model\SubscriptionCreationResponse;
+use Obol\Model\PaymentDetails;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
 
 interface PaymentFactoryInterface
 {
-    public function fromSubscriptionCreation(SubscriptionCreationResponse $subscriptionCreationResponse, ?CustomerInterface $customer = null): Payment;
+    public function fromSubscriptionCreation(PaymentDetails $paymentDetails, ?CustomerInterface $customer = null): Payment;
 }

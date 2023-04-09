@@ -109,9 +109,12 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $this->subscriptionRepository->save($subscription);
         $this->subscriptionRepository->updateValidUntilForAllActiveSubscriptions($customer, $subscription->getMainExternalReference(), $subscriptionCreationResponse->getBilledUntil());
 
-        $payment = $this->paymentFactory->fromSubscriptionCreation($subscriptionCreationResponse, $customer);
-        $payment->addSubscription($subscription);
-        $this->paymentRepository->save($payment);
+        $obolPaymentDetails = $subscriptionCreationResponse->getPaymentDetails();
+        if ($obolPaymentDetails) {
+            $payment = $this->paymentFactory->fromSubscriptionCreation($obolPaymentDetails, $customer);
+            $payment->addSubscription($subscription);
+            $this->paymentRepository->save($payment);
+        }
 
         return $subscription;
     }
