@@ -43,8 +43,6 @@ class Subscription
 
     private string $childExternalReference;
 
-    private ?string $paymentExternalReference = null;
-
     private ?PaymentDetails $paymentDetails = null;
 
     private ?SubscriptionPlan $subscriptionPlan = null;
@@ -275,16 +273,6 @@ class Subscription
     public function setMainExternalReferenceDetailsUrl(?string $mainExternalReferenceDetailsUrl): void
     {
         $this->mainExternalReferenceDetailsUrl = $mainExternalReferenceDetailsUrl;
-    }
-
-    public function getPaymentExternalReference(): string
-    {
-        return $this->paymentExternalReference;
-    }
-
-    public function setPaymentExternalReference(?string $paymentExternalReference): void
-    {
-        $this->paymentExternalReference = $paymentExternalReference;
     }
 
     public function getStartOfCurrentPeriod(): ?\DateTimeInterface
