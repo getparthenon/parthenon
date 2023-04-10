@@ -14,13 +14,10 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Enum;
 
-enum SubscriptionStatus: string
+enum PaymentStatus: string
 {
-    case ACTIVE = 'active';
-    case OVERDUE_PAYMENT_OPEN = 'overdue_payment_open';
-    case OVERDUE_PAYMENT_DISABLED = 'overdue_payment_disabled';
-    case PAUSED = 'paused';
-    case CANCELLED = 'cancelled';
-    case PENDING_CANCEL = 'pending_cancel';
-    case BLOCKED = 'blocked';
+    case COMPLETED = 'completed';
+    case DISPUTED = 'disputed';
+    case PARTIALLY_REFUNDED = 'partially_refunded';
+    case FULLY_REFUNDED = 'fully_refunded';
 }

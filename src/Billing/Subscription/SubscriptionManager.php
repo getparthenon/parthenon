@@ -18,7 +18,6 @@ use Obol\Model\CancelSubscription;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\EmbeddedSubscription;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
@@ -144,7 +143,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
 
         $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
 
-        $subscription->setStatus(EmbeddedSubscription::STATUS_CANCELLED);
+        $subscription->setStatus(SubscriptionStatus::PENDING_CANCEL);
         $subscription->endAtEndOfPeriod();
 
         return $subscription;
@@ -160,7 +159,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
 
         $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
 
-        $subscription->setStatus(EmbeddedSubscription::STATUS_CANCELLED);
+        $subscription->setStatus(SubscriptionStatus::CANCELLED);
         $subscription->setActive(false);
         $subscription->endNow();
 
@@ -177,7 +176,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
 
         $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
 
-        $subscription->setStatus(EmbeddedSubscription::STATUS_CANCELLED);
+        $subscription->setStatus(SubscriptionStatus::PENDING_CANCEL);
         $subscription->setEndedAt($dateTime);
         $subscription->setValidUntil($dateTime);
 
