@@ -23,6 +23,7 @@ use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
+use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Exception\SubscriptionCreationException;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
@@ -79,7 +80,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setPaymentSchedule($planPrice->getSchedule());
         $subscription->setActive(true);
         $subscription->setMoneyAmount($subscriptionCreationResponse->getPaymentDetails()?->getAmount());
-        $subscription->setStatus(\Parthenon\Billing\Entity\EmbeddedSubscription::STATUS_ACTIVE);
+        $subscription->setStatus(SubscriptionStatus::ACTIVE);
         $subscription->setMainExternalReference($subscriptionCreationResponse->getSubscriptionId());
         $subscription->setChildExternalReference($subscriptionCreationResponse->getLineId());
         $subscription->setSeats($seatNumbers);
