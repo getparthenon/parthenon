@@ -14,7 +14,7 @@
         <field name="paymentSchedule" column="payment_schedule" type="string"  nullable="true"  />
         <field name="seats" column="seats" type="integer" nullable="true" />
         <field name="active" column="active" type="boolean" nullable="true"  />
-        <field name="status" column="status" type="string" nullable="true"  />
+        <field name="status" column="status" type="string" nullable="false" enum-type="Parthenon\Billing\Enum\SubscriptionStatus"  />
         <field name="amount" column="amount" type="integer" nullable="true"/>
         <field name="hasTrial" column="has_trial" type="boolean" nullable="false" />
         <field name="trialLengthDays" column="trial_length_days" type="integer" nullable="true"/>

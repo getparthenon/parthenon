@@ -16,6 +16,7 @@ namespace Parthenon\Billing\Entity;
 
 use Brick\Money\Currency;
 use Brick\Money\Money;
+use Parthenon\Billing\Enum\SubscriptionStatus;
 
 class Subscription
 {
@@ -31,7 +32,7 @@ class Subscription
 
     private bool $active;
 
-    private string $status;
+    private SubscriptionStatus $status;
 
     private ?int $amount = null;
 
@@ -109,12 +110,12 @@ class Subscription
         $this->seats = $seats;
     }
 
-    public function getStatus(): string
+    public function getStatus(): SubscriptionStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(SubscriptionStatus $status): void
     {
         $this->status = $status;
     }
