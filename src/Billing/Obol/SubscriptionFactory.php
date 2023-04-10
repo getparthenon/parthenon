@@ -18,13 +18,11 @@ use Obol\Model\BillingDetails;
 use Obol\Model\Subscription;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Plan\PlanPrice;
-use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 
 class SubscriptionFactory implements SubscriptionFactoryInterface
 {
     public function __construct(
         private BillingDetailsFactoryInterface $billingDetailsFactory,
-        private PaymentDetailsRepositoryInterface $paymentDetailsRepository,
     ) {
     }
 
@@ -54,7 +52,7 @@ class SubscriptionFactory implements SubscriptionFactoryInterface
 
     public function createSubscriptionFromEntity(\Parthenon\Billing\Entity\Subscription $subscription): Subscription
     {
-        $paymentDetails = $this->paymentDetailsRepository->getPaymentDetailsForCustomerAndReference($subscription->getCustomer(), $subscription->getPaymentExternalReference());
+        $paymentDetails = $subscription->getPaymentDetails();
         $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($subscription->getCustomer(), $paymentDetails);
 
         $obolSubscription = new \Obol\Model\Subscription();
