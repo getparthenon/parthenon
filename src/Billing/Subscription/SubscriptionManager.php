@@ -89,7 +89,6 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setValidUntil($subscriptionCreationResponse->getBilledUntil());
         $subscription->setCustomer($customer);
         $subscription->setMainExternalReferenceDetailsUrl($subscriptionCreationResponse->getDetailsUrl());
-        $subscription->setPaymentExternalReference($subscriptionCreationResponse->getPaymentDetails()?->getStoredPaymentReference());
         $subscription->setPaymentDetails($paymentDetails);
         $subscription->setTrialLengthDays($obolSubscription->getTrialLengthDays());
         $subscription->setHasTrial($obolSubscription->hasTrial());
