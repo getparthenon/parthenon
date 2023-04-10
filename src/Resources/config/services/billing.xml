@@ -138,6 +138,8 @@
         <!-- Payment Details -->
         <service id="Parthenon\Billing\PaymentDetails\DefaultPaymentManager" class="Parthenon\Billing\PaymentDetails\DefaultPaymentManager">
             <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
+            <argument type="service" id="Obol\Provider\ProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\Obol\BillingDetailsFactoryInterface" />
         </service>
         <service id="Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface" alias="Parthenon\Billing\PaymentDetails\DefaultPaymentManager" />
 

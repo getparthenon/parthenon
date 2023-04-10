@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\PaymentDetails;
 
+use Obol\Model\BillingDetails;
+use Obol\PaymentServiceInterface;
+use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -35,7 +39,16 @@ class DefaultPaymentManagerTest extends TestCase
         $repository->expects($this->once())->method('save')->with($paymentDetails);
         $repository->method('findById')->with($id)->willReturn($paymentDetails);
 
-        $subject = new DefaultPaymentManager($repository);
+        $billingDetails = new BillingDetails();
+        $billingDetailsFactory = $this->createMock(BillingDetailsFactoryInterface::class);
+        $billingDetailsFactory->method('createFromCustomerAndPaymentDetails')->willReturn($billingDetails);
+
+        $provider = $this->createMock(ProviderInterface::class);
+        $paymentService = $this->createMock(PaymentServiceInterface::class);
+        $provider->method('payments')->willReturn($paymentService);
+        $paymentService->expects($this->once())->method('makeCardDefault')->with($billingDetails);
+
+        $subject = new DefaultPaymentManager($repository, $provider, $billingDetailsFactory);
         $subject->makePaymentDetailsDefault($customer, $paymentDetails);
     }
 }

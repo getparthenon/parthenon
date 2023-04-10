@@ -14,14 +14,19 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\PaymentDetails;
 
+use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 
-class DefaultPaymentManager implements DefaultPaymentManagerInterface
+final class DefaultPaymentManager implements DefaultPaymentManagerInterface
 {
-    public function __construct(private PaymentDetailsRepositoryInterface $paymentDetailsRepository)
-    {
+    public function __construct(
+        private PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        private ProviderInterface $provider,
+        private BillingDetailsFactoryInterface $billingDetailsFactory,
+    ) {
     }
 
     public function makePaymentDetailsDefault(CustomerInterface $customer, PaymentDetails $paymentDetails): void
@@ -30,5 +35,8 @@ class DefaultPaymentManager implements DefaultPaymentManagerInterface
         $paymentDetails = $this->paymentDetailsRepository->findById($paymentDetails->getId());
         $paymentDetails->setDefaultPaymentOption(true);
         $this->paymentDetailsRepository->save($paymentDetails);
+
+        $obolBillingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($customer, $paymentDetails);
+        $this->provider->payments()->makeCardDefault($obolBillingDetails);
     }
 }
