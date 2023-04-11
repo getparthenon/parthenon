@@ -117,6 +117,15 @@ class Subscription
 
     public function setStatus(SubscriptionStatus $status): void
     {
+        if (SubscriptionStatus::CANCELLED === $status ||
+            SubscriptionStatus::PAUSED === $status ||
+            SubscriptionStatus::BLOCKED === $status ||
+            SubscriptionStatus::OVERDUE_PAYMENT_DISABLED === $status) {
+            $this->active = false;
+        } else {
+            $this->active = true;
+        }
+
         $this->status = $status;
     }
 
