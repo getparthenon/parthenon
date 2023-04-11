@@ -223,6 +223,12 @@ class Payment
 
     public function setStatus(PaymentStatus $status): void
     {
+        if (PaymentStatus::PARTIALLY_REFUNDED === $status || PaymentStatus::FULLY_REFUNDED === $status) {
+            $this->refunded = true;
+        } elseif (PaymentStatus::DISPUTED === $status) {
+            $this->chargedBack = true;
+        }
+
         $this->status = $status;
     }
 }
