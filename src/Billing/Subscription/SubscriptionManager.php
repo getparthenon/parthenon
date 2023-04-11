@@ -135,7 +135,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
 
     public function cancelSubscriptionAtEndOfCurrentPeriod(Subscription $subscription): Subscription
     {
-        $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
+        $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription, false);
 
         $cancelRequest = new CancelSubscription();
         $cancelRequest->setSubscription($obolSubscription);

@@ -15,11 +15,15 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Refund;
 
 use Brick\Math\RoundingMode;
+use Brick\Money\Currency;
+use Brick\Money\Money;
 use Obol\Model\Refund\IssueRefund;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Refund;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Enum\PaymentStatus;
+use Parthenon\Billing\Enum\RefundStatus;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 
@@ -76,11 +80,18 @@ class RefundManager implements RefundManagerInterface
 
     public function createEntityRecord(\Obol\Model\Refund $refund, BillingAdminInterface $billingAdmin, \Parthenon\Billing\Entity\Payment $payment, Subscription $subscription): void
     {
+        $money = Money::ofMinor($refund->getAmount(), Currency::of($refund->getCurrency()));
+        if ($payment->getMoneyAmount()->isEqualTo($money)) {
+            $payment->setStatus(PaymentStatus::FULLY_REFUNDED);
+        } else {
+            $payment->setStatus(PaymentStatus::PARTIALLY_REFUNDED);
+        }
+        $this->paymentRepository->save($payment);
         $refundEn = new Refund();
         $refundEn->setAmount($refund->getAmount());
         $refundEn->setCurrency($refund->getCurrency());
         $refundEn->setExternalReference($refund->getId());
-        $refundEn->setStatus('refunded');
+        $refundEn->setStatus(RefundStatus::ISSUED);
         $refundEn->setBillingAdmin($billingAdmin);
         $refundEn->setPayment($payment);
         $refundEn->setCustomer($subscription->getCustomer());

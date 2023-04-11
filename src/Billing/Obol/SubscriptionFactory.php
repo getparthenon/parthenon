@@ -50,19 +50,22 @@ class SubscriptionFactory implements SubscriptionFactoryInterface
         return $obolSubscription;
     }
 
-    public function createSubscriptionFromEntity(\Parthenon\Billing\Entity\Subscription $subscription): Subscription
+    public function createSubscriptionFromEntity(\Parthenon\Billing\Entity\Subscription $subscription, bool $fullyBuilt = true): Subscription
     {
-        $paymentDetails = $subscription->getPaymentDetails();
-        $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($subscription->getCustomer(), $paymentDetails);
-
         $obolSubscription = new \Obol\Model\Subscription();
-        $obolSubscription->setBillingDetails($billingDetails);
+
+        if ($fullyBuilt) {
+            $paymentDetails = $subscription->getPaymentDetails();
+            $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($subscription->getCustomer(), $paymentDetails);
+            $obolSubscription->setBillingDetails($billingDetails);
+        }
+
         $obolSubscription->setId($subscription->getMainExternalReference());
         $obolSubscription->setLineId($subscription->getChildExternalReference());
         $obolSubscription->setCostPerSeat($subscription->getMoneyAmount());
         $obolSubscription->setSeats($subscription->getSeats());
-        $obolSubscription->setHasTrial($subscription->getSubscriptionPlan()->getHasTrial());
-        $obolSubscription->setTrialLengthDays($subscription->getSubscriptionPlan()->getTrialLengthDays());
+        $obolSubscription->setHasTrial($subscription->getSubscriptionPlan()?->getHasTrial() ?? false);
+        $obolSubscription->setTrialLengthDays($subscription->getSubscriptionPlan()?->getTrialLengthDays() ?? 0);
 
         return $obolSubscription;
     }

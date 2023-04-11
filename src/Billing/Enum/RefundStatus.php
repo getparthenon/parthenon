@@ -14,11 +14,10 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Enum;
 
-enum PaymentStatus: string
+enum RefundStatus: string
 {
-    case PENDING = 'pending';
-    case COMPLETED = 'completed';
-    case DISPUTED = 'disputed';
-    case PARTIALLY_REFUNDED = 'partially_refunded';
-    case FULLY_REFUNDED = 'fully_refunded';
+    case STARTED = 'started';
+    case REJECTED = 'rejected';
+    case AUTHORISED = 'authorised';
+    case ISSUED = 'issued';
 }

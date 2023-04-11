@@ -57,7 +57,7 @@ class RefundManagerTest extends TestCase
 
         $refundCreation = new Refund();
         $refundCreation->setAmount(300);
-        $refundCreation->setCurrency('usd');
+        $refundCreation->setCurrency('USD');
         $refundCreation->setId('rf_dfjdsf');
 
         $refundService->expects($this->once())->method('issueRefund')->with($this->callback(function (Refund\IssueRefund $refund) {
@@ -102,7 +102,7 @@ class RefundManagerTest extends TestCase
 
         $refundCreation = new Refund();
         $refundCreation->setAmount(300);
-        $refundCreation->setCurrency('usd');
+        $refundCreation->setCurrency('USD');
         $refundCreation->setId('rf_dfjdsf');
 
         $refundService->expects($this->once())->method('issueRefund')->with($this->callback(function (Refund\IssueRefund $refund) {

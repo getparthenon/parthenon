@@ -19,6 +19,7 @@ use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Enum\PaymentStatus;
 
 class PaymentFactory implements PaymentFactoryInterface
 {
@@ -41,6 +42,7 @@ class PaymentFactory implements PaymentFactoryInterface
         $payment->setCompleted(true);
         $payment->setCreatedAt(new \DateTime('now'));
         $payment->setUpdatedAt(new \DateTime('now'));
+        $payment->setStatus(PaymentStatus::COMPLETED);
         $payment->setProvider($this->provider->getName());
 
         return $payment;

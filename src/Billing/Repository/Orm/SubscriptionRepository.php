@@ -17,6 +17,7 @@ namespace Parthenon\Billing\Repository\Orm;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
@@ -61,12 +62,13 @@ class SubscriptionRepository extends DoctrineCrudRepository implements Subscript
             ->set('s.validUntil', ':validUntil')
             ->set('s.updatedAt', ':now')
             ->where('s.customer = :customer')
-            ->andWhere('s.active = true')
+            ->andWhere('s.status = :active')
             ->andWhere('s.mainExternalReference = :mainExternalReference')
             ->setParameter('customer', $customer)
             ->setParameter('mainExternalReference', $mainExternalReference)
             ->setParameter(':validUntil', $validUntil)
-            ->setParameter('now', new \DateTime());
+            ->setParameter('now', new \DateTime())
+            ->setParameter('active', SubscriptionStatus::ACTIVE);
         $query = $qb->getQuery();
         $query->execute();
     }

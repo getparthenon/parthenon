@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Parthenon\Billing\Enum\RefundStatus;
+
 class Refund
 {
     private $id;
@@ -26,7 +28,7 @@ class Refund
 
     private string $currency;
 
-    private string $status;
+    private RefundStatus $status;
 
     private string $externalReference;
 
@@ -92,12 +94,12 @@ class Refund
         $this->currency = $currency;
     }
 
-    public function getStatus(): string
+    public function getStatus(): RefundStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(RefundStatus $status): void
     {
         $this->status = $status;
     }

@@ -18,6 +18,7 @@ use Brick\Money\Currency;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Parthenon\Billing\Enum\PaymentStatus;
 
 class Payment
 {
@@ -27,6 +28,8 @@ class Payment
     private string $paymentReference;
 
     private string $provider;
+
+    private PaymentStatus $status;
 
     private int $amount;
 
@@ -211,5 +214,15 @@ class Payment
     public function addSubscription(Subscription $subscription): void
     {
         $this->subscriptions->add($subscription);
+    }
+
+    public function getStatus(): PaymentStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(PaymentStatus $status): void
+    {
+        $this->status = $status;
     }
 }

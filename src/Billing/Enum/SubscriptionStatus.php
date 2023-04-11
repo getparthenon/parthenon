@@ -18,9 +18,9 @@ enum SubscriptionStatus: string
 {
     case ACTIVE = 'active';
     case OVERDUE_PAYMENT_OPEN = 'overdue_payment_open';
+    case PENDING_CANCEL = 'pending_cancel';
     case OVERDUE_PAYMENT_DISABLED = 'overdue_payment_disabled';
     case PAUSED = 'paused';
     case CANCELLED = 'cancelled';
-    case PENDING_CANCEL = 'pending_cancel';
     case BLOCKED = 'blocked';
 }

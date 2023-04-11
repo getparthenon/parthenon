@@ -18,6 +18,7 @@ use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanManagerInterface;
+use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,24 +28,31 @@ class PlanController
     use LoggerAwareTrait;
 
     #[Route('/billing/plans', name: 'parthenon_billing_plan_list')]
-    public function listAction(PlanManagerInterface $planManager, CustomerProviderInterface $customerProvider)
-    {
+    public function listAction(
+        PlanManagerInterface $planManager,
+        CustomerProviderInterface $customerProvider,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+    ) {
         $this->getLogger()->info('Getting plans info');
         $plans = $planManager->getPlans();
 
         $output = [];
         $currentPlanOutput = [];
         try {
-            $currentPlanOutput =
-                [
-                    'plan_name' => $customerProvider->getCurrentCustomer()->getSubscription()->getPlanName(),
-                    'status' => $customerProvider->getCurrentCustomer()->getSubscription()->getStatus(),
-                    'payment_schedule' => $customerProvider->getCurrentCustomer()->getSubscription()->getPaymentSchedule(),
-                ];
+            $currentCustomer = $customerProvider->getCurrentCustomer();
         } catch (NoCustomerException $exception) {
             $this->getLogger()->error('No customer found');
 
             return new JsonResponse([], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        $subscriptions = $subscriptionRepository->getAllActiveForCustomer($currentCustomer);
+        foreach ($subscriptions as $subscription) {
+            $currentPlanOutput[] = [
+                'name' => $subscription->getPlanName(),
+                'schedule' => $subscription->getPaymentSchedule(),
+                'id' => (string) $subscription->getId(),
+            ];
         }
 
         foreach ($plans as $plan) {
@@ -58,7 +66,7 @@ class PlanController
 
         return new JsonResponse([
             'plans' => $output,
-            'current_plan' => $currentPlanOutput,
+            'current_plans' => $currentPlanOutput,
             ]);
     }
 

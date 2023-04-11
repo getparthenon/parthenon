@@ -12,6 +12,7 @@
         <many-to-one field="customer" target-entity="Parthenon\Billing\Entity\CustomerInterface" />
         <field name="provider" column="provider" type="string" nullable="false"  />
         <field name="paymentReference" column="payment_reference" type="string" nullable="false"  />
+        <field name="status" column="status" type="string" nullable="false" enum-type="Parthenon\Billing\Enum\PaymentStatus"  />
         <field name="amount" column="amount" type="integer" nullable="false"/>
         <field name="currency" column="currency" type="string" nullable="false" />
         <field name="refunded" column="refunded" type="boolean" nullable="false" />
