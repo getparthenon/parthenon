@@ -37,6 +37,7 @@ class PaymentFactory implements PaymentFactoryInterface
 
         $payment = new Payment();
         $payment->setPaymentReference($paymentDetails->getPaymentReference());
+        $payment->setPaymentProviderDetailsUrl($paymentDetails->getPaymentReferenceLink());
         $payment->setMoneyAmount($paymentDetails->getAmount());
         $payment->setCustomer($customer);
         $payment->setCompleted(true);
