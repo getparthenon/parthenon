@@ -67,7 +67,7 @@ class SubscriptionRepository extends DoctrineCrudRepository implements Subscript
             ->andWhere('s.mainExternalReference = :mainExternalReference')
             ->setParameter('customer', $customer)
             ->setParameter('mainExternalReference', $mainExternalReference)
-            ->setParameter(':validUntil', $validUntil)
+            ->setParameter('validUntil', $validUntil)
             ->setParameter('now', new \DateTime())
             ->setParameter('active', SubscriptionStatus::ACTIVE);
         $query = $qb->getQuery();
