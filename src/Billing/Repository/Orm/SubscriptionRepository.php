@@ -16,6 +16,7 @@ namespace Parthenon\Billing\Repository\Orm;
 
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -76,5 +77,17 @@ class SubscriptionRepository extends DoctrineCrudRepository implements Subscript
     public function getActiveSubscriptionCount(CustomerInterface $customer): int
     {
         return $this->entityRepository->count(['customer' => $customer, 'active' => true]);
+    }
+
+    public function getForPayment(Payment $payment): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->where(':payment MEMBER OF p.payment')
+            ->setParameter('payment', $payment)
+            ->orderBy('p.createdAt', 'DESC');
+
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
     }
 }

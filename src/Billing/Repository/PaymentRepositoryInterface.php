@@ -21,6 +21,16 @@ use Parthenon\Billing\Entity\Subscription;
 
 interface PaymentRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return Payment[]
+     */
+    public function getPaymentsForCustomer(CustomerInterface $customer): array;
+
+    /**
+     * @return Payment[]
+     */
+    public function getPaymentsForSubscription(Subscription $subscription): array;
+
     public function getLastPaymentForSubscription(Subscription $subscription): Payment;
 
     public function getLastPaymentForCustomer(CustomerInterface $customer): Payment;

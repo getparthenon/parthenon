@@ -16,6 +16,7 @@ namespace Parthenon\Billing\Entity;
 
 use Brick\Money\Currency;
 use Brick\Money\Money;
+use Doctrine\Common\Collections\Collection;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 
 class Subscription
@@ -63,6 +64,8 @@ class Subscription
     private bool $hasTrial = false;
 
     private ?int $trialLengthDays = 0;
+
+    private Collection $payments;
 
     /**
      * @return mixed
@@ -323,5 +326,15 @@ class Subscription
     public function setPaymentDetails(?PaymentDetails $paymentDetails): void
     {
         $this->paymentDetails = $paymentDetails;
+    }
+
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function setPayments(Collection $payments): void
+    {
+        $this->payments = $payments;
     }
 }

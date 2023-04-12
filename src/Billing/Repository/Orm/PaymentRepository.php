@@ -51,4 +51,9 @@ class PaymentRepository extends DoctrineCrudRepository implements PaymentReposit
     {
         return $this->entityRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
     }
+
+    public function getPaymentsForCustomer(CustomerInterface $customer): array
+    {
+        return $this->entityRepository->findBy(['customer' => $customer]);
+    }
 }

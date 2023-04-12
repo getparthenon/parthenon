@@ -15,7 +15,25 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Billing\Entity\BillingAdminInterface;
+use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\Refund;
 
 interface RefundRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return Refund[]
+     */
+    public function getForBillingAdmin(BillingAdminInterface $billingAdmin): array;
+
+    /**
+     * @return Refund[]
+     */
+    public function getForCustomer(CustomerInterface $customer): array;
+
+    /**
+     * @return Refund[]
+     */
+    public function getForPayment(Payment $payment): array;
 }

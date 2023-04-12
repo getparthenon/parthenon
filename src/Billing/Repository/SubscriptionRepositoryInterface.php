@@ -16,6 +16,7 @@ namespace Parthenon\Billing\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
@@ -41,4 +42,9 @@ interface SubscriptionRepositoryInterface extends CrudRepositoryInterface
     public function getAllActiveForCustomer(CustomerInterface $customer): array;
 
     public function updateValidUntilForAllActiveSubscriptions(CustomerInterface $customer, string $mainExternalReference, \DateTimeInterface $validUntil): void;
+
+    /**
+     * @return Subscription[]
+     */
+    public function getForPayment(Payment $payment): array;
 }
