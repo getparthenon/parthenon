@@ -32,7 +32,7 @@ class Refund
 
     private string $externalReference;
 
-    private BillingAdminInterface $billingAdmin;
+    private ?BillingAdminInterface $billingAdmin = null;
 
     private ?string $reason = null;
 
