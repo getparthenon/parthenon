@@ -104,12 +104,12 @@ class Refund
         $this->status = $status;
     }
 
-    public function getBillingAdmin(): BillingAdminInterface
+    public function getBillingAdmin(): ?BillingAdminInterface
     {
         return $this->billingAdmin;
     }
 
-    public function setBillingAdmin(BillingAdminInterface $billingAdmin): void
+    public function setBillingAdmin(?BillingAdminInterface $billingAdmin): void
     {
         $this->billingAdmin = $billingAdmin;
     }
