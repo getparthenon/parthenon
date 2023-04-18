@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Brick\Money\Currency;
+use Brick\Money\Money;
 use Parthenon\Billing\Enum\RefundStatus;
 
 class Refund
@@ -82,6 +84,11 @@ class Refund
     public function setAmount(int $amount): void
     {
         $this->amount = $amount;
+    }
+
+    public function getAsMoney(): Money
+    {
+        return Money::ofMinor($this->amount, Currency::of($this->currency));
     }
 
     public function getCurrency(): string

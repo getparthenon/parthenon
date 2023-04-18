@@ -20,10 +20,12 @@ use Brick\Money\Money;
 use Obol\Model\Refund\IssueRefund;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\BillingAdminInterface;
+use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Refund;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Enum\RefundStatus;
+use Parthenon\Billing\Exception\RefundLimitExceededException;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 
@@ -36,20 +38,39 @@ class RefundManager implements RefundManagerInterface
     ) {
     }
 
-    public function issueFullRefundForSubscription(Subscription $subscription, BillingAdminInterface $billingAdmin): void
+    public function issueRefundForPayment(Payment $payment, Money $amount, ?BillingAdminInterface $billingAdmin = null, ?string $comment = null): void
     {
-        $payment = $this->paymentRepository->getLastPaymentForSubscription($subscription);
+        $totalRefunded = $this->refundRepository->getTotalRefundedForPayment($payment);
 
-        $issueRefund = new IssueRefund();
-        $issueRefund->setAmount($subscription->getMoneyAmount());
-        $issueRefund->setPaymentExternalReference($payment->getPaymentReference());
+        if ($totalRefunded->isGreaterThanOrEqualTo($payment->getMoneyAmount())) {
+            throw new RefundLimitExceededException('Payment has already been fully refunded');
+        }
 
-        $refund = $this->provider->refunds()->issueRefund($issueRefund);
+        $refundable = $payment->getMoneyAmount()->minus($totalRefunded);
 
-        $this->createEntityRecord($refund, $billingAdmin, $payment, $subscription);
+        if ($amount->isGreaterThan($refundable)) {
+            throw new RefundLimitExceededException('The refund amount is greater than the refundable amount for payment');
+        }
+
+        $this->handleRefund($amount, $payment, $totalRefunded, $billingAdmin, $comment);
     }
 
-    public function issueProrateRefundForSubscription(Subscription $subscription, BillingAdminInterface $billingAdmin, \DateTimeInterface $start, \DateTimeInterface $end): void
+    public function issueFullRefundForSubscription(Subscription $subscription, ?BillingAdminInterface $billingAdmin = null): void
+    {
+        $payment = $this->paymentRepository->getLastPaymentForSubscription($subscription);
+        $totalRefunded = $this->refundRepository->getTotalRefundedForPayment($payment);
+
+        $amount = $subscription->getMoneyAmount();
+        $refundable = $payment->getMoneyAmount()->minus($totalRefunded);
+
+        if ($amount->isGreaterThan($refundable)) {
+            throw new RefundLimitExceededException('The refund amount is greater than the refundable amount for payment');
+        }
+
+        $this->handleRefund($amount, $payment, $totalRefunded, $billingAdmin);
+    }
+
+    public function issueProrateRefundForSubscription(Subscription $subscription, ?BillingAdminInterface $billingAdmin, \DateTimeInterface $start, \DateTimeInterface $end): void
     {
         if ('month' === $subscription->getPaymentSchedule()) {
             $days = date('t');
@@ -65,20 +86,20 @@ class RefundManager implements RefundManagerInterface
         }
 
         $payment = $this->paymentRepository->getLastPaymentForSubscription($subscription);
+        $totalRefunded = $this->refundRepository->getTotalRefundedForPayment($payment);
+        $refundable = $payment->getMoneyAmount()->minus($totalRefunded);
 
         $perDay = $subscription->getMoneyAmount()->dividedBy($days, RoundingMode::HALF_UP);
         $totalAmount = $perDay->multipliedBy(abs($interval->days), RoundingMode::HALF_UP)->multipliedBy($subscription->getSeats(), RoundingMode::HALF_UP);
 
-        $issueRefund = new IssueRefund();
-        $issueRefund->setAmount($totalAmount);
-        $issueRefund->setPaymentExternalReference($payment->getPaymentReference());
+        if ($totalAmount->isGreaterThan($refundable)) {
+            throw new RefundLimitExceededException('The refund amount is greater than the refundable amount for payment');
+        }
 
-        $refund = $this->provider->refunds()->issueRefund($issueRefund);
-
-        $this->createEntityRecord($refund, $billingAdmin, $payment, $subscription);
+        $this->handleRefund($totalAmount, $payment, $totalRefunded, $billingAdmin);
     }
 
-    public function createEntityRecord(\Obol\Model\Refund $refund, BillingAdminInterface $billingAdmin, \Parthenon\Billing\Entity\Payment $payment, Subscription $subscription): void
+    public function createEntityRecord(\Obol\Model\Refund $refund, ?BillingAdminInterface $billingAdmin, Payment $payment, ?string $comment = null): void
     {
         $money = Money::ofMinor($refund->getAmount(), Currency::of($refund->getCurrency()));
         if ($payment->getMoneyAmount()->isEqualTo($money)) {
@@ -94,9 +115,33 @@ class RefundManager implements RefundManagerInterface
         $refundEn->setStatus(RefundStatus::ISSUED);
         $refundEn->setBillingAdmin($billingAdmin);
         $refundEn->setPayment($payment);
-        $refundEn->setCustomer($subscription->getCustomer());
+        $refundEn->setCustomer($payment->getCustomer());
         $refundEn->setCreatedAt(new \DateTime());
+        $refundEn->setReason($comment);
 
         $this->refundRepository->save($refundEn);
+    }
+
+    /**
+     * @throws \Brick\Money\Exception\MoneyMismatchException
+     * @throws \Obol\Exception\UnsupportedFunctionalityException
+     */
+    public function handleRefund(Money $amount, Payment $payment, Money $totalRefunded, ?BillingAdminInterface $billingAdmin, ?string $comment = null): void
+    {
+        $issueRefund = new IssueRefund();
+        $issueRefund->setAmount($amount);
+        $issueRefund->setPaymentExternalReference($payment->getPaymentReference());
+
+        $refund = $this->provider->refunds()->issueRefund($issueRefund);
+
+        $totalRefunded = $totalRefunded->plus($amount);
+
+        if ($totalRefunded->isEqualTo($payment->getAmount())) {
+            $payment->setStatus(PaymentStatus::FULLY_REFUNDED);
+        } else {
+            $payment->setStatus(PaymentStatus::PARTIALLY_REFUNDED);
+        }
+
+        $this->createEntityRecord($refund, $billingAdmin, $payment, $comment);
     }
 }

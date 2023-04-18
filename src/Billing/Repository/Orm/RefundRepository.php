@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Repository\Orm;
 
+use Brick\Money\Currency;
+use Brick\Money\Money;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -32,8 +34,24 @@ class RefundRepository extends DoctrineCrudRepository implements RefundRepositor
         return $this->entityRepository->findBy(['customer' => $customer]);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getForPayment(Payment $payment): array
     {
         return $this->entityRepository->findBy(['payment' => $payment]);
+    }
+
+    public function getTotalRefundedForPayment(Payment $payment): Money
+    {
+        $refunds = $this->getForPayment($payment);
+
+        $amount = Money::of(0, Currency::of($payment->getCurrency()));
+
+        foreach ($refunds as $refund) {
+            $amount = $amount->plus($refund->getAsMoney());
+        }
+
+        return $amount;
     }
 }

@@ -48,12 +48,14 @@ class RefundManagerTest extends TestCase
 
         $payment = $this->createMock(Payment::class);
         $payment->method('getPaymentReference')->willReturn('payment_id');
+        $payment->method('getMoneyAmount')->willReturn(Money::of(1000, Currency::of('USD')));
 
         $paymentRepository = $this->createMock(PaymentRepositoryInterface::class);
         $paymentRepository->method('getLastPaymentForSubscription')->with($subscription)->willReturn($payment);
 
         $refundRepository = $this->createMock(RefundRepositoryInterface::class);
         $refundRepository->method('save')->with($this->isInstanceOf(RefundEntity::class));
+        $refundRepository->method('getTotalRefundedForPayment')->with($payment)->willReturn(Money::of(0, Currency::of('USD')));
 
         $refundCreation = new Refund();
         $refundCreation->setAmount(300);
@@ -93,12 +95,14 @@ class RefundManagerTest extends TestCase
 
         $payment = $this->createMock(Payment::class);
         $payment->method('getPaymentReference')->willReturn('payment_id');
+        $payment->method('getMoneyAmount')->willReturn(Money::of(1000, Currency::of('USD')));
 
         $paymentRepository = $this->createMock(PaymentRepositoryInterface::class);
         $paymentRepository->method('getLastPaymentForSubscription')->with($subscription)->willReturn($payment);
 
         $refundRepository = $this->createMock(RefundRepositoryInterface::class);
         $refundRepository->method('save')->with($this->isInstanceOf(RefundEntity::class));
+        $refundRepository->method('getTotalRefundedForPayment')->with($payment)->willReturn(Money::of(0, Currency::of('USD')));
 
         $refundCreation = new Refund();
         $refundCreation->setAmount(300);
