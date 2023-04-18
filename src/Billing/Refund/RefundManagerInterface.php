@@ -21,7 +21,7 @@ use Parthenon\Billing\Entity\Subscription;
 
 interface RefundManagerInterface
 {
-    public function issueRefundForPayment(Payment $payment, Money $amount, ?BillingAdminInterface $billingAdmin = null, ?string $comment = null): void;
+    public function issueRefundForPayment(Payment $payment, Money $amount, ?BillingAdminInterface $billingAdmin = null, ?string $reason = null): void;
 
     public function issueFullRefundForSubscription(Subscription $subscription, BillingAdminInterface $billingAdmin): void;
 

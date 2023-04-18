@@ -38,7 +38,7 @@ class RefundManager implements RefundManagerInterface
     ) {
     }
 
-    public function issueRefundForPayment(Payment $payment, Money $amount, ?BillingAdminInterface $billingAdmin = null, ?string $comment = null): void
+    public function issueRefundForPayment(Payment $payment, Money $amount, ?BillingAdminInterface $billingAdmin = null, ?string $reason = null): void
     {
         $totalRefunded = $this->refundRepository->getTotalRefundedForPayment($payment);
 
@@ -52,7 +52,7 @@ class RefundManager implements RefundManagerInterface
             throw new RefundLimitExceededException('The refund amount is greater than the refundable amount for payment');
         }
 
-        $this->handleRefund($amount, $payment, $totalRefunded, $billingAdmin, $comment);
+        $this->handleRefund($amount, $payment, $totalRefunded, $billingAdmin, $reason);
     }
 
     public function issueFullRefundForSubscription(Subscription $subscription, ?BillingAdminInterface $billingAdmin = null): void
@@ -99,7 +99,7 @@ class RefundManager implements RefundManagerInterface
         $this->handleRefund($totalAmount, $payment, $totalRefunded, $billingAdmin);
     }
 
-    public function createEntityRecord(\Obol\Model\Refund $refund, ?BillingAdminInterface $billingAdmin, Payment $payment, ?string $comment = null): void
+    public function createEntityRecord(\Obol\Model\Refund $refund, ?BillingAdminInterface $billingAdmin, Payment $payment, ?string $reason = null): void
     {
         $money = Money::ofMinor($refund->getAmount(), Currency::of($refund->getCurrency()));
         if ($payment->getMoneyAmount()->isEqualTo($money)) {
@@ -117,7 +117,7 @@ class RefundManager implements RefundManagerInterface
         $refundEn->setPayment($payment);
         $refundEn->setCustomer($payment->getCustomer());
         $refundEn->setCreatedAt(new \DateTime());
-        $refundEn->setReason($comment);
+        $refundEn->setReason($reason);
 
         $this->refundRepository->save($refundEn);
     }
@@ -126,7 +126,7 @@ class RefundManager implements RefundManagerInterface
      * @throws \Brick\Money\Exception\MoneyMismatchException
      * @throws \Obol\Exception\UnsupportedFunctionalityException
      */
-    public function handleRefund(Money $amount, Payment $payment, Money $totalRefunded, ?BillingAdminInterface $billingAdmin, ?string $comment = null): void
+    public function handleRefund(Money $amount, Payment $payment, Money $totalRefunded, ?BillingAdminInterface $billingAdmin, ?string $reason = null): void
     {
         $issueRefund = new IssueRefund();
         $issueRefund->setAmount($amount);
@@ -142,6 +142,6 @@ class RefundManager implements RefundManagerInterface
             $payment->setStatus(PaymentStatus::PARTIALLY_REFUNDED);
         }
 
-        $this->createEntityRecord($refund, $billingAdmin, $payment, $comment);
+        $this->createEntityRecord($refund, $billingAdmin, $payment, $reason);
     }
 }
