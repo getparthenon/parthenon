@@ -102,7 +102,7 @@ class Payment
 
     public function getCurrency(): string
     {
-        return $this->currency;
+        return strtoupper($this->currency);
     }
 
     public function setCurrency(string $currency): void

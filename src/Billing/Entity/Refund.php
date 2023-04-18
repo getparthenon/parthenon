@@ -88,12 +88,12 @@ class Refund
 
     public function getAsMoney(): Money
     {
-        return Money::ofMinor($this->amount, Currency::of($this->currency));
+        return Money::ofMinor($this->amount, Currency::of(strtoupper($this->currency)));
     }
 
     public function getCurrency(): string
     {
-        return $this->currency;
+        return strtoupper($this->currency);
     }
 
     public function setCurrency(string $currency): void
