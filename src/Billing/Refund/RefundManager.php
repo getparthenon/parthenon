@@ -110,7 +110,7 @@ class RefundManager implements RefundManagerInterface
         $this->paymentRepository->save($payment);
         $refundEn = new Refund();
         $refundEn->setAmount($refund->getAmount());
-        $refundEn->setCurrency($refund->getCurrency());
+        $refundEn->setCurrency(strtoupper($refund->getCurrency()));
         $refundEn->setExternalReference($refund->getId());
         $refundEn->setStatus(RefundStatus::ISSUED);
         $refundEn->setBillingAdmin($billingAdmin);
