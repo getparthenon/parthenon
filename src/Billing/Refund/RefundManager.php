@@ -101,7 +101,7 @@ class RefundManager implements RefundManagerInterface
 
     public function createEntityRecord(\Obol\Model\Refund $refund, ?BillingAdminInterface $billingAdmin, Payment $payment, ?string $reason = null): void
     {
-        $money = Money::ofMinor($refund->getAmount(), Currency::of($refund->getCurrency()));
+        $money = Money::ofMinor($refund->getAmount(), Currency::of(strtoupper($refund->getCurrency())));
         if ($payment->getMoneyAmount()->isEqualTo($money)) {
             $payment->setStatus(PaymentStatus::FULLY_REFUNDED);
         } else {
