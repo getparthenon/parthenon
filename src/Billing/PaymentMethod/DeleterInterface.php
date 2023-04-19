@@ -12,13 +12,11 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Billing\Obol;
+namespace Parthenon\Billing\PaymentMethod;
 
-use Obol\Model\BillingDetails;
-use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentMethod;
 
-interface BillingDetailsFactoryInterface
+interface DeleterInterface
 {
-    public function createFromCustomerAndPaymentDetails(CustomerInterface $customer, PaymentMethod $paymentDetails): BillingDetails;
+    public function delete(PaymentMethod $paymentDetails): void;
 }

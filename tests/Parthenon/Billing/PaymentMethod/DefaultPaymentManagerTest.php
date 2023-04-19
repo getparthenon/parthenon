@@ -12,15 +12,15 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Billing\PaymentDetails;
+namespace Parthenon\Billing\PaymentMethod;
 
 use Obol\Model\BillingDetails;
 use Obol\PaymentServiceInterface;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Entity\PaymentMethod;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
-use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 class DefaultPaymentManagerTest extends TestCase
@@ -28,14 +28,14 @@ class DefaultPaymentManagerTest extends TestCase
     public function testRepositoryIsCalled()
     {
         $id = 'id-here';
-        $paymentDetails = $this->createMock(PaymentDetails::class);
+        $paymentDetails = $this->createMock(PaymentMethod::class);
         $paymentDetails->method('getId')->willReturn($id);
         $customer = $this->createMock(CustomerInterface::class);
-        $repository = $this->createMock(PaymentDetailsRepositoryInterface::class);
+        $repository = $this->createMock(PaymentMethodRepositoryInterface::class);
 
         $paymentDetails->expects($this->once())->method('setDefaultPaymentOption')->with(true);
 
-        $repository->expects($this->once())->method('markAllCustomerDetailsAsNotDefault')->with($customer);
+        $repository->expects($this->once())->method('markAllCustomerMethodsAsNotDefault')->with($customer);
         $repository->expects($this->once())->method('save')->with($paymentDetails);
         $repository->method('findById')->with($id)->willReturn($paymentDetails);
 

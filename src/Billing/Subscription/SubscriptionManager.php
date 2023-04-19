@@ -18,7 +18,7 @@ use Obol\Model\CancelSubscription;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Entity\PaymentMethod;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
@@ -30,7 +30,7 @@ use Parthenon\Billing\Obol\SubscriptionFactoryInterface;
 use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Plan\PlanPrice;
-use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -39,7 +39,7 @@ use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 final class SubscriptionManager implements SubscriptionManagerInterface
 {
     public function __construct(
-        private PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        private PaymentMethodRepositoryInterface $paymentDetailsRepository,
         private ProviderInterface $provider,
         private BillingDetailsFactoryInterface $billingDetailsFactory,
         private PaymentFactoryInterface $paymentFactory,
@@ -52,7 +52,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
     ) {
     }
 
-    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentDetails $paymentDetails, int $seatNumbers, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
+    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentMethod $paymentDetails, int $seatNumbers, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
     {
         $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($customer, $paymentDetails);
         $obolSubscription = $this->subscriptionFactory->createSubscription($billingDetails, $planPrice, $seatNumbers, $hasTrial ?? $plan->getHasTrial(), $trialLengthDays ?? $plan->getTrialLengthDays());
@@ -122,7 +122,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription
     {
         if (!$startSubscriptionDto->getPaymentDetailsId()) {
-            $paymentDetails = $this->paymentDetailsRepository->getDefaultPaymentDetailsForCustomer($customer);
+            $paymentDetails = $this->paymentDetailsRepository->getDefaultPaymentMethodForCustomer($customer);
         } else {
             $paymentDetails = $this->paymentDetailsRepository->findById($startSubscriptionDto->getPaymentDetailsId());
         }

@@ -45,7 +45,7 @@ class Subscription
 
     private string $childExternalReference;
 
-    private ?PaymentDetails $paymentDetails = null;
+    private ?PaymentMethod $paymentDetails = null;
 
     private ?SubscriptionPlan $subscriptionPlan = null;
 
@@ -318,12 +318,12 @@ class Subscription
         $this->trialLengthDays = $trialLengthDays;
     }
 
-    public function getPaymentDetails(): ?PaymentDetails
+    public function getPaymentDetails(): ?PaymentMethod
     {
         return $this->paymentDetails;
     }
 
-    public function setPaymentDetails(?PaymentDetails $paymentDetails): void
+    public function setPaymentDetails(?PaymentMethod $paymentDetails): void
     {
         $this->paymentDetails = $paymentDetails;
     }

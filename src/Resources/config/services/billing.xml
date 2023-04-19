@@ -94,8 +94,8 @@
             <argument>%parthenon_billing_config_frontend_info%</argument>
         </service>
 
-        <service id="Parthenon\Billing\Factory\PaymentDetailsFactory" class="Parthenon\Billing\Factory\PaymentDetailsFactory" />
-        <service id="Parthenon\Billing\Factory\PaymentDetailsFactoryInterface" alias="Parthenon\Billing\Factory\PaymentDetailsFactory" />
+        <service id="Parthenon\Billing\Factory\PaymentMethodFactory" class="Parthenon\Billing\Factory\PaymentMethodFactory" />
+        <service id="Parthenon\Billing\Factory\PaymentMethodFactoryInterface" alias="Parthenon\Billing\Factory\PaymentMethodFactory" />
 
         <!-- OBOL -->
         <service id="Parthenon\Billing\Obol\BillingDetailsFactory" class="Parthenon\Billing\Obol\BillingDetailsFactory" />
@@ -136,30 +136,30 @@
         </service>
 
         <!-- Payment Details -->
-        <service id="Parthenon\Billing\PaymentDetails\DefaultPaymentManager" class="Parthenon\Billing\PaymentDetails\DefaultPaymentManager">
-            <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
+        <service id="Parthenon\Billing\PaymentMethod\DefaultPaymentManager" class="Parthenon\Billing\PaymentMethod\DefaultPaymentManager">
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentMethodRepositoryInterface" />
             <argument type="service" id="Obol\Provider\ProviderInterface" />
             <argument type="service" id="Parthenon\Billing\Obol\BillingDetailsFactoryInterface" />
         </service>
-        <service id="Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface" alias="Parthenon\Billing\PaymentDetails\DefaultPaymentManager" />
+        <service id="Parthenon\Billing\PaymentMethod\DefaultPaymentManagerInterface" alias="Parthenon\Billing\PaymentMethod\DefaultPaymentManager" />
 
-        <service id="Parthenon\Billing\PaymentDetails\FrontendAddProcessor" class="Parthenon\Billing\PaymentDetails\FrontendAddProcessor">
+        <service id="Parthenon\Billing\PaymentMethod\FrontendAddProcessor" class="Parthenon\Billing\PaymentMethod\FrontendAddProcessor">
             <argument type="service" id="Obol\Provider\ProviderInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Obol\CustomerConverterInterface" />
-            <argument type="service" id="Parthenon\Billing\Factory\PaymentDetailsFactoryInterface" />
-            <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Factory\PaymentMethodFactoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentMethodRepositoryInterface" />
         </service>
-        <service id="Parthenon\Billing\PaymentDetails\FrontendAddProcessorInterface" alias="Parthenon\Billing\PaymentDetails\FrontendAddProcessor" />
+        <service id="Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface" alias="Parthenon\Billing\PaymentMethod\FrontendAddProcessor" />
 
-        <service id="Parthenon\Billing\PaymentDetails\Deleter" class="Parthenon\Billing\PaymentDetails\Deleter">
-            <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
+        <service id="Parthenon\Billing\PaymentMethod\Deleter" class="Parthenon\Billing\PaymentMethod\Deleter">
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentMethodRepositoryInterface" />
         </service>
-        <service id="Parthenon\Billing\PaymentDetails\DeleterInterface" alias="Parthenon\Billing\PaymentDetails\Deleter" />
+        <service id="Parthenon\Billing\PaymentMethod\DeleterInterface" alias="Parthenon\Billing\PaymentMethod\Deleter" />
 
         <!--- Subscriptions -->
         <service id="Parthenon\Billing\Subscription\SubscriptionManager" class="Parthenon\Billing\Subscription\SubscriptionManager">
-            <argument type="service" id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentMethodRepositoryInterface" />
             <argument type="service" id="Obol\Provider\ProviderInterface" />
             <argument type="service" id="Parthenon\Billing\Obol\BillingDetailsFactoryInterface" />
             <argument type="service" id="Parthenon\Billing\Obol\PaymentFactoryInterface" />

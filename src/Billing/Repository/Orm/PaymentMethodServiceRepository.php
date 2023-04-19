@@ -12,13 +12,16 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Billing\Obol;
+namespace Parthenon\Billing\Repository\Orm;
 
-use Obol\Model\BillingDetails;
-use Parthenon\Billing\Entity\CustomerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Common\Repository\CustomServiceRepository;
 
-interface BillingDetailsFactoryInterface
+class PaymentMethodServiceRepository extends CustomServiceRepository
 {
-    public function createFromCustomerAndPaymentDetails(CustomerInterface $customer, PaymentMethod $paymentDetails): BillingDetails;
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, PaymentMethod::class);
+    }
 }

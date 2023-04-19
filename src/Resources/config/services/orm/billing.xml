@@ -5,14 +5,14 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface" alias="parthenon.billing.repository.payment_details_repository" />
-        <service id="parthenon.billing.repository.payment_details_repository" class="Parthenon\Billing\Repository\Orm\PaymentDetailsRepository">
-            <argument type="service" id="parthenon.billing.repository.orm.payment_details_repository_doctrine" />
+        <service id="Parthenon\Billing\Repository\PaymentMethodRepositoryInterface" alias="parthenon.billing.repository.payment_method_repository" />
+        <service id="parthenon.billing.repository.payment_method_repository" class="Parthenon\Billing\Repository\Orm\PaymentMethodRepository">
+            <argument type="service" id="parthenon.billing.repository.orm.payment_method_repository_doctrine" />
         </service>
-        <service id="parthenon.billing.repository.orm.payment_details_repository_doctrine" class="Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository">
+        <service id="parthenon.billing.repository.orm.payment_method_repository_doctrine" class="Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository">
             <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
         </service>
-        <service alias="parthenon.billing.repository.orm.payment_details_repository_doctrine" id="Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository" />
+        <service alias="parthenon.billing.repository.orm.payment_method_repository_doctrine" id="Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository" />
 
         <service id="Parthenon\Billing\Repository\PaymentRepositoryInterface" alias="parthenon.billing.repository.payment_repository" />
         <service id="parthenon.billing.repository.payment_repository" class="Parthenon\Billing\Repository\Orm\PaymentRepository">

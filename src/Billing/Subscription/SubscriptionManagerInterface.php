@@ -16,7 +16,7 @@ namespace Parthenon\Billing\Subscription;
 
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Entity\PaymentMethod;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
@@ -25,7 +25,7 @@ use Parthenon\Billing\Plan\PlanPrice;
 
 interface SubscriptionManagerInterface
 {
-    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentDetails $paymentDetails, int $seatNumbers, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription;
+    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentMethod $paymentDetails, int $seatNumbers, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription;
 
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription;
 
