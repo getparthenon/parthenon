@@ -35,5 +35,7 @@ final class CustomerManager implements CustomerManagerInterface
         } catch (NoEntityFoundException $e) {
             throw new NoCustomerException();
         }
+
+        return $customer;
     }
 }
