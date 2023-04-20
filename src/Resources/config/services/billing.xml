@@ -149,6 +149,12 @@
         </service>
         <service id="Parthenon\Billing\Webhook\RequestProcessorInterface" alias="Parthenon\Billing\Webhook\RequestProcessor" />
 
+        <service id="Parthenon\Billing\Webhook\Handler\ChargeSucceededHandler" class="Parthenon\Billing\Webhook\Handler\ChargeSucceededHandler">
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Obol\PaymentFactoryInterface" />
+        </service>
+
         <!-- Payment Details -->
         <service id="Parthenon\Billing\PaymentMethod\DefaultPaymentManager" class="Parthenon\Billing\PaymentMethod\DefaultPaymentManager">
             <argument type="service" id="Parthenon\Billing\Repository\PaymentMethodRepositoryInterface" />

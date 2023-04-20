@@ -19,6 +19,7 @@ use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class PaymentRepository extends DoctrineCrudRepository implements PaymentRepositoryInterface
 {
@@ -55,5 +56,16 @@ class PaymentRepository extends DoctrineCrudRepository implements PaymentReposit
     public function getPaymentsForCustomer(CustomerInterface $customer): array
     {
         return $this->entityRepository->findBy(['customer' => $customer]);
+    }
+
+    public function getPaymentForReference(string $reference): Payment
+    {
+        $payment = $this->entityRepository->findOneBy(['paymentReference' => $reference]);
+
+        if (!$payment instanceof Payment) {
+            throw new NoEntityFoundException();
+        }
+
+        return $payment;
     }
 }

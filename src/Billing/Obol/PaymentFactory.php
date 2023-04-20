@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Obol;
 
+use Obol\Model\Events\AbstractCharge;
 use Obol\Model\PaymentDetails;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\CustomerProviderInterface;
@@ -21,7 +22,7 @@ use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Enum\PaymentStatus;
 
-class PaymentFactory implements PaymentFactoryInterface
+final class PaymentFactory implements PaymentFactoryInterface
 {
     public function __construct(
         private CustomerProviderInterface $customerProvider,
@@ -44,6 +45,20 @@ class PaymentFactory implements PaymentFactoryInterface
         $payment->setCreatedAt(new \DateTime('now'));
         $payment->setUpdatedAt(new \DateTime('now'));
         $payment->setStatus(PaymentStatus::COMPLETED);
+        $payment->setProvider($this->provider->getName());
+
+        return $payment;
+    }
+
+    public function fromChargeEvent(AbstractCharge $charge): Payment
+    {
+        $payment = new Payment();
+        $payment->setPaymentReference($charge->getPaymentReference());
+        $payment->setPaymentProviderDetailsUrl($charge->getDetailsLink());
+        $payment->setAmount($charge->getAmount());
+        $payment->setCurrency($charge->getCurrency());
+        $payment->setCreatedAt(new \DateTime('now'));
+        $payment->setUpdatedAt(new \DateTime('now'));
         $payment->setProvider($this->provider->getName());
 
         return $payment;

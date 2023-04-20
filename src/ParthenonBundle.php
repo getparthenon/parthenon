@@ -19,6 +19,7 @@ use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMa
 use Doctrine\DBAL\Types\Type;
 use Parthenon\AbTesting\Compiler\AbTestingCompilerPass;
 use Parthenon\Athena\Compiler\AthenaCompilerPass;
+use Parthenon\Billing\Compiler\BillingCompilerPass;
 use Parthenon\Common\Compiler\CommonCompilerPass;
 use Parthenon\Export\Compiler\ExportCompilerPass;
 use Parthenon\Funnel\Compiler\FunnelCompilerPass;
@@ -90,6 +91,7 @@ class ParthenonBundle extends Bundle
 
         $container->addCompilerPass(new AbTestingCompilerPass());
         $container->addCompilerPass(new AthenaCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
+        $container->addCompilerPass(new BillingCompilerPass());
         $container->addCompilerPass(new CommonCompilerPass());
         $container->addCompilerPass(new ExportCompilerPass());
         $container->addCompilerPass(new FunnelCompilerPass());

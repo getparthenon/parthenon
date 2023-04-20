@@ -21,6 +21,7 @@ use Obol\Provider\ProviderInterface;
 use Obol\WebhookServiceInterface;
 use Parthenon\Billing\Config\WebhookConfig;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ServerBag;
 
 class RequestProcessorTest extends TestCase
 {
@@ -38,8 +39,10 @@ class RequestProcessorTest extends TestCase
         $webhookConfig = new WebhookConfig('secret_config');
 
         $request = $this->createMock(Request::class);
+        $serverBag = $this->createMock(ServerBag::class);
+        $request->server = $serverBag;
         $request->method('getContent')->willReturn(json_encode([]));
-        $request->method('get')->with('stripe-signature')->willReturn('siganture');
+        $serverBag->method('get')->with('HTTP_STRIPE_SIGNATURE')->willReturn('siganture');
 
         $subject = new RequestProcessor($webhookConfig, $provider, $manager);
         $subject->processRequest($request);
@@ -59,8 +62,10 @@ class RequestProcessorTest extends TestCase
         $webhookConfig = new WebhookConfig('secret_config');
 
         $request = $this->createMock(Request::class);
+        $serverBag = $this->createMock(ServerBag::class);
+        $request->server = $serverBag;
         $request->method('getContent')->willReturn(json_encode([]));
-        $request->method('get')->with('stripe-signature')->willReturn('siganture');
+        $serverBag->method('get')->with('HTTP_STRIPE_SIGNATURE')->willReturn('siganture');
 
         $subject = new RequestProcessor($webhookConfig, $provider, $manager);
         $subject->processRequest($request);

@@ -23,6 +23,7 @@ use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\TeamCustomerProvider;
 use Parthenon\Billing\UserCustomerProvider;
+use Parthenon\Billing\Webhook\HandlerInterface;
 use Parthenon\Common\Exception\ParameterNotSetException;
 use Parthenon\User\Repository\TeamRepositoryInterface;
 use Parthenon\User\Repository\UserRepositoryInterface;
@@ -93,6 +94,7 @@ class Billing implements ModuleConfigurationInterface
         if (!isset($config['billing']) || !isset($config['billing']['enabled']) || false === $config['billing']['enabled']) {
             return;
         }
+        $container->registerForAutoconfiguration(HandlerInterface::class)->addTag('parthenon.billing.webhooks.handler');
         $container->setParameter('parthenon_billing_enabled', true);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));

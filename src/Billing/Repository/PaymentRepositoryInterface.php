@@ -18,9 +18,15 @@ use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface PaymentRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function getPaymentForReference(string $reference): Payment;
+
     /**
      * @return Payment[]
      */
@@ -31,7 +37,13 @@ interface PaymentRepositoryInterface extends CrudRepositoryInterface
      */
     public function getPaymentsForSubscription(Subscription $subscription): array;
 
+    /**
+     * @throws NoEntityFoundException
+     */
     public function getLastPaymentForSubscription(Subscription $subscription): Payment;
 
+    /**
+     * @throws NoEntityFoundException
+     */
     public function getLastPaymentForCustomer(CustomerInterface $customer): Payment;
 }

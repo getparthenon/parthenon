@@ -15,7 +15,13 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface CustomerRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function getByExternalReference(string $externalReference): CustomerInterface;
 }
