@@ -93,6 +93,9 @@
         <service id="Parthenon\Billing\Config\FrontendConfig" class="Parthenon\Billing\Config\FrontendConfig">
             <argument>%parthenon_billing_config_frontend_info%</argument>
         </service>
+        <service id="Parthenon\Billing\Config\WebhookConfig" class="Parthenon\Billing\Config\WebhookConfig">
+            <argument>%parthenon_billing_config_webhook_secret%</argument>
+        </service>
 
         <service id="Parthenon\Billing\Factory\PaymentMethodFactory" class="Parthenon\Billing\Factory\PaymentMethodFactory" />
         <service id="Parthenon\Billing\Factory\PaymentMethodFactoryInterface" alias="Parthenon\Billing\Factory\PaymentMethodFactory" />
@@ -134,6 +137,17 @@
         <service id="Parthenon\Billing\Athena\RefundSection" class="Parthenon\Billing\Athena\RefundSection">
             <argument type="service" id="Parthenon\Billing\Repository\RefundRepositoryInterface" />
         </service>
+
+        <!-- Webhook -->
+        <service id="Parthenon\Billing\Webhook\HandlerManager" class="Parthenon\Billing\Webhook\HandlerManager" />
+        <service id="Parthenon\Billing\Webhook\HandlerManagerInterface" alias="Parthenon\Billing\Webhook\HandlerManager" />
+
+        <service id="Parthenon\Billing\Webhook\RequestProcessor" class="Parthenon\Billing\Webhook\RequestProcessor">
+            <argument type="service" id="Parthenon\Billing\Config\WebhookConfig" />
+            <argument type="service" id="Obol\Provider\ProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\Webhook\HandlerManagerInterface" />
+        </service>
+        <service id="Parthenon\Billing\Webhook\RequestProcessorInterface" alias="Parthenon\Billing\Webhook\RequestProcessor" />
 
         <!-- Payment Details -->
         <service id="Parthenon\Billing\PaymentMethod\DefaultPaymentManager" class="Parthenon\Billing\PaymentMethod\DefaultPaymentManager">

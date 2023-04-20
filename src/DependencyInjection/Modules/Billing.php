@@ -54,6 +54,7 @@ class Billing implements ModuleConfigurationInterface
                                 ->scalarNode('api_key')->end()
                                 ?->scalarNode('merchant_account')->end()
                                 ?->booleanNode('test_mode')->end()
+                                ?->scalarNode('webhook_secret')->end()
                                 ?->scalarNode('prefix')->end()
                                 ?->scalarNode('cse_url')->end()
                             ?->end()
@@ -61,6 +62,7 @@ class Billing implements ModuleConfigurationInterface
                         ?->arrayNode('stripe')
                             ->children()
                                 ->scalarNode('private_api_key')->end()
+                                ->scalarNode('webhook_secret')->end()
                                 ?->scalarNode('public_api_key')->end()
                                 ?->scalarNode('product_id')->end()
                                 ?->arrayNode('payment_methods')
@@ -81,6 +83,7 @@ class Billing implements ModuleConfigurationInterface
         $container->setParameter('parthenon_billing_payments_obol_config', []);
         $container->setParameter('parthenon_billing_customer_type', 'team');
         $container->setParameter('parthenon_billing_config_frontend_info', '');
+        $container->setParameter('parthenon_billing_config_webhook_secret', '');
         $container->setParameter('parthenon_billing_plan_plans', []);
         $container->setParameter('parthenon_billing_product_id', null);
     }
@@ -182,6 +185,7 @@ class Billing implements ModuleConfigurationInterface
 
         $containerBuilder->setParameter('parthenon_billing_product_id', $paymentsConfig['stripe']['product_id'] ?? null);
         $containerBuilder->setParameter('parthenon_billing_config_frontend_info', $paymentsConfig['stripe']['public_api_key']);
+        $containerBuilder->setParameter('parthenon_billing_config_webhook_secret', $paymentsConfig['stripe']['webhook_secret'] ?? '');
 
         if (isset($paymentsConfig['stripe']['payment_methods'])) {
             $config['payment_methods'] = $paymentsConfig['stripe']['payment_methods'];
@@ -234,7 +238,8 @@ class Billing implements ModuleConfigurationInterface
             $config['return_url'] = $paymentsConfig['return_url'];
         }
 
-        $containerBuilder->setParameter('parthenon_billing_config_frontend_info', $paymentsConfig['stripe']['cse_url']);
+        $containerBuilder->setParameter('parthenon_billing_config_frontend_info', $paymentsConfig['adyen']['cse_url']);
+        $containerBuilder->setParameter('parthenon_billing_config_webhook_secret', $paymentsConfig['adyen']['webhook_secret'] ?? '');
 
         return $config;
     }
