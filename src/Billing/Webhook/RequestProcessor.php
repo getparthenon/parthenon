@@ -36,6 +36,11 @@ final class RequestProcessor implements RequestProcessorInterface
         $webhookPayload->setSecret($this->config->getSecret());
 
         $event = $this->provider->webhook()->process($webhookPayload);
+
+        if (!$event) {
+            return;
+        }
+
         $this->handlerManager->handle($event);
     }
 }

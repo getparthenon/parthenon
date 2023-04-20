@@ -44,4 +44,25 @@ class RequestProcessorTest extends TestCase
         $subject = new RequestProcessor($webhookConfig, $provider, $manager);
         $subject->processRequest($request);
     }
+
+    public function testProcessorNull()
+    {
+        $event = $this->createMock(EventInterface::class);
+
+        $provider = $this->createMock(ProviderInterface::class);
+        $webhookService = $this->createMock(WebhookServiceInterface::class);
+        $provider->method('webhook')->willReturn($webhookService);
+        $webhookService->expects($this->once())->method('process')->with($this->isInstanceOf(WebhookPayload::class))->willReturn(null);
+
+        $manager = $this->createMock(HandlerManagerInterface::class);
+        $manager->expects($this->never())->method('handle')->with($event);
+        $webhookConfig = new WebhookConfig('secret_config');
+
+        $request = $this->createMock(Request::class);
+        $request->method('getContent')->willReturn(json_encode([]));
+        $request->method('get')->with('stripe-signature')->willReturn('siganture');
+
+        $subject = new RequestProcessor($webhookConfig, $provider, $manager);
+        $subject->processRequest($request);
+    }
 }
