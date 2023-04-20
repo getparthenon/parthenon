@@ -16,10 +16,10 @@ namespace Parthenon\Billing\Webhook\Handler;
 
 use Obol\Model\Events\ChargeSucceeded;
 use Obol\Model\Events\EventInterface;
+use Parthenon\Billing\Customer\CustomerManagerInterface;
 use Parthenon\Billing\Enum\PaymentStatus;
-use Parthenon\Billing\Exception\InvalidEventException;
+use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
-use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Webhook\HandlerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -28,7 +28,7 @@ class ChargeSucceededHandler implements HandlerInterface
 {
     public function __construct(
         private PaymentRepositoryInterface $paymentRepository,
-        private CustomerRepositoryInterface $customerRepository,
+        private CustomerManagerInterface $customerManager,
         private PaymentFactoryInterface $paymentFactory,
     ) {
     }
@@ -50,14 +50,16 @@ class ChargeSucceededHandler implements HandlerInterface
         }
         $payment->setStatus(PaymentStatus::COMPLETED);
         $payment->setUpdatedAt(new \DateTime('now'));
-        /*
-        try {
-            $customer = $this->customerRepository->getByExternalReference($event->getExternalCustomerId());
-        } catch (NoEntityFoundException $e) {
-            throw new InvalidEventException('Customer not found', previous: $e);
+
+        if ($event->hasExternalCustomerId()) {
+            try {
+                $customer = $this->customerManager->getCustomerForReference($event->getExternalCustomerId());
+                $payment->setCustomer($customer);
+            } catch (NoCustomerException $e) {
+                // Handle error some how.
+            }
         }
-        $payment->setCustomer($customer);
-*/
+
         $this->paymentRepository->save($payment);
     }
 }

@@ -138,6 +138,11 @@
             <argument type="service" id="Parthenon\Billing\Repository\RefundRepositoryInterface" />
         </service>
 
+        <service id="Parthenon\Billing\Customer\CustomerManager" class="Parthenon\Billing\Customer\CustomerManager">
+            <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Billing\Customer\CustomerManagerInterface" alias="Parthenon\Billing\Customer\CustomerManager" />
+
         <!-- Webhook -->
         <service id="Parthenon\Billing\Webhook\HandlerManager" class="Parthenon\Billing\Webhook\HandlerManager" />
         <service id="Parthenon\Billing\Webhook\HandlerManagerInterface" alias="Parthenon\Billing\Webhook\HandlerManager" />
@@ -151,7 +156,7 @@
 
         <service id="Parthenon\Billing\Webhook\Handler\ChargeSucceededHandler" class="Parthenon\Billing\Webhook\Handler\ChargeSucceededHandler">
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
-            <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Customer\CustomerManagerInterface" />
             <argument type="service" id="Parthenon\Billing\Obol\PaymentFactoryInterface" />
         </service>
 
