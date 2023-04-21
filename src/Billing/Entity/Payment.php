@@ -170,6 +170,11 @@ class Payment
         $this->customer = $customer;
     }
 
+    public function hasCustomer(): bool
+    {
+        return isset($this->customer);
+    }
+
     public function getMoneyAmount(): Money
     {
         return Money::ofMinor($this->amount, Currency::of($this->currency));

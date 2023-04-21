@@ -41,7 +41,9 @@ class ChargeBackSyncer implements ChargeBackSyncerInterface
             $payment = $this->paymentRepository->getPaymentForReference($event->getPaymentReference());
             $chargeBack->setExternalReference($event->getId());
             $chargeBack->setPayment($payment);
-            $chargeBack->setCustomer($payment->getCustomer());
+            if ($payment->hasCustomer()) {
+                $chargeBack->setCustomer($payment->getCustomer());
+            }
             $chargeBack->setCreatedAt(new \DateTime('now'));
         }
 

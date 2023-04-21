@@ -17,7 +17,7 @@ namespace Parthenon\Billing\Enum;
 enum ChargeBackStatus: string
 {
     case WARNING_UNDER_REVIEW = 'warning_under_review';
-    case WARNING_NEEDS_RESPONSE = 'warning_need_response';
+    case WARNING_NEEDS_RESPONSE = 'warning_needs_response';
     case NEED_RESPONSE = 'needs_response';
     case UNDER_REVIEW = 'under_review';
     case CHARGE_REFUNDED = 'charge_refunded';

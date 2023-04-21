@@ -63,7 +63,7 @@ class PaymentRepository extends DoctrineCrudRepository implements PaymentReposit
         $payment = $this->entityRepository->findOneBy(['paymentReference' => $reference]);
 
         if (!$payment instanceof Payment) {
-            throw new NoEntityFoundException();
+            throw new NoEntityFoundException(sprintf("No payment for '%s'", $reference));
         }
 
         return $payment;
