@@ -21,12 +21,14 @@ use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Enum\PaymentStatus;
+use Parthenon\Billing\Factory\EntityFactoryInterface;
 
 final class PaymentFactory implements PaymentFactoryInterface
 {
     public function __construct(
         private CustomerProviderInterface $customerProvider,
         private ProviderInterface $provider,
+        private EntityFactoryInterface $entityFactory,
     ) {
     }
 
@@ -36,7 +38,7 @@ final class PaymentFactory implements PaymentFactoryInterface
             $customer = $this->customerProvider->getCurrentCustomer();
         }
 
-        $payment = new Payment();
+        $payment = $this->entityFactory->getPaymentEntity();
         $payment->setPaymentReference($paymentDetails->getPaymentReference());
         $payment->setPaymentProviderDetailsUrl($paymentDetails->getPaymentReferenceLink());
         $payment->setMoneyAmount($paymentDetails->getAmount());
@@ -52,7 +54,7 @@ final class PaymentFactory implements PaymentFactoryInterface
 
     public function fromChargeEvent(AbstractCharge $charge): Payment
     {
-        $payment = new Payment();
+        $payment = $this->entityFactory->getPaymentEntity();
         $payment->setPaymentReference($charge->getPaymentReference());
         $payment->setPaymentProviderDetailsUrl($charge->getDetailsLink());
         $payment->setAmount($charge->getAmount());

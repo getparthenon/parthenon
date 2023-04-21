@@ -20,6 +20,7 @@ use Obol\Model\SubscriptionCreationResponse;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 
 class PaymentFactoryTest extends TestCase
@@ -45,7 +46,7 @@ class PaymentFactoryTest extends TestCase
         $subscriptionCreation->setSubscriptionId('subscription-id');
         $subscriptionCreation->setPaymentDetails($paymentDetails);
 
-        $subject = new PaymentFactory($customerProvider, $provider);
+        $subject = new PaymentFactory($customerProvider, $provider, new EntityFactory());
 
         $actual = $subject->fromSubscriptionCreation($paymentDetails);
         $this->assertTrue($amount->isEqualTo($actual->getMoneyAmount()));

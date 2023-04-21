@@ -24,6 +24,7 @@ use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Exception\SubscriptionCreationException;
+use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Obol\SubscriptionFactoryInterface;
@@ -48,7 +49,8 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         private PlanManagerInterface $planManager,
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private PriceRepositoryInterface $priceRepository,
-        private SubscriptionRepositoryInterface $subscriptionRepository
+        private SubscriptionRepositoryInterface $subscriptionRepository,
+        private EntityFactoryInterface $entityFactory,
     ) {
     }
 
@@ -74,7 +76,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
             $customer->setExternalCustomerReference($subscriptionCreationResponse->getCustomerCreation()->getReference());
         }
 
-        $subscription = new Subscription();
+        $subscription = $this->entityFactory->getSubscriptionEntity();
         $subscription->setPlanName($plan->getName());
         $subscription->setPaymentSchedule($planPrice->getSchedule());
         $subscription->setActive(true);

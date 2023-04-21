@@ -100,6 +100,9 @@
         <service id="Parthenon\Billing\Factory\PaymentMethodFactory" class="Parthenon\Billing\Factory\PaymentMethodFactory" />
         <service id="Parthenon\Billing\Factory\PaymentMethodFactoryInterface" alias="Parthenon\Billing\Factory\PaymentMethodFactory" />
 
+        <service id="Parthenon\Billing\Factory\EntityFactory" class="Parthenon\Billing\Factory\EntityFactory" />
+        <service id="Parthenon\Billing\Factory\EntityFactoryInterface" alias="Parthenon\Billing\Factory\EntityFactory" />
+
         <!-- OBOL -->
         <service id="Parthenon\Billing\Obol\BillingDetailsFactory" class="Parthenon\Billing\Obol\BillingDetailsFactory" />
         <service id="Parthenon\Billing\Obol\BillingDetailsFactoryInterface" alias="Parthenon\Billing\Obol\BillingDetailsFactory" />
@@ -110,6 +113,7 @@
         <service id="Parthenon\Billing\Obol\PaymentFactory" class="Parthenon\Billing\Obol\PaymentFactory">
             <argument type="service" id="Parthenon\Billing\CustomerProviderInterface" />
             <argument type="service" id="Obol\Provider\ProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\Factory\EntityFactoryInterface" />
         </service>
         <service id="Parthenon\Billing\Obol\PaymentFactoryInterface" alias="Parthenon\Billing\Obol\PaymentFactory" />
 
@@ -195,6 +199,7 @@
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\PriceRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Factory\EntityFactoryInterface" />
         </service>
         <service id="Parthenon\Billing\Subscription\SubscriptionManagerInterface" alias="Parthenon\Billing\Subscription\SubscriptionManager" />
 

@@ -79,5 +79,14 @@
         </service>
         <service alias="parthenon.billing.repository.orm.refund_repository_doctrine" id="Parthenon\Billing\Repository\Orm\RefundServiceRepository" />
 
+        <service id="Parthenon\Billing\Repository\ChargeBackRepositoryInterface" alias="parthenon.billing.repository.charge_back_repository" />
+        <service id="parthenon.billing.repository.charge_back_repository" class="Parthenon\Billing\Repository\Orm\ChargeBackRepository">
+            <argument type="service" id="parthenon.billing.repository.orm.charge_back_repository_doctrine" />
+        </service>
+        <service id="parthenon.billing.repository.orm.charge_back_repository_doctrine" class="Parthenon\Billing\Repository\Orm\ChargeBackServiceRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+        <service alias="parthenon.billing.repository.orm.charge_back_repository_doctrine" id="Parthenon\Billing\Repository\Orm\ChargeBackServiceRepository" />
+
     </services>
 </container>
