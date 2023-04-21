@@ -16,18 +16,15 @@ namespace Parthenon\Billing\Webhook\Handler;
 
 use Obol\Model\Events\AbstractDispute;
 use Obol\Model\Events\EventInterface;
-use Parthenon\Billing\ChargeBack\ChargeBackFactoryInterface;
-use Parthenon\Billing\Enum\ChargeBackReason;
-use Parthenon\Billing\Enum\ChargeBackStatus;
+use Parthenon\Billing\ChargeBack\ChargeBackSyncerInterface;
 use Parthenon\Billing\Repository\ChargeBackRepositoryInterface;
 use Parthenon\Billing\Webhook\HandlerInterface;
-use Parthenon\Common\Exception\NoEntityFoundException;
 
 class ChargeBackHandler implements HandlerInterface
 {
     public function __construct(
         private ChargeBackRepositoryInterface $chargeBackRepository,
-        private ChargeBackFactoryInterface $factory,
+        private ChargeBackSyncerInterface $syncer,
     ) {
     }
 
@@ -41,16 +38,7 @@ class ChargeBackHandler implements HandlerInterface
      */
     public function handle(EventInterface $event): void
     {
-        try {
-            $chargeBack = $this->chargeBackRepository->getByExternalReference($event->getId());
-        } catch (NoEntityFoundException $e) {
-            $chargeBack = $this->factory->buildFromEvent($event);
-        }
-
-        $chargeBack->setStatus(ChargeBackStatus::fromName($event->getStatus()));
-        $chargeBack->setReason(ChargeBackReason::fromName($event->getReason()));
-        $chargeBack->setUpdatedAt(new \DateTime());
-
+        $chargeBack = $this->syncer->sync($event);
         $this->chargeBackRepository->save($chargeBack);
     }
 }

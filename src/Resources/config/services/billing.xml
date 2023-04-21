@@ -35,6 +35,14 @@
             <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
         </service>
 
+        <!-- Commands -->
+        <service id="Parthenon\Billing\Command\DailyChargeBackCommand" class="Parthenon\Billing\Command\DailyChargeBackCommand">
+            <argument type="service" id="Obol\Provider\ProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\ChargeBack\ChargeBackSyncerInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\ChargeBackRepositoryInterface" />
+            <tag name="console.command"  />
+        </service>
+
 
         <!-- Plans -->
 
@@ -166,7 +174,7 @@
         </service>
         <service id="Parthenon\Billing\Webhook\Handler\ChargeBackHandler" class="Parthenon\Billing\Webhook\Handler\ChargeBackHandler">
             <argument type="service" id="Parthenon\Billing\Repository\ChargeBackRepositoryInterface" />
-            <argument type="service" id="Parthenon\Billing\ChargeBack\ChargeBackFactory" />
+            <argument type="service" id="Parthenon\Billing\ChargeBack\ChargeBackSyncerInterface" />
         </service>
 
         <!-- Payment Details -->
@@ -192,11 +200,12 @@
         <service id="Parthenon\Billing\PaymentMethod\DeleterInterface" alias="Parthenon\Billing\PaymentMethod\Deleter" />
 
 
-        <service id="Parthenon\Billing\ChargeBack\ChargeBackFactory" class="Parthenon\Billing\ChargeBack\ChargeBackFactory">
+        <service id="Parthenon\Billing\ChargeBack\ChargeBackSyncer" class="Parthenon\Billing\ChargeBack\ChargeBackSyncer">
+            <argument type="service" id="Parthenon\Billing\Repository\ChargeBackRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Factory\EntityFactory" />
         </service>
-        <service id="Parthenon\Billing\ChargeBack\ChargeBackFactoryInterface" alias="Parthenon\Billing\ChargeBack\ChargeBackFactory" />
+        <service id="Parthenon\Billing\ChargeBack\ChargeBackSyncerInterface" alias="Parthenon\Billing\ChargeBack\ChargeBackSyncer" />
 
         <!--- Subscriptions -->
         <service id="Parthenon\Billing\Subscription\SubscriptionManager" class="Parthenon\Billing\Subscription\SubscriptionManager">

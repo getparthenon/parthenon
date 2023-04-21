@@ -17,9 +17,7 @@ namespace Parthenon\Billing\ChargeBack;
 use Obol\Model\Events\AbstractDispute;
 use Parthenon\Billing\Entity\ChargeBack;
 
-interface ChargeBackFactoryInterface
+interface ChargeBackSyncerInterface
 {
-    public function buildFromEvent(AbstractDispute $event): ChargeBack;
-
-    public function buildFromChargeBack(\Obol\Model\ChargeBack\ChargeBack $obolChargeBack): ChargeBack;
+    public function sync(AbstractDispute|\Obol\Model\ChargeBack\ChargeBack $event): ChargeBack;
 }
