@@ -36,6 +36,10 @@ class PaymentEventLinker implements PaymentEventLinkerInterface
 
         $invoice = $this->provider->invoices()->fetch($charge->getExternalInvoiceId());
 
+        if (!$invoice) {
+            return;
+        }
+
         foreach ($invoice->getLines() as $line) {
             if (!$line->hasReferences()) {
                 continue;
