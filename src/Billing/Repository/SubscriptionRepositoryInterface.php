@@ -47,4 +47,9 @@ interface SubscriptionRepositoryInterface extends CrudRepositoryInterface
      * @return Subscription[]
      */
     public function getForPayment(Payment $payment): array;
+
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function getForMainAndChildExternalReference(string $mainExternalReference, string $childExternalReference): Subscription;
 }

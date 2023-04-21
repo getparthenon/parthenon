@@ -90,4 +90,15 @@ class SubscriptionRepository extends DoctrineCrudRepository implements Subscript
 
         return $result;
     }
+
+    public function getForMainAndChildExternalReference(string $mainExternalReference, string $childExternalReference): Subscription
+    {
+        $subscription = $this->entityRepository->findOneBy(['mainExternalReference' => $mainExternalReference, 'childExternalReference' => $childExternalReference]);
+
+        if (!$subscription instanceof Subscription) {
+            throw new NoEntityFoundException(sprintf("No Subscription found for main external reference '%s' and child reference '%s'", $mainExternalReference, $childExternalReference));
+        }
+
+        return $subscription;
+    }
 }

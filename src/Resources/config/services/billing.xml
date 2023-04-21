@@ -158,6 +158,7 @@
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Customer\CustomerManagerInterface" />
             <argument type="service" id="Parthenon\Billing\Obol\PaymentFactoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Subscription\PaymentEventLinkerInterface" />
         </service>
 
         <!-- Payment Details -->
@@ -196,6 +197,12 @@
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
         </service>
         <service id="Parthenon\Billing\Subscription\SubscriptionManagerInterface" alias="Parthenon\Billing\Subscription\SubscriptionManager" />
+
+        <service id="Parthenon\Billing\Subscription\PaymentEventLinker" class="Parthenon\Billing\Subscription\PaymentEventLinker">
+            <argument type="service" id="Obol\Provider\ProviderInterface" />
+            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Billing\Subscription\PaymentEventLinkerInterface" alias="Parthenon\Billing\Subscription\PaymentEventLinker" />
 
         <service id="Parthenon\Billing\Plan\CustomerPlanInfo" class="Parthenon\Billing\Plan\CustomerPlanInfo">
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
