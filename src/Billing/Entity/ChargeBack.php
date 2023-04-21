@@ -21,6 +21,8 @@ class ChargeBack
 {
     private $id;
 
+    private string $externalReference;
+
     private CustomerInterface $customer;
 
     private Payment $payment;
@@ -41,6 +43,16 @@ class ChargeBack
     public function setId($id): void
     {
         $this->id = $id;
+    }
+
+    public function getExternalReference(): string
+    {
+        return $this->externalReference;
+    }
+
+    public function setExternalReference(string $externalReference): void
+    {
+        $this->externalReference = $externalReference;
     }
 
     public function getCustomer(): CustomerInterface

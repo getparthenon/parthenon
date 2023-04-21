@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Factory;
 
+use Parthenon\Billing\Entity\ChargeBack;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Subscription;
 
@@ -27,5 +28,10 @@ class EntityFactory implements EntityFactoryInterface
     public function getPaymentEntity(): Payment
     {
         return new Payment();
+    }
+
+    public function getChargeBackEntity(): ChargeBack
+    {
+        return new ChargeBack();
     }
 }
