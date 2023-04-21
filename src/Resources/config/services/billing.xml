@@ -164,6 +164,10 @@
             <argument type="service" id="Parthenon\Billing\Obol\PaymentFactoryInterface" />
             <argument type="service" id="Parthenon\Billing\Subscription\PaymentEventLinkerInterface" />
         </service>
+        <service id="Parthenon\Billing\Webhook\Handler\ChargeBackHandler" class="Parthenon\Billing\Webhook\Handler\ChargeBackHandler">
+            <argument type="service" id="Parthenon\Billing\Repository\ChargeBackRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\ChargeBack\ChargeBackFactory" />
+        </service>
 
         <!-- Payment Details -->
         <service id="Parthenon\Billing\PaymentMethod\DefaultPaymentManager" class="Parthenon\Billing\PaymentMethod\DefaultPaymentManager">

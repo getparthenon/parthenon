@@ -23,4 +23,14 @@ enum ChargeBackStatus: string
     case CHARGE_REFUNDED = 'charge_refunded';
     case WON = 'won';
     case LOST = 'lost';
+
+    public static function fromName(string $name): self
+    {
+        foreach (self::cases() as $status) {
+            if ($name === $status->value) {
+                return $status;
+            }
+        }
+        throw new \ValueError("$name is not a valid backing value for enum ".self::class);
+    }
 }

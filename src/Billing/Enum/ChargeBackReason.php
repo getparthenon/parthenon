@@ -30,4 +30,14 @@ enum ChargeBackReason: string
     case PRODUCT_UNACCEPTABLE = 'product_unacceptable';
     case SUBSCRIPTION_CANCELED = 'subscription_canceled';
     case UNRECOGNIZED = 'unrecognized';
+
+    public static function fromName(string $name): self
+    {
+        foreach (self::cases() as $status) {
+            if ($name === $status->value) {
+                return $status;
+            }
+        }
+        throw new \ValueError("$name is not a valid backing value for enum ".self::class);
+    }
 }
