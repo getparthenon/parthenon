@@ -12,16 +12,14 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Billing\Repository;
+namespace Parthenon\Billing\ChargeBack;
 
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Obol\Model\Events\AbstractDispute;
 use Parthenon\Billing\Entity\ChargeBack;
-use Parthenon\Common\Exception\NoEntityFoundException;
 
-interface ChargeBackRepositoryInterface extends CrudRepositoryInterface
+interface ChargeBackFactoryInterface
 {
-    /**
-     * @throws NoEntityFoundException
-     */
-    public function getByExternalReference(string $externalReference): ChargeBack;
+    public function buildFromEvent(AbstractDispute $event): ChargeBack;
+
+    public function buildFromChargeBack(\Obol\Model\ChargeBack\ChargeBack $obolChargeBack): ChargeBack;
 }

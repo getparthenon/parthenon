@@ -187,6 +187,13 @@
         </service>
         <service id="Parthenon\Billing\PaymentMethod\DeleterInterface" alias="Parthenon\Billing\PaymentMethod\Deleter" />
 
+
+        <service id="Parthenon\Billing\ChargeBack\ChargeBackFactory" class="Parthenon\Billing\ChargeBack\ChargeBackFactory">
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Factory\EntityFactory" />
+        </service>
+        <service id="Parthenon\Billing\ChargeBack\ChargeBackFactoryInterface" alias="Parthenon\Billing\ChargeBack\ChargeBackFactory" />
+
         <!--- Subscriptions -->
         <service id="Parthenon\Billing\Subscription\SubscriptionManager" class="Parthenon\Billing\Subscription\SubscriptionManager">
             <argument type="service" id="Parthenon\Billing\Repository\PaymentMethodRepositoryInterface" />

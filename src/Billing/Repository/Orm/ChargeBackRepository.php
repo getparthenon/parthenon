@@ -15,8 +15,20 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository\Orm;
 
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Billing\Entity\ChargeBack;
 use Parthenon\Billing\Repository\ChargeBackRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class ChargeBackRepository extends DoctrineCrudRepository implements ChargeBackRepositoryInterface
 {
+    public function getByExternalReference(string $externalReference): ChargeBack
+    {
+        $chargeBack = $this->entityRepository->findOneBy(['externalReference' => $externalReference]);
+
+        if (!$chargeBack instanceof ChargeBack) {
+            throw new NoEntityFoundException(sprintf("Can't find charge back for '%s'", $externalReference));
+        }
+
+        return $chargeBack;
+    }
 }
