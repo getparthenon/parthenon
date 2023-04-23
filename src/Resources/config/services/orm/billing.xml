@@ -88,5 +88,13 @@
         </service>
         <service alias="parthenon.billing.repository.orm.charge_back_repository_doctrine" id="Parthenon\Billing\Repository\Orm\ChargeBackServiceRepository" />
 
+        <service id="Parthenon\Billing\Repository\InvoiceRepositoryInterface" alias="parthenon.billing.repository.invoice_repository" />
+        <service id="parthenon.billing.repository.invoice_repository" class="Parthenon\Billing\Repository\Orm\InvoiceRepository">
+            <argument type="service" id="parthenon.billing.repository.orm.invoice_repository_doctrine" />
+        </service>
+        <service id="parthenon.billing.repository.orm.invoice_repository_doctrine" class="Parthenon\Billing\Repository\Orm\InvoiceServiceRepository">
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
+        <service alias="parthenon.billing.repository.orm.invoice_repository_doctrine" id="Parthenon\Billing\Repository\Orm\InvoiceServiceRepository" />
     </services>
 </container>
