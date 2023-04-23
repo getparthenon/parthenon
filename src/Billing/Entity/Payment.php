@@ -22,7 +22,6 @@ use Parthenon\Billing\Enum\PaymentStatus;
 
 class Payment
 {
-    protected ?string $paymentProviderDetailsUrl;
     private $id;
 
     private string $paymentReference;
@@ -48,6 +47,8 @@ class Payment
     private bool $chargedBack = false;
 
     private Collection $subscriptions;
+
+    private ?string $paymentProviderDetailsUrl;
 
     public function __construct()
     {
