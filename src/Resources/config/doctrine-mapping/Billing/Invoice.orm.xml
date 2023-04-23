@@ -19,6 +19,7 @@
         <embedded name="billerAddress" class="Parthenon\Common\Address" />
         <embedded name="payeeAddress" class="Parthenon\Common\Address" />
         <many-to-many field="payments" target-entity="Parthenon\Billing\Entity\Payment" />
+        <many-to-many field="subscriptions" target-entity="Parthenon\Billing\Entity\Subscription" />
         <one-to-many field="lines"  target-entity="Parthenon\Billing\Entity\InvoiceLine" orphan-removal="true" mapped-by="invoice">
             <cascade>
                 <cascade-all />

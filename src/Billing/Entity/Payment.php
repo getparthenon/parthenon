@@ -34,6 +34,8 @@ class Payment
 
     private string $currency;
 
+    private ?string $description = null;
+
     private CustomerInterface $customer;
 
     private \DateTimeInterface $createdAt;
@@ -236,5 +238,15 @@ class Payment
         }
 
         $this->status = $status;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 }

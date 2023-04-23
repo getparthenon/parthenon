@@ -34,6 +34,8 @@ class Invoice
 
     private array|Collection $payments;
 
+    private array|Collection $subscriptions;
+
     private array|Collection $lines;
 
     private ?string $comment;
@@ -51,6 +53,7 @@ class Invoice
     public function __construct()
     {
         $this->payments = new ArrayCollection([]);
+        $this->subscriptions = new ArrayCollection([]);
         $this->lines = new ArrayCollection([]);
     }
 
@@ -203,5 +206,18 @@ class Invoice
     public function setLines(Collection|array $lines): void
     {
         $this->lines = $lines;
+    }
+
+    /**
+     * @return Subscription[]|Collection
+     */
+    public function getSubscriptions(): Collection|array
+    {
+        return $this->subscriptions;
+    }
+
+    public function setSubscriptions(Collection|array $subscriptions): void
+    {
+        $this->subscriptions = $subscriptions;
     }
 }
