@@ -17,13 +17,11 @@ namespace Parthenon\Billing\Webhook\Handler;
 use Obol\Model\Events\AbstractDispute;
 use Obol\Model\Events\EventInterface;
 use Parthenon\Billing\ChargeBack\ChargeBackSyncerInterface;
-use Parthenon\Billing\Repository\ChargeBackRepositoryInterface;
 use Parthenon\Billing\Webhook\HandlerInterface;
 
 class ChargeBackHandler implements HandlerInterface
 {
     public function __construct(
-        private ChargeBackRepositoryInterface $chargeBackRepository,
         private ChargeBackSyncerInterface $syncer,
     ) {
     }
@@ -39,6 +37,5 @@ class ChargeBackHandler implements HandlerInterface
     public function handle(EventInterface $event): void
     {
         $chargeBack = $this->syncer->sync($event);
-        $this->chargeBackRepository->save($chargeBack);
     }
 }

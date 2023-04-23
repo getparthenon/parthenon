@@ -16,7 +16,6 @@ namespace Parthenon\Billing\Command;
 
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\ChargeBack\ChargeBackSyncerInterface;
-use Parthenon\Billing\Repository\ChargeBackRepositoryInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,7 +27,6 @@ class DailyChargeBackCommand extends Command
     public function __construct(
         private ProviderInterface $provider,
         private ChargeBackSyncerInterface $syncer,
-        private ChargeBackRepositoryInterface $chargeBackRepository,
     ) {
         parent::__construct(null);
     }
@@ -41,7 +39,6 @@ class DailyChargeBackCommand extends Command
 
         foreach ($chargeBacks as $obolChargeBack) {
             $chargeBack = $this->syncer->sync($obolChargeBack);
-            $this->chargeBackRepository->save($chargeBack);
         }
     }
 }

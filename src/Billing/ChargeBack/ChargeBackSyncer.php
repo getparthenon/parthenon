@@ -14,14 +14,17 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\ChargeBack;
 
+use App\Parthenon\Billing\Event\ChargeBackUpdated;
 use Obol\Model\Events\AbstractDispute;
 use Parthenon\Billing\Entity\ChargeBack;
 use Parthenon\Billing\Enum\ChargeBackReason;
 use Parthenon\Billing\Enum\ChargeBackStatus;
+use Parthenon\Billing\Event\ChargeBackCreated;
 use Parthenon\Billing\Factory\EntityFactory;
 use Parthenon\Billing\Repository\ChargeBackRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ChargeBackSyncer implements ChargeBackSyncerInterface
 {
@@ -29,6 +32,7 @@ class ChargeBackSyncer implements ChargeBackSyncerInterface
         private ChargeBackRepositoryInterface $chargeBackRepository,
         private PaymentRepositoryInterface $paymentRepository,
         private EntityFactory $entityFactory,
+        private EventDispatcherInterface $dispatcher,
     ) {
     }
 
@@ -36,6 +40,7 @@ class ChargeBackSyncer implements ChargeBackSyncerInterface
     {
         try {
             $chargeBack = $this->chargeBackRepository->getByExternalReference($event->getId());
+            $event = new ChargeBackUpdated($chargeBack);
         } catch (NoEntityFoundException $e) {
             $chargeBack = $this->entityFactory->getChargeBackEntity();
             $payment = $this->paymentRepository->getPaymentForReference($event->getPaymentReference());
@@ -45,11 +50,15 @@ class ChargeBackSyncer implements ChargeBackSyncerInterface
                 $chargeBack->setCustomer($payment->getCustomer());
             }
             $chargeBack->setCreatedAt(new \DateTime('now'));
+            $event = new ChargeBackCreated($chargeBack);
         }
 
         $chargeBack->setStatus(ChargeBackStatus::fromName($event->getStatus()));
         $chargeBack->setReason(ChargeBackReason::fromName($event->getReason()));
         $chargeBack->setUpdatedAt(new \DateTime('now'));
+
+        $this->chargeBackRepository->save($chargeBack);
+        $this->dispatcher->dispatch($event, $event::NAME);
 
         return $chargeBack;
     }

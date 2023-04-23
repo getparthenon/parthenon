@@ -23,6 +23,7 @@ use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Enum\SubscriptionStatus;
+use Parthenon\Billing\Event\PaymentCreated;
 use Parthenon\Billing\Exception\SubscriptionCreationException;
 use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
@@ -36,6 +37,7 @@ use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class SubscriptionManager implements SubscriptionManagerInterface
 {
@@ -51,6 +53,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         private PriceRepositoryInterface $priceRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private EntityFactoryInterface $entityFactory,
+        private EventDispatcherInterface $dispatcher,
     ) {
     }
 
@@ -116,6 +119,8 @@ final class SubscriptionManager implements SubscriptionManagerInterface
             $payment = $this->paymentFactory->fromSubscriptionCreation($obolPaymentDetails, $customer);
             $payment->addSubscription($subscription);
             $this->paymentRepository->save($payment);
+
+            $this->dispatcher->dispatch(new PaymentCreated($payment), PaymentCreated::NAME);
         }
 
         return $subscription;

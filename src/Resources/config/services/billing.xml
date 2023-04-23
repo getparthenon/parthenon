@@ -171,9 +171,9 @@
             <argument type="service" id="Parthenon\Billing\Customer\CustomerManagerInterface" />
             <argument type="service" id="Parthenon\Billing\Obol\PaymentFactoryInterface" />
             <argument type="service" id="Parthenon\Billing\Subscription\PaymentEventLinkerInterface" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
         </service>
         <service id="Parthenon\Billing\Webhook\Handler\ChargeBackHandler" class="Parthenon\Billing\Webhook\Handler\ChargeBackHandler">
-            <argument type="service" id="Parthenon\Billing\Repository\ChargeBackRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\ChargeBack\ChargeBackSyncerInterface" />
         </service>
 
@@ -204,6 +204,7 @@
             <argument type="service" id="Parthenon\Billing\Repository\ChargeBackRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Factory\EntityFactory" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
         </service>
         <service id="Parthenon\Billing\ChargeBack\ChargeBackSyncerInterface" alias="Parthenon\Billing\ChargeBack\ChargeBackSyncer" />
 
@@ -220,6 +221,7 @@
             <argument type="service" id="Parthenon\Billing\Repository\PriceRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Factory\EntityFactoryInterface" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
         </service>
         <service id="Parthenon\Billing\Subscription\SubscriptionManagerInterface" alias="Parthenon\Billing\Subscription\SubscriptionManager" />
 

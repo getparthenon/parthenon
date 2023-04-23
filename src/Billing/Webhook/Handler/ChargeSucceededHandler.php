@@ -18,12 +18,14 @@ use Obol\Model\Events\ChargeSucceeded;
 use Obol\Model\Events\EventInterface;
 use Parthenon\Billing\Customer\CustomerManagerInterface;
 use Parthenon\Billing\Enum\PaymentStatus;
+use Parthenon\Billing\Event\PaymentCreated;
 use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Subscription\PaymentEventLinkerInterface;
 use Parthenon\Billing\Webhook\HandlerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ChargeSucceededHandler implements HandlerInterface
 {
@@ -32,6 +34,7 @@ class ChargeSucceededHandler implements HandlerInterface
         private CustomerManagerInterface $customerManager,
         private PaymentFactoryInterface $paymentFactory,
         private PaymentEventLinkerInterface $eventLinker,
+        private EventDispatcherInterface $dispatcher,
     ) {
     }
 
@@ -65,5 +68,6 @@ class ChargeSucceededHandler implements HandlerInterface
         $this->eventLinker->linkToSubscription($payment, $event);
 
         $this->paymentRepository->save($payment);
+        $this->dispatcher->dispatch(new PaymentCreated($payment), PaymentCreated::NAME);
     }
 }

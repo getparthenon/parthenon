@@ -35,6 +35,11 @@ class ChargeBack
 
     private \DateTimeInterface $updatedAt;
 
+    public function hasId(): bool
+    {
+        return isset($this->id);
+    }
+
     public function getId()
     {
         return $this->id;
