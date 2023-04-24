@@ -182,7 +182,7 @@
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Tax\TaxCalculatorInterface" />
         </service>
-        <service id="Parthenon\Billing\Receipt\ReceiptGeneratorInterface" alias="Parthenon\Billing\ReceiptReceiptGenerator" />
+        <service id="Parthenon\Billing\Receipt\ReceiptGeneratorInterface" alias="Parthenon\Billing\Receipt\ReceiptGenerator" />
 
 
         <!-- Tax -->
