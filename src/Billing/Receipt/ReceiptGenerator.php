@@ -103,6 +103,8 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $receipt->setSubTotal($subTotalTotal->getMinorAmount()->toInt());
         $receipt->setVatTotal($vatTotal->getMinorAmount()->toInt());
         $receipt->setLines($lines);
+        $receipt->setValid(true);
+        $receipt->setCurrency($line->getCurrency());
 
         return $receipt;
     }
@@ -148,6 +150,8 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $receipt->setSubTotal($subTotalTotal->getMinorAmount()->toInt());
         $receipt->setVatTotal($vatTotal->getMinorAmount()->toInt());
         $receipt->setLines($lines);
+        $receipt->setValid(true);
+        $receipt->setCurrency($line->getCurrency());
 
         return $receipt;
     }
