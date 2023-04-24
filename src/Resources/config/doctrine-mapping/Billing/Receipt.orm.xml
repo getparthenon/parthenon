@@ -25,5 +25,6 @@
                 <cascade-all />
             </cascade>
         </one-to-many>
+        <field name="createdAt" column="started_at" type="datetime" nullable="false"  />
     </entity>
 </doctrine-mapping>

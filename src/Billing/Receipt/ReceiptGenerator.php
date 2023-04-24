@@ -108,6 +108,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $receipt->setLines($lines);
         $receipt->setValid(true);
         $receipt->setCurrency($line->getCurrency());
+        $receipt->setCreatedAt(new \DateTime());
 
         return $receipt;
     }
@@ -159,6 +160,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $receipt->setLines($lines);
         $receipt->setValid(true);
         $receipt->setCurrency($line->getCurrency());
+        $receipt->setCreatedAt(new \DateTime());
 
         return $receipt;
     }
