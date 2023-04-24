@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Repository\Orm;
 
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
 
-class InvoiceRepository extends DoctrineCrudRepository implements CrudRepositoryInterface
+class ReceiptRepository extends DoctrineCrudRepository implements ReceiptRepositoryInterface
 {
 }

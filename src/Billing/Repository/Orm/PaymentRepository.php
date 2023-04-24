@@ -68,4 +68,17 @@ class PaymentRepository extends DoctrineCrudRepository implements PaymentReposit
 
         return $payment;
     }
+
+    public function getPaymentsForCustomerDuring(\DateTimeInterface $startDate, \DateTimeInterface $endDate, CustomerInterface $customer): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('p');
+        $qb->where('createdAt >=  :startDate')
+            ->andWhere('createdAt <= :endDate')
+            ->andWhere('customer = :customer')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endData', $endDate)
+            ->setParameter('customer', $customer);
+
+        $query = $qb->getQuery();
+    }
 }

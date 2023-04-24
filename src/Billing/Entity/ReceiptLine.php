@@ -14,11 +14,11 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
-class InvoiceLine
+class ReceiptLine
 {
     private $id;
 
-    private Invoice $invoice;
+    private Receipt $receipt;
 
     private string $currency;
 
@@ -40,14 +40,14 @@ class InvoiceLine
         $this->id = $id;
     }
 
-    public function getInvoice(): Invoice
+    public function getReceipt(): Receipt
     {
-        return $this->invoice;
+        return $this->receipt;
     }
 
-    public function setInvoice(Invoice $invoice): void
+    public function setReceipt(Receipt $receipt): void
     {
-        $this->invoice = $invoice;
+        $this->receipt = $receipt;
     }
 
     public function getCurrency(): string

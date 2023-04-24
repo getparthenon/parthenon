@@ -15,13 +15,13 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository\Orm;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Parthenon\Billing\Entity\Invoice;
+use Parthenon\Billing\Entity\Receipt;
 use Parthenon\Common\Repository\CustomServiceRepository;
 
-class InvoiceServiceRepository extends CustomServiceRepository
+class ReceiptServiceRepository extends CustomServiceRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Invoice::class);
+        parent::__construct($registry, Receipt::class);
     }
 }

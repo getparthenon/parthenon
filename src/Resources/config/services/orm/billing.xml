@@ -88,13 +88,13 @@
         </service>
         <service alias="parthenon.billing.repository.orm.charge_back_repository_doctrine" id="Parthenon\Billing\Repository\Orm\ChargeBackServiceRepository" />
 
-        <service id="Parthenon\Billing\Repository\InvoiceRepositoryInterface" alias="parthenon.billing.repository.invoice_repository" />
-        <service id="parthenon.billing.repository.invoice_repository" class="Parthenon\Billing\Repository\Orm\InvoiceRepository">
-            <argument type="service" id="parthenon.billing.repository.orm.invoice_repository_doctrine" />
+        <service id="Parthenon\Billing\Repository\ReceiptRepositoryInterface" alias="parthenon.billing.repository.receipt_repository" />
+        <service id="parthenon.billing.repository.receipt_repository" class="Parthenon\Billing\Repository\Orm\ReceiptRepository">
+            <argument type="service" id="parthenon.billing.repository.orm.receipt_repository_doctrine" />
         </service>
-        <service id="parthenon.billing.repository.orm.invoice_repository_doctrine" class="Parthenon\Billing\Repository\Orm\InvoiceServiceRepository">
+        <service id="Parthenon\Billing\Repository\Orm\ReceiptServiceRepository" class="Parthenon\Billing\Repository\Orm\ReceiptServiceRepository">
             <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
         </service>
-        <service alias="parthenon.billing.repository.orm.invoice_repository_doctrine" id="Parthenon\Billing\Repository\Orm\InvoiceServiceRepository" />
+        <service id="parthenon.billing.repository.orm.receipt_repository_doctrine" alias="Parthenon\Billing\Repository\Orm\ReceiptServiceRepository" />
     </services>
 </container>

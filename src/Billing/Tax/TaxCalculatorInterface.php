@@ -12,10 +12,14 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Billing\Repository;
+namespace Parthenon\Billing\Tax;
 
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Brick\Money\Money;
+use Parthenon\Billing\Entity\CustomerInterface;
 
-interface InvoiceRepositoryInterface extends CrudRepositoryInterface
+interface TaxCalculatorInterface
 {
+    public function calculateSubTotalForCustomer(CustomerInterface $customer, Money $money): Money;
+
+    public function calculateVatAmountForCustomer(CustomerInterface $customer, Money $money): Money;
 }

@@ -177,6 +177,23 @@
             <argument type="service" id="Parthenon\Billing\ChargeBack\ChargeBackSyncerInterface" />
         </service>
 
+        <!-- Receipt -->
+        <service id="Parthenon\Billing\Receipt\ReceiptGenerator" class="Parthenon\Billing\Receipt\ReceiptGenerator">
+            <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Tax\TaxCalculatorInterface" />
+        </service>
+        <service id="Parthenon\Billing\Receipt\ReceiptGeneratorInterface" alias="Parthenon\Billing\ReceiptReceiptGenerator" />
+
+
+        <!-- Tax -->
+        <service id="Parthenon\Billing\Tax\CountryRules" class="Parthenon\Billing\Tax\CountryRules" />
+        <service id="Parthenon\Billing\Tax\CountryRulesInterface" alias="Parthenon\Billing\Tax\CountryRules" />
+
+        <service id="Parthenon\Billing\Tax\TaxCalculator" class="Parthenon\Billing\Tax\TaxCalculator">
+            <argument type="service" id="Parthenon\Billing\Tax\CountryRulesInterface" />
+        </service>
+        <service id="Parthenon\Billing\Tax\TaxCalculatorInterface" alias="Parthenon\Billing\Tax\TaxCalculator" />
+
         <!-- Payment Details -->
         <service id="Parthenon\Billing\PaymentMethod\DefaultPaymentManager" class="Parthenon\Billing\PaymentMethod\DefaultPaymentManager">
             <argument type="service" id="Parthenon\Billing\Repository\PaymentMethodRepositoryInterface" />

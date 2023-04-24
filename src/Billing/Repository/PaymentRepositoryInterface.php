@@ -23,6 +23,11 @@ use Parthenon\Common\Exception\NoEntityFoundException;
 interface PaymentRepositoryInterface extends CrudRepositoryInterface
 {
     /**
+     * @return Payment[]
+     */
+    public function getPaymentsForCustomerDuring(\DateTimeInterface $startDate, \DateTimeInterface $endDate, CustomerInterface $customer): array;
+
+    /**
      * @throws NoEntityFoundException
      */
     public function getPaymentForReference(string $reference): Payment;

@@ -4,16 +4,26 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Parthenon\Billing\Entity\InvoiceLine">
+    <entity name="Parthenon\Billing\Entity\Receipt">
         <id name="id" type="uuid" column="id">
             <generator strategy="CUSTOM" />
             <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
         </id>
-        <many-to-one field="invoice" target-entity="Parthenon\Billing\Entity\Invoice" />
+        <many-to-one field="customer" target-entity="Parthenon\Billing\Entity\CustomerInterface" />
+        <field name="valid" column="valid" type="boolean" nullable="false" />
         <field name="currency" column="currency" type="string" nullable="false" />
         <field name="total" column="total" type="integer" nullable="false" />
         <field name="subTotal" column="sub_total" type="integer" nullable="false" />
         <field name="vatTotal" column="vat_total" type="integer" nullable="false" />
-        <field name="description" column="description" type="string" nullable="true" />
+        <field name="comment" column="comment" type="string" nullable="true" />
+        <embedded name="billerAddress" class="Parthenon\Common\Address" />
+        <embedded name="payeeAddress" class="Parthenon\Common\Address" />
+        <many-to-many field="payments" target-entity="Parthenon\Billing\Entity\Payment" />
+        <many-to-many field="subscriptions" target-entity="Parthenon\Billing\Entity\Subscription" />
+        <one-to-many field="lines"  target-entity="Parthenon\Billing\Entity\ReceiptLine" orphan-removal="true" mapped-by="invoice">
+            <cascade>
+                <cascade-all />
+            </cascade>
+        </one-to-many>
     </entity>
 </doctrine-mapping>

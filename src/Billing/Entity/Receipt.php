@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Parthenon\Common\Address;
 
-class Invoice
+class Receipt
 {
     private $id;
 
@@ -196,7 +196,7 @@ class Invoice
     }
 
     /**
-     * @return Collection|InvoiceLine[]
+     * @return Collection|ReceiptLine[]
      */
     public function getLines(): Collection|array
     {
