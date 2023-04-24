@@ -95,6 +95,9 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         if (!$total instanceof Money) {
             throw new \LogicException('Total must be money if payments exist');
         }
+        if (!$line instanceof ReceiptLine) {
+            throw new \LogicException('There must be at least one line');
+        }
 
         $receipt->setCustomer($customer);
         $receipt->setPayments($payments);
@@ -141,6 +144,10 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
 
         if (!$total instanceof Money) {
             throw new \LogicException('Total must be money if payments exist');
+        }
+
+        if (!$line instanceof ReceiptLine) {
+            throw new \LogicException('There must be at least one line');
         }
 
         $receipt->setCustomer($customer);
