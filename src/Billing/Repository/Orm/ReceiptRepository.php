@@ -15,8 +15,20 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository\Orm;
 
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
 
 class ReceiptRepository extends DoctrineCrudRepository implements ReceiptRepositoryInterface
 {
+    public function getForPayment(Payment $payment): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('r');
+        $qb->where(':payment MEMBER OF r.payments')
+            ->setParameter('payment', $payment)
+            ->orderBy('r.createdAt', 'DESC');
+
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
+    }
 }

@@ -15,7 +15,13 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\Receipt;
 
 interface ReceiptRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return Receipt[]
+     */
+    public function getForPayment(Payment $payment): array;
 }
