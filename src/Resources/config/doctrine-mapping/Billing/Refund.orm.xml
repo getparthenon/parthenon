@@ -18,6 +18,6 @@
         <many-to-one field="payment" target-entity="Parthenon\Billing\Entity\Payment" />
         <many-to-one field="customer" target-entity="Parthenon\Billing\Entity\CustomerInterface" />
         <many-to-one field="billingAdmin" target-entity="Parthenon\Billing\Entity\BillingAdminInterface" />
-        <field name="createdAt" column="started_at" type="datetime" nullable="true"  />
+        <field name="createdAt" column="created_at" type="datetime" nullable="true"  />
     </entity>
 </doctrine-mapping>
