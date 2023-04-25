@@ -58,6 +58,11 @@ class Address
         $this->companyName = $companyName;
     }
 
+    public function hasCompanyName(): bool
+    {
+        return isset($this->companyName) && !empty($this->companyName);
+    }
+
     public function getStreetLineOne(): ?string
     {
         return $this->streetLineOne;
@@ -66,6 +71,11 @@ class Address
     public function setStreetLineOne(?string $streetLineOne): void
     {
         $this->streetLineOne = $streetLineOne;
+    }
+
+    public function hasStreetLineOne(): bool
+    {
+        return isset($this->streetLineOne) && !empty($this->streetLineOne);
     }
 
     public function getStreetLineTwo(): ?string
@@ -78,6 +88,11 @@ class Address
         $this->streetLineTwo = $streetLineTwo;
     }
 
+    public function hasStreetLineTwo(): bool
+    {
+        return isset($this->streetLineTwo) && !empty($this->streetLineTwo);
+    }
+
     public function getCity(): ?string
     {
         return $this->city;
@@ -88,6 +103,11 @@ class Address
         $this->city = $city;
     }
 
+    public function hasCity(): bool
+    {
+        return isset($this->city) && !empty($this->city);
+    }
+
     public function getRegion(): ?string
     {
         return $this->region;
@@ -96,6 +116,11 @@ class Address
     public function setRegion(?string $region): void
     {
         $this->region = $region;
+    }
+
+    public function hasRegion(): bool
+    {
+        return isset($this->region) && !empty($this->region);
     }
 
     public function getCountry(): ?string
@@ -112,6 +137,11 @@ class Address
         $this->country = $country;
     }
 
+    public function hasCountry(): bool
+    {
+        return isset($this->country) && !empty($this->country);
+    }
+
     public function getPostcode(): ?string
     {
         return $this->postcode;
@@ -120,5 +150,10 @@ class Address
     public function setPostcode(?string $postcode): void
     {
         $this->postcode = $postcode;
+    }
+
+    public function hasPostcode(): bool
+    {
+        return isset($this->postcode) && !empty($this->postcode);
     }
 }
