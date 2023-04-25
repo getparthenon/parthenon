@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Brick\Money\Money;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Parthenon\Common\Address;
@@ -219,5 +220,20 @@ class Receipt
     public function setSubscriptions(Collection|array $subscriptions): void
     {
         $this->subscriptions = $subscriptions;
+    }
+
+    public function getTotalMoney(): Money
+    {
+        return Money::ofMinor($this->total, strtoupper($this->currency));
+    }
+
+    public function getVatTotalMoney(): Money
+    {
+        return Money::ofMinor($this->vatTotal, strtoupper($this->currency));
+    }
+
+    public function getSubTotalMoney(): Money
+    {
+        return Money::ofMinor($this->subTotal, strtoupper($this->currency));
     }
 }

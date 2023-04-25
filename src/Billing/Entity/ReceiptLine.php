@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Brick\Money\Money;
+
 class ReceiptLine
 {
     private $id;
@@ -98,5 +100,20 @@ class ReceiptLine
     public function setDescription(?string $description): void
     {
         $this->description = $description;
+    }
+
+    public function getTotalMoney(): Money
+    {
+        return Money::ofMinor($this->total, strtoupper($this->currency));
+    }
+
+    public function getVatTotalMoney(): Money
+    {
+        return Money::ofMinor($this->vatTotal, strtoupper($this->currency));
+    }
+
+    public function getSubTotalMoney(): Money
+    {
+        return Money::ofMinor($this->subTotal, strtoupper($this->currency));
     }
 }
