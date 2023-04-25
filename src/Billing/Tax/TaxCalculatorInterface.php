@@ -14,12 +14,10 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Tax;
 
-use Brick\Money\Money;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\ReceiptLine;
 
 interface TaxCalculatorInterface
 {
-    public function calculateSubTotalForCustomer(CustomerInterface $customer, Money $money): Money;
-
-    public function calculateVatAmountForCustomer(CustomerInterface $customer, Money $money): Money;
+    public function calculateReceiptLine(CustomerInterface $customer, ReceiptLine $receiptLine): void;
 }

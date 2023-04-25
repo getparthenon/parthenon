@@ -17,6 +17,7 @@ namespace Parthenon\Billing\Tax;
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\ReceiptLine;
 
 class TaxCalculator implements TaxCalculatorInterface
 {
@@ -24,17 +25,18 @@ class TaxCalculator implements TaxCalculatorInterface
     {
     }
 
-    public function calculateSubTotalForCustomer(CustomerInterface $customer, Money $money): Money
+    public function calculateReceiptLine(CustomerInterface $customer, ReceiptLine $receiptLine): void
     {
-        $rate = $this->rules->getDigitalVatPercentage($customer->getBillingAddress());
+        $money = Money::ofMinor($receiptLine->getTotal(), strtoupper($receiptLine->getCurrency()));
+        $rawRate = $this->rules->getDigitalVatPercentage($customer->getBillingAddress());
 
-        $rate = ($rate / 100) + 1;
+        $rate = ($rawRate / 100) + 1;
 
-        return $money->dividedBy($rate, RoundingMode::HALF_DOWN);
-    }
+        $subTotal = $money->dividedBy($rate, RoundingMode::HALF_UP);
+        $vat = $money->minus($subTotal, RoundingMode::HALF_DOWN);
 
-    public function calculateVatAmountForCustomer(CustomerInterface $customer, Money $money): Money
-    {
-        return $money->minus($this->calculateSubTotalForCustomer($customer, $money), RoundingMode::HALF_UP);
+        $receiptLine->setVatPercentage(floatval($rawRate));
+        $receiptLine->setSubTotal($subTotal->getMinorAmount()->toInt());
+        $receiptLine->setVatTotal($vat->getMinorAmount()->toInt());
     }
 }

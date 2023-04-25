@@ -49,6 +49,8 @@ class Receipt
 
     private int $vatTotal;
 
+    private float $vatPercentage;
+
     private \DateTimeInterface $createdAt;
 
     public function __construct()
@@ -235,5 +237,15 @@ class Receipt
     public function getSubTotalMoney(): Money
     {
         return Money::ofMinor($this->subTotal, strtoupper($this->currency));
+    }
+
+    public function getVatPercentage(): float
+    {
+        return $this->vatPercentage;
+    }
+
+    public function setVatPercentage(float $vatPercentage): void
+    {
+        $this->vatPercentage = $vatPercentage;
     }
 }

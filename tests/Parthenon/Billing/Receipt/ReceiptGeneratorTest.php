@@ -20,7 +20,9 @@ use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
-use Parthenon\Billing\Tax\TaxCalculatorInterface;
+use Parthenon\Billing\Tax\CountryRules;
+use Parthenon\Billing\Tax\TaxCalculator;
+use Parthenon\Common\Address;
 use PHPUnit\Framework\TestCase;
 
 class ReceiptGeneratorTest extends TestCase
@@ -36,27 +38,25 @@ class ReceiptGeneratorTest extends TestCase
 
         $subscriptions = new ArrayCollection([$subscriptionOne]);
 
+        $address = new Address();
+        $address->setCountry('GB');
+
         $customer = $this->createMock(CustomerInterface::class);
+        $customer->method('getBillingAddress')->willReturn($address);
 
         $payment = $this->createMock(Payment::class);
         $payment->method('getSubscriptions')->willReturn($subscriptions);
         $payment->method('getCustomer')->willReturn($customer);
         $payment->method('getMoneyAmount')->willReturn($amount);
 
-        $vat = Money::ofMinor(2200, 'USD');
-        $subTotal = Money::ofMinor(7800, 'USD');
-        $taxCalculator = $this->createMock(TaxCalculatorInterface::class);
-        $taxCalculator->method('calculateVatAmountForCustomer')->with($customer, $amount)->willReturn($vat);
-        $taxCalculator->method('calculateSubTotalForCustomer')->with($customer, $amount)->willReturn($subTotal);
-
         $paymentRepository = $this->createMock(PaymentRepositoryInterface::class);
 
-        $subject = new ReceiptGenerator($paymentRepository, $taxCalculator);
+        $subject = new ReceiptGenerator($paymentRepository, new TaxCalculator(new CountryRules()));
         $receipt = $subject->generateReceiptForPayment($payment);
 
         $this->assertEquals(10000, $receipt->getTotal());
-        $this->assertEquals(7800, $receipt->getSubTotal());
-        $this->assertEquals(2200, $receipt->getVatTotal());
+        $this->assertEquals(8333, $receipt->getSubTotal());
+        $this->assertEquals(1667, $receipt->getVatTotal());
     }
 
     public function testGenerateReceiptFromPaymentMultipleSubscriptions()
@@ -77,28 +77,24 @@ class ReceiptGeneratorTest extends TestCase
 
         $subscriptions = new ArrayCollection([$subscriptionOne, $subscriptionTwo]);
 
+        $address = new Address();
+        $address->setCountry('GB');
+
         $customer = $this->createMock(CustomerInterface::class);
+        $customer->method('getBillingAddress')->willReturn($address);
 
         $payment = $this->createMock(Payment::class);
         $payment->method('getSubscriptions')->willReturn($subscriptions);
         $payment->method('getCustomer')->willReturn($customer);
         $payment->method('getMoneyAmount')->willReturn(Money::ofMinor(22345, 'USD'));
 
-        $vat = Money::ofMinor(2200, 'USD');
-        $vatTwo = Money::ofMinor(2100, 'USD');
-        $taxCalculator = $this->createMock(TaxCalculatorInterface::class);
-        $taxCalculator->method('calculateVatAmountForCustomer')->will($this->onConsecutiveCalls($vat, $vatTwo));
-
-        $subTotal = Money::ofMinor(7800, 'USD');
-        $subTotalTwo = Money::ofMinor(10245, 'USD');
-        $taxCalculator->method('calculateSubTotalForCustomer')->will($this->onConsecutiveCalls($subTotal, $subTotalTwo));
         $paymentRepository = $this->createMock(PaymentRepositoryInterface::class);
 
-        $subject = new ReceiptGenerator($paymentRepository, $taxCalculator);
+        $subject = new ReceiptGenerator($paymentRepository, new TaxCalculator(new CountryRules()));
         $receipt = $subject->generateReceiptForPayment($payment);
 
         $this->assertEquals(22345, $receipt->getTotal());
-        $this->assertEquals(18045, $receipt->getSubTotal());
-        $this->assertEquals(4300, $receipt->getVatTotal());
+        $this->assertEquals(18621, $receipt->getSubTotal());
+        $this->assertEquals(3724, $receipt->getVatTotal());
     }
 }

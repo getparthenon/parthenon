@@ -54,18 +54,16 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
             $total = $this->addToTotal($total, $money);
 
             if (0 === $payment->getSubscriptions()->count()) {
-                $vat = $this->taxCalculator->calculateVatAmountForCustomer($customer, $payment->getMoneyAmount());
-                $subTotal = $this->taxCalculator->calculateSubTotalForCustomer($customer, $money);
-                $vatTotal = $this->addToTotal($vatTotal, $vat);
-                $subTotalTotal = $this->addToTotal($subTotalTotal, $subTotal);
-
                 $line = new ReceiptLine();
                 $line->setTotal($payment->getAmount());
                 $line->setCurrency($payment->getCurrency());
                 $line->setDescription($payment->getDescription());
                 $line->setReceipt($receipt);
-                $line->setVatTotal($vat->getMinorAmount()->toInt());
-                $line->setSubTotal($subTotal->getMinorAmount()->toInt());
+
+                $this->taxCalculator->calculateReceiptLine($customer, $line);
+
+                $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
+                $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
 
                 $lines[] = $line;
             }
@@ -73,21 +71,16 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
 
         /** @var Subscription $subscription */
         foreach ($subscriptions as $subscription) {
-            $money = $subscription->getMoneyAmount();
-
-            $vat = $this->taxCalculator->calculateVatAmountForCustomer($customer, $money);
-            $subTotal = $money->minus($vat, RoundingMode::HALF_DOWN);
-
-            $vatTotal = $this->addToTotal($vatTotal, $vat);
-            $subTotalTotal = $this->addToTotal($subTotalTotal, $subTotal);
-
             $line = new ReceiptLine();
             $line->setTotal($subscription->getAmount());
             $line->setCurrency($subscription->getCurrency());
             $line->setDescription($subscription->getPlanName());
             $line->setReceipt($receipt);
-            $line->setVatTotal($vat->getMinorAmount()->toInt());
-            $line->setSubTotal($subTotal->getMinorAmount()->toInt());
+
+            $this->taxCalculator->calculateReceiptLine($customer, $line);
+
+            $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
+            $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
 
             $lines[] = $line;
         }
@@ -124,21 +117,16 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
 
         /** @var Subscription $subscription */
         foreach ($payment->getSubscriptions() as $subscription) {
-            $money = $subscription->getMoneyAmount();
-
-            $vat = $this->taxCalculator->calculateVatAmountForCustomer($customer, $money);
-            $subTotal = $this->taxCalculator->calculateSubTotalForCustomer($customer, $money);
-
-            $vatTotal = $this->addToTotal($vatTotal, $vat);
-            $subTotalTotal = $this->addToTotal($subTotalTotal, $subTotal);
-
             $line = new ReceiptLine();
             $line->setTotal($subscription->getAmount());
             $line->setCurrency($subscription->getCurrency());
             $line->setDescription($subscription->getPlanName());
             $line->setReceipt($receipt);
-            $line->setVatTotal($vat->getMinorAmount()->toInt());
-            $line->setSubTotal($subTotal->getMinorAmount()->toInt());
+
+            $this->taxCalculator->calculateReceiptLine($customer, $line);
+
+            $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
+            $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
 
             $lines[] = $line;
         }
@@ -161,6 +149,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $receipt->setValid(true);
         $receipt->setCurrency($line->getCurrency());
         $receipt->setCreatedAt(new \DateTime());
+        $receipt->setVatPercentage($line->getVatPercentage());
 
         return $receipt;
     }

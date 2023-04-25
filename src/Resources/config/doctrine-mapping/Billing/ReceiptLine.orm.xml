@@ -15,5 +15,6 @@
         <field name="subTotal" column="sub_total" type="integer" nullable="false" />
         <field name="vatTotal" column="vat_total" type="integer" nullable="false" />
         <field name="description" column="description" type="string" nullable="true" />
+        <field name="vatPercentage" column="vat_percentage" type="float" nullable="false" />
     </entity>
 </doctrine-mapping>

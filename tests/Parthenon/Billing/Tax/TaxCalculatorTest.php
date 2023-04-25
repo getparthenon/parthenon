@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Tax;
 
-use Brick\Money\Money;
 use Monolog\Test\TestCase;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\ReceiptLine;
 use Parthenon\Common\Address;
 
 class TaxCalculatorTest extends TestCase
@@ -31,12 +31,13 @@ class TaxCalculatorTest extends TestCase
         $countryRules = $this->createMock(CountryRules::class);
         $countryRules->method('getDigitalVatPercentage')->with($address)->willReturn(19);
 
-        $amount = Money::ofMinor(1199, 'EUR');
+        $receiptLine = new ReceiptLine();
+        $receiptLine->setTotal(1199);
+        $receiptLine->setCurrency('EUR');
 
         $subject = new TaxCalculator($countryRules);
-        $actual = $subject->calculateVatAmountForCustomer($customer, $amount);
-
-        $this->assertEquals($expected, $actual->getMinorAmount()->toInt());
+        $subject->calculateReceiptLine($customer, $receiptLine);
+        $this->assertEquals($expected, $receiptLine->getVatTotalMoney()->getMinorAmount()->toInt());
     }
 
     public function testUk12000Vat()
@@ -49,12 +50,34 @@ class TaxCalculatorTest extends TestCase
         $countryRules = $this->createMock(CountryRules::class);
         $countryRules->method('getDigitalVatPercentage')->with($address)->willReturn(20);
 
-        $amount = Money::ofMinor(12000, 'EUR');
+        $receiptLine = new ReceiptLine();
+        $receiptLine->setTotal(12000);
+        $receiptLine->setCurrency('EUR');
 
         $subject = new TaxCalculator($countryRules);
-        $actual = $subject->calculateVatAmountForCustomer($customer, $amount);
+        $subject->calculateReceiptLine($customer, $receiptLine);
 
-        $this->assertEquals($expected, $actual->getMinorAmount()->toInt());
+        $this->assertEquals($expected, $receiptLine->getVatTotalMoney()->getMinorAmount()->toInt());
+    }
+
+    public function testUk22345Vat()
+    {
+        $expected = 3724;
+        $address = new Address();
+        $customer = $this->createMock(CustomerInterface::class);
+        $customer->method('getBillingAddress')->willReturn($address);
+
+        $countryRules = $this->createMock(CountryRules::class);
+        $countryRules->method('getDigitalVatPercentage')->with($address)->willReturn(20);
+
+        $receiptLine = new ReceiptLine();
+        $receiptLine->setTotal(22345);
+        $receiptLine->setCurrency('EUR');
+
+        $subject = new TaxCalculator($countryRules);
+        $subject->calculateReceiptLine($customer, $receiptLine);
+
+        $this->assertEquals($expected, $receiptLine->getVatTotalMoney()->getMinorAmount()->toInt());
     }
 
     public function testCh1234500Vat()
@@ -67,11 +90,13 @@ class TaxCalculatorTest extends TestCase
         $countryRules = $this->createMock(CountryRules::class);
         $countryRules->method('getDigitalVatPercentage')->with($address)->willReturn(7.5);
 
-        $amount = Money::ofMinor(1234500, 'EUR');
+        $receiptLine = new ReceiptLine();
+        $receiptLine->setTotal(1234500);
+        $receiptLine->setCurrency('EUR');
 
         $subject = new TaxCalculator($countryRules);
-        $actual = $subject->calculateVatAmountForCustomer($customer, $amount);
+        $subject->calculateReceiptLine($customer, $receiptLine);
 
-        $this->assertEquals($expected, $actual->getMinorAmount()->toInt());
+        $this->assertEquals($expected, $receiptLine->getVatTotalMoney()->getMinorAmount()->toInt());
     }
 }

@@ -30,6 +30,8 @@ class ReceiptLine
 
     private int $vatTotal;
 
+    private float $vatPercentage;
+
     private ?string $description = null;
 
     public function getId()
@@ -115,5 +117,15 @@ class ReceiptLine
     public function getSubTotalMoney(): Money
     {
         return Money::ofMinor($this->subTotal, strtoupper($this->currency));
+    }
+
+    public function getVatPercentage(): float
+    {
+        return $this->vatPercentage;
+    }
+
+    public function setVatPercentage(float $vatPercentage): void
+    {
+        $this->vatPercentage = $vatPercentage;
     }
 }
