@@ -102,6 +102,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $receipt->setValid(true);
         $receipt->setCurrency($line->getCurrency());
         $receipt->setCreatedAt(new \DateTime());
+        $receipt->setPayeeAddress($customer->getBillingAddress());
 
         return $receipt;
     }
@@ -150,6 +151,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $receipt->setCurrency($line->getCurrency());
         $receipt->setCreatedAt(new \DateTime());
         $receipt->setVatPercentage($line->getVatPercentage());
+        $receipt->setPayeeAddress($customer->getBillingAddress());
 
         return $receipt;
     }
