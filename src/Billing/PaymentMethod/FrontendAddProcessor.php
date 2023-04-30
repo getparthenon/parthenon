@@ -19,7 +19,7 @@ use Obol\Model\Customer as ObolCustomer;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentMethod;
-use Parthenon\Billing\Factory\PaymentDetailsFactoryInterface;
+use Parthenon\Billing\Factory\PaymentMethodFactoryInterface;
 use Parthenon\Billing\Obol\CustomerConverterInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
@@ -30,7 +30,7 @@ class FrontendAddProcessor implements FrontendAddProcessorInterface
         private ProviderInterface $provider,
         private CustomerRepositoryInterface $customerRepository,
         private CustomerConverterInterface $customerConverter,
-        private PaymentDetailsFactoryInterface $paymentDetailsFactory,
+        private PaymentMethodFactoryInterface $paymentMethodFactory,
         private PaymentMethodRepositoryInterface $paymentDetailsRepository,
     ) {
     }
@@ -66,7 +66,7 @@ class FrontendAddProcessor implements FrontendAddProcessorInterface
 
         $response = $this->provider->payments()->createCardOnFile($billingDetails);
         $cardFile = $response->getCardFile();
-        $paymentDetails = $this->paymentDetailsFactory->buildFromCardFile($customer, $cardFile, $this->provider->getName());
+        $paymentDetails = $this->paymentMethodFactory->buildFromCardFile($customer, $cardFile, $this->provider->getName());
 
         if ($response->hasCustomerCreation()) {
             $customer->setPaymentProviderDetailsUrl($response->getCustomerCreation()->getDetailsUrl());
