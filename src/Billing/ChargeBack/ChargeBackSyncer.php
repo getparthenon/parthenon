@@ -24,7 +24,7 @@ use Parthenon\Billing\Factory\EntityFactory;
 use Parthenon\Billing\Repository\ChargeBackRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ChargeBackSyncer implements ChargeBackSyncerInterface
 {
