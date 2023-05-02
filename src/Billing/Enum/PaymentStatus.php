@@ -21,4 +21,5 @@ enum PaymentStatus: string
     case DISPUTED = 'disputed';
     case PARTIALLY_REFUNDED = 'partially_refunded';
     case FULLY_REFUNDED = 'fully_refunded';
+    case FAILED = 'failed';
 }
