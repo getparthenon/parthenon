@@ -110,7 +110,7 @@ class Payment
 
     public function setCurrency(string $currency): void
     {
-        $this->currency = $currency;
+        $this->currency = strtoupper($currency);
     }
 
     public function getCreatedAt(): \DateTimeInterface
@@ -180,7 +180,7 @@ class Payment
 
     public function getMoneyAmount(): Money
     {
-        return Money::ofMinor($this->amount, Currency::of($this->currency));
+        return Money::ofMinor($this->amount, Currency::of($this->getCurrency()));
     }
 
     public function setMoneyAmount(Money $money)
