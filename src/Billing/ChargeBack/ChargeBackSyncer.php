@@ -53,8 +53,8 @@ class ChargeBackSyncer implements ChargeBackSyncerInterface
             $event = new ChargeBackCreated($chargeBack);
         }
 
-        $chargeBack->setStatus(ChargeBackStatus::fromName($event->getStatus()));
-        $chargeBack->setReason(ChargeBackReason::fromName($event->getReason()));
+        $chargeBack->setStatus(ChargeBackStatus::fromName($chargeBack->getStatus()));
+        $chargeBack->setReason(ChargeBackReason::fromName($chargeBack->getReason()));
         $chargeBack->setUpdatedAt(new \DateTime('now'));
 
         $this->chargeBackRepository->save($chargeBack);
