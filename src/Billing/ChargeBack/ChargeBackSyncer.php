@@ -40,7 +40,7 @@ class ChargeBackSyncer implements ChargeBackSyncerInterface
     {
         try {
             $chargeBack = $this->chargeBackRepository->getByExternalReference($event->getId());
-            $event = new ChargeBackUpdated($chargeBack);
+            $symfonyEvent = new ChargeBackUpdated($chargeBack);
         } catch (NoEntityFoundException $e) {
             $chargeBack = $this->entityFactory->getChargeBackEntity();
             $payment = $this->paymentRepository->getPaymentForReference($event->getPaymentReference());
@@ -50,15 +50,15 @@ class ChargeBackSyncer implements ChargeBackSyncerInterface
                 $chargeBack->setCustomer($payment->getCustomer());
             }
             $chargeBack->setCreatedAt(new \DateTime('now'));
-            $event = new ChargeBackCreated($chargeBack);
+            $symfonyEvent = new ChargeBackCreated($chargeBack);
         }
 
-        $chargeBack->setStatus(ChargeBackStatus::fromName($chargeBack->getStatus()));
-        $chargeBack->setReason(ChargeBackReason::fromName($chargeBack->getReason()));
+        $chargeBack->setStatus(ChargeBackStatus::fromName($event->getStatus()));
+        $chargeBack->setReason(ChargeBackReason::fromName($event->getReason()));
         $chargeBack->setUpdatedAt(new \DateTime('now'));
 
         $this->chargeBackRepository->save($chargeBack);
-        $this->dispatcher->dispatch($event, $event::NAME);
+        $this->dispatcher->dispatch($symfonyEvent, $symfonyEvent::NAME);
 
         return $chargeBack;
     }
