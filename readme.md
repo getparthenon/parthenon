@@ -44,7 +44,7 @@
 
 ## Getting started
 
-To add Parthenon to a pre-existing Symfony application, just run the composer command
+To add Parthenon to a pre-existing Symfony application, just run the composer command:
 
 ```sh
 composer require parthenon/parthenon
