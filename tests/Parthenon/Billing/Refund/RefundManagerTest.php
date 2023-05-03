@@ -46,7 +46,9 @@ class RefundManagerTest extends TestCase
         $refundService = $this->createMock(RefundServiceInterface::class);
         $provider->method('refunds')->willReturn($refundService);
 
+        $customer = $this->createMock(CustomerInterface::class);
         $payment = $this->createMock(Payment::class);
+        $payment->method('getCustomer')->willReturn($customer);
         $payment->method('getPaymentReference')->willReturn('payment_id');
         $payment->method('getMoneyAmount')->willReturn(Money::of(1000, Currency::of('USD')));
 
@@ -92,8 +94,9 @@ class RefundManagerTest extends TestCase
         $provider = $this->createMock(ProviderInterface::class);
         $refundService = $this->createMock(RefundServiceInterface::class);
         $provider->method('refunds')->willReturn($refundService);
-
+        $customer = $this->createMock(CustomerInterface::class);
         $payment = $this->createMock(Payment::class);
+        $payment->method('getCustomer')->willReturn($customer);
         $payment->method('getPaymentReference')->willReturn('payment_id');
         $payment->method('getMoneyAmount')->willReturn(Money::of(1000, Currency::of('USD')));
 

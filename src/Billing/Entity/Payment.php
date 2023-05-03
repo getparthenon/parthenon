@@ -36,7 +36,7 @@ class Payment
 
     private ?string $description = null;
 
-    private CustomerInterface $customer;
+    private ?CustomerInterface $customer = null;
 
     private \DateTimeInterface $createdAt;
 
@@ -163,7 +163,7 @@ class Payment
         $this->updatedAt = $updatedAt;
     }
 
-    public function getCustomer(): CustomerInterface
+    public function getCustomer(): ?CustomerInterface
     {
         return $this->customer;
     }
