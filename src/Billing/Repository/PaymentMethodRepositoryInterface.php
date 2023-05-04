@@ -27,6 +27,11 @@ interface PaymentMethodRepositoryInterface extends RepositoryInterface
     public function getPaymentMethodForCustomerAndReference(CustomerInterface $customer, string $reference): PaymentMethod;
 
     /**
+     * @throws NoEntityFoundException
+     */
+    public function getPaymentMethodForReference(string $reference): PaymentMethod;
+
+    /**
      * @return PaymentMethod[]
      */
     public function getPaymentMethodForCustomer(CustomerInterface $customer): array;

@@ -76,4 +76,16 @@ final class PaymentMethodRepository extends DoctrineRepository implements Paymen
 
         return $query->getResult()[0] ?? throw new NoEntityFoundException();
     }
+
+    public function getPaymentMethodForReference(string $reference): PaymentMethod
+    {
+        $qb = $this->entityRepository->createQueryBuilder('pd');
+        $qb->where('pd.deleted = false')
+            ->andWhere('pd.storedPaymentReference = :reference')
+            ->setParameter('reference', $reference);
+        $query = $qb->getQuery();
+        $query->execute();
+
+        return $query->getResult()[0] ?? throw new NoEntityFoundException();
+    }
 }
