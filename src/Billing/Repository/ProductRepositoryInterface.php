@@ -16,6 +16,7 @@ namespace Parthenon\Billing\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\Product;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface ProductRepositoryInterface extends CrudRepositoryInterface
 {
@@ -23,4 +24,9 @@ interface ProductRepositoryInterface extends CrudRepositoryInterface
      * @return Product[]
      */
     public function getAll(): array;
+
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function getByExternalReference(string $externalReference): Product;
 }

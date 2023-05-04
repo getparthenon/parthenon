@@ -17,6 +17,7 @@ namespace Parthenon\Billing\Repository;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Product;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface PriceRepositoryInterface extends CrudRepositoryInterface
 {
@@ -29,4 +30,9 @@ interface PriceRepositoryInterface extends CrudRepositoryInterface
      * @return Price[]
      */
     public function getAllForProduct(Product $product): array;
+
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function getByExternalReference(string $externalReference): Price;
 }
