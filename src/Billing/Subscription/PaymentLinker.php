@@ -21,7 +21,7 @@ use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
-class PaymentEventLinker implements PaymentEventLinkerInterface
+class PaymentLinker implements PaymentLinkerInterface
 {
     public function __construct(
         private ProviderInterface $provider,

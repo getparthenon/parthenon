@@ -170,7 +170,7 @@
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Customer\CustomerManagerInterface" />
             <argument type="service" id="Parthenon\Billing\Obol\PaymentFactoryInterface" />
-            <argument type="service" id="Parthenon\Billing\Subscription\PaymentEventLinkerInterface" />
+            <argument type="service" id="Parthenon\Billing\Subscription\PaymentLinkerInterface" />
             <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
         </service>
         <service id="Parthenon\Billing\Webhook\Handler\ChargeBackHandler" class="Parthenon\Billing\Webhook\Handler\ChargeBackHandler">
@@ -242,11 +242,11 @@
         </service>
         <service id="Parthenon\Billing\Subscription\SubscriptionManagerInterface" alias="Parthenon\Billing\Subscription\SubscriptionManager" />
 
-        <service id="Parthenon\Billing\Subscription\PaymentEventLinker" class="Parthenon\Billing\Subscription\PaymentEventLinker">
+        <service id="Parthenon\Billing\Subscription\PaymentLinker" class="Parthenon\Billing\Subscription\PaymentLinker">
             <argument type="service" id="Obol\Provider\ProviderInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
         </service>
-        <service id="Parthenon\Billing\Subscription\PaymentEventLinkerInterface" alias="Parthenon\Billing\Subscription\PaymentEventLinker" />
+        <service id="Parthenon\Billing\Subscription\PaymentLinkerInterface" alias="Parthenon\Billing\Subscription\PaymentLinker" />
 
         <service id="Parthenon\Billing\Plan\CustomerPlanInfo" class="Parthenon\Billing\Plan\CustomerPlanInfo">
             <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />

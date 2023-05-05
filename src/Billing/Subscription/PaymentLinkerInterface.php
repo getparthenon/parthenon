@@ -18,7 +18,7 @@ use Obol\Model\Events\AbstractCharge;
 use Obol\Model\PaymentDetails;
 use Parthenon\Billing\Entity\Payment;
 
-interface PaymentEventLinkerInterface
+interface PaymentLinkerInterface
 {
     public function linkPaymentDetailsToSubscription(Payment $payment, PaymentDetails $charge): void;
 
