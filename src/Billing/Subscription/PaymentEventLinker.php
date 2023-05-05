@@ -31,11 +31,11 @@ class PaymentEventLinker implements PaymentEventLinkerInterface
 
     public function linkPaymentDetailsToSubscription(Payment $payment, PaymentDetails $charge): void
     {
-        if (!$charge->getPaymentReference()) {
+        if (!$charge->getInvoiceReference()) {
             return;
         }
 
-        $invoice = $this->provider->invoices()->fetch($charge->getPaymentReference());
+        $invoice = $this->provider->invoices()->fetch($charge->getInvoiceReference());
 
         if (!$invoice) {
             return;
