@@ -32,22 +32,31 @@ final class PaymentFactory implements PaymentFactoryInterface
     ) {
     }
 
+    public function createFromPaymentDetails(PaymentDetails $paymentDetails, ?CustomerInterface $customer = null): Payment
+    {
+        $payment = $this->entityFactory->getPaymentEntity();
+        $payment->setPaymentReference($paymentDetails->getPaymentReference());
+        $payment->setPaymentProviderDetailsUrl($paymentDetails->getPaymentReferenceLink());
+        $payment->setMoneyAmount($paymentDetails->getAmount());
+        if (isset($customer)) {
+            $payment->setCustomer($customer);
+        }
+        $payment->setCompleted(true);
+        $payment->setCreatedAt(new \DateTime('now'));
+        $payment->setUpdatedAt(new \DateTime('now'));
+        $payment->setStatus(PaymentStatus::COMPLETED);
+        $payment->setProvider($this->provider->getName());
+
+        return $payment;
+    }
+
     public function fromSubscriptionCreation(PaymentDetails $paymentDetails, ?CustomerInterface $customer = null): Payment
     {
         if (!$customer) {
             $customer = $this->customerProvider->getCurrentCustomer();
         }
 
-        $payment = $this->entityFactory->getPaymentEntity();
-        $payment->setPaymentReference($paymentDetails->getPaymentReference());
-        $payment->setPaymentProviderDetailsUrl($paymentDetails->getPaymentReferenceLink());
-        $payment->setMoneyAmount($paymentDetails->getAmount());
-        $payment->setCustomer($customer);
-        $payment->setCompleted(true);
-        $payment->setCreatedAt(new \DateTime('now'));
-        $payment->setUpdatedAt(new \DateTime('now'));
-        $payment->setStatus(PaymentStatus::COMPLETED);
-        $payment->setProvider($this->provider->getName());
+        $payment = $this->createFromPaymentDetails($paymentDetails, $customer);
 
         return $payment;
     }

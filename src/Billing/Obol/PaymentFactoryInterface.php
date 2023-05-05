@@ -21,6 +21,8 @@ use Parthenon\Billing\Entity\Payment;
 
 interface PaymentFactoryInterface
 {
+    public function createFromPaymentDetails(PaymentDetails $paymentDetails, ?CustomerInterface $customer = null): Payment;
+
     public function fromSubscriptionCreation(PaymentDetails $paymentDetails, ?CustomerInterface $customer = null): Payment;
 
     public function fromChargeEvent(AbstractCharge $charge): Payment;
