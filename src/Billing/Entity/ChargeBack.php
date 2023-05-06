@@ -23,7 +23,7 @@ class ChargeBack
 
     private string $externalReference;
 
-    private CustomerInterface $customer;
+    private ?CustomerInterface $customer = null;
 
     private Payment $payment;
 
@@ -60,12 +60,12 @@ class ChargeBack
         $this->externalReference = $externalReference;
     }
 
-    public function getCustomer(): CustomerInterface
+    public function getCustomer(): ?CustomerInterface
     {
         return $this->customer;
     }
 
-    public function setCustomer(CustomerInterface $customer): void
+    public function setCustomer(?CustomerInterface $customer): void
     {
         $this->customer = $customer;
     }
