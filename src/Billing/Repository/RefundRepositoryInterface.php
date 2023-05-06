@@ -20,6 +20,7 @@ use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Refund;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface RefundRepositoryInterface extends CrudRepositoryInterface
 {
@@ -37,6 +38,11 @@ interface RefundRepositoryInterface extends CrudRepositoryInterface
      * @return Refund[]
      */
     public function getForPayment(Payment $payment): array;
+
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function getForExternalReference(string $externalReference): Refund;
 
     public function getTotalRefundedForPayment(Payment $payment): Money;
 }

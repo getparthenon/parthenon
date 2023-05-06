@@ -20,7 +20,9 @@ use Parthenon\Athena\Repository\DoctrineCrudRepository;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\Refund;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class RefundRepository extends DoctrineCrudRepository implements RefundRepositoryInterface
 {
@@ -53,5 +55,16 @@ class RefundRepository extends DoctrineCrudRepository implements RefundRepositor
         }
 
         return $amount;
+    }
+
+    public function getForExternalReference(string $externalReference): Refund
+    {
+        $refund = $this->entityRepository->findOneBy(['externalReference' => $externalReference]);
+
+        if (!$refund instanceof Refund) {
+            throw new NoEntityFoundException(sprintf("Can't find refund for external reference '%s'", $externalReference));
+        }
+
+        return $refund;
     }
 }
