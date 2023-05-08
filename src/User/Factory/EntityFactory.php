@@ -27,9 +27,9 @@ class EntityFactory
         return ForgotPasswordCode::createForUser($user);
     }
 
-    public function buildInviteCode(UserInterface $user, string $email): InviteCode
+    public function buildInviteCode(UserInterface $user, string $email, ?string $role = null): InviteCode
     {
-        return InviteCode::createForUser($user, $email);
+        return InviteCode::createForUser($user, $email, $role);
     }
 
     public function buildTeamInviteCode(UserInterface $user, TeamInterface $team, string $email, string $role): TeamInviteCode

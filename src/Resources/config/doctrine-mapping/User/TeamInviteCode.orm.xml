@@ -5,6 +5,5 @@
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
     <mapped-superclass name="Parthenon\User\Entity\TeamInviteCode">
         <many-to-one field="team" target-entity="Parthenon\User\Entity\TeamInterface" />
-        <field name="role" column="role" type="string" length="255" nullable="true" />
     </mapped-superclass>
 </doctrine-mapping>

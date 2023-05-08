@@ -199,6 +199,7 @@
             <argument type="service" id="Parthenon\User\Notification\MessageFactory" />
             <argument type="service" id="Parthenon\User\Factory\EntityFactory" />
             <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
+            <argument>%parthenon_user_roles_default_role%</argument>
             <call method="setLogger">
                 <argument type="service" id="logger" />
             </call>

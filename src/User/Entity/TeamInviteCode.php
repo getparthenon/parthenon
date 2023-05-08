@@ -18,8 +18,6 @@ class TeamInviteCode extends InviteCode
 {
     protected ?TeamInterface $team;
 
-    protected ?string $role;
-
     public function getTeam(): ?TeamInterface
     {
         return $this->team;
@@ -32,8 +30,7 @@ class TeamInviteCode extends InviteCode
 
     public static function createForUserAndTeam(UserInterface $user, TeamInterface $team, string $email, string $role): self
     {
-        $self = static::createForUser($user, $email);
-        $self->setRole($role); /* @phpstan-ignore-line */
+        $self = static::createForUser($user, $email, $role);
         $self->setTeam($team); /* @phpstan-ignore-line */
 
         return $self; /* @phpstan-ignore-line */
@@ -42,18 +39,5 @@ class TeamInviteCode extends InviteCode
     public function hasRole(): bool
     {
         return isset($this->role) && !empty($this->role);
-    }
-
-    /**
-     * @return string
-     */
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): void
-    {
-        $this->role = $role;
     }
 }

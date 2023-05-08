@@ -29,6 +29,7 @@ class InviteCode
     protected DateTime $createdAt;
     protected ?DateTime $usedAt;
     protected bool $cancelled = false;
+    protected ?string $role = null;
 
     public function getId()
     {
@@ -136,15 +137,31 @@ class InviteCode
         $this->cancelled = $cancelled;
     }
 
-    public static function createForUser(UserInterface $user, string $email): self
+    public static function createForUser(UserInterface $user, string $email, ?string $role = null): self
     {
         $self = new static();
         $self->setUser($user)
             ->setEmail($email)
+            ->setRole($role)
             ->setCode(bin2hex(random_bytes(32)))
             ->setUsed(false)
             ->setCreatedAt(new \DateTime('now'));
 
         return $self;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(?string $role): static
+    {
+        $this->role = $role;
+
+        return $this;
     }
 }

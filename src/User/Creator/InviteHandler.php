@@ -51,6 +51,9 @@ final class InviteHandler implements InviteHandlerInterface
         $invite->setUsed(true);
         $invite->setUsedAt(new \DateTime('now'));
         $invite->setInvitedUser($user);
+        if ($invite->getRole()) {
+            $user->setRoles([$invite->getRole()]);
+        }
         $this->inviteCodeRepository->save($invite);
         $this->dispatcher->dispatch(new InvitedUserSignedUpEvent($user, $invite), InvitedUserSignedUpEvent::NAME);
     }

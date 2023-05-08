@@ -43,6 +43,7 @@ class InviteUser
         private MessageFactory $messageFactory,
         private EntityFactory $entityFactory,
         private RequestHandlerManagerInterface $requestHandlerManager,
+        private string $defaultRole,
     ) {
     }
 
@@ -57,12 +58,13 @@ class InviteUser
             $requestHandler->handleForm($formType, $request);
             if ($formType->isSubmitted() && $formType->isValid()) {
                 $email = $formType->getData()['email'];
+                $role = $formType->getData()['role'] ?? $this->defaultRole;
                 $output['processed'] = true;
                 $user = $this->security->getUser();
                 if (!$user instanceof UserInterface) {
                     throw new \InvalidArgumentException('Not a user');
                 }
-                $inviteCode = $this->entityFactory->buildInviteCode($user, $email);
+                $inviteCode = $this->entityFactory->buildInviteCode($user, $email, $role);
 
                 $this->dispatcher->dispatch(new PreInviteEvent($user, $inviteCode), PreInviteEvent::NAME);
                 $this->inviteCodeRepository->save($inviteCode);

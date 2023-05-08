@@ -17,5 +17,6 @@
         <field name="createdAt" column="created_at" type="datetime"  />
         <field name="usedAt" column="used_at" type="datetime" nullable="true" />
         <field name="cancelled" column="cancelled" type="boolean" />
+        <field name="role" column="role" type="string" length="255" nullable="true" />
     </mapped-superclass>
 </doctrine-mapping>
