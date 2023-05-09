@@ -24,6 +24,7 @@ use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Event\PaymentCreated;
+use Parthenon\Billing\Event\SubscriptionCreated;
 use Parthenon\Billing\Exception\SubscriptionCreationException;
 use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
@@ -113,6 +114,8 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         }
         $this->subscriptionRepository->save($subscription);
         $this->subscriptionRepository->updateValidUntilForAllActiveSubscriptions($customer, $subscription->getMainExternalReference(), $subscriptionCreationResponse->getBilledUntil());
+
+        $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
 
         $obolPaymentDetails = $subscriptionCreationResponse->getPaymentDetails();
         if ($obolPaymentDetails) {
