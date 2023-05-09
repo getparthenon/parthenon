@@ -54,7 +54,9 @@ final class MailgunEmailSender implements EmailSenderInterface
 
         try {
             $response = $this->mailgun->messages()->send($this->domain, $messageArray);
+            $this->getLogger()->info('Sent email via mail gun');
         } catch (\Exception $e) {
+            $this->getLogger()->warning('Unable to send email via mailgun', ['exception_message' => $e->getMessage()]);
             throw new UnableToSendMessageException($e->getMessage(), $e->getCode(), $e);
         }
 
