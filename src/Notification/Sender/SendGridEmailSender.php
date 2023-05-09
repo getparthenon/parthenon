@@ -60,6 +60,9 @@ final class SendGridEmailSender implements EmailSenderInterface
 
         try {
             $response = $this->sendGrid->send($email);
+            if (202 !== $response->statusCode()) {
+                throw new \Exception($response->body());
+            }
             $this->getLogger()->info('Sent email via sendgrid', ['to_address' => $message->getToAddress(), 'body' => $response->body(), 'status_code' => $response->statusCode()]);
         } catch (\Throwable $e) {
             $this->getLogger()->warning('Unable to send email via sendgrid', ['exception' => $e]);

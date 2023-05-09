@@ -45,7 +45,7 @@ class SendGridEmailSenderTest extends TestCase
         $message->method('getContent')->willReturn(self::CONTENT);
         $message->method('getAttachments')->willReturn([]);
 
-        $mailer->expects($this->once())->method('send')->with($this->isInstanceOf(Mail::class))->willReturn(new Response());
+        $mailer->expects($this->once())->method('send')->with($this->isInstanceOf(Mail::class))->willReturn(new Response(202));
 
         $sender = new SendGridEmailSender($mailer, $configuration);
         $sender->send($message);
@@ -67,7 +67,7 @@ class SendGridEmailSenderTest extends TestCase
         $message->method('getTemplateVariables')->willReturn(self::TEMPLATE_ARRAY);
         $message->method('getAttachments')->willReturn([]);
 
-        $mailer->expects($this->once())->method('send')->with($this->isInstanceOf(Mail::class))->willReturn(new Response());
+        $mailer->expects($this->once())->method('send')->with($this->isInstanceOf(Mail::class))->willReturn(new Response(202));
 
         $sender = new SendGridEmailSender($mailer, $configuration);
         $sender->send($message);
@@ -93,7 +93,7 @@ class SendGridEmailSenderTest extends TestCase
         $message->method('getTemplateVariables')->willReturn(self::TEMPLATE_ARRAY);
         $message->method('getAttachments')->willReturn([$attachment]);
 
-        $mailer->expects($this->once())->method('send')->with($this->isInstanceOf(Mail::class))->willReturn(new Response());
+        $mailer->expects($this->once())->method('send')->with($this->isInstanceOf(Mail::class))->willReturn(new Response(202));
 
         $sender = new SendGridEmailSender($mailer, $configuration);
         $sender->send($message);
