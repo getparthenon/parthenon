@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Refund;
 
-use App\Parthenon\Billing\Event\RefundCreated;
 use Brick\Math\RoundingMode;
 use Brick\Money\Currency;
 use Brick\Money\Money;
@@ -26,6 +25,7 @@ use Parthenon\Billing\Entity\Refund;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Enum\RefundStatus;
+use Parthenon\Billing\Event\RefundCreated;
 use Parthenon\Billing\Exception\RefundLimitExceededException;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
