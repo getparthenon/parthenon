@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Refund;
 
+use App\Parthenon\Billing\Event\RefundCreated;
 use Brick\Math\RoundingMode;
 use Brick\Money\Currency;
 use Brick\Money\Money;
@@ -28,6 +29,7 @@ use Parthenon\Billing\Enum\RefundStatus;
 use Parthenon\Billing\Exception\RefundLimitExceededException;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RefundManager implements RefundManagerInterface
 {
@@ -35,6 +37,7 @@ class RefundManager implements RefundManagerInterface
         private ProviderInterface $provider,
         private PaymentRepositoryInterface $paymentRepository,
         private RefundRepositoryInterface $refundRepository,
+        private EventDispatcherInterface $dispatcher,
     ) {
     }
 
@@ -120,6 +123,7 @@ class RefundManager implements RefundManagerInterface
         $refundEn->setReason($reason);
 
         $this->refundRepository->save($refundEn);
+        $this->dispatcher->dispatch(new RefundCreated($refundEn), RefundCreated::NAME);
     }
 
     /**

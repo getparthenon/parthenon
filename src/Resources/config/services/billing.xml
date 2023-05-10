@@ -259,6 +259,7 @@
             <argument type="service" id="Obol\Provider\ProviderInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\RefundRepositoryInterface" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
         </service>
         <service id="Parthenon\Billing\Refund\RefundManagerInterface" alias="Parthenon\Billing\Refund\RefundManager" />
 

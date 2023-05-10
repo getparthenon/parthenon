@@ -27,11 +27,13 @@ use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RefundManagerTest extends TestCase
 {
     public function testProrate()
     {
+        $dispatcher = $this->createMock(EventDispatcherInterface::class);
         $customer = $this->createMock(CustomerInterface::class);
         $billingAdmin = $this->createMock(BillingAdminInterface::class);
 
@@ -75,12 +77,13 @@ class RefundManagerTest extends TestCase
         $start = new \DateTime('now');
         $end = new \DateTime('+3 days');
 
-        $subject = new RefundManager($provider, $paymentRepository, $refundRepository);
+        $subject = new RefundManager($provider, $paymentRepository, $refundRepository, $dispatcher);
         $subject->issueProrateRefundForSubscription($subscription, $billingAdmin, $start, $end);
     }
 
     public function testProrateYear()
     {
+        $dispatcher = $this->createMock(EventDispatcherInterface::class);
         $customer = $this->createMock(CustomerInterface::class);
         $billingAdmin = $this->createMock(BillingAdminInterface::class);
 
@@ -123,7 +126,7 @@ class RefundManagerTest extends TestCase
         $start = new \DateTime('now');
         $end = new \DateTime('+3 days');
 
-        $subject = new RefundManager($provider, $paymentRepository, $refundRepository);
+        $subject = new RefundManager($provider, $paymentRepository, $refundRepository, $dispatcher);
         $subject->issueProrateRefundForSubscription($subscription, $billingAdmin, $start, $end);
     }
 }

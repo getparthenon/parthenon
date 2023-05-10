@@ -12,26 +12,26 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace Parthenon\Billing\Event;
+namespace App\Parthenon\Billing\Event;
 
-use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\Refund;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class PaymentCreated extends Event
+class RefundCreated extends Event
 {
-    public const NAME = 'parthenon.billing.payment.created';
+    public const NAME = 'parthenon.billing.refund.created';
 
-    public function __construct(private Payment $payment, private bool $subscriptionPayment = false)
+    public function __construct(private Refund $refund)
     {
     }
 
-    public function getPayment(): Payment
+    public function getRefund(): Refund
     {
-        return $this->payment;
+        return $this->refund;
     }
 
-    public function isSubscriptionPayment(): bool
+    public function setRefund(Refund $refund): void
     {
-        return $this->subscriptionPayment;
+        $this->refund = $refund;
     }
 }

@@ -123,7 +123,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
             $payment->addSubscription($subscription);
             $this->paymentRepository->save($payment);
 
-            $this->dispatcher->dispatch(new PaymentCreated($payment), PaymentCreated::NAME);
+            $this->dispatcher->dispatch(new PaymentCreated($payment, true), PaymentCreated::NAME);
         }
 
         return $subscription;
