@@ -187,12 +187,16 @@ class Price implements CrudEntityInterface, DeletableInterface
     {
         $this->deletedAt = new \DateTime('now');
         $this->deleted = true;
+
+        return $this;
     }
 
     public function unmarkAsDeleted(): DeletableInterface
     {
         $this->deletedAt = null;
         $this->deleted = false;
+
+        return $this;
     }
 
     public function getDeleted(): ?bool
