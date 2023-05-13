@@ -17,8 +17,9 @@ namespace Parthenon\Billing\Entity;
 use Brick\Money\Currency;
 use Brick\Money\Money;
 use Parthenon\Athena\Entity\CrudEntityInterface;
+use Parthenon\Athena\Entity\DeletableInterface;
 
-class Price implements CrudEntityInterface
+class Price implements CrudEntityInterface, DeletableInterface
 {
     protected ?string $paymentProviderDetailsUrl;
     private $id;
@@ -38,6 +39,12 @@ class Price implements CrudEntityInterface
     private Product $product;
 
     private ?bool $public = true;
+
+    private ?bool $deleted = false;
+
+    private \DateTimeInterface $createdAt;
+
+    private ?\DateTimeInterface $deletedAt = null;
 
     /**
      * @return mixed
@@ -164,5 +171,47 @@ class Price implements CrudEntityInterface
         }
 
         return (string) $this->getAsMoney().' - '.$type.' - '.$this->getProduct()?->getName();
+    }
+
+    public function setDeletedAt(\DateTimeInterface $dateTime): DeletableInterface
+    {
+        $this->deletedAt = $dateTime;
+    }
+
+    public function isDeleted(): bool
+    {
+        return true === $this->deleted;
+    }
+
+    public function markAsDeleted(): DeletableInterface
+    {
+        $this->deletedAt = new \DateTime('now');
+        $this->deleted = true;
+    }
+
+    public function unmarkAsDeleted(): DeletableInterface
+    {
+        $this->deletedAt = null;
+        $this->deleted = false;
+    }
+
+    public function getDeleted(): ?bool
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(?bool $deleted): void
+    {
+        $this->deleted = $deleted;
+    }
+
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 }

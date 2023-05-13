@@ -65,6 +65,10 @@ class PriceSection extends AbstractSection
         if (!$entity->hasExternalReference()) {
             $this->priceRegister->registerPrice($entity);
         }
+
+        if (!$entity->getId()) {
+            $entity->setCreatedAt(new \DateTime('now'));
+        }
     }
 
     public function buildListView(ListView $listView): ListView

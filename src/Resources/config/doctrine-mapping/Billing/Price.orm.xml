@@ -14,9 +14,12 @@
         <field name="currency" column="currency" type="string" nullable="false" />
         <field name="recurring" column="recurring" type="boolean" nullable="true" />
         <field name="public" column="public" type="boolean" nullable="true" />
+        <field name="deleted" column="deleted" type="boolean" nullable="true" />
         <field name="schedule" column="schedule" type="string" nullable="true" />
         <field name="externalReference" column="external_reference" type="string" nullable="true" />
         <field name="paymentProviderDetailsUrl" column="payment_provider_details_url" type="string" nullable="true" />
         <many-to-one field="product" target-entity="Parthenon\Billing\Entity\Product" />
+        <field name="createdAt" column="created_at" type="datetime" nullable="false"  />
+        <field name="deletedAt" column="deleted_at" type="datetime" nullable="true"  />
     </entity>
 </doctrine-mapping>
