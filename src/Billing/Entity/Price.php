@@ -40,7 +40,7 @@ class Price implements CrudEntityInterface, DeletableInterface
 
     private ?bool $public = true;
 
-    private ?bool $deleted = false;
+    private ?bool $isDeleted = false;
 
     private \DateTimeInterface $createdAt;
 
@@ -180,13 +180,13 @@ class Price implements CrudEntityInterface, DeletableInterface
 
     public function isDeleted(): bool
     {
-        return true === $this->deleted;
+        return true === $this->isDeleted;
     }
 
     public function markAsDeleted(): DeletableInterface
     {
         $this->deletedAt = new \DateTime('now');
-        $this->deleted = true;
+        $this->isDeleted = true;
 
         return $this;
     }
@@ -194,19 +194,19 @@ class Price implements CrudEntityInterface, DeletableInterface
     public function unmarkAsDeleted(): DeletableInterface
     {
         $this->deletedAt = null;
-        $this->deleted = false;
+        $this->isDeleted = false;
 
         return $this;
     }
 
-    public function getDeleted(): ?bool
+    public function getIsDeleted(): ?bool
     {
-        return $this->deleted;
+        return $this->isDeleted;
     }
 
-    public function setDeleted(?bool $deleted): void
+    public function setIsDeleted(?bool $isDeleted): void
     {
-        $this->deleted = $deleted;
+        $this->isDeleted = $isDeleted;
     }
 
     public function getCreatedAt(): \DateTimeInterface
