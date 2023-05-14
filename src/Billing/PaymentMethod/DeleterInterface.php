@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\PaymentMethod;
 
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 
 interface DeleterInterface
 {
-    public function delete(PaymentMethod $paymentDetails): void;
+    public function delete(PaymentCard $paymentDetails): void;
 }

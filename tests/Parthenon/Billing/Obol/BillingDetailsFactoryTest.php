@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Obol;
 
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Common\Address;
 use PHPUnit\Framework\TestCase;
 
@@ -45,7 +45,7 @@ class BillingDetailsFactoryTest extends TestCase
         $address->method('getCountry')->willReturn(self::COUNTRY_CODE);
         $address->method('getPostcode')->willReturn(self::POST_CODE);
 
-        $paymentDetails = new PaymentMethod();
+        $paymentDetails = new PaymentCard();
         $paymentDetails->setStoredPaymentReference(self::PAYMENT_REFERENCE);
 
         $subject = new BillingDetailsFactory();

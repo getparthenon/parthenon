@@ -18,11 +18,11 @@ use Obol\Model\CardDetails;
 use Obol\Model\Customer as ObolCustomer;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Factory\PaymentMethodFactoryInterface;
 use Parthenon\Billing\Obol\CustomerConverterInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 
 class FrontendAddProcessor implements FrontendAddProcessorInterface
 {
@@ -31,7 +31,7 @@ class FrontendAddProcessor implements FrontendAddProcessorInterface
         private CustomerRepositoryInterface $customerRepository,
         private CustomerConverterInterface $customerConverter,
         private PaymentMethodFactoryInterface $paymentMethodFactory,
-        private PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        private PaymentCardRepositoryInterface $paymentDetailsRepository,
     ) {
     }
 
@@ -58,7 +58,7 @@ class FrontendAddProcessor implements FrontendAddProcessorInterface
         return $tokenData->getToken();
     }
 
-    public function createPaymentDetailsFromToken(CustomerInterface $customer, string $token): PaymentMethod
+    public function createPaymentDetailsFromToken(CustomerInterface $customer, string $token): PaymentCard
     {
         $billingDetails = $this->customerConverter->convertToBillingDetails($customer);
         $billingDetails->setCardDetails(new CardDetails());
@@ -74,7 +74,7 @@ class FrontendAddProcessor implements FrontendAddProcessorInterface
         }
 
         if ($paymentDetails->isDefaultPaymentOption()) {
-            $this->paymentDetailsRepository->markAllCustomerMethodsAsNotDefault($customer);
+            $this->paymentDetailsRepository->markAllCustomerCardsAsNotDefault($customer);
         }
         $this->paymentDetailsRepository->save($paymentDetails);
 

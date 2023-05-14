@@ -16,7 +16,7 @@ namespace Parthenon\Billing\Obol;
 
 use Obol\Model\BillingDetails;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 
 class BillingDetailsFactory implements BillingDetailsFactoryInterface
 {
@@ -24,7 +24,7 @@ class BillingDetailsFactory implements BillingDetailsFactoryInterface
 
     public function createFromCustomerAndPaymentDetails(
         CustomerInterface $customer,
-        PaymentMethod $paymentDetails
+        PaymentCard $paymentDetails
     ): BillingDetails {
         $address = $this->buildAddresss($customer);
         $billingDetails = new BillingDetails();

@@ -14,16 +14,16 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\PaymentMethod;
 
-use Parthenon\Billing\Entity\PaymentMethod;
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
+use Parthenon\Billing\Entity\PaymentCard;
+use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 
 class Deleter implements DeleterInterface
 {
-    public function __construct(private PaymentMethodRepositoryInterface $paymentDetailsRepository)
+    public function __construct(private PaymentCardRepositoryInterface $paymentDetailsRepository)
     {
     }
 
-    public function delete(PaymentMethod $paymentDetails): void
+    public function delete(PaymentCard $paymentDetails): void
     {
         $paymentDetails->setDeleted(true);
         $this->paymentDetailsRepository->save($paymentDetails);

@@ -16,9 +16,9 @@ namespace Parthenon\Billing\Factory;
 
 use Obol\Model\CardFile;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 
 interface PaymentMethodFactoryInterface
 {
-    public function buildFromCardFile(CustomerInterface $customer, CardFile $cardFile, string $provider): PaymentMethod;
+    public function buildFromCardFile(CustomerInterface $customer, CardFile $cardFile, string $provider): PaymentCard;
 }

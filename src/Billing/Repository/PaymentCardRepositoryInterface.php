@@ -15,31 +15,31 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository;
 
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\RepositoryInterface;
 
-interface PaymentMethodRepositoryInterface extends RepositoryInterface
+interface PaymentCardRepositoryInterface extends RepositoryInterface
 {
     /**
      * @throws NoEntityFoundException
      */
-    public function getPaymentMethodForCustomerAndReference(CustomerInterface $customer, string $reference): PaymentMethod;
+    public function getPaymentCardForCustomerAndReference(CustomerInterface $customer, string $reference): PaymentCard;
 
     /**
      * @throws NoEntityFoundException
      */
-    public function getPaymentMethodForReference(string $reference): PaymentMethod;
+    public function getPaymentCardForReference(string $reference): PaymentCard;
 
     /**
-     * @return PaymentMethod[]
+     * @return PaymentCard[]
      */
-    public function getPaymentMethodForCustomer(CustomerInterface $customer): array;
+    public function getPaymentCardForCustomer(CustomerInterface $customer): array;
 
-    public function markAllCustomerMethodsAsNotDefault(CustomerInterface $customer): void;
+    public function markAllCustomerCardsAsNotDefault(CustomerInterface $customer): void;
 
     /**
      * @throws NoEntityFoundException
      */
-    public function getDefaultPaymentMethodForCustomer(CustomerInterface $customer): PaymentMethod;
+    public function getDefaultPaymentCardForCustomer(CustomerInterface $customer): PaymentCard;
 }

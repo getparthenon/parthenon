@@ -17,7 +17,7 @@ namespace Parthenon\Billing\Entity;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class PaymentMethod
+class PaymentCard
 {
     protected $id;
 

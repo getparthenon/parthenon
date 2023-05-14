@@ -15,14 +15,14 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository\Orm;
 
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
+use Parthenon\Billing\Entity\PaymentCard;
+use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\DoctrineRepository;
 
-class PaymentMethodRepository extends DoctrineRepository implements PaymentMethodRepositoryInterface
+class PaymentCardRepository extends DoctrineRepository implements PaymentCardRepositoryInterface
 {
-    public function getPaymentMethodForCustomer(CustomerInterface $customer): array
+    public function getPaymentCardForCustomer(CustomerInterface $customer): array
     {
         $qb = $this->entityRepository->createQueryBuilder('pd');
         $qb->where('pd.deleted = false')
@@ -34,17 +34,17 @@ class PaymentMethodRepository extends DoctrineRepository implements PaymentMetho
         return $query->getResult();
     }
 
-    public function markAllCustomerMethodsAsNotDefault(CustomerInterface $customer): void
+    public function markAllCustomerCardsAsNotDefault(CustomerInterface $customer): void
     {
         $qb = $this->entityRepository->createQueryBuilder('pd');
-        $qb->update(PaymentMethod::class, 'pd')
+        $qb->update(PaymentCard::class, 'pd')
             ->set('pd.defaultPaymentOption', 'false')
             ->where('pd.customer = :customer')
             ->setParameter(':customer', $customer);
         $qb->getQuery()->execute();
     }
 
-    public function getDefaultPaymentMethodForCustomer(CustomerInterface $customer): PaymentMethod
+    public function getDefaultPaymentCardForCustomer(CustomerInterface $customer): PaymentCard
     {
         $qb = $this->entityRepository->createQueryBuilder('pd');
         $qb->where('pd.deleted = false')
@@ -56,14 +56,14 @@ class PaymentMethodRepository extends DoctrineRepository implements PaymentMetho
 
         $paymentDetails = $query->getOneOrNullResult();
 
-        if (!$paymentDetails instanceof PaymentMethod) {
+        if (!$paymentDetails instanceof PaymentCard) {
             throw new NoEntityFoundException();
         }
 
         return $paymentDetails;
     }
 
-    public function getPaymentMethodForCustomerAndReference(CustomerInterface $customer, string $reference): PaymentMethod
+    public function getPaymentCardForCustomerAndReference(CustomerInterface $customer, string $reference): PaymentCard
     {
         $qb = $this->entityRepository->createQueryBuilder('pd');
         $qb->where('pd.deleted = false')
@@ -77,7 +77,7 @@ class PaymentMethodRepository extends DoctrineRepository implements PaymentMetho
         return $query->getResult()[0] ?? throw new NoEntityFoundException();
     }
 
-    public function getPaymentMethodForReference(string $reference): PaymentMethod
+    public function getPaymentCardForReference(string $reference): PaymentCard
     {
         $qb = $this->entityRepository->createQueryBuilder('pd');
         $qb->where('pd.deleted = false')

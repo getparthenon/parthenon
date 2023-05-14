@@ -15,13 +15,13 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Repository\Orm;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Common\Repository\CustomServiceRepository;
 
-class PaymentMethodServiceRepository extends CustomServiceRepository
+class PaymentCardServiceRepository extends CustomServiceRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, PaymentMethod::class);
+        parent::__construct($registry, PaymentCard::class);
     }
 }

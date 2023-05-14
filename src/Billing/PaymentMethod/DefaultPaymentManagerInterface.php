@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace Parthenon\Billing\PaymentMethod;
 
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 
 interface DefaultPaymentManagerInterface
 {
-    public function makePaymentDetailsDefault(CustomerInterface $customer, PaymentMethod $paymentDetails): void;
+    public function makePaymentDetailsDefault(CustomerInterface $customer, PaymentCard $paymentDetails): void;
 }

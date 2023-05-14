@@ -18,9 +18,9 @@ use Obol\Model\BillingDetails;
 use Obol\PaymentServiceInterface;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 class DefaultPaymentManagerTest extends TestCase
@@ -28,14 +28,14 @@ class DefaultPaymentManagerTest extends TestCase
     public function testRepositoryIsCalled()
     {
         $id = 'id-here';
-        $paymentDetails = $this->createMock(PaymentMethod::class);
+        $paymentDetails = $this->createMock(PaymentCard::class);
         $paymentDetails->method('getId')->willReturn($id);
         $customer = $this->createMock(CustomerInterface::class);
-        $repository = $this->createMock(PaymentMethodRepositoryInterface::class);
+        $repository = $this->createMock(PaymentCardRepositoryInterface::class);
 
         $paymentDetails->expects($this->once())->method('setDefaultPaymentOption')->with(true);
 
-        $repository->expects($this->once())->method('markAllCustomerMethodsAsNotDefault')->with($customer);
+        $repository->expects($this->once())->method('markAllCustomerCardsAsNotDefault')->with($customer);
         $repository->expects($this->once())->method('save')->with($paymentDetails);
         $repository->method('findById')->with($id)->willReturn($paymentDetails);
 

@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace Parthenon\Billing\PaymentMethod;
 
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 
 interface FrontendAddProcessorInterface
 {
     public function startTokenProcess(CustomerInterface $customer): string;
 
-    public function createPaymentDetailsFromToken(CustomerInterface $customer, string $token): PaymentMethod;
+    public function createPaymentDetailsFromToken(CustomerInterface $customer, string $token): PaymentCard;
 }

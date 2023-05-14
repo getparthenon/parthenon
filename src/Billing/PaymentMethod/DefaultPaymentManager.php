@@ -16,22 +16,22 @@ namespace Parthenon\Billing\PaymentMethod;
 
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 
 final class DefaultPaymentManager implements DefaultPaymentManagerInterface
 {
     public function __construct(
-        private PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        private PaymentCardRepositoryInterface $paymentDetailsRepository,
         private ProviderInterface $provider,
         private BillingDetailsFactoryInterface $billingDetailsFactory,
     ) {
     }
 
-    public function makePaymentDetailsDefault(CustomerInterface $customer, PaymentMethod $paymentDetails): void
+    public function makePaymentDetailsDefault(CustomerInterface $customer, PaymentCard $paymentDetails): void
     {
-        $this->paymentDetailsRepository->markAllCustomerMethodsAsNotDefault($customer);
+        $this->paymentDetailsRepository->markAllCustomerCardsAsNotDefault($customer);
         $paymentDetails = $this->paymentDetailsRepository->findById($paymentDetails->getId());
         $paymentDetails->setDefaultPaymentOption(true);
         $this->paymentDetailsRepository->save($paymentDetails);
