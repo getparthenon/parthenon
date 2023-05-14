@@ -107,7 +107,7 @@ class User implements UserInterface, EquatableInterface, DeletableInterface
     /**
      * {@inheritdoc}
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         $this->password = '';
     }
