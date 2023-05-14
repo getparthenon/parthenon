@@ -20,7 +20,7 @@ use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\DoctrineRepository;
 
-final class PaymentMethodRepository extends DoctrineRepository implements PaymentMethodRepositoryInterface
+class PaymentMethodRepository extends DoctrineRepository implements PaymentMethodRepositoryInterface
 {
     public function getPaymentMethodForCustomer(CustomerInterface $customer): array
     {
