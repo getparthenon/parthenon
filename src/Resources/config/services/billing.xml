@@ -172,6 +172,7 @@
             <argument type="service" id="Parthenon\Billing\Obol\PaymentFactoryInterface" />
             <argument type="service" id="Parthenon\Billing\Subscription\PaymentLinkerInterface" />
             <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Parthenon\Billing\Subscription\SchedulerInterface" />
         </service>
         <service id="Parthenon\Billing\Webhook\Handler\ChargeBackHandler" class="Parthenon\Billing\Webhook\Handler\ChargeBackHandler">
             <argument type="service" id="Parthenon\Billing\ChargeBack\ChargeBackSyncerInterface" />
@@ -253,6 +254,11 @@
             <argument type="service" id="Parthenon\Billing\Plan\PlanManager" />
         </service>
         <service id="Parthenon\Billing\Plan\CustomerPlanInfoInterface" alias="Parthenon\Billing\Plan\CustomerPlanInfo" />
+
+        <service id="Parthenon\Billing\Subscription\ObolScheduler" class="Parthenon\Billing\Subscription\ObolScheduler">
+            <argument type="service" id="Obol\Provider\ProviderInterface" />
+        </service>
+        <service id="Parthenon\Billing\Subscription\SchedulerInterface" alias="Parthenon\Billing\Subscription\ObolScheduler" />
 
         <!--- Refund -->
         <service id="Parthenon\Billing\Refund\RefundManager" class="Parthenon\Billing\Refund\RefundManager">
