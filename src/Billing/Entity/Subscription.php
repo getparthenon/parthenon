@@ -43,7 +43,7 @@ class Subscription
 
     private ?string $mainExternalReferenceDetailsUrl = null;
 
-    private string $childExternalReference;
+    private ?string $childExternalReference = null;
 
     private ?PaymentCard $paymentDetails = null;
 
@@ -152,12 +152,12 @@ class Subscription
         $this->mainExternalReference = $mainExternalReference;
     }
 
-    public function getChildExternalReference(): string
+    public function getChildExternalReference(): ?string
     {
         return $this->childExternalReference;
     }
 
-    public function setChildExternalReference(string $childExternalReference): void
+    public function setChildExternalReference(?string $childExternalReference): void
     {
         $this->childExternalReference = $childExternalReference;
     }
