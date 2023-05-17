@@ -39,7 +39,7 @@ class Subscription
 
     private ?string $currency = null;
 
-    private string $mainExternalReference;
+    private ?string $mainExternalReference = null;
 
     private ?string $mainExternalReferenceDetailsUrl = null;
 
@@ -142,7 +142,7 @@ class Subscription
         $this->subscriptionPlan = $subscriptionPlan;
     }
 
-    public function getMainExternalReference(): string
+    public function getMainExternalReference(): ?string
     {
         return $this->mainExternalReference;
     }
