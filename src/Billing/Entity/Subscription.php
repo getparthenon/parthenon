@@ -51,15 +51,15 @@ class Subscription
 
     private ?Price $price = null;
 
-    private \DateTimeInterface $createdAt;
+    private \DateTime $createdAt;
 
-    private ?\DateTimeInterface $startOfCurrentPeriod = null;
+    private ?\DateTime $startOfCurrentPeriod = null;
 
-    private ?\DateTimeInterface $validUntil = null;
+    private ?\DateTime $validUntil = null;
 
-    private \DateTimeInterface $updatedAt;
+    private \DateTime $updatedAt;
 
-    private ?\DateTimeInterface $endedAt = null;
+    private ?\DateTime $endedAt = null;
 
     private bool $hasTrial = false;
 
@@ -243,12 +243,12 @@ class Subscription
         $this->active = $active;
     }
 
-    public function getValidUntil(): \DateTimeInterface
+    public function getValidUntil(): ?\DateTime
     {
         return $this->validUntil;
     }
 
-    public function setValidUntil(\DateTimeInterface $validUntil): void
+    public function setValidUntil(\DateTime $validUntil): void
     {
         $this->validUntil = $validUntil;
     }
