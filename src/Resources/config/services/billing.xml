@@ -209,6 +209,7 @@
             <argument type="service" id="Parthenon\Billing\Obol\CustomerConverterInterface" />
             <argument type="service" id="Parthenon\Billing\Factory\PaymentMethodFactoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\PaymentCardRepositoryInterface" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
         </service>
         <service id="Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface" alias="Parthenon\Billing\PaymentMethod\FrontendAddProcessor" />
 

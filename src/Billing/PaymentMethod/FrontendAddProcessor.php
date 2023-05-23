@@ -19,10 +19,12 @@ use Obol\Model\Customer as ObolCustomer;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentCard;
+use Parthenon\Billing\Event\PaymentCardAdded;
 use Parthenon\Billing\Factory\PaymentMethodFactoryInterface;
 use Parthenon\Billing\Obol\CustomerConverterInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class FrontendAddProcessor implements FrontendAddProcessorInterface
 {
@@ -32,6 +34,7 @@ class FrontendAddProcessor implements FrontendAddProcessorInterface
         private CustomerConverterInterface $customerConverter,
         private PaymentMethodFactoryInterface $paymentMethodFactory,
         private PaymentCardRepositoryInterface $paymentDetailsRepository,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -66,18 +69,20 @@ class FrontendAddProcessor implements FrontendAddProcessorInterface
 
         $response = $this->provider->payments()->createCardOnFile($billingDetails);
         $cardFile = $response->getCardFile();
-        $paymentDetails = $this->paymentMethodFactory->buildFromCardFile($customer, $cardFile, $this->provider->getName());
+        $paymentCard = $this->paymentMethodFactory->buildFromCardFile($customer, $cardFile, $this->provider->getName());
 
         if ($response->hasCustomerCreation()) {
             $customer->setPaymentProviderDetailsUrl($response->getCustomerCreation()->getDetailsUrl());
             $customer->setExternalCustomerReference($response->getCustomerReference());
         }
 
-        if ($paymentDetails->isDefaultPaymentOption()) {
+        if ($paymentCard->isDefaultPaymentOption()) {
             $this->paymentDetailsRepository->markAllCustomerCardsAsNotDefault($customer);
         }
-        $this->paymentDetailsRepository->save($paymentDetails);
+        $this->paymentDetailsRepository->save($paymentCard);
 
-        return $paymentDetails;
+        $this->eventDispatcher->dispatch(new PaymentCardAdded($customer, $paymentCard), PaymentCardAdded::NAME);
+
+        return $paymentCard;
     }
 }
