@@ -73,7 +73,7 @@ class FrontendAddProcessor implements FrontendAddProcessorInterface
 
         if ($response->hasCustomerCreation()) {
             $customer->setPaymentProviderDetailsUrl($response->getCustomerCreation()->getDetailsUrl());
-            $customer->setExternalCustomerReference($response->getCustomerReference());
+            $customer->setExternalCustomerReference($response->getCustomerCreation()->getReference());
         }
 
         if ($paymentCard->isDefaultPaymentOption()) {
