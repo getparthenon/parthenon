@@ -14,10 +14,11 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
+use Parthenon\Athena\Entity\DeletableInterface;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class PaymentCard
+class PaymentCard implements DeletableInterface
 {
     protected $id;
 
@@ -54,6 +55,9 @@ class PaymentCard
 
     #[Ignore]
     protected bool $deleted = false;
+
+    #[Ignore]
+    protected ?\DateTime $deletedAt = null;
 
     /**
      * @return mixed
@@ -195,5 +199,22 @@ class PaymentCard
     public function setDeleted(bool $deleted): void
     {
         $this->deleted = $deleted;
+    }
+
+    public function setDeletedAt(\DateTimeInterface $dateTime): DeletableInterface
+    {
+        $this->deletedAt = $dateTime;
+    }
+
+    public function markAsDeleted(): DeletableInterface
+    {
+        $this->deletedAt = new \DateTime();
+        $this->deleted = true;
+    }
+
+    public function unmarkAsDeleted(): DeletableInterface
+    {
+        $this->deletedAt = null;
+        $this->deleted = true;
     }
 }

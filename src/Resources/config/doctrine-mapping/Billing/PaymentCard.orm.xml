@@ -21,5 +21,6 @@
         <field name="expiryYear" column="expiry_year" type="string" nullable="true" />
         <field name="deleted" column="is_deleted" type="boolean" nullable="false" />
         <field name="createdAt" column="created_at" type="datetime" nullable="false" />
+        <field name="deletedAt" column="deleted_at" type="datetime" nullable="true"  />
     </entity>
 </doctrine-mapping>
