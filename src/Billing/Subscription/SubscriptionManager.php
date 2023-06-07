@@ -208,6 +208,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setPrice($price);
         $subscription->setMoneyAmount($price->getAsMoney());
         $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
+        $obolSubscription->setPriceId($price->getExternalReference());
 
         $this->provider->subscriptions()->updatePrice($obolSubscription);
     }
@@ -220,7 +221,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setMoneyAmount($price->getAsMoney());
 
         $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
-
+        $obolSubscription->setPriceId($price->getExternalReference());
         $this->provider->subscriptions()->updatePrice($obolSubscription);
     }
 }
