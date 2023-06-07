@@ -34,4 +34,8 @@ interface SubscriptionManagerInterface
     public function cancelSubscriptionInstantly(Subscription $subscription): Subscription;
 
     public function cancelSubscriptionOnDate(Subscription $subscription, \DateTimeInterface $dateTime): Subscription;
+
+    public function changeSubscriptionPrice(Subscription $subscription, Price $price): void;
+
+    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price): void;
 }

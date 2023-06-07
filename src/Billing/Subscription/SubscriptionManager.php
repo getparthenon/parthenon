@@ -202,4 +202,25 @@ final class SubscriptionManager implements SubscriptionManagerInterface
 
         return $subscription;
     }
+
+    public function changeSubscriptionPrice(Subscription $subscription, Price $price): void
+    {
+        $subscription->setPrice($price);
+        $subscription->setMoneyAmount($price->getAsMoney());
+        $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
+
+        $this->provider->subscriptions()->updatePrice($obolSubscription);
+    }
+
+    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price): void
+    {
+        $subscription->setSubscriptionPlan($plan);
+        $subscription->setPlanName($plan->getName());
+        $subscription->setPrice($price);
+        $subscription->setMoneyAmount($price->getAsMoney());
+
+        $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
+
+        $this->provider->subscriptions()->updatePrice($obolSubscription);
+    }
 }
