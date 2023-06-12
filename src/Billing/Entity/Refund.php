@@ -150,4 +150,9 @@ class Refund
     {
         $this->externalReference = $externalReference;
     }
+
+    public function getMoneyAmount(): Money
+    {
+        return Money::ofMinor($this->amount, Currency::of($this->getCurrency()));
+    }
 }
