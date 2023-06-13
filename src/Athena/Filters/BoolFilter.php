@@ -61,7 +61,7 @@ final class BoolFilter implements DoctrineFilterInterface, OdmFilterInterface
         if (!$this->data) {
             return;
         }
-        $booleanAsInt = (int) ('true' === strtolower($this->data));
+        $booleanAsInt = ('true' === strtolower($this->data));
         $query->setParameter(':'.$this->getSafeFieldName(), $booleanAsInt);
     }
 
