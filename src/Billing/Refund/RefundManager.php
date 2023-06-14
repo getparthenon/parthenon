@@ -41,7 +41,7 @@ class RefundManager implements RefundManagerInterface
     ) {
     }
 
-    public function issueRefundForPayment(Payment $payment, Money $amount, ?BillingAdminInterface $billingAdmin = null, ?string $reason = null): void
+    public function issueRefundForPayment(Payment $payment, Money $amount, ?BillingAdminInterface $billingAdmin = null, ?string $reason = null): Refund
     {
         $totalRefunded = $this->refundRepository->getTotalRefundedForPayment($payment);
 
@@ -55,10 +55,10 @@ class RefundManager implements RefundManagerInterface
             throw new RefundLimitExceededException('The refund amount is greater than the refundable amount for payment');
         }
 
-        $this->handleRefund($amount, $payment, $totalRefunded, $billingAdmin, $reason);
+        return $this->handleRefund($amount, $payment, $totalRefunded, $billingAdmin, $reason);
     }
 
-    public function issueFullRefundForSubscription(Subscription $subscription, ?BillingAdminInterface $billingAdmin = null): void
+    public function issueFullRefundForSubscription(Subscription $subscription, ?BillingAdminInterface $billingAdmin = null): Refund
     {
         $payment = $this->paymentRepository->getLastPaymentForSubscription($subscription);
         $totalRefunded = $this->refundRepository->getTotalRefundedForPayment($payment);
@@ -70,10 +70,10 @@ class RefundManager implements RefundManagerInterface
             throw new RefundLimitExceededException('The refund amount is greater than the refundable amount for payment');
         }
 
-        $this->handleRefund($amount, $payment, $totalRefunded, $billingAdmin);
+        return $this->handleRefund($amount, $payment, $totalRefunded, $billingAdmin);
     }
 
-    public function issueProrateRefundForSubscription(Subscription $subscription, ?BillingAdminInterface $billingAdmin, \DateTimeInterface $start, \DateTimeInterface $end): void
+    public function issueProrateRefundForSubscription(Subscription $subscription, ?BillingAdminInterface $billingAdmin, \DateTimeInterface $start, \DateTimeInterface $end): Refund
     {
         if ('month' === $subscription->getPaymentSchedule()) {
             $days = date('t');
@@ -85,7 +85,7 @@ class RefundManager implements RefundManagerInterface
 
         $interval = $start->diff($end);
         if (!is_int($interval->days)) {
-            return;
+            throw new \Exception('Invalid diff');
         }
 
         $payment = $this->paymentRepository->getLastPaymentForSubscription($subscription);
@@ -99,10 +99,10 @@ class RefundManager implements RefundManagerInterface
             throw new RefundLimitExceededException('The refund amount is greater than the refundable amount for payment');
         }
 
-        $this->handleRefund($totalAmount, $payment, $totalRefunded, $billingAdmin);
+        return $this->handleRefund($totalAmount, $payment, $totalRefunded, $billingAdmin);
     }
 
-    public function createEntityRecord(\Obol\Model\Refund $refund, ?BillingAdminInterface $billingAdmin, Payment $payment, ?string $reason = null): void
+    protected function createEntityRecord(\Obol\Model\Refund $refund, ?BillingAdminInterface $billingAdmin, Payment $payment, ?string $reason = null): Refund
     {
         $money = Money::ofMinor($refund->getAmount(), Currency::of(strtoupper($refund->getCurrency())));
         if ($payment->getMoneyAmount()->isEqualTo($money)) {
@@ -124,13 +124,15 @@ class RefundManager implements RefundManagerInterface
 
         $this->refundRepository->save($refundEn);
         $this->dispatcher->dispatch(new RefundCreated($refundEn), RefundCreated::NAME);
+
+        return $refundEn;
     }
 
     /**
      * @throws \Brick\Money\Exception\MoneyMismatchException
      * @throws \Obol\Exception\UnsupportedFunctionalityException
      */
-    public function handleRefund(Money $amount, Payment $payment, Money $totalRefunded, ?BillingAdminInterface $billingAdmin, ?string $reason = null): void
+    protected function handleRefund(Money $amount, Payment $payment, Money $totalRefunded, ?BillingAdminInterface $billingAdmin, ?string $reason = null): Refund
     {
         $issueRefund = new IssueRefund();
         $issueRefund->setAmount($amount);
@@ -146,6 +148,6 @@ class RefundManager implements RefundManagerInterface
             $payment->setStatus(PaymentStatus::PARTIALLY_REFUNDED);
         }
 
-        $this->createEntityRecord($refund, $billingAdmin, $payment, $reason);
+        return $this->createEntityRecord($refund, $billingAdmin, $payment, $reason);
     }
 }

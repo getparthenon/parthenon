@@ -17,13 +17,14 @@ namespace Parthenon\Billing\Refund;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\Refund;
 use Parthenon\Billing\Entity\Subscription;
 
 interface RefundManagerInterface
 {
-    public function issueRefundForPayment(Payment $payment, Money $amount, ?BillingAdminInterface $billingAdmin = null, ?string $reason = null): void;
+    public function issueRefundForPayment(Payment $payment, Money $amount, ?BillingAdminInterface $billingAdmin = null, ?string $reason = null): Refund;
 
-    public function issueFullRefundForSubscription(Subscription $subscription, BillingAdminInterface $billingAdmin): void;
+    public function issueFullRefundForSubscription(Subscription $subscription, BillingAdminInterface $billingAdmin): Refund;
 
-    public function issueProrateRefundForSubscription(Subscription $subscription, BillingAdminInterface $billingAdmin, \DateTimeInterface $start, \DateTimeInterface $end): void;
+    public function issueProrateRefundForSubscription(Subscription $subscription, BillingAdminInterface $billingAdmin, \DateTimeInterface $start, \DateTimeInterface $end): Refund;
 }
