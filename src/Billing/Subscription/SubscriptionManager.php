@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Subscription;
 
 use Obol\Model\CancelSubscription;
+use Obol\Model\Enum\ProrataType;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -22,6 +23,7 @@ use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
+use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Event\PaymentCreated;
 use Parthenon\Billing\Event\SubscriptionCancelled;
@@ -203,17 +205,21 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         return $subscription;
     }
 
-    public function changeSubscriptionPrice(Subscription $subscription, Price $price): void
+    public function changeSubscriptionPrice(Subscription $subscription, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
         $subscription->setPrice($price);
         $subscription->setMoneyAmount($price->getAsMoney());
         $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
         $obolSubscription->setPriceId($price->getExternalReference());
+        $prorataTye = match ($billingChangeTiming) {
+            BillingChangeTiming::INSTANTLY => ProrataType::NOW,
+            default => ProrataType::NONE,
+        };
 
-        $this->provider->subscriptions()->updatePrice($obolSubscription);
+        $this->provider->subscriptions()->updatePrice($obolSubscription, $prorataTye);
     }
 
-    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price): void
+    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
         $subscription->setSubscriptionPlan($plan);
         $subscription->setPlanName($plan->getName());
@@ -222,6 +228,11 @@ final class SubscriptionManager implements SubscriptionManagerInterface
 
         $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
         $obolSubscription->setPriceId($price->getExternalReference());
-        $this->provider->subscriptions()->updatePrice($obolSubscription);
+        $prorataTye = match ($billingChangeTiming) {
+            BillingChangeTiming::INSTANTLY => ProrataType::NOW,
+            default => ProrataType::NONE,
+        };
+
+        $this->provider->subscriptions()->updatePrice($obolSubscription, $prorataTye);
     }
 }
