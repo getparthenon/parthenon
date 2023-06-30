@@ -85,7 +85,9 @@ final class SubscriptionManager implements SubscriptionManagerInterface
 
         $subscription = $this->entityFactory->getSubscriptionEntity();
         $subscription->setPlanName($plan->getName());
-        $subscription->setPaymentSchedule($planPrice->getSchedule());
+        if ($planPrice->isRecurring()) {
+            $subscription->setPaymentSchedule($planPrice->getSchedule());
+        }
         $subscription->setActive(true);
         $subscription->setMoneyAmount($subscriptionCreationResponse->getPaymentDetails()?->getAmount());
         $subscription->setStatus(SubscriptionStatus::ACTIVE);
