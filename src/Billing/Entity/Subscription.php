@@ -27,7 +27,7 @@ class Subscription
 
     private string $planName;
 
-    private string $paymentSchedule;
+    private ?string $paymentSchedule = null;
 
     private ?int $seats = 1;
 
@@ -93,12 +93,12 @@ class Subscription
         $this->planName = $planName;
     }
 
-    public function getPaymentSchedule(): string
+    public function getPaymentSchedule(): ?string
     {
         return $this->paymentSchedule;
     }
 
-    public function setPaymentSchedule(string $paymentSchedule): void
+    public function setPaymentSchedule(?string $paymentSchedule): void
     {
         $this->paymentSchedule = $paymentSchedule;
     }
