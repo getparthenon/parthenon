@@ -16,7 +16,9 @@ namespace Parthenon\Billing\Repository\Orm;
 
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 use Parthenon\Billing\Entity\Product;
+use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class SubscriptionPlanRepository extends DoctrineCrudRepository implements SubscriptionPlanRepositoryInterface
 {
@@ -28,5 +30,16 @@ class SubscriptionPlanRepository extends DoctrineCrudRepository implements Subsc
     public function getAllForProduct(Product $product): array
     {
         return $this->entityRepository->findBy(['product' => $product]);
+    }
+
+    public function getByCodeName(string $codeName): SubscriptionPlan
+    {
+        $subscriptionPlan = $this->entityRepository->findOneBy(['codeName' => $codeName]);
+
+        if (!$subscriptionPlan instanceof SubscriptionPlan) {
+            throw new NoEntityFoundException(sprintf("No subscription plan found for '%s'", $codeName));
+        }
+
+        return $subscriptionPlan;
     }
 }

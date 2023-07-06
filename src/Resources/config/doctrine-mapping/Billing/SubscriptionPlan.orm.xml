@@ -12,6 +12,7 @@
 
         <field name="public" column="public" type="boolean" nullable="false"  />
         <field name="name" column="name" type="string" nullable="false"  />
+        <field name="codeName" column="code_name" type="string" nullable="true" unique="true" />
         <field name="externalReference" column="external_reference" type="string" nullable="true"  />
         <field name="paymentProviderDetailsLink" column="payment_provider_details_url" type="string" nullable="true"  />
         <field name="perSeat" column="per_seat" type="boolean" nullable="true"  />

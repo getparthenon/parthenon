@@ -29,4 +29,6 @@ interface SubscriptionPlanRepositoryInterface extends CrudRepositoryInterface
      * @return SubscriptionPlan[]
      */
     public function getAllForProduct(Product $product): array;
+
+    public function getByCodeName(string $codeName): SubscriptionPlan;
 }

@@ -26,6 +26,8 @@ class SubscriptionPlan implements CrudEntityInterface
 
     private string $name;
 
+    private ?string $codeName = null;
+
     private ?string $externalReference = null;
 
     private ?string $paymentProviderDetailsLink = null;
@@ -89,6 +91,16 @@ class SubscriptionPlan implements CrudEntityInterface
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getCodeName(): ?string
+    {
+        return $this->codeName;
+    }
+
+    public function setCodeName(?string $codeName): void
+    {
+        $this->codeName = $codeName;
     }
 
     /**
