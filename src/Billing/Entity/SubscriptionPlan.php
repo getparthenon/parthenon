@@ -176,6 +176,16 @@ class SubscriptionPlan implements CrudEntityInterface
         }
     }
 
+    public function getPriceForCurrencyAndSchedule(string $currency, string $schedule): Price
+    {
+        foreach ($this->getPrices() as $price) {
+            if (strtolower($price->getCurrency()) === strtolower($currency) && strtolower($price->getSchedule()) === strtolower($schedule)) {
+                return $price;
+            }
+        }
+        throw new \Exception("Can't found price");
+    }
+
     public function removePrice(Price $price): void
     {
         $this->prices->removeElement($price);
