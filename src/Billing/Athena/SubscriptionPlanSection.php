@@ -18,7 +18,7 @@ use Parthenon\Athena\AbstractSection;
 use Parthenon\Athena\EntityForm;
 use Parthenon\Athena\ListView;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
-use Parthenon\Billing\Entity\SubscriptionPlan;
+use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Form\Type\SubscriptionPlanLimitType;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
@@ -31,6 +31,7 @@ class SubscriptionPlanSection extends AbstractSection
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
         private PriceRepositoryInterface $priceRepository,
+        private EntityFactoryInterface $entityFactory,
     ) {
     }
 
@@ -46,7 +47,7 @@ class SubscriptionPlanSection extends AbstractSection
 
     public function getEntity()
     {
-        return new SubscriptionPlan();
+        return $this->entityFactory->getSubscriptionPlanEntity();
     }
 
     public function getMenuSection(): string

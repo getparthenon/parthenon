@@ -20,13 +20,15 @@ use Parthenon\Athena\ListView;
 use Parthenon\Athena\ReadView;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Athena\Settings;
-use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 
 class SubscriptionSection extends AbstractSection
 {
-    public function __construct(private SubscriptionRepositoryInterface $subscriptionRepository)
-    {
+    public function __construct(
+        private SubscriptionRepositoryInterface $subscriptionRepository,
+        private EntityFactoryInterface $entityFactory,
+    ) {
     }
 
     public function buildListView(ListView $listView): ListView
@@ -75,7 +77,7 @@ class SubscriptionSection extends AbstractSection
 
     public function getEntity()
     {
-        return new Subscription();
+        return $this->entityFactory->getSubscriptionEntity();
     }
 
     public function getMenuSection(): string

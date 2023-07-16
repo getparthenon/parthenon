@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Parthenon\Billing\Entity\SubscriptionPlan">
+    <mapped-superclass name="Parthenon\Billing\Entity\SubscriptionPlan">
         <id name="id" type="uuid" column="id">
             <generator strategy="CUSTOM" />
             <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
@@ -20,7 +20,7 @@
         <field name="userCount" column="user_count" type="integer" nullable="true"  />
         <field name="hasTrial" column="has_trial" type="boolean" nullable="true"  />
         <field name="trialLengthDays" column="trial_length_days" type="integer" nullable="true"  />
-        <many-to-one field="product" target-entity="Parthenon\Billing\Entity\Product" />
+        <many-to-one field="product" target-entity="Parthenon\Billing\Entity\ProductInterface" />
         <one-to-many field="limits" target-entity="Parthenon\Billing\Entity\SubscriptionPlanLimit" mapped-by="subscriptionPlan" orphan-removal="true">
             <cascade>
                 <cascade-persist />
@@ -33,11 +33,11 @@
                 <cascade-remove />
             </cascade>
         </many-to-many>
-        <many-to-many field="prices" target-entity="Parthenon\Billing\Entity\Price" orphan-removal="true">
+        <many-to-many field="prices" target-entity="Parthenon\Billing\Entity\PriceInterface" orphan-removal="true">
             <cascade>
                 <cascade-persist />
                 <cascade-remove />
             </cascade>
         </many-to-many>
-    </entity>
+    </mapped-superclass>
 </doctrine-mapping>

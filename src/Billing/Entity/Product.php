@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Entity;
 
-class Product
+class Product implements ProductInterface
 {
     protected ?string $paymentProviderDetailsUrl = null;
     private $id;

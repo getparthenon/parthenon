@@ -19,7 +19,7 @@ use Brick\Money\Money;
 use Parthenon\Athena\Entity\CrudEntityInterface;
 use Parthenon\Athena\Entity\DeletableInterface;
 
-class Price implements CrudEntityInterface, DeletableInterface
+class Price implements CrudEntityInterface, DeletableInterface, PriceInterface
 {
     protected ?string $paymentProviderDetailsUrl;
     private $id;

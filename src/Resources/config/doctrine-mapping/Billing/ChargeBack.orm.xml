@@ -10,7 +10,7 @@
             <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
         </id>
         <field name="externalReference" column="external_reference" type="string" nullable="false"  />
-        <many-to-one field="payment" target-entity="Parthenon\Billing\Entity\Payment" />
+        <many-to-one field="payment" target-entity="Parthenon\Billing\Entity\PaymentInterface" />
         <many-to-one field="customer" target-entity="Parthenon\Billing\Entity\CustomerInterface" />
         <field name="status" column="status" type="string" nullable="false" enum-type="Parthenon\Billing\Enum\ChargeBackStatus"  />
         <field name="reason" column="reason" type="string" nullable="false" enum-type="Parthenon\Billing\Enum\ChargeBackReason"  />

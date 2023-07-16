@@ -18,13 +18,15 @@ use Parthenon\Athena\AbstractSection;
 use Parthenon\Athena\ListView;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Athena\Settings;
-use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 
 class PaymentSection extends AbstractSection
 {
-    public function __construct(private PaymentRepositoryInterface $paymentRepository)
-    {
+    public function __construct(
+        private PaymentRepositoryInterface $paymentRepository,
+        private EntityFactoryInterface $entityFactory,
+    ) {
     }
 
     public function getUrlTag(): string
@@ -39,7 +41,7 @@ class PaymentSection extends AbstractSection
 
     public function getEntity()
     {
-        return new Payment();
+        return $this->entityFactory->getPaymentEntity();
     }
 
     public function getMenuSection(): string

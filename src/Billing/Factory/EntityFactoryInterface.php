@@ -16,10 +16,19 @@ namespace Parthenon\Billing\Factory;
 
 use Parthenon\Billing\Entity\ChargeBack;
 use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\PriceInterface;
+use Parthenon\Billing\Entity\ProductInterface;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\SubscriptionPlanInterface;
 
 interface EntityFactoryInterface
 {
+    public function getProductEntity(): ProductInterface;
+
+    public function getPriceEntity(): PriceInterface;
+
+    public function getSubscriptionPlanEntity(): SubscriptionPlanInterface;
+
     public function getSubscriptionEntity(): Subscription;
 
     public function getPaymentEntity(): Payment;

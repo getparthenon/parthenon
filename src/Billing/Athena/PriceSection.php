@@ -19,6 +19,7 @@ use Parthenon\Athena\EntityForm;
 use Parthenon\Athena\ListView;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
+use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
@@ -29,6 +30,7 @@ class PriceSection extends AbstractSection
         private PriceRepositoryInterface $priceRepository,
         private PriceRegisterInterface $priceRegister,
         private ProductRepositoryInterface $productRepository,
+        private EntityFactoryInterface $entityFactory,
     ) {
     }
 
@@ -44,7 +46,7 @@ class PriceSection extends AbstractSection
 
     public function getEntity()
     {
-        return new Price();
+        return $this->entityFactory->getPriceEntity();
     }
 
     public function getMenuSection(): string

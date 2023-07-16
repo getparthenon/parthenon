@@ -15,7 +15,7 @@
         <field name="status" column="status" type="string" nullable="false" enum-type="Parthenon\Billing\Enum\RefundStatus" />
         <field name="externalReference" column="external_reference" type="string" nullable="false" />
         <field name="reason" column="reason" type="string" nullable="true" />
-        <many-to-one field="payment" target-entity="Parthenon\Billing\Entity\Payment" />
+        <many-to-one field="payment" target-entity="Parthenon\Billing\Entity\PaymentInterface" />
         <many-to-one field="customer" target-entity="Parthenon\Billing\Entity\CustomerInterface" />
         <many-to-one field="billingAdmin" target-entity="Parthenon\Billing\Entity\BillingAdminInterface" />
         <field name="createdAt" column="created_at" type="datetime" nullable="true"  />

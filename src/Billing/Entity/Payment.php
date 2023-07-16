@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Parthenon\Billing\Enum\PaymentStatus;
 
-class Payment
+class Payment implements PaymentInterface
 {
     private $id;
 

@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Parthenon\Athena\Entity\CrudEntityInterface;
 
-class SubscriptionPlan implements CrudEntityInterface
+class SubscriptionPlan implements CrudEntityInterface, SubscriptionPlanInterface
 {
     private $id;
 
@@ -48,7 +48,7 @@ class SubscriptionPlan implements CrudEntityInterface
 
     private array|Collection $prices;
 
-    private Product $product;
+    private ProductInterface $product;
 
     public function __construct()
     {
@@ -246,12 +246,12 @@ class SubscriptionPlan implements CrudEntityInterface
         $this->features = $features;
     }
 
-    public function getProduct(): Product
+    public function getProduct(): ProductInterface
     {
         return $this->product;
     }
 
-    public function setProduct(Product $product): void
+    public function setProduct(ProductInterface $product): void
     {
         $this->product = $product;
     }

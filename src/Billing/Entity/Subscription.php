@@ -19,7 +19,7 @@ use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 
-class Subscription
+class Subscription implements SubscriptionInterface
 {
     private $id;
 
@@ -47,9 +47,9 @@ class Subscription
 
     private ?PaymentCard $paymentDetails = null;
 
-    private ?SubscriptionPlan $subscriptionPlan = null;
+    private ?SubscriptionPlanInterface $subscriptionPlan = null;
 
-    private ?Price $price = null;
+    private ?PriceInterface $price = null;
 
     private \DateTime $createdAt;
 

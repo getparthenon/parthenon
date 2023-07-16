@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Parthenon\Billing\Entity\Product">
+    <mapped-superclass name="Parthenon\Billing\Entity\Product">
         <id name="id" type="uuid" column="id">
             <generator strategy="CUSTOM" />
             <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
@@ -13,5 +13,5 @@
         <field name="name" column="name" type="string" nullable="false" />
         <field name="paymentProviderDetailsUrl" column="payment_provider_details_url" type="string" nullable="true" />
         <field name="externalReference" column="external_reference" type="string" nullable="true" />
-    </entity>
+    </mapped-superclass>
 </doctrine-mapping>

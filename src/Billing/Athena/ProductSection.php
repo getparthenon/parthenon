@@ -18,6 +18,7 @@ use Parthenon\Athena\AbstractSection;
 use Parthenon\Athena\EntityForm;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Parthenon\Billing\Entity\Product;
+use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 
@@ -26,6 +27,7 @@ class ProductSection extends AbstractSection
     public function __construct(
         private ProductRepositoryInterface $productRepository,
         private ProductRegisterInterface $productRegister,
+        private EntityFactoryInterface $entityFactory,
     ) {
     }
 
@@ -41,7 +43,7 @@ class ProductSection extends AbstractSection
 
     public function getEntity()
     {
-        return new Product();
+        return $this->entityFactory->getProductEntity();
     }
 
     public function getMenuSection(): string
