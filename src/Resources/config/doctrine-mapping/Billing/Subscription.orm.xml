@@ -30,6 +30,15 @@
         <field name="startOfCurrentPeriod" column="start_of_current_period" type="datetime" nullable="true" />
         <field name="updatedAt" column="updated_at" type="datetime" nullable="true" />
         <field name="endedAt" column="ended_at" type="datetime" nullable="true" />
-        <many-to-many field="payments" target-entity="Parthenon\Billing\Entity\PaymentInterface" fetch="EXTRA_LAZY" />
+        <many-to-many field="payments" target-entity="Parthenon\Billing\Entity\PaymentInterface" fetch="EXTRA_LAZY">
+            <join-table name="subscription_payment">
+                <join-columns>
+                    <join-column name="subscription_id" referenced-column-name="id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="payment_id" referenced-column-name="id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
     </mapped-superclass>
 </doctrine-mapping>

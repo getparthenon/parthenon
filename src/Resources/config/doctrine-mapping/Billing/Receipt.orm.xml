@@ -19,8 +19,26 @@
         <field name="vatPercentage" column="vat_percentage" type="float" nullable="false" />
         <embedded name="billerAddress" class="Parthenon\Common\Address" />
         <embedded name="payeeAddress" class="Parthenon\Common\Address" />
-        <many-to-many field="payments" target-entity="Parthenon\Billing\Entity\PaymentInterface" />
-        <many-to-many field="subscriptions" target-entity="Parthenon\Billing\Entity\SubscriptionInterface" />
+        <many-to-many field="payments" target-entity="Parthenon\Billing\Entity\PaymentInterface">
+            <join-table name="receipt_payment">
+                <join-columns>
+                    <join-column name="receipt_id" referenced-column-name="id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="payment_id" referenced-column-name="id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+        <many-to-many field="subscriptions" target-entity="Parthenon\Billing\Entity\SubscriptionInterface">
+            <join-table name="receipt_subscription">
+                <join-columns>
+                    <join-column name="receipt_id" referenced-column-name="id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="subscription_id" referenced-column-name="id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
         <one-to-many field="lines"  target-entity="Parthenon\Billing\Entity\ReceiptLine" orphan-removal="true" mapped-by="receipt">
             <cascade>
                 <cascade-all />
