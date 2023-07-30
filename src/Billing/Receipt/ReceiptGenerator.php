@@ -136,7 +136,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
             throw new \LogicException('Total must be money if payments exist');
         }
 
-        if (!$line instanceof ReceiptLine) {
+        if (!isset($line)) {
             throw new \LogicException('There must be at least one line');
         }
 
