@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Parthenon\Common\Address;
 
-class Receipt
+class Receipt implements ReceiptInterface
 {
     private $id;
 

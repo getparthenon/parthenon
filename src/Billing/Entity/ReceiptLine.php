@@ -16,11 +16,11 @@ namespace Parthenon\Billing\Entity;
 
 use Brick\Money\Money;
 
-class ReceiptLine
+class ReceiptLine implements ReceiptLineInterface
 {
     private $id;
 
-    private Receipt $receipt;
+    private ReceiptInterface $receipt;
 
     private string $currency;
 
@@ -44,12 +44,12 @@ class ReceiptLine
         $this->id = $id;
     }
 
-    public function getReceipt(): Receipt
+    public function getReceipt(): ReceiptInterface
     {
         return $this->receipt;
     }
 
-    public function setReceipt(Receipt $receipt): void
+    public function setReceipt(ReceiptInterface $receipt): void
     {
         $this->receipt = $receipt;
     }

@@ -16,11 +16,11 @@ namespace Parthenon\Billing\Receipt;
 
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
-use Parthenon\Billing\Entity\Receipt;
+use Parthenon\Billing\Entity\ReceiptInterface;
 
 interface ReceiptGeneratorInterface
 {
-    public function generateInvoiceForPeriod(\DateTimeInterface $startDate, \DateTimeInterface $endDate, CustomerInterface $customer): Receipt;
+    public function generateInvoiceForPeriod(\DateTimeInterface $startDate, \DateTimeInterface $endDate, CustomerInterface $customer): ReceiptInterface;
 
-    public function generateReceiptForPayment(Payment $payment): Receipt;
+    public function generateReceiptForPayment(Payment $payment): ReceiptInterface;
 }

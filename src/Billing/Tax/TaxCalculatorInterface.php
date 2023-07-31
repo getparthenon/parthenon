@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Tax;
 
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\ReceiptLine;
+use Parthenon\Billing\Entity\ReceiptLineInterface;
 
 interface TaxCalculatorInterface
 {
-    public function calculateReceiptLine(CustomerInterface $customer, ReceiptLine $receiptLine): void;
+    public function calculateReceiptLine(CustomerInterface $customer, ReceiptLineInterface $receiptLine): void;
 }

@@ -17,7 +17,7 @@ namespace Parthenon\Billing\Tax;
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\ReceiptLine;
+use Parthenon\Billing\Entity\ReceiptLineInterface;
 
 class TaxCalculator implements TaxCalculatorInterface
 {
@@ -25,7 +25,7 @@ class TaxCalculator implements TaxCalculatorInterface
     {
     }
 
-    public function calculateReceiptLine(CustomerInterface $customer, ReceiptLine $receiptLine): void
+    public function calculateReceiptLine(CustomerInterface $customer, ReceiptLineInterface $receiptLine): void
     {
         $money = Money::ofMinor($receiptLine->getTotal(), strtoupper($receiptLine->getCurrency()));
         $rawRate = $this->rules->getDigitalVatPercentage($customer->getBillingAddress());

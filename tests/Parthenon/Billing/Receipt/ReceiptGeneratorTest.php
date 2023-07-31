@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Factory\EntityFactory;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Tax\CountryRules;
 use Parthenon\Billing\Tax\TaxCalculator;
@@ -51,7 +52,7 @@ class ReceiptGeneratorTest extends TestCase
 
         $paymentRepository = $this->createMock(PaymentRepositoryInterface::class);
 
-        $subject = new ReceiptGenerator($paymentRepository, new TaxCalculator(new CountryRules()));
+        $subject = new ReceiptGenerator($paymentRepository, new TaxCalculator(new CountryRules()), new EntityFactory());
         $receipt = $subject->generateReceiptForPayment($payment);
 
         $this->assertEquals(10000, $receipt->getTotal());
@@ -90,7 +91,7 @@ class ReceiptGeneratorTest extends TestCase
 
         $paymentRepository = $this->createMock(PaymentRepositoryInterface::class);
 
-        $subject = new ReceiptGenerator($paymentRepository, new TaxCalculator(new CountryRules()));
+        $subject = new ReceiptGenerator($paymentRepository, new TaxCalculator(new CountryRules()), new EntityFactory());
         $receipt = $subject->generateReceiptForPayment($payment);
 
         $this->assertEquals(22345, $receipt->getTotal());

@@ -18,9 +18,10 @@ use Brick\Math\RoundingMode;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
-use Parthenon\Billing\Entity\Receipt;
+use Parthenon\Billing\Entity\ReceiptInterface;
 use Parthenon\Billing\Entity\ReceiptLine;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Tax\TaxCalculatorInterface;
 
@@ -29,10 +30,11 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
     public function __construct(
         private PaymentRepositoryInterface $paymentRepository,
         private TaxCalculatorInterface $taxCalculator,
+        private EntityFactoryInterface $entityFactory,
     ) {
     }
 
-    public function generateInvoiceForPeriod(\DateTimeInterface $startDate, \DateTimeInterface $endDate, CustomerInterface $customer): Receipt
+    public function generateInvoiceForPeriod(\DateTimeInterface $startDate, \DateTimeInterface $endDate, CustomerInterface $customer): ReceiptInterface
     {
         $payments = $this->paymentRepository->getPaymentsForCustomerDuring($startDate, $endDate, $customer);
 
@@ -46,7 +48,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $subscriptions = [];
         $lines = [];
 
-        $receipt = new Receipt();
+        $receipt = $this->entityFactory->getReceipt();
         foreach ($payments as $payment) {
             $subscriptions = array_merge($subscriptions, $payment->getSubscriptions()->toArray());
             $money = $payment->getMoneyAmount();
@@ -54,7 +56,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
             $total = $this->addToTotal($total, $money);
 
             if (0 === $payment->getSubscriptions()->count()) {
-                $line = new ReceiptLine();
+                $line = $this->entityFactory->getReceiptLine();
                 $line->setTotal($payment->getAmount());
                 $line->setCurrency($payment->getCurrency());
                 $line->setDescription($payment->getDescription());
@@ -107,9 +109,9 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         return $receipt;
     }
 
-    public function generateReceiptForPayment(Payment $payment): Receipt
+    public function generateReceiptForPayment(Payment $payment): ReceiptInterface
     {
-        $receipt = new Receipt();
+        $receipt = $this->entityFactory->getReceipt();
         $total = $payment->getMoneyAmount();
         $vatTotal = null;
         $subTotalTotal = null;
@@ -118,7 +120,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
 
         /** @var Subscription $subscription */
         foreach ($payment->getSubscriptions() as $subscription) {
-            $line = new ReceiptLine();
+            $line = $this->entityFactory->getReceiptLine();
             $line->setTotal($subscription->getAmount());
             $line->setCurrency($subscription->getCurrency());
             $line->setDescription($subscription->getPlanName());

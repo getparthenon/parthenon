@@ -14,12 +14,16 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Factory;
 
-use App\Entity\Price;
-use App\Entity\Product;
 use Parthenon\Billing\Entity\ChargeBack;
 use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\PriceInterface;
+use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Entity\ProductInterface;
+use Parthenon\Billing\Entity\Receipt;
+use Parthenon\Billing\Entity\ReceiptInterface;
+use Parthenon\Billing\Entity\ReceiptLine;
+use Parthenon\Billing\Entity\ReceiptLineInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Entity\SubscriptionPlanInterface;
@@ -54,5 +58,15 @@ class EntityFactory implements EntityFactoryInterface
     public function getSubscriptionPlanEntity(): SubscriptionPlanInterface
     {
         return new SubscriptionPlan();
+    }
+
+    public function getReceipt(): ReceiptInterface
+    {
+        return new Receipt();
+    }
+
+    public function getReceiptLine(): ReceiptLineInterface
+    {
+        return new ReceiptLine();
     }
 }
