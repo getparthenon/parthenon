@@ -23,7 +23,7 @@ use Parthenon\Common\Repository\DoctrineRepository;
 
 class DoctrineCrudRepository extends DoctrineRepository implements CrudRepositoryInterface
 {
-    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null, string $idKey = 'id'): ResultSet
+    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null): ResultSet
     {
         $sortKey = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $sortKey))));
 
@@ -53,10 +53,10 @@ class DoctrineCrudRepository extends DoctrineRepository implements CrudRepositor
         }
 
         if ($lastId) {
-            $qb->where($qb->getRootAliases()[0].'.'.$idKey.' '.$direction.' :lastId');
+            $qb->where($qb->getRootAliases()[0].'.'.$sortKey.' '.$direction.' :lastId');
         }
         if ($firstId) {
-            $qb->where($qb->getRootAliases()[0].'.'.$idKey.' '.$firstDirection.' :firstId');
+            $qb->where($qb->getRootAliases()[0].'.'.$sortKey.' '.$firstDirection.' :firstId');
         }
 
         if (is_a($this->entityRepository->getClassName(), DeletableInterface::class, true)) {
@@ -89,7 +89,7 @@ class DoctrineCrudRepository extends DoctrineRepository implements CrudRepositor
             $results = array_reverse($results);
         }
 
-        return new ResultSet($results, $idKey, $sortType, $limit);
+        return new ResultSet($results, $sortKey, $sortType, $limit);
     }
 
     /**
