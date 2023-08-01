@@ -23,7 +23,7 @@ use Parthenon\Common\Repository\OdmRepository;
 
 class OdmCrudRepository extends OdmRepository implements CrudRepositoryInterface
 {
-    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null): ResultSet
+    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null, string $idKey = 'id'): ResultSet
     {
         $sortKey = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $sortKey))));
 
@@ -48,10 +48,10 @@ class OdmCrudRepository extends OdmRepository implements CrudRepositoryInterface
         }
 
         if ($lastId) {
-            $qb->where($sortKey.' '.$direction.' '.$lastId);
+            $qb->where($idKey.' '.$direction.' '.$lastId);
         }
         if ($firstId) {
-            $qb->where($sortKey.' '.$firstDirection.' '.$firstId);
+            $qb->where($idKey.' '.$firstDirection.' '.$firstId);
         }
 
         if (is_a($this->documentRepository->getClassName(), DeletableInterface::class, true)) {
@@ -67,7 +67,7 @@ class OdmCrudRepository extends OdmRepository implements CrudRepositoryInterface
 
         $query = $qb->getQuery();
 
-        return new ResultSet($query->toArray(), $sortKey, $sortType, $limit);
+        return new ResultSet($query->toArray(), $idKey, $sortType, $limit);
     }
 
     public function getById($id, $includeDeleted = false)

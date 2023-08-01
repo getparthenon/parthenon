@@ -27,7 +27,7 @@ interface CrudRepositoryInterface extends RepositoryInterface
      * @param FilterInterface[] $filters
      * @param mixed|null        $lastId
      */
-    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null): ResultSet;
+    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null, string $idKey = 'id'): ResultSet;
 
     /**
      * @param mixed $id

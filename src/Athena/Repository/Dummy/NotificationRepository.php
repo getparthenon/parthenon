@@ -19,9 +19,9 @@ use Parthenon\Athena\ResultSet;
 
 class NotificationRepository implements NotificationRepositoryInterface
 {
-    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null): ResultSet
+    public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null, string $idKey = 'id'): ResultSet
     {
-        return new ResultSet([], '', '', 10);
+        return new ResultSet([], $idKey, '', 10);
     }
 
     public function getById($id, $includeDeleted = false)
