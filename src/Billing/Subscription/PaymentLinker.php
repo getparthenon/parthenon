@@ -20,9 +20,12 @@ use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 
 class PaymentLinker implements PaymentLinkerInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private ProviderInterface $provider,
         private SubscriptionRepositoryInterface $subscriptionRepository,
@@ -38,6 +41,8 @@ class PaymentLinker implements PaymentLinkerInterface
         $invoice = $this->provider->invoices()->fetch($charge->getInvoiceReference());
 
         if (!$invoice) {
+            $this->getLogger()->warning('No invoice found to link payment details', ['invoice_reference' => $charge->getInvoiceReference()]);
+
             return;
         }
 
@@ -56,23 +61,29 @@ class PaymentLinker implements PaymentLinkerInterface
     public function linkToSubscription(Payment $payment, AbstractCharge $charge): void
     {
         if (!$charge->hasExternalInvoiceId()) {
+            $this->getLogger()->warning('Charge does not have an external id');
+
             return;
         }
 
         $invoice = $this->provider->invoices()->fetch($charge->getExternalInvoiceId());
 
         if (!$invoice) {
+            $this->getLogger()->info('No invoice found to link to subscription');
+
             return;
         }
 
         foreach ($invoice->getLines() as $line) {
             if (!$line->hasReferences()) {
+                $this->getLogger()->info("Don't have references");
                 continue;
             }
             try {
                 $subscription = $this->subscriptionRepository->getForMainAndChildExternalReference($line->getMainSubscriptionReference(), $line->getChildSubscriptionReference());
                 $payment->addSubscription($subscription);
             } catch (NoEntityFoundException $e) {
+                $this->getLogger()->warning('Unable to find subscription for invoice', ['main_subscription_reference' => $line->getMainSubscriptionReference(), 'child_subscription_reference' => $line->getChildSubscriptionReference()]);
             }
         }
     }

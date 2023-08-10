@@ -26,10 +26,13 @@ use Parthenon\Billing\Subscription\PaymentLinkerInterface;
 use Parthenon\Billing\Subscription\SchedulerInterface;
 use Parthenon\Billing\Webhook\HandlerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ChargeSucceededHandler implements HandlerInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private PaymentRepositoryInterface $paymentRepository,
         private CustomerManagerInterface $customerManager,
@@ -52,8 +55,10 @@ class ChargeSucceededHandler implements HandlerInterface
     {
         try {
             $payment = $this->paymentRepository->getPaymentForReference($event->getPaymentReference());
+            $this->getLogger()->info('Found payment in database', ['payment_reference' => $event->getPaymentReference()]);
         } catch (NoEntityFoundException $exception) {
             $payment = $this->paymentFactory->fromChargeEvent($event);
+            $this->getLogger()->info('Creating payment', ['payment_reference' => $event->getPaymentReference()]);
         }
         $payment->setStatus(PaymentStatus::COMPLETED);
         $payment->setUpdatedAt(new \DateTime('now'));
@@ -62,8 +67,10 @@ class ChargeSucceededHandler implements HandlerInterface
             try {
                 $customer = $this->customerManager->getCustomerForReference($event->getExternalCustomerId());
                 $payment->setCustomer($customer);
+                $this->getLogger()->info('Found customer');
             } catch (NoCustomerException $e) {
                 // Handle error some how.
+                $this->getLogger()->warning('No customer found', ['external_customer_id' => $event->getExternalCustomerId()]);
             }
         }
 
