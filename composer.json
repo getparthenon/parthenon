@@ -27,7 +27,7 @@
         "psr/http-client": "^1.0",
         "psr/http-message": "^1.0",
         "sensio/framework-extra-bundle": "^6.1",
-	    "parthenon/obol": "dev-main",
+	    "parthenon/obol": "^0.2",
         "symfony/serializer": ">=6.0"
     },
     "require-dev": {
