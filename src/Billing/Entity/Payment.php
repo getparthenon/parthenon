@@ -221,7 +221,9 @@ class Payment implements PaymentInterface
 
     public function addSubscription(Subscription $subscription): void
     {
-        $this->subscriptions->add($subscription);
+        if ($this->subscriptions instanceof Collection && !$this->subscriptions->contains($subscription)) {
+            $this->subscriptions->add($subscription);
+        }
     }
 
     public function getStatus(): PaymentStatus
