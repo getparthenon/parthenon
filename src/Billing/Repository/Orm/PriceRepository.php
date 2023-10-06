@@ -29,7 +29,7 @@ class PriceRepository extends DoctrineCrudRepository implements PriceRepositoryI
 
     public function getAllForProduct(Product $product): array
     {
-        return $this->entityRepository->findBy(['product' => $product]);
+        return $this->entityRepository->findBy(['product' => $product, 'isDeleted' => false]);
     }
 
     public function getByExternalReference(string $externalReference): Price
