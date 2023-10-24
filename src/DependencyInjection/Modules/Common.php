@@ -195,7 +195,12 @@ final class Common implements ModuleConfigurationInterface
                 throw new MissingDependencyException('To use mpdf you need to have the mpdf/mpdf package installed. Do composer require mpdf/mpdf.');
             }
 
-            $container->setParameter('parthenon.common.pdf.mpdf.tmp_dir', $config['common']['pdf']['mpdf']['tmp_dir']);
+            if (!isset($config['common']['pdf']['mpdf'])) {
+                $dir = '/tmp/';
+            } else {
+                $dir = $config['common']['pdf']['mpdf']['tmp_dir'] ?? '/tmp';
+            }
+            $container->setParameter('parthenon.common.pdf.mpdf.tmp_dir', $dir);
             $loader->load('services/common/pdf/mpdf.xml');
         } elseif (isset($config['common']['pdf']['generator']) && 'wkhtmltopdf' === $config['common']['pdf']['generator']) {
             if (!class_exists(\Knp\Snappy\Pdf::class)) {
