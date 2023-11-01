@@ -24,9 +24,9 @@ interface ReceiptInterface
 
     public function setId($id): void;
 
-    public function getInvoiceNumber(): string;
+    public function getInvoiceNumber(): ?string;
 
-    public function setInvoiceNumber(string $invoiceNumber): void;
+    public function setInvoiceNumber(?string $invoiceNumber): void;
 
     public function isValid(): bool;
 

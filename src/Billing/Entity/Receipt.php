@@ -23,7 +23,7 @@ class Receipt implements ReceiptInterface
 {
     private $id;
 
-    private string $invoiceNumber;
+    private ?string $invoiceNumber = null;
 
     private bool $valid;
 
@@ -70,12 +70,12 @@ class Receipt implements ReceiptInterface
         $this->id = $id;
     }
 
-    public function getInvoiceNumber(): string
+    public function getInvoiceNumber(): ?string
     {
         return $this->invoiceNumber;
     }
 
-    public function setInvoiceNumber(string $invoiceNumber): void
+    public function setInvoiceNumber(?string $invoiceNumber): void
     {
         $this->invoiceNumber = $invoiceNumber;
     }
