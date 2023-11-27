@@ -9,7 +9,7 @@
         <field name="message_template" field-name="messageTemplate" type="string" />
         <field name="created_at" field-name="createdAt" type="date" />
         <field name="is_read" field-name="isRead" type="boolean" />
-        <embed-one field="link" field-name="link" target-document="Parthenon\Athena\Entity\Notification\Link" />
+        <embed-one field="link" field-name="link" target-document="Parthenon\Athena\Entity\Link" />
 
         <indexes>
             <index>
