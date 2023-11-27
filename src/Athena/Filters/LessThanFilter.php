@@ -12,13 +12,10 @@ declare(strict_types=1);
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Parthenon\Athena\Filters;
+namespace Parthenon\Athena\Filters;
 
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Parthenon\Athena\Filters\DoctrineFilterInterface;
-use Parthenon\Athena\Filters\FilterInterface;
-use Parthenon\Athena\Filters\QueryBuilderTrait;
 
 class LessThanFilter implements DoctrineFilterInterface
 {
