@@ -21,7 +21,7 @@ use Parthenon\AbTesting\Repository\ExperimentRepositoryInterface;
 use Parthenon\Athena\Controller\AthenaControllerInterface;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

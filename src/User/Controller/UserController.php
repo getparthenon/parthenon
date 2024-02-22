@@ -25,7 +25,7 @@ use Parthenon\User\RequestProcessor\PasswordResetConfirm;
 use Parthenon\User\RequestProcessor\Settings;
 use Parthenon\User\RequestProcessor\UserSignup;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

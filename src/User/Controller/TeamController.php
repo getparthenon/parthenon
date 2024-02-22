@@ -23,7 +23,7 @@ use Parthenon\User\Repository\UserRepositoryInterface;
 use Parthenon\User\RequestProcessor\TeamInvite;
 use Parthenon\User\Team\CurrentTeamProvider;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

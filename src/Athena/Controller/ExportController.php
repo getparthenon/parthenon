@@ -17,7 +17,7 @@ namespace Parthenon\Athena\Controller;
 use Parthenon\Export\Entity\BackgroundExportRequest;
 use Parthenon\Export\Repository\BackgroundExportRequestRepositoryInterface;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
