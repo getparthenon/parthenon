@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Parthenon\DependencyInjection\Modules;
 
-use Monolog\Logger;
 use Parthenon\Common\Exception\NonExistentClass;
 use Parthenon\Common\Exception\ParameterNotSetException;
 use Parthenon\User\Entity\TeamInterface;
@@ -106,9 +105,6 @@ final class User implements ModuleConfigurationInterface
         $this->configureDoctrine($bundles, $loader);
 
         $loader->load('services/user.xml');
-        if (Logger::API === 2) {
-            $loader->load('services/user_monolog_v2.xml');
-        }
 
         $this->configureAutotagging($container);
         $config = $this->configureUserClass($config, $container);

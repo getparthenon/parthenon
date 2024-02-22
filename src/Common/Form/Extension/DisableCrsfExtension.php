@@ -33,7 +33,7 @@ class DisableCrsfExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver): void
     {
         $request = $this->requestStack->getCurrentRequest();
-        if ('json' === $request->getContentType()) {
+        if ('json' === $request->getContentTypeFormat()) {
             $resolver->setDefaults([
                 'csrf_protection' => false,
             ]);
