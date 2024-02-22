@@ -26,9 +26,6 @@ final class UniqueSubdomainValidator extends ConstraintValidator
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueSubdomain) {

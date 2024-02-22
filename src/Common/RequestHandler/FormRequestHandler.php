@@ -22,7 +22,7 @@ class FormRequestHandler implements RequestHandlerInterface
 {
     public function supports(Request $request): bool
     {
-        return (null === $request->getContentType() || 'form' === $request->getContentType()) && 'parthenon_user_signup' !== $request->get('_route');
+        return (null === $request->getContentTypeFormat() || 'form' === $request->getContentTypeFormat()) && 'parthenon_user_signup' !== $request->get('_route');
     }
 
     public function handleForm(FormInterface $form, Request $request): void

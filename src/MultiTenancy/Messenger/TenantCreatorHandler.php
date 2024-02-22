@@ -17,9 +17,10 @@ namespace Parthenon\MultiTenancy\Messenger;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\MultiTenancy\Creator\TenantCreatorInterface;
 use Parthenon\MultiTenancy\Entity\TenantInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class TenantCreatorHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class TenantCreatorHandler
 {
     use LoggerAwareTrait;
 

@@ -24,10 +24,10 @@ use Parthenon\User\RequestProcessor\TeamInvite;
 use Parthenon\User\Team\CurrentTeamProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 
 class TeamController
 {

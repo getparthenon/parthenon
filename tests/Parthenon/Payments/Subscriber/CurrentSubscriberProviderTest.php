@@ -20,7 +20,7 @@ use Parthenon\User\Entity\Team;
 use Parthenon\User\Entity\User;
 use Parthenon\User\Team\CurrentTeamProviderInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class CurrentSubscriberProviderTest extends TestCase
 {

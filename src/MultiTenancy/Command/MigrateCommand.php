@@ -58,7 +58,7 @@ class MigrateCommand extends Command
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the migration as a dry run.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Starting Parthenon Multi-Tenancy Migrations');
         $this->getLogger()->info('Starting Parthenon Multi-Tenancy Migrations');
@@ -94,7 +94,7 @@ class MigrateCommand extends Command
     protected function getDependencyFactory(): DependencyFactory
     {
         $em = $this->managerRegistry->getManager($this->entityManagerName);
-        $a = new \Doctrine\Migrations\Configuration\Configuration();
+        $a = new Configuration();
         $a->addMigrationsDirectory('DoctrineMigrations', $this->migrationsDirectory);
         $a->setAllOrNothing(false);
         $a->setCheckDatabasePlatform(true);

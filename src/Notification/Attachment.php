@@ -31,9 +31,6 @@ final class Attachment
         return $this->name;
     }
 
-    /**
-     * @return mixed
-     */
     public function getContent()
     {
         return $this->content;

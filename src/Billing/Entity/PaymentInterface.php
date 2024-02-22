@@ -20,14 +20,8 @@ use Parthenon\Billing\Enum\PaymentStatus;
 
 interface PaymentInterface
 {
-    /**
-     * @return mixed
-     */
     public function getId();
 
-    /**
-     * @param mixed $id
-     */
     public function setId($id): void;
 
     public function getPaymentReference(): string;

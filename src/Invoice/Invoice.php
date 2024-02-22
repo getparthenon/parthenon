@@ -145,17 +145,11 @@ final class Invoice
         $this->deliveryAddress = $deliveryAddress;
     }
 
-    /**
-     * @return mixed
-     */
     public function getInvoiceNumber()
     {
         return $this->invoiceNumber;
     }
 
-    /**
-     * @param mixed $invoiceNumber
-     */
     public function setInvoiceNumber($invoiceNumber): void
     {
         $this->invoiceNumber = $invoiceNumber;

@@ -21,10 +21,10 @@ use Parthenon\User\Event\PostSettingsEvent;
 use Parthenon\User\Event\PreSettingsEvent;
 use Parthenon\User\Form\Type\SettingsType;
 use Parthenon\User\Repository\UserRepositoryInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
 
 class Settings
 {

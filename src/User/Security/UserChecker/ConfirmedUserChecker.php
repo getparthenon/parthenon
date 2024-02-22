@@ -20,11 +20,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final class ConfirmedUserChecker implements UserCheckerInterface
 {
-    public function checkPreAuth(UserInterface $user)
+    public function checkPreAuth(UserInterface $user): void
     {
     }
 
-    public function checkPostAuth(UserInterface $user)
+    public function checkPostAuth(UserInterface $user): void
     {
         if (!$user instanceof \Parthenon\User\Entity\UserInterface) {
             return;

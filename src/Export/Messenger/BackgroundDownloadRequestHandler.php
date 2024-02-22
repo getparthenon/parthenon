@@ -21,9 +21,10 @@ use Parthenon\Export\Entity\BackgroundExportRequest;
 use Parthenon\Export\Exporter\ExporterManagerInterface;
 use Parthenon\Export\Normaliser\NormaliserManagerInterface;
 use Parthenon\Export\Repository\BackgroundExportRequestRepositoryInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class BackgroundDownloadRequestHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class BackgroundDownloadRequestHandler
 {
     use LoggerAwareTrait;
 

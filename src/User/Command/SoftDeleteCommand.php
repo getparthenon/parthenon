@@ -56,7 +56,7 @@ final class SoftDeleteCommand extends Command
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Soft delete user command');
         $this->getLogger()->info('Soft delete user command');

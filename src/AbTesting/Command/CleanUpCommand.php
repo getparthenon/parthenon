@@ -34,7 +34,7 @@ final class CleanUpCommand extends Command
         $this->generator = $cleanUpSessions;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Clean up A/B sessions');
         $this->getLogger()->info('Clean up A/B sessions');

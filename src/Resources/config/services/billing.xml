@@ -17,11 +17,11 @@
         </service>
 
         <service id="Parthenon\Billing\UserCustomerProvider" class="Parthenon\Billing\UserCustomerProvider">
-            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Symfony\Bundle\SecurityBundle\Security" />
         </service>
 
         <service id="Parthenon\Billing\TeamCustomerProvider" class="Parthenon\Billing\TeamCustomerProvider">
-            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Symfony\Bundle\SecurityBundle\Security" />
             <argument type="service" id="Parthenon\User\Repository\TeamRepositoryInterface" />
         </service>
 

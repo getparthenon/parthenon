@@ -28,6 +28,7 @@ class Variant
 
     /**
      * @Assert\NotBlank
+     *
      * @Assert\LessThanOrEqual(100)
      */
     protected int $percentage;

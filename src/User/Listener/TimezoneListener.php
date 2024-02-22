@@ -21,7 +21,7 @@ use Parthenon\User\Dbal\Types\UtcDateTimeTzType;
 use Parthenon\User\Entity\MemberInterface;
 use Parthenon\User\Entity\TimezoneAwareInterface;
 use Parthenon\User\Team\CurrentTeamProviderInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class TimezoneListener
 {

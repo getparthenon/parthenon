@@ -21,7 +21,7 @@ final class MessageBuilder
 {
     private $sections = [];
 
-    private $currentSection = null;
+    private $currentSection;
 
     public function addMarkdownSection(string $text): self
     {

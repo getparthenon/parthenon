@@ -20,14 +20,8 @@ use Parthenon\Billing\Enum\SubscriptionStatus;
 
 interface SubscriptionInterface
 {
-    /**
-     * @return mixed
-     */
     public function getId();
 
-    /**
-     * @param mixed $id
-     */
     public function setId($id): void;
 
     public function getPlanName(): string;

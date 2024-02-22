@@ -73,7 +73,7 @@ final class GiveRoleCommand extends Command
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Give role command');
         $this->getLogger()->info('Give role  command');

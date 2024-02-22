@@ -37,7 +37,7 @@ class StartSubscriptionDto
     private $currency = 'usd';
 
     #[SerializedName('payment_details')]
-    private $paymentDetailsId = null;
+    private $paymentDetailsId;
 
     public function getPlanName(): string
     {

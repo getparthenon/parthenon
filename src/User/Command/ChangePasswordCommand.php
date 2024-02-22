@@ -74,7 +74,7 @@ final class ChangePasswordCommand extends Command
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Change password command');
         $this->getLogger()->info('Change password command');

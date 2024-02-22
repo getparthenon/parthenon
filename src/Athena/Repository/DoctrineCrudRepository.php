@@ -92,9 +92,6 @@ class DoctrineCrudRepository extends DoctrineRepository implements CrudRepositor
         return new ResultSet($results, $sortKey, $sortType, $limit);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getById($id, $includeDeleted = false)
     {
         $entity = $this->entityRepository->findOneBy(['id' => $id]);

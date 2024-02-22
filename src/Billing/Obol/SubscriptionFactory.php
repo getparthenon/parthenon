@@ -33,7 +33,7 @@ class SubscriptionFactory implements SubscriptionFactoryInterface
         bool $hasTrial = false,
         int $trialLengthDays = 0,
     ): Subscription {
-        $obolSubscription = new \Obol\Model\Subscription();
+        $obolSubscription = new Subscription();
         $obolSubscription->setBillingDetails($billingDetails);
         $obolSubscription->setSeats($seatNumbers);
         $obolSubscription->setCostPerSeat($planPrice->getAsMoney());
@@ -52,7 +52,7 @@ class SubscriptionFactory implements SubscriptionFactoryInterface
 
     public function createSubscriptionFromEntity(\Parthenon\Billing\Entity\Subscription $subscription, bool $fullyBuilt = true): Subscription
     {
-        $obolSubscription = new \Obol\Model\Subscription();
+        $obolSubscription = new Subscription();
 
         if ($fullyBuilt) {
             $paymentDetails = $subscription->getPaymentDetails();

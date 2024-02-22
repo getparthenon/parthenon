@@ -28,7 +28,7 @@ class RedirectRequestHandler implements RequestHandlerInterface
 
     public function supports(Request $request): bool
     {
-        return (null === $request->getContentType() || 'form' === $request->getContentType()) && $this->route === $request->get('_route');
+        return (null === $request->getContentTypeFormat() || 'form' === $request->getContentTypeFormat()) && $this->route === $request->get('_route');
     }
 
     public function handleForm(FormInterface $form, Request $request, array $extraOutput = []): void

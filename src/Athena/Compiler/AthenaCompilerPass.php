@@ -20,11 +20,11 @@ use Parthenon\Athena\Export\NormaliserFactoryInterface;
 use Parthenon\Athena\Filters\FilterManager;
 use Parthenon\Athena\ViewTypeManager;
 use Parthenon\Export\Normaliser\NormaliserInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\Security\Core\Security;
 
 final class AthenaCompilerPass implements CompilerPassInterface
 {

@@ -14,17 +14,15 @@ declare(strict_types=1);
 
 namespace Parthenon\User\Entity;
 
-use DateTime;
-
 class ForgotPasswordCode
 {
     protected $id;
     protected string $code;
     protected UserInterface $user;
     protected bool $used;
-    protected DateTime $createdAt;
-    protected DateTime $expiresAt;
-    protected ?DateTime $usedAt;
+    protected \DateTime $createdAt;
+    protected \DateTime $expiresAt;
+    protected ?\DateTime $usedAt;
 
     public function __construct()
     {
@@ -95,36 +93,36 @@ class ForgotPasswordCode
         return $this;
     }
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTime $createdAt): self
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getExpiresAt(): DateTime
+    public function getExpiresAt(): \DateTime
     {
         return $this->expiresAt;
     }
 
-    public function setExpiresAt(DateTime $expiresAt): self
+    public function setExpiresAt(\DateTime $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
 
         return $this;
     }
 
-    public function getUsedAt(): ?DateTime
+    public function getUsedAt(): ?\DateTime
     {
         return $this->usedAt;
     }
 
-    public function setUsedAt(?DateTime $usedAt): self
+    public function setUsedAt(?\DateTime $usedAt): self
     {
         $this->usedAt = $usedAt;
 

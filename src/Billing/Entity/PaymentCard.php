@@ -59,33 +59,21 @@ class PaymentCard implements DeletableInterface
     #[Ignore]
     protected ?\DateTime $deletedAt = null;
 
-    /**
-     * @return mixed
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
     public function setId($id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCustomer()
     {
         return $this->customer;
     }
 
-    /**
-     * @param mixed $customer
-     */
     public function setCustomer($customer): void
     {
         $this->customer = $customer;

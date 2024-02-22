@@ -28,14 +28,14 @@ final class UserCheckerObserver implements UserCheckerInterface
         $this->checkers[] = $userChecker;
     }
 
-    public function checkPreAuth(\Symfony\Component\Security\Core\User\UserInterface $user)
+    public function checkPreAuth(\Symfony\Component\Security\Core\User\UserInterface $user): void
     {
         foreach ($this->checkers as $checker) {
             $checker->checkPreAuth($user);
         }
     }
 
-    public function checkPostAuth(\Symfony\Component\Security\Core\User\UserInterface $user)
+    public function checkPostAuth(\Symfony\Component\Security\Core\User\UserInterface $user): void
     {
         foreach ($this->checkers as $checker) {
             $checker->checkPostAuth($user);

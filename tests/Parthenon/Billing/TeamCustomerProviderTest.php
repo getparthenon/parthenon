@@ -25,7 +25,7 @@ use Parthenon\User\Entity\Team;
 use Parthenon\User\Entity\TeamInterface;
 use Parthenon\User\Repository\TeamRepositoryInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class TeamCustomerProviderTest extends TestCase
@@ -52,7 +52,7 @@ class TeamCustomerProviderTest extends TestCase
                 // TODO: Implement getRoles() method.
             }
 
-            public function eraseCredentials()
+            public function eraseCredentials(): void
             {
                 // TODO: Implement eraseCredentials() method.
             }
@@ -192,7 +192,7 @@ class TeamCustomerProviderTest extends TestCase
                 // TODO: Implement getRoles() method.
             }
 
-            public function eraseCredentials()
+            public function eraseCredentials(): void
             {
                 // TODO: Implement eraseCredentials() method.
             }

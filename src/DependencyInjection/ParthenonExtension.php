@@ -32,9 +32,6 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class ParthenonExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = $this->getConfiguration($configs, $container);

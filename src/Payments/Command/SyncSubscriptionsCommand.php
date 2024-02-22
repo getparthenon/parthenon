@@ -41,7 +41,7 @@ class SyncSubscriptionsCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $subscribers = $this->subscriberRepository->findAllSubscriptions();
 

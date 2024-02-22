@@ -22,10 +22,11 @@ use Parthenon\Export\Normaliser\NormaliserManagerInterface;
 use Parthenon\Export\Notification\ExportEmailFactoryInterface;
 use Parthenon\Notification\Attachment;
 use Parthenon\Notification\EmailSenderInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-final class BackgroundEmailRequestHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class BackgroundEmailRequestHandler
 {
     use LoggerAwareTrait;
 

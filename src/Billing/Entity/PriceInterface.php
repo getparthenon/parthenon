@@ -19,14 +19,8 @@ use Parthenon\Athena\Entity\DeletableInterface;
 
 interface PriceInterface
 {
-    /**
-     * @return mixed
-     */
     public function getId();
 
-    /**
-     * @param mixed $id
-     */
     public function setId($id): void;
 
     public function getAmount(): int;

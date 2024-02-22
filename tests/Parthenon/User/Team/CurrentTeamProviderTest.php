@@ -21,7 +21,7 @@ use Parthenon\User\Entity\User;
 use Parthenon\User\Exception\CurrentUserNotATeamMemberException;
 use Parthenon\User\Repository\TeamRepositoryInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class CurrentTeamProviderTest extends TestCase
 {

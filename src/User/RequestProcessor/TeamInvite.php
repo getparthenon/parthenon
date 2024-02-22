@@ -30,12 +30,12 @@ use Parthenon\User\Notification\MessageFactory;
 use Parthenon\User\Repository\TeamInviteCodeRepositoryInterface;
 use Parthenon\User\Repository\TeamRepositoryInterface;
 use Parthenon\User\Repository\UserRepositoryInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Security;
 
 class TeamInvite
 {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Common\Logging\Monolog;
 
+use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
 
 final class ProcessIdProcessor implements ProcessorInterface
@@ -25,7 +26,7 @@ final class ProcessIdProcessor implements ProcessorInterface
         $this->processIdGenerator = $processIdGenerator;
     }
 
-    public function __invoke(array $record): array
+    public function __invoke(LogRecord $record): LogRecord
     {
         $record['extra']['process_id'] = $this->processIdGenerator->getProcessId();
 

@@ -14,9 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Common\Elasticsearch\Attributes;
 
-use Attribute;
-
-#[Attribute]
+#[\Attribute]
 class Field
 {
     public function __construct(private string $name, private string $type = 'string')

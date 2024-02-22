@@ -67,17 +67,11 @@ class Subscription implements SubscriptionInterface
 
     private Collection $payments;
 
-    /**
-     * @return mixed
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
     public function setId($id): void
     {
         $this->id = $id;
@@ -120,10 +114,10 @@ class Subscription implements SubscriptionInterface
 
     public function setStatus(SubscriptionStatus $status): void
     {
-        if (SubscriptionStatus::CANCELLED === $status ||
-            SubscriptionStatus::PAUSED === $status ||
-            SubscriptionStatus::BLOCKED === $status ||
-            SubscriptionStatus::OVERDUE_PAYMENT_DISABLED === $status) {
+        if (SubscriptionStatus::CANCELLED === $status
+            || SubscriptionStatus::PAUSED === $status
+            || SubscriptionStatus::BLOCKED === $status
+            || SubscriptionStatus::OVERDUE_PAYMENT_DISABLED === $status) {
             $this->active = false;
         } else {
             $this->active = true;

@@ -20,11 +20,11 @@ use Parthenon\User\Event\PostPasswordChangeEvent;
 use Parthenon\User\Event\PrePasswordChangeEvent;
 use Parthenon\User\Form\Type\ChangePasswordType;
 use Parthenon\User\Repository\UserRepositoryInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use Symfony\Component\Security\Core\Security;
 
 class ChangePassword
 {

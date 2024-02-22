@@ -73,7 +73,7 @@ final class CreateUserCommand extends Command
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Create user command');
         $this->getLogger()->info('Create user command');

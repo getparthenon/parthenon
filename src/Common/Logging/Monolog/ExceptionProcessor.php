@@ -14,17 +14,30 @@ declare(strict_types=1);
 
 namespace Parthenon\Common\Logging\Monolog;
 
+use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
 
 final class ExceptionProcessor implements ProcessorInterface
 {
-    public function __invoke(array $record)
+    public function __invoke(LogRecord $record)
     {
         $output = [];
 
+        $output = $this->getArr($record, $output);
+
+        return $output;
+    }
+
+    /**
+     * @param LogRecord $record
+     *
+     * @return array
+     */
+    public function getArr(mixed $record, array $output)
+    {
         foreach ($record as $key => $value) {
             if (is_array($value)) {
-                $output[$key] = $this->__invoke($value);
+                $output[$key] = $this->getArr($value, $output);
             } elseif ($value instanceof \Throwable) {
                 $output[$key] = [
                     'message' => $value->getMessage(),

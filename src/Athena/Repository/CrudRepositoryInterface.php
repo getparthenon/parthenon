@@ -30,10 +30,6 @@ interface CrudRepositoryInterface extends RepositoryInterface
     public function getList(array $filters = [], string $sortKey = 'id', string $sortType = 'ASC', int $limit = self::LIMIT, $lastId = null, $firstId = null): ResultSet;
 
     /**
-     * @param mixed $id
-     *
-     * @return mixed
-     *
      * @throws NoEntityFoundException
      */
     public function getById($id, $includeDeleted = false);

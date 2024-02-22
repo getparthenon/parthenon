@@ -34,7 +34,7 @@ final class GenerateReportCommand extends Command
         $this->generator = $generator;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Generate A/B report');
         $this->getLogger()->info('Generate A/B report');

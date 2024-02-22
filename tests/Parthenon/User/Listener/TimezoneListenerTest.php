@@ -22,7 +22,7 @@ use Parthenon\User\Entity\User;
 use Parthenon\User\Listener\TimezoneListener;
 use Parthenon\User\Team\CurrentTeamProviderInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class TimezoneListenerTest extends TestCase
 {

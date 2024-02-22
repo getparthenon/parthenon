@@ -57,17 +57,11 @@ class SubscriptionPlan implements CrudEntityInterface, SubscriptionPlanInterface
         $this->prices = new ArrayCollection();
     }
 
-    /**
-     * @return mixed
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
     public function setId($id): void
     {
         $this->id = $id;
@@ -103,9 +97,6 @@ class SubscriptionPlan implements CrudEntityInterface, SubscriptionPlanInterface
         $this->codeName = $codeName;
     }
 
-    /**
-     * @return string
-     */
     public function getExternalReference(): ?string
     {
         return $this->externalReference;

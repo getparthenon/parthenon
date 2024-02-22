@@ -16,7 +16,7 @@ namespace Parthenon\Payments\Subscriber;
 
 use Parthenon\Payments\Exception\InvalidSubscriberException;
 use Parthenon\User\Team\CurrentTeamProviderInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 final class CurrentSubscriberProvider implements CurrentSubscriberProviderInterface
 {

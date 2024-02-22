@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace Parthenon\User\Entity;
 
-use DateTime;
-
 class InviteCode
 {
     public const AUTH_CHECKER_ATTRIBUTE = 'enable';
@@ -26,8 +24,8 @@ class InviteCode
     protected string $code;
     protected string $email;
     protected bool $used;
-    protected DateTime $createdAt;
-    protected ?DateTime $usedAt;
+    protected \DateTime $createdAt;
+    protected ?\DateTime $usedAt;
     protected bool $cancelled = false;
     protected ?string $role = null;
 
@@ -67,24 +65,24 @@ class InviteCode
         return $this;
     }
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTime $createdAt): self
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUsedAt(): ?DateTime
+    public function getUsedAt(): ?\DateTime
     {
         return $this->usedAt;
     }
 
-    public function setUsedAt(?DateTime $usedAt): self
+    public function setUsedAt(?\DateTime $usedAt): self
     {
         $this->usedAt = $usedAt;
 
@@ -150,9 +148,6 @@ class InviteCode
         return $self;
     }
 
-    /**
-     * @return string
-     */
     public function getRole(): ?string
     {
         return $this->role;

@@ -34,7 +34,7 @@ final class GenerateDecisionCacheCommand extends Command
         $this->generator = $generator;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Generating ab testing decision cache');
         $this->getLogger()->info('Generating ab testing decision cache');

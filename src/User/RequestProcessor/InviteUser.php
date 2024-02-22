@@ -24,10 +24,10 @@ use Parthenon\User\Factory\EntityFactory;
 use Parthenon\User\Form\Type\UserInviteType;
 use Parthenon\User\Notification\MessageFactory;
 use Parthenon\User\Repository\InviteCodeRepositoryInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
 
 class InviteUser
 {

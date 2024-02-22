@@ -16,7 +16,7 @@ namespace Parthenon\Billing;
 
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Exception\NoCustomerException;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 final class UserCustomerProvider implements CustomerProviderInterface
 {

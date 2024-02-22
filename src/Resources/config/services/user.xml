@@ -64,7 +64,7 @@
             <call method="setLogger">
                 <argument type="service" id="logger" />
             </call>
-            <argument type="service"  id="Symfony\Component\Security\Core\Security" />
+            <argument type="service"  id="Symfony\Bundle\SecurityBundle\Security" />
             <argument type="service" id="Parthenon\User\Team\CurrentTeamProviderInterface" />
             <tag name="kernel.event_listener" event="kernel.request"/>
             <tag name="container.preload" class="Parthenon\User\Listener\TimezoneListener"/>
@@ -172,7 +172,7 @@
             <argument type="service" id="Parthenon\User\Form\Type\ChangePasswordType" />
             <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
             <argument type="service" id="Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface" />
-            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Symfony\Bundle\SecurityBundle\Security" />
             <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
             <tag name="container.preload" class="Parthenon\User\RequestProcessor\ChangePassword" />
         </service>
@@ -191,7 +191,7 @@
 
         <service id="parthenon.user.request_processor.invite_user" class="Parthenon\User\RequestProcessor\InviteUser">
             <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
-            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Symfony\Bundle\SecurityBundle\Security" />
             <argument type="service" id="Parthenon\User\Repository\InviteCodeRepositoryInterface" />
             <argument type="service" id="Parthenon\Notification\EmailSenderInterface" />
             <argument type="service" id="Parthenon\User\Form\Type\UserInviteType" />
@@ -242,7 +242,7 @@
             <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
             <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
             <argument type="service" id="Parthenon\User\Form\Type\SettingsType" />
-            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Symfony\Bundle\SecurityBundle\Security" />
             <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
             <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
             <call method="setLogger">
@@ -254,7 +254,7 @@
 
         <service id="parthenon.user.request_processor.team_invite" class="Parthenon\User\RequestProcessor\TeamInvite">
             <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
-            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Symfony\Bundle\SecurityBundle\Security" />
             <argument type="service" id="Parthenon\User\Repository\TeamInviteCodeRepositoryInterface" />
             <argument type="service" id="Parthenon\Notification\EmailSenderInterface" />
             <argument type="service" id="Parthenon\User\Form\Type\UserInviteType" />
@@ -328,7 +328,7 @@
 
         <service id="Parthenon\User\Team\CurrentTeamProviderInterface" alias="Parthenon\User\Team\CurrentTeamProvider" />
         <service id="Parthenon\User\Team\CurrentTeamProvider" class="Parthenon\User\Team\CurrentTeamProvider">
-            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Symfony\Bundle\SecurityBundle\Security" />
             <argument type="service" id="Parthenon\User\Repository\TeamRepositoryInterface" />
             <tag name="container.preload"  class="Parthenon\User\Team\CurrentTeamProvider" />
         </service>

@@ -56,7 +56,7 @@ class MigrationsHandler implements MigrationsHandlerInterface
     protected function getDependencyFactory(): DependencyFactory
     {
         $em = $this->managerRegistry->getManager($this->entityManagerName);
-        $a = new \Doctrine\Migrations\Configuration\Configuration();
+        $a = new Configuration();
         $a->addMigrationsDirectory('DoctrineMigrations', $this->migrationsDirectory);
         $a->setAllOrNothing(false);
         $a->setCheckDatabasePlatform(true);

@@ -19,7 +19,7 @@ use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\User\Entity\MemberInterface;
 use Parthenon\User\Repository\TeamRepositoryInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class TeamCustomerProvider implements CustomerProviderInterface
 {

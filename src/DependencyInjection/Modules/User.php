@@ -254,7 +254,7 @@ final class User implements ModuleConfigurationInterface
     /**
      * @throws \Exception
      */
-    private function configureDoctrine(float|array|bool|int|string|null $bundles, XmlFileLoader $loader): string|int|bool|array|null|float
+    private function configureDoctrine(float|array|bool|int|string|null $bundles, XmlFileLoader $loader): string|int|bool|array|float|null
     {
         if (isset($bundles['DoctrineBundle'])) {
             $loader->load('services/orm/user.xml');

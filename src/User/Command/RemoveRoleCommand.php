@@ -73,7 +73,7 @@ final class RemoveRoleCommand extends Command
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Remove role command');
         $this->getLogger()->info('Remove role  command');

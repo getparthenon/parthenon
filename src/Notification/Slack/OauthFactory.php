@@ -24,7 +24,7 @@ class OauthFactory
 
     public function getProvider(): Slack
     {
-        return new \Chadhutchins\OAuth2\Client\Provider\Slack([
+        return new Slack([
             'clientId' => $this->clientId,
             'clientSecret' => $this->clientSecret,
             'redirectUri' => $this->redirectUrl,

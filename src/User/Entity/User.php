@@ -26,11 +26,13 @@ class User implements UserInterface, EquatableInterface, DeletableInterface
     protected $id;
     /**
      * @Assert\NotBlank(message="parthenon.user.validation.email.not_blank")
+     *
      * @Assert\Email(message="parthenon.user.validation.email.email")
      */
     protected string $email;
     /**
      * @Assert\NotBlank(message="parthenon.user.validation.password.not_blank")
+     *
      * @Assert\Length(min="8", minMessage="parthenon.user.validation.password.length")
      */
     protected string $password;
@@ -88,25 +90,16 @@ class User implements UserInterface, EquatableInterface, DeletableInterface
         return $this->roles;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSalt()
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsername()
     {
         return $this->getEmail();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function eraseCredentials(): void
     {
         $this->password = '';
@@ -142,9 +135,6 @@ class User implements UserInterface, EquatableInterface, DeletableInterface
         $this->isConfirmed = $isConfirmed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEqualTo(SymfonyUserInterface $user): bool
     {
         if ($this->getUsername() !== $user->getUsername()) {

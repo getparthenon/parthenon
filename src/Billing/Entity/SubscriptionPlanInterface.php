@@ -18,14 +18,8 @@ use Doctrine\Common\Collections\Collection;
 
 interface SubscriptionPlanInterface
 {
-    /**
-     * @return mixed
-     */
     public function getId();
 
-    /**
-     * @param mixed $id
-     */
     public function setId($id): void;
 
     public function isPublic(): bool;
@@ -40,9 +34,6 @@ interface SubscriptionPlanInterface
 
     public function setCodeName(?string $codeName): void;
 
-    /**
-     * @return string
-     */
     public function getExternalReference(): ?string;
 
     public function setExternalReference(string $externalReference): void;

@@ -36,9 +36,6 @@ class RefundRepository extends DoctrineCrudRepository implements RefundRepositor
         return $this->entityRepository->findBy(['customer' => $customer]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getForPayment(Payment $payment): array
     {
         return $this->entityRepository->findBy(['payment' => $payment]);

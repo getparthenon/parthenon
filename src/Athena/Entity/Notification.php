@@ -19,14 +19,18 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 /**
  * @ORM\Entity()
+ *
  * @ORM\Table(name="parthenon_backoffice_notifications")
  */
 class Notification
 {
     /**
      * @ORM\Id
+     *
      * @ORM\Column(type="uuid", unique=true)
+     *
      * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     protected $id;

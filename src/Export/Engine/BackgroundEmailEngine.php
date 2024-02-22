@@ -20,8 +20,8 @@ use Parthenon\Export\Exception\ExportFailedException;
 use Parthenon\Export\ExportRequest;
 use Parthenon\Export\ExportResponseInterface;
 use Parthenon\Export\Response\EmailResponse;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Security\Core\Security;
 
 final class BackgroundEmailEngine implements EngineInterface
 {

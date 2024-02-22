@@ -24,7 +24,7 @@ final class JsonRequestHandler implements RequestHandlerInterface
 {
     public function supports(Request $request): bool
     {
-        return 'json' === $request->getContentType();
+        return 'json' === $request->getContentTypeFormat();
     }
 
     public function handleForm(FormInterface $form, Request $request): void

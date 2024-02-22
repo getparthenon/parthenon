@@ -35,9 +35,6 @@ class UserRepository extends DoctrineCrudRepository implements UserRepositoryInt
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findByConfirmationCode(string $confirmationCode): User
     {
         $user = $this->entityRepository->findOneBy(['confirmationCode' => $confirmationCode]);

@@ -22,7 +22,7 @@ final class NormaliserBuilder implements NormaliserBuilderInterface
     {
     }
 
-    public function addField(string $fieldName, string $columnName, \Closure $fieldNormaliser = null): self
+    public function addField(string $fieldName, string $columnName, ?\Closure $fieldNormaliser = null): self
     {
         if (null === $fieldNormaliser) {
             $fieldNormaliser = function ($value) {

@@ -14,7 +14,7 @@
         </service>
 
         <service id="parthenon.user.logging.monolog.user" class="Parthenon\User\Logging\Monolog\UserProcessor">
-            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Symfony\Bundle\SecurityBundle\Security" />
             <tag name="monolog.processor"/>
         </service>
 

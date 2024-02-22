@@ -37,7 +37,7 @@ final class GenerateStatsCommand extends Command
         $this->calculate = $calculate;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Generating stats');
         $this->getLogger()->info('Generate stats');

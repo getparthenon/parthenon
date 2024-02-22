@@ -56,7 +56,7 @@ final class ConfirmCommand extends Command
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Confirm user command');
         $this->getLogger()->info('Confirm user command');

@@ -140,7 +140,7 @@ class FunnelTest extends TestCase
         $requestStack->method('getSession')->willReturn($session);
 
         $session->method('get')->with(get_class($entity).'_funnel')->willReturn($funnelState);
-        $session->method('set')->with(get_class($entity).'_funnel', $funnelState)->willReturn(null);
+        $session->method('set')->with(get_class($entity).'_funnel', $funnelState);
 
         $elementOne->method('getOutput')->with($request, $formFactory, $entity)->willReturn($data);
         $elementOne->expects($this->never())->method('isComplete')->with($request, $formFactory, $entity)->willReturn(true);
@@ -177,7 +177,7 @@ class FunnelTest extends TestCase
         $requestStack->method('getSession')->willReturn($session);
 
         $session->method('get')->with(get_class($entity).'_funnel')->willReturn($funnelState);
-        $session->method('set')->with(get_class($entity).'_funnel', $funnelState)->willReturn(null);
+        $session->method('set')->with(get_class($entity).'_funnel', $funnelState);
 
         $elementOne->method('getOutput')->with($request, $formFactory, $entity)->willReturn($data);
         $elementOne->expects($this->never())->method('isComplete')->with($request, $formFactory, $entity)->willReturn(true);
@@ -212,7 +212,7 @@ class FunnelTest extends TestCase
 
         $session->method('get')->with(get_class($entity).'_funnel')->willReturn($funnelState);
 
-        $session->method('set')->with(get_class($entity).'_funnel', $funnelState)->willReturn(null);
+        $session->method('set')->with(get_class($entity).'_funnel', $funnelState);
 
         /*   $session->method('set')->with(get_class($entity).'_funnel', $this->callback(function (FunnelState $funnelState) {
                return 1 === $funnelState->getStep();
@@ -252,7 +252,7 @@ class FunnelTest extends TestCase
         $session->method('get')->with(get_class($entity).'_funnel')->willReturn($funnelState);
         $session->method('set')->with(get_class($entity).'_funnel', $this->callback(function (FunnelState $funnelState) {
             return 1 === $funnelState->getStep();
-        }))->willReturn(null);
+        }));
 
         $elementOne->expects($this->never())->method('getOutput')->with($request, $formFactory, $entity)->willReturn([]);
         $elementOne->expects($this->once())->method('isComplete')->with($request, $formFactory, $entity)->willReturn(true);

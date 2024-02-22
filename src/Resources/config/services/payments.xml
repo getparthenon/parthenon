@@ -95,7 +95,7 @@
 
         <service id="Parthenon\Payments\Subscriber\CurrentSubscriberProvider" class="Parthenon\Payments\Subscriber\CurrentSubscriberProvider">
             <argument>%parthenon_payments_subscriber_type%</argument>
-            <argument type="service" id="Symfony\Component\Security\Core\Security" />
+            <argument type="service" id="Symfony\Bundle\SecurityBundle\Security" />
             <argument type="service" id="Parthenon\User\Team\CurrentTeamProviderInterface" />
         </service>
         <service id="Parthenon\Payments\Subscriber\CurrentSubscriberProviderInterface" alias="Parthenon\Payments\Subscriber\CurrentSubscriberProvider" />

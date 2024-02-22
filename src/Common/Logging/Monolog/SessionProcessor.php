@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Common\Logging\Monolog;
 
+use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -26,7 +27,7 @@ final class SessionProcessor implements ProcessorInterface
         $this->session = $session;
     }
 
-    public function __invoke(array $record): array
+    public function __invoke(LogRecord $record): LogRecord
     {
         if (!$this->session->has('parthenon_session_id')) {
             $sessionId = md5(microtime());

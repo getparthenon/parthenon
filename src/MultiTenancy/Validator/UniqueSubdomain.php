@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
- *
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
 final class UniqueSubdomain extends Constraint

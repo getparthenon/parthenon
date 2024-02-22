@@ -22,7 +22,7 @@ class JsonRequestHandlerTest extends TestCase
     public function testSupportsJson()
     {
         $request = $this->createMock(Request::class);
-        $request->method('getContentType')->willReturn('json');
+        $request->method('getContentTypeFormat')->willReturn('json');
 
         $handler = new JsonRequestHandler();
 
@@ -32,7 +32,7 @@ class JsonRequestHandlerTest extends TestCase
     public function testDoesNotSupportForm()
     {
         $request = $this->createMock(Request::class);
-        $request->method('getContentType')->willReturn('form');
+        $request->method('getContentTypeFormat')->willReturn('form');
 
         $handler = new JsonRequestHandler();
 

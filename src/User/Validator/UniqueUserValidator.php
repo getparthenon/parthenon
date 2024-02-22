@@ -29,9 +29,6 @@ final class UniqueUserValidator extends ConstraintValidator
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueUser) {

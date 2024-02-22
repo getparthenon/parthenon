@@ -35,7 +35,7 @@ final class AthenaRouteLoader extends Loader
         $this->host = $host;
     }
 
-    public function load($resource, string $type = null): mixed
+    public function load($resource, ?string $type = null): mixed
     {
         if (true === $this->isLoaded) {
             throw new \RuntimeException('Do not add the "athena" loader twice');
@@ -63,7 +63,7 @@ final class AthenaRouteLoader extends Loader
         return $routes;
     }
 
-    public function supports($resource, string $type = null): bool
+    public function supports($resource, ?string $type = null): bool
     {
         return 'athena' === $type;
     }

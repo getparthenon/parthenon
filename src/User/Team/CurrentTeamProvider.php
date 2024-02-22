@@ -18,7 +18,7 @@ use Parthenon\User\Entity\MemberInterface;
 use Parthenon\User\Entity\TeamInterface;
 use Parthenon\User\Exception\CurrentUserNotATeamMemberException;
 use Parthenon\User\Repository\TeamRepositoryInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 final class CurrentTeamProvider implements CurrentTeamProviderInterface
 {

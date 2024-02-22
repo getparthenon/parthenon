@@ -20,9 +20,6 @@ use Parthenon\User\Entity\ForgotPasswordCode;
 
 class ForgotPasswordCodeRepository extends DoctrineRepository implements ForgotPasswordCodeRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findActiveByCode($code): ForgotPasswordCode
     {
         $passwordReset = $this->entityRepository->findOneBy(['code' => $code, 'used' => false]);

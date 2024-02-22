@@ -43,7 +43,7 @@ class GenerateAnsibleConfigCommand extends Command
         file_put_contents($fileDir.'/deploy.pem', $privateKey);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Parthenon Ansible Config generator</info>');
 

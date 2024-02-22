@@ -17,9 +17,10 @@ namespace Parthenon\Notification\Messenger;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\Email;
 use Parthenon\Notification\EmailSenderInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class SenderHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class SenderHandler
 {
     use LoggerAwareTrait;
 

@@ -37,7 +37,7 @@ final class ProcessUnfinishedCommand extends Command
         $this->logger = $logger;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info('Starting to process unfinnished');
         $output->writeln('Starting to process unfinnished');
