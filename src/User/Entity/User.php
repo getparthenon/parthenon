@@ -24,17 +24,13 @@ class User implements UserInterface, EquatableInterface, DeletableInterface
 {
     public const DEFAULT_ROLE = 'ROLE_USER';
     protected $id;
-    /**
-     * @Assert\NotBlank(message="parthenon.user.validation.email.not_blank")
-     *
-     * @Assert\Email(message="parthenon.user.validation.email.email")
-     */
+
+    #[Assert\NotBlank(message: 'parthenon.user.validation.email.not_blank')]
+    #[Assert\Email(message: 'parthenon.user.validation.email.email')]
     protected string $email;
-    /**
-     * @Assert\NotBlank(message="parthenon.user.validation.password.not_blank")
-     *
-     * @Assert\Length(min="8", minMessage="parthenon.user.validation.password.length")
-     */
+
+    #[Assert\NotBlank(message: 'parthenon.user.validation.password.not_blank')]
+    #[Assert\Length(min: 8, minMessage: 'parthenon.user.validation.password.length')]
     protected string $password;
     protected ?string $name = null;
     protected string $confirmationCode;
