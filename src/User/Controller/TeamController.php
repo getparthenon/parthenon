@@ -31,9 +31,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TeamController
 {
-    /**
-     * @Route("/user/team", name="parthenon_team_view", methods={"GET"})
-     */
+    #[Route('/user/team', name: 'parthenon_team_view', methods: ['GET'])]
     public function viewTeam(
         LoggerInterface $logger,
         Security $security,
