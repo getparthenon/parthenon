@@ -3,13 +3,20 @@
 declare(strict_types=1);
 
 /*
- * Copyright Humbly Arrogant Software Limited 2020-2024
+ * Copyright (C) 2020-2024 Iain Cambridge
  *
- * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  *
- * Change Date: 26.06.2026 ( 3 years after 2.2.0 release )
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
  *
- * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 namespace Parthenon\Payments\Stripe;
@@ -95,35 +102,35 @@ class SubscriptionManagerTest extends TestCase
         $subscriptionManager->cancel($subscription);
     }
 
-        public function testGetUrls()
-        {
-            $id = 'asdsa';
-            $url = 'invoice_url';
-            $invoiceId = 'invoice_id';
+    public function testGetUrls()
+    {
+        $id = 'asdsa';
+        $url = 'invoice_url';
+        $invoiceId = 'invoice_id';
 
-            $stripeSubscription = new Subscription();
-            $stripeSubscription->latest_invoice = $invoiceId;
+        $stripeSubscription = new Subscription();
+        $stripeSubscription->latest_invoice = $invoiceId;
 
-            $stripeInvoice = new Invoice();
-            $stripeInvoice->invoice_pdf = $url;
+        $stripeInvoice = new Invoice();
+        $stripeInvoice->invoice_pdf = $url;
 
-            $stripeClient = $this->createMock(StripeClient::class);
-            $stripeConfig = $this->createMock(Config::class);
-            $subscriptionService = $this->createMock(SubscriptionService::class);
-            $invoiceService = $this->createMock(InvoiceService::class);
-            $subscription = $this->createMock(Subscription::class);
+        $stripeClient = $this->createMock(StripeClient::class);
+        $stripeConfig = $this->createMock(Config::class);
+        $subscriptionService = $this->createMock(SubscriptionService::class);
+        $invoiceService = $this->createMock(InvoiceService::class);
+        $subscription = $this->createMock(Subscription::class);
 
-            $subscription->method('getPaymentId')->willReturn($id);
+        $subscription->method('getPaymentId')->willReturn($id);
 
-            $stripeClient->subscriptions = $subscriptionService;
-            $stripeClient->invoices = $invoiceService;
+        $stripeClient->subscriptions = $subscriptionService;
+        $stripeClient->invoices = $invoiceService;
 
-            $subscriptionService->method('retrieve')->with($id)->willReturn($stripeSubscription);
-            $invoiceService->method('retrieve')->with($invoiceId)->willReturn($stripeInvoice);
+        $subscriptionService->method('retrieve')->with($id)->willReturn($stripeSubscription);
+        $invoiceService->method('retrieve')->with($invoiceId)->willReturn($stripeInvoice);
 
-            $subscriptionManager = new SubscriptionManager($stripeClient, $stripeConfig);
-            $this->assertEquals($url, $subscriptionManager->getInvoiceUrl($subscription));
-        }
+        $subscriptionManager = new SubscriptionManager($stripeClient, $stripeConfig);
+        $this->assertEquals($url, $subscriptionManager->getInvoiceUrl($subscription));
+    }
 
     public function testChangesSubscription()
     {
