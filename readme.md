@@ -28,7 +28,6 @@
 
 * Supporting other frameworks or languages
 * Provide custom business logic
-* Provide a FOSS solution
 
 ## Features
 
@@ -88,35 +87,11 @@ Issues we will provide support and fixes for:
 
 ### Is Parthenon Open-Source?
 
-Parthenon is not considered to be open-source; it's made available under a license type known as a source available license. The License Parthenon is released under is the Business Source License which was created by MariaDB. The premise is you're allowed to use Parthenon free of charge for non-production use but are required to have a commercial license if you use it in production and generate more than $5,000 USD a month.
+Yes, it's released under GPL v3.
 
 ### Can I use Parthenon for free?
 
-A quick answer is that you can use Parthenon for free if you're generating less $5,000 USD a month.
-
-For non-production use, you can use Parthenon for free. This includes development and testing. If you're generating less than $5,000 USD a month in revenue you can use Parthenon for free. Otherwise, you'll need a commercial license to use it in production.
-
-### Where can I get a commercial license?
-
-You can find out more information about getting a commercial license at https://getparthenon.com.
-
-### How much does a commercial license cost?
-
-The cost of a commercial license is $250 per developer.
-
-### Do I get better support when I have a commercial license?
-
-Yes. Bugs report, support requests, and feature requests from commercial license holders will receive preferential treatment and will always receive a response.
-
-Those without a commercial license will receive better efforts to support them.
-
-### Do I get a perpetual commercial license for Parthenon?
-
-When you get a license, you have a perpetual license for the minor version of Parthenon that is currently released at the time of purchase, as well as the right to receive updates for a year. If you subscribe to the one-year update support, you'll be able to always use the latest version. If you choose not to continue an updates subscription, you'll be entitled to use the minor version of Parthenon that was available at the last yearly license update.
-
-For example, if you buy a commercial license and the minor version is 2.0, and you don't subscribe to a yearly subscription, you'll be able to use 2.0 and any minor version released throughout the year, but once the update support has ended, you'll be entitled to use 2.0 only.
-
-Another example: if you buy a commercial license and the minor version is 2.0 and subscribe for three years, and after the support license has ended, you would be entitled to use the minor version that was available 12 months before. So if 2.4 was released at the start of the final year of update support and 2.5 was available at the end of it, you would be entitled to use version 2.4 after the support license is over.
+Yes.
 
 ### Who is Parthenon for?
 
@@ -133,7 +108,3 @@ Yes. Parthenon is a bundle that can be used with your existing Symfony applicati
 Parthenon is designed to scale. It has been purposefully designed so that things are able to be replaced as you grow.
 
 We know that as your system scales, there will be parts of Parthenon you'll want to replace with highly custom code, and we designed Parthenon to allow you to do it with ease.
-
-### What happens if the development of Parthenon stops?
-
-Because we've licensed Parthenon under the Business Source License, after three years, the release will be licensed under a FOSS license which means the community will be able to take over if anything unforeseen happens.
