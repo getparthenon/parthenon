@@ -108,3 +108,7 @@ Yes. Parthenon is a bundle that can be used with your existing Symfony applicati
 Parthenon is designed to scale. It has been purposefully designed so that things are able to be replaced as you grow.
 
 We know that as your system scales, there will be parts of Parthenon you'll want to replace with highly custom code, and we designed Parthenon to allow you to do it with ease.
+
+## We feel that GPL is a licensing risk can we have another license?
+
+Yes, you can buy a different license by emailing me at iain@humblyarrogant.io
