@@ -37,7 +37,7 @@ class ReceiptLine implements ReceiptLineInterface
 
     private int $vatTotal;
 
-    private float $vatPercentage;
+    private ?float $vatPercentage = null;
 
     private ?string $description = null;
 
@@ -126,12 +126,12 @@ class ReceiptLine implements ReceiptLineInterface
         return Money::ofMinor($this->subTotal, strtoupper($this->currency));
     }
 
-    public function getVatPercentage(): float
+    public function getVatPercentage(): ?float
     {
         return $this->vatPercentage;
     }
 
-    public function setVatPercentage(float $vatPercentage): void
+    public function setVatPercentage(?float $vatPercentage): void
     {
         $this->vatPercentage = $vatPercentage;
     }

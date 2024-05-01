@@ -59,7 +59,7 @@ interface ReceiptLineInterface
 
     public function getSubTotalMoney(): Money;
 
-    public function getVatPercentage(): float;
+    public function getVatPercentage(): ?float;
 
-    public function setVatPercentage(float $vatPercentage): void;
+    public function setVatPercentage(?float $vatPercentage): void;
 }
