@@ -56,7 +56,7 @@ class Receipt implements ReceiptInterface
 
     private int $vatTotal;
 
-    private float $vatPercentage;
+    private ?float $vatPercentage = null;
 
     private \DateTimeInterface $createdAt;
 
@@ -246,12 +246,12 @@ class Receipt implements ReceiptInterface
         return Money::ofMinor($this->subTotal, strtoupper($this->currency));
     }
 
-    public function getVatPercentage(): float
+    public function getVatPercentage(): ?float
     {
         return $this->vatPercentage;
     }
 
-    public function setVatPercentage(float $vatPercentage): void
+    public function setVatPercentage(?float $vatPercentage): void
     {
         $this->vatPercentage = $vatPercentage;
     }
