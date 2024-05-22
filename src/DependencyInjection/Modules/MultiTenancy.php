@@ -21,7 +21,6 @@ declare(strict_types=1);
 
 namespace Parthenon\DependencyInjection\Modules;
 
-use Parthenon\Common\Exception\GeneralException;
 use Parthenon\Common\Exception\ParameterNotSetException;
 use Parthenon\MultiTenancy\Creator\MessengerTenantCreator;
 use Parthenon\MultiTenancy\Creator\TenantCreatorInterface;
@@ -104,10 +103,6 @@ final class MultiTenancy implements ModuleConfigurationInterface
             $multiTenancyConfig = $config['multi_tenancy'];
             $enabled = $multiTenancyConfig['enabled'] ?? false;
             $backgroundCreation = $multiTenancyConfig['background_creation'] ?? false;
-
-            if (!isset($config['user']['teams_enabled']) || true !== $config['user']['teams_enabled']) {
-                throw new GeneralException('user.teams_enabled needs to be true to use multi tenancy');
-            }
 
             $container->setParameter('parthenon_multi_tenancy_is_enabled', $enabled);
             $container->setParameter('parthenon_multi_tenancy_background_creation', $backgroundCreation);
