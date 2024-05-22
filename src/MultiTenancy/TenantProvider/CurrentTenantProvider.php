@@ -38,6 +38,7 @@ final class CurrentTenantProvider implements TenantProviderInterface
         private TenantRepositoryInterface $tenantRepository,
         private RequestStack $requestStack,
         private string $defaultDatabase,
+        private string $domain,
     ) {
     }
 
@@ -62,6 +63,10 @@ final class CurrentTenantProvider implements TenantProviderInterface
         }
 
         $host = $request->getHost();
+        if (!str_ends_with($host, $this->domain)) {
+            return Tenant::createWithSubdomainAndDatabase($this->defaultDatabase, 'dummy.subdomain');
+        }
+
         $subdomain = preg_replace('~^([a-z0-9-]+)(\..*)$~', '$1', $host);
 
         try {

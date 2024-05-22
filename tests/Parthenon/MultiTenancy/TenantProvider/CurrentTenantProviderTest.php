@@ -42,8 +42,23 @@ class CurrentTenantProviderTest extends TestCase
         $request->method('getHost')->willReturn('test.example.org');
         $tenantRepostioryInterface->method('findBySubdomain')->with('test')->willReturn($tenant);
 
-        $currentTenantProvider = new CurrentTenantProvider($tenantRepostioryInterface, $requestStack, 'defaultDatabase');
+        $currentTenantProvider = new CurrentTenantProvider($tenantRepostioryInterface, $requestStack, 'defaultDatabase', 'example.org');
         $this->assertSame($tenant, $currentTenantProvider->getCurrentTenant());
+    }
+
+    public function testReturnsDummyTenant()
+    {
+        $tenantRepostioryInterface = $this->createMock(TenantRepositoryInterface::class);
+        $requestStack = $this->createMock(RequestStack::class);
+        $request = $this->createMock(Request::class);
+        $tenant = new Tenant();
+
+        $requestStack->method('getMainRequest')->willReturn($request);
+        $request->method('getHost')->willReturn('test.example.org');
+        $tenantRepostioryInterface->expects($this->never())->method('findBySubdomain')->with('test')->willReturn($tenant);
+
+        $currentTenantProvider = new CurrentTenantProvider($tenantRepostioryInterface, $requestStack, 'defaultDatabase', 'example.com');
+        $this->assertNotSame($tenant, $currentTenantProvider->getCurrentTenant());
     }
 
     public function testThrowsExceptionWithNoException()
@@ -58,7 +73,7 @@ class CurrentTenantProviderTest extends TestCase
         $request->method('getHost')->willReturn('test.example.org');
         $tenantRepostioryInterface->method('findBySubdomain')->with('test')->willThrowException(new NoEntityFoundException());
 
-        $currentTenantProvider = new CurrentTenantProvider($tenantRepostioryInterface, $requestStack, 'defaultDatabase');
+        $currentTenantProvider = new CurrentTenantProvider($tenantRepostioryInterface, $requestStack, 'defaultDatabase', 'example.org');
         $currentTenantProvider->getCurrentTenant();
     }
 }

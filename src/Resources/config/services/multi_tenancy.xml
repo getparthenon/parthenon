@@ -15,6 +15,7 @@
             <argument type="service" id="Parthenon\MultiTenancy\Repository\TenantRepositoryInterface" />
             <argument type="service" id="request_stack" />
             <argument>%parthenon_multi_tenancy_default_database%</argument>
+            <argument>%parthenon_multi_tenancy_domain%</argument>
         </service>
         <service id="Parthenon\MultiTenancy\TenantProvider\TenantProviderInterface" alias="Parthenon\MultiTenancy\TenantProvider\CurrentTenantProvider">
         </service>
