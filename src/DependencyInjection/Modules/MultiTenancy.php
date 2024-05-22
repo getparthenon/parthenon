@@ -46,6 +46,7 @@ final class MultiTenancy implements ModuleConfigurationInterface
                         ->children()
                             ->scalarNode('dbal_connection')->end()
                             ->scalarNode('global_dbal_connection')->end()
+                            ->scalarNode('global_orm_entity_manager')->end()
                             ->scalarNode('orm_entity_manager')->end()
                             ->scalarNode('default_database')->end()
                         ->end()
@@ -73,6 +74,7 @@ final class MultiTenancy implements ModuleConfigurationInterface
         $container->setParameter('parthenon_multi_tenancy_dbal_connection', '');
         $container->setParameter('parthenon_multi_tenancy_global_dbal_connection', '');
         $container->setParameter('parthenon_multi_tenancy_orm_entity_manager', '');
+        $container->setParameter('parthenon_multi_tenancy_global_orm_entity_manager', '');
         $container->setParameter('parthenon_multi_tenancy_default_database', 'dummy_database');
         $container->setParameter('parthenon_multi_tenancy_digitalocean_cluster_id', '');
         $container->setParameter('parthenon_multi_tenancy_is_enabled', false);
