@@ -26,6 +26,7 @@
         </service>
 
 
+
         <service id="Parthenon\Billing\Athena\CustomerUserSection" class="Parthenon\Billing\Athena\CustomerUserSection">
             <argument type="service"  id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
@@ -50,15 +51,6 @@
             <argument>%parthenon_billing_plan_plans%</argument>
             <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
         </service>
-        <service id="Parthenon\Billing\Plan\DatabasePlanManager" class="Parthenon\Billing\Plan\DatabasePlanManager">
-            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface" />
-        </service>
-        <service id="Parthenon\Billing\Plan\CachedPlanManager" class="Parthenon\Billing\Plan\CachedPlanManager">
-            <argument type="service" id="Parthenon\Billing\Plan\DatabasePlanManager" />
-            <argument type="service" id="Redis" />
-
-        </service>
-        <service id="Parthenon\Billing\Plan\PlanManagerInterface" alias="Parthenon\Billing\Plan\CachedPlanManager" />
 
         <service id="parthenon.payments.plan.counter_manager" class="Parthenon\Billing\Plan\CounterManager">
         </service>
@@ -94,9 +86,6 @@
         </service>
         <service id="Parthenon\Billing\Plan\Counter\TeamInviteCounterInterface" alias="Parthenon\Billing\Plan\Counter\TeamInviteCounter" />
 
-        <service id="Parthenon\Billing\Obol\CustomerConverter" class="Parthenon\Billing\Obol\CustomerConverter">
-        </service>
-        <service id="Parthenon\Billing\Obol\CustomerConverterInterface" alias="Parthenon\Billing\Obol\CustomerConverter" />
 
         <service id="Parthenon\Billing\Config\FrontendConfig" class="Parthenon\Billing\Config\FrontendConfig">
             <argument>%parthenon_billing_config_frontend_info%</argument>

@@ -21,7 +21,6 @@ declare(strict_types=1);
 
 namespace Parthenon\MultiTenancy\TenantProvider;
 
-use Parthenon\Common\Exception\GeneralException;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\MultiTenancy\Entity\Tenant;
 use Parthenon\MultiTenancy\Entity\TenantInterface;
@@ -33,6 +32,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class CurrentTenantProvider implements TenantProviderInterface
 {
     private TenantInterface $tenant;
+    private bool $previouslyFailed = false;
 
     public function __construct(
         private TenantRepositoryInterface $tenantRepository,
@@ -48,7 +48,7 @@ final class CurrentTenantProvider implements TenantProviderInterface
     }
 
     /**
-     * @throws GeneralException
+     * @throws NoTenantFoundException
      */
     public function getCurrentTenant(bool $refresh = false): TenantInterface
     {
@@ -66,12 +66,17 @@ final class CurrentTenantProvider implements TenantProviderInterface
         if (!str_ends_with($host, $this->domain)) {
             return Tenant::createWithSubdomainAndDatabase($this->defaultDatabase, 'dummy.subdomain');
         }
-
         $subdomain = preg_replace('~^([a-z0-9-]+)(\..*)$~', '$1', $host);
+
+        if ($this->previouslyFailed && !$refresh) {
+            // If it's already failed other attempts by other possible factors will fail too.
+            throw new NoTenantFoundException(sprintf('Previously Unable to find tenant for \'%s\'', $subdomain), $e->getCode(), $e);
+        }
 
         try {
             $this->tenant = $this->tenantRepository->findBySubdomain($subdomain);
         } catch (NoEntityFoundException $e) {
+            $this->previouslyFailed = true;
             throw new NoTenantFoundException(sprintf('Unable to find tenant for \'%s\'', $subdomain), $e->getCode(), $e);
         }
 

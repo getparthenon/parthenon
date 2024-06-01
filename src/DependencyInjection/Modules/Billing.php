@@ -51,6 +51,13 @@ class Billing implements ModuleConfigurationInterface
                 ->booleanNode('enabled')->defaultFalse()->end()
                 ?->scalarNode('customer_type')->defaultValue('team')->end()
                 ?->scalarNode('plan_management')->defaultValue('config')->end()
+                ?->arrayNode('billabear')
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
+                        ->scalarNode('api_url')->end()
+                        ->scalarNode('api_key')->end()
+                    ->end()
+                ->end()
                 ?->arrayNode('payments')
                     ->children()
                         ->scalarNode('provider')->end()
@@ -94,6 +101,9 @@ class Billing implements ModuleConfigurationInterface
         $container->setParameter('parthenon_billing_config_webhook_secret', '');
         $container->setParameter('parthenon_billing_plan_plans', []);
         $container->setParameter('parthenon_billing_product_id', null);
+        $container->setParameter('parthenon_billing_billabear_enabled', false);
+        $container->setParameter('parthenon_billing_billabear_api_url', false);
+        $container->setParameter('parthenon_billing_billabear_api_key', false);
     }
 
     public function handleConfiguration(array $config, ContainerBuilder $container): void
@@ -117,7 +127,10 @@ class Billing implements ModuleConfigurationInterface
             $this->handleUserCustomer($config, $container);
         }
 
-        if ('athena' === strtolower($billingConfig['plan_management'])) {
+        if (isset($billingConfig['billabear']) && $billingConfig['billabear']['enabled']) {
+            $loader->load('services/billing/athena_plans.xml');
+            $container->setAlias(PlanManagerInterface::class, CachedPlanManager::class);
+        } elseif ('athena' === strtolower($billingConfig['plan_management'])) {
             $loader->load('services/billing/athena_plans.xml');
             $container->setAlias(PlanManagerInterface::class, CachedPlanManager::class);
         } else {
@@ -172,6 +185,17 @@ class Billing implements ModuleConfigurationInterface
         $containerBuilder->setAlias(CustomerProviderInterface::class, UserCustomerProvider::class);
         $containerBuilder->setAlias(CustomerRepositoryInterface::class, UserRepositoryInterface::class);
         $containerBuilder->removeDefinition(CustomerTeamSection::class);
+    }
+
+    protected function handleBillaBearConfig(array $billabearConfig, ContainerBuilder $containerBuilder): void
+    {
+        if (true !== $billabearConfig['enabled']) {
+            return;
+        }
+
+        $containerBuilder->setParameter('parthenon_billing_billabear_enabled', true);
+        $containerBuilder->setParameter('parthenon_billing_billabear_api_key', $billabearConfig['api_key']);
+        $containerBuilder->setParameter('parthenon_billing_billabear_api_url', $billabearConfig['api_url']);
     }
 
     protected function handleStripeConfig(array $paymentsConfig, ContainerBuilder $containerBuilder): array

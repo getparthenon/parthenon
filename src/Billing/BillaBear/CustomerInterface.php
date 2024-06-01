@@ -19,15 +19,11 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Parthenon\MultiTenancy\TenantProvider;
+namespace Parthenon\Billing\BillaBear;
 
-use Parthenon\MultiTenancy\Entity\TenantInterface;
-use Parthenon\MultiTenancy\Exception\NoTenantFoundException;
-
-interface TenantProviderInterface
+interface CustomerInterface extends \Parthenon\Billing\Entity\CustomerInterface
 {
-    /**
-     * @throws NoTenantFoundException
-     */
-    public function getCurrentTenant(bool $refresh = false): TenantInterface;
+    public function setCustomerId(string $customerId);
+
+    public function getCustomerId(): string;
 }

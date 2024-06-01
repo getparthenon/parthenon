@@ -19,15 +19,13 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Parthenon\MultiTenancy\TenantProvider;
+namespace Parthenon\Billing\Plan;
 
-use Parthenon\MultiTenancy\Entity\TenantInterface;
-use Parthenon\MultiTenancy\Exception\NoTenantFoundException;
+use PHPUnit\Framework\TestCase;
 
-interface TenantProviderInterface
+class BillaBearPlanManagerTest extends TestCase
 {
-    /**
-     * @throws NoTenantFoundException
-     */
-    public function getCurrentTenant(bool $refresh = false): TenantInterface;
+    public function testFetchPlansFromBillaBear()
+    {
+    }
 }
