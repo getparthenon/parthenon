@@ -38,7 +38,7 @@ use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -105,7 +105,7 @@ class SubscriptionController
         } catch (PaymentFailureException $exception) {
             $this->getLogger()->warning('Payment failed so subscription was not created');
 
-            return new JsonResponse(StartSubscriptionResponse::createPaymentFailed(), JsonResponse::HTTP_BAD_REQUEST);
+            return new JsonResponse(StartSubscriptionResponse::createPaymentFailed($exception->getChargeFailureReason()), JsonResponse::HTTP_BAD_REQUEST);
         } catch (NoPaymentDetailsException $exception) {
             $this->getLogger()->warning('Customer does not have payment details so subscription was not created');
 

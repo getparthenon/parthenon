@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Response;
 
+use Obol\Model\Enum\ChargeFailureReasons;
 use Parthenon\Billing\Entity\Subscription;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -92,11 +93,12 @@ class StartSubscriptionResponse
         ];
     }
 
-    public static function createPaymentFailed(): array
+    public static function createPaymentFailed(ChargeFailureReasons $chargeFailureReason): array
     {
         return [
             'success' => false,
             'code' => static::CODE_PAYMENT_FAILURE_ERROR,
+            'reason' => $chargeFailureReason->value,
         ];
     }
 
@@ -104,7 +106,7 @@ class StartSubscriptionResponse
     {
         return [
             'success' => false,
-            'code' => static::CODE_NO_PAYMENT_DETAILS_ERROR,
+            'code' => static::CODE_NO_BILLING_DETAILS,
         ];
     }
 

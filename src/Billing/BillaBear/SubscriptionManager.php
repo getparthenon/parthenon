@@ -23,6 +23,7 @@ namespace Parthenon\Billing\BillaBear;
 
 use BillaBear\ApiException;
 use BillaBear\Model\SubscriptionStartBody;
+use Obol\Model\Enum\ChargeFailureReasons;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentCard;
@@ -38,11 +39,13 @@ use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Plan\PlanPrice;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Parthenon\Common\Exception\GeneralException;
-use Psr\Http\Message\ResponseInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SubscriptionManager implements SubscriptionManagerInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private SdkFactory $sdkFactory,
         private PlanManagerInterface $planManager,
@@ -79,13 +82,16 @@ class SubscriptionManager implements SubscriptionManagerInterface
         try {
             $response = $this->sdkFactory->createSubscriptionsApi()->customerStartSubscription($subscriptionStart, $customerId);
         } catch (ApiException $apiException) {
-            if ($apiException->getResponseObject() instanceof ResponseInterface) {
-                match ($apiException->getResponseObject()->getStatusCode()) {
-                    402 => new PaymentFailureException('Payment failed', previous: $apiException),
-                    406 => new NoPaymentDetailsException('No payment details', previous: $apiException),
-                    default => new GeneralException(previous: $apiException),
-                };
+            if (402 === $apiException->getCode()) {
+                $body = $apiException->getResponseBody();
+                $json = json_decode($body, true);
+                throw new PaymentFailureException(ChargeFailureReasons::from($json['reason']), previous: $apiException);
             }
+
+            if (406 === $apiException->getCode()) {
+                throw new NoPaymentDetailsException('No payment details', previous: $apiException);
+            }
+
             throw new GeneralException(previous: $apiException);
         } catch (\Throwable $exception) {
             new GeneralException($exception->getMessage(), previous: $exception);

@@ -21,8 +21,18 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Exception;
 
+use Obol\Model\Enum\ChargeFailureReasons;
 use Parthenon\Common\Exception\GeneralException;
 
 class PaymentFailureException extends GeneralException
 {
+    public function __construct(private ChargeFailureReasons $chargeFailureReason, ?\Exception $previous = null)
+    {
+        parent::__construct(previous: $previous);
+    }
+
+    public function getChargeFailureReason(): ChargeFailureReasons
+    {
+        return $this->chargeFailureReason;
+    }
 }

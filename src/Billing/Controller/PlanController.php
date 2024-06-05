@@ -28,7 +28,7 @@ use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class PlanController
 {
