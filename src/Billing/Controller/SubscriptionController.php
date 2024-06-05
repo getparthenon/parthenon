@@ -25,8 +25,10 @@ use Obol\Exception\UnsupportedFunctionalityException;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Exception\NoCustomerException;
+use Parthenon\Billing\Exception\NoPaymentDetailsException;
 use Parthenon\Billing\Exception\NoPlanFoundException;
 use Parthenon\Billing\Exception\NoPlanPriceFoundException;
+use Parthenon\Billing\Exception\PaymentFailureException;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Response\StartSubscriptionResponse;
@@ -100,6 +102,14 @@ class SubscriptionController
             $this->getLogger()->warning('No plan found');
 
             return new JsonResponse(StartSubscriptionResponse::createPlanNotFound(), JsonResponse::HTTP_BAD_REQUEST);
+        } catch (PaymentFailureException $exception) {
+            $this->getLogger()->warning('Payment failed so subscription was not created');
+
+            return new JsonResponse(StartSubscriptionResponse::createPaymentFailed(), JsonResponse::HTTP_BAD_REQUEST);
+        } catch (NoPaymentDetailsException $exception) {
+            $this->getLogger()->warning('Customer does not have payment details so subscription was not created');
+
+            return new JsonResponse(StartSubscriptionResponse::createNoPaymentDetails(), JsonResponse::HTTP_BAD_REQUEST);
         } catch (UnsupportedFunctionalityException $exception) {
             $this->getLogger()->error('Payment provider does not support payment details');
 

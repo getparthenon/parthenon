@@ -38,6 +38,7 @@ use Parthenon\Export\Exporter\CsvExporter;
 use Parthenon\Export\Exporter\ExporterManagerInterface;
 use Parthenon\Export\ExportRequest;
 use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,9 +94,7 @@ class CrudController
         return $athenaResponseConverter->convert($response);
     }
 
-    /**
-     * @Template("@Parthenon/athena/crud/list.html.twig")
-     */
+    #[Template('@Parthenon/athena/crud/list.html.twig')]
     public function showList(Request $request, LoggerInterface $logger, Session $session, ExporterManagerInterface $exporterManager)
     {
         $rights = $this->accessRightsManager->getAccessRights($this->section);
@@ -150,9 +149,7 @@ class CrudController
         ];
     }
 
-    /**
-     * @Template("@Parthenon/athena/crud/read.html.twig")
-     */
+    #[Template('@Parthenon/athena/crud/read.html.twig')]
     public function showRead(Request $request, LoggerInterface $logger)
     {
         $rights = $this->accessRightsManager->getAccessRights($this->section);
@@ -186,9 +183,7 @@ class CrudController
         ];
     }
 
-    /**
-     * @Template("@Parthenon/athena/crud/edit.html.twig")
-     */
+    #[Template('@Parthenon/athena/crud/edit.html.twig')]
     public function edit(Request $request, LoggerInterface $logger, FormBuilder $formBuilder)
     {
         $settings = $this->section->getSettings();
@@ -236,9 +231,7 @@ class CrudController
         ];
     }
 
-    /**
-     * @Template("@Parthenon/athena/crud/create.html.twig")
-     */
+    #[Template('@Parthenon/athena/crud/create.html.twig')]
     public function create(Request $request, LoggerInterface $logger, FormBuilder $formBuilder)
     {
         $rights = $this->accessRightsManager->getAccessRights($this->section);

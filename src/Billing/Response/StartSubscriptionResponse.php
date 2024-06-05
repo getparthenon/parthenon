@@ -33,6 +33,8 @@ class StartSubscriptionResponse
     public const CODE_PLAN_NOT_FOUND = '320003';
     public const CODE_PLAN_PRICE_NOT_FOUND = '320004';
     public const CODE_GENERAL_ERROR = '320005';
+    public const CODE_PAYMENT_FAILURE_ERROR = '320006';
+    public const CODE_NO_PAYMENT_DETAILS_ERROR = '320007';
 
     public static function createGeneralError(): array
     {
@@ -87,6 +89,22 @@ class StartSubscriptionResponse
         return [
             'success' => false,
             'code' => static::CODE_PLAN_PRICE_NOT_FOUND,
+        ];
+    }
+
+    public static function createPaymentFailed(): array
+    {
+        return [
+            'success' => false,
+            'code' => static::CODE_PAYMENT_FAILURE_ERROR,
+        ];
+    }
+
+    public static function createNoPaymentDetails(): array
+    {
+        return [
+            'success' => false,
+            'code' => static::CODE_NO_PAYMENT_DETAILS_ERROR,
         ];
     }
 

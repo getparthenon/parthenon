@@ -63,6 +63,9 @@ class PlanController
         }
 
         foreach ($plans as $plan) {
+            if (!$plan->isPublic()) {
+                continue;
+            }
             $output[$plan->getName()] = [
                 'name' => $plan->getName(),
                 'limits' => $plan->getLimits(),

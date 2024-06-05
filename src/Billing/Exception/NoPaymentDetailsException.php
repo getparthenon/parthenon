@@ -19,13 +19,10 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Parthenon\Billing\Plan;
+namespace Parthenon\Billing\Exception;
 
-use PHPUnit\Framework\TestCase;
+use Parthenon\Common\Exception\GeneralException;
 
-class BillaBearPlanManagerTest extends TestCase
+class NoPaymentDetailsException extends GeneralException
 {
-    public function testFetchPlansFromBillaBear()
-    {
-    }
 }

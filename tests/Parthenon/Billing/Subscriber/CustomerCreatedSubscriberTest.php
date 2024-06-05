@@ -23,8 +23,8 @@ namespace Parthenon\Billing\Subscriber;
 
 use BillaBear\Api\CustomersApi;
 use BillaBear\Model\Customer;
-use Parthenon\Billing\BillaBear\CustomerInterface;
 use Parthenon\Billing\BillaBear\SdkFactory;
+use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Common\Address;
 use Parthenon\User\Entity\MemberInterface;
 use Parthenon\User\Entity\Team;
@@ -77,12 +77,12 @@ class CustomerCreatedSubscriberTest extends TestCase
 
             public function setExternalCustomerReference($externalCustomerReference)
             {
-                // TODO: Implement setExternalCustomerReference() method.
+                $this->customerId = $externalCustomerReference;
             }
 
             public function getExternalCustomerReference()
             {
-                // TODO: Implement getExternalCustomerReference() method.
+                return $this->customerId;
             }
 
             public function hasExternalCustomerReference(): bool
@@ -122,7 +122,7 @@ class CustomerCreatedSubscriberTest extends TestCase
         $subject = new CustomerCreatedSubscriber($userRepository, $sdkFactory);
         $subject->userCreated($event);
 
-        $this->assertEquals(self::CUSTOMER_ID, $user->getCustomerId());
+        $this->assertEquals(self::CUSTOMER_ID, $user->getExternalCustomerReference());
     }
 
     public function testRegisterTeamCustomer()
@@ -164,12 +164,12 @@ class CustomerCreatedSubscriberTest extends TestCase
 
             public function setExternalCustomerReference($externalCustomerReference)
             {
-                // TODO: Implement setExternalCustomerReference() method.
+                $this->customerId = $externalCustomerReference;
             }
 
             public function getExternalCustomerReference()
             {
-                // TODO: Implement getExternalCustomerReference() method.
+                return $this->customerId;
             }
 
             public function hasExternalCustomerReference(): bool
@@ -231,6 +231,6 @@ class CustomerCreatedSubscriberTest extends TestCase
         $subject = new CustomerCreatedSubscriber($userRepository, $sdkFactory);
         $subject->userCreated($event);
 
-        $this->assertEquals(self::CUSTOMER_ID, $team->getCustomerId());
+        $this->assertEquals(self::CUSTOMER_ID, $team->getExternalCustomerReference());
     }
 }

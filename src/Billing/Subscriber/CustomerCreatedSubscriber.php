@@ -21,8 +21,8 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Subscriber;
 
-use Parthenon\Billing\BillaBear\CustomerInterface;
 use Parthenon\Billing\BillaBear\SdkFactory;
+use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Common\Address;
 use Parthenon\User\Entity\MemberInterface;
@@ -60,7 +60,7 @@ final class CustomerCreatedSubscriber implements EventSubscriberInterface
 
         $payload = $this->buildPayload($user, $customer);
         $response = $this->sdkFactory->createCustomersApi()->createCustomer($payload);
-        $customer->setCustomerId($response->getId());
+        $customer->setExternalCustomerReference($response->getId());
 
         $this->userRepository->save($customer);
     }

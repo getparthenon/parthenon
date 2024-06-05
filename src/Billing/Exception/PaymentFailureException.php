@@ -19,11 +19,10 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Parthenon\Billing\BillaBear;
+namespace Parthenon\Billing\Exception;
 
-interface CustomerInterface extends \Parthenon\Billing\Entity\CustomerInterface
+use Parthenon\Common\Exception\GeneralException;
+
+class PaymentFailureException extends GeneralException
 {
-    public function setCustomerId(string $customerId);
-
-    public function getCustomerId(): string;
 }
