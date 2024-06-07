@@ -26,6 +26,7 @@ use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Billing\Subscription\SubscriptionProviderInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -38,6 +39,7 @@ class PlanController
     public function listAction(
         PlanManagerInterface $planManager,
         CustomerProviderInterface $customerProvider,
+        SubscriptionProviderInterface $subscriptionProvider,
         SubscriptionRepositoryInterface $subscriptionRepository,
     ) {
         $this->getLogger()->info('Getting plans info');
@@ -53,7 +55,7 @@ class PlanController
             return new JsonResponse([], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        $subscriptions = $subscriptionRepository->getAllActiveForCustomer($currentCustomer);
+        $subscriptions = $subscriptionProvider->getSubscriptionsForCustomer($currentCustomer);
         foreach ($subscriptions as $subscription) {
             $currentPlanOutput[] = [
                 'name' => $subscription->getPlanName(),

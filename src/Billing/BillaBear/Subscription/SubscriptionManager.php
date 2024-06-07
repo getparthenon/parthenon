@@ -19,11 +19,12 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Parthenon\Billing\BillaBear;
+namespace App\Parthenon\Billing\BillaBear\Subscription;
 
 use BillaBear\ApiException;
 use BillaBear\Model\SubscriptionStartBody;
 use Obol\Model\Enum\ChargeFailureReasons;
+use Parthenon\Billing\BillaBear\SdkFactory;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentCard;

@@ -23,7 +23,6 @@ namespace Parthenon\DependencyInjection\Modules;
 
 use Parthenon\Billing\Athena\CustomerTeamSection;
 use Parthenon\Billing\Athena\CustomerUserSection;
-use Parthenon\Billing\BillaBear\BillaBearPlanManager;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Plan\CachedPlanManager;
 use Parthenon\Billing\Plan\PlanManager;
@@ -130,7 +129,7 @@ class Billing implements ModuleConfigurationInterface
 
         if (isset($billingConfig['billabear']) && $billingConfig['billabear']['enabled']) {
             $loader->load('services/billing/billabear.xml');
-            $container->setAlias(PlanManagerInterface::class, BillaBearPlanManager::class);
+            $container->setAlias(PlanManagerInterface::class, CachedPlanManager::class);
             $this->handleBillaBearConfig($billingConfig['billabear'], $container);
         } elseif ('athena' === strtolower($billingConfig['plan_management'])) {
             $loader->load('services/billing/athena_plans.xml');

@@ -19,9 +19,10 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Parthenon\Billing\BillaBear;
+namespace Parthenon\Billing\BillaBear\Repository;
 
 use BillaBear\Model\PaymentDetails;
+use Parthenon\Billing\BillaBear\SdkFactory;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;

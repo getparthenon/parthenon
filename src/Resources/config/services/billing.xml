@@ -157,6 +157,11 @@
         </service>
         <service id="Parthenon\Billing\Webhook\RequestProcessorInterface" alias="Parthenon\Billing\Webhook\RequestProcessor" />
 
+        <service id="Parthenon\Billing\Subscription\SubscriptionProvider" class="Parthenon\Billing\Subscription\SubscriptionProvider">
+            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Billing\Subscription\SubscriptionProviderInterface" alias="Parthenon\Billing\Subscription\SubscriptionProvider" />
+
         <service id="Parthenon\Billing\Webhook\Handler\ChargeSucceededHandler" class="Parthenon\Billing\Webhook\Handler\ChargeSucceededHandler">
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Customer\CustomerManagerInterface" />

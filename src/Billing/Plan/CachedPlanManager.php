@@ -22,9 +22,12 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Plan;
 
 use Parthenon\Billing\Exception\NoPlanFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 
 class CachedPlanManager implements PlanManagerInterface
 {
+    use LoggerAwareTrait;
+
     public const REDIS_STORAGE_KEY = 'parthenon_plan';
     private ?array $plans = null;
 
@@ -40,10 +43,12 @@ class CachedPlanManager implements PlanManagerInterface
             $rawData = $this->redis->get(self::REDIS_STORAGE_KEY);
 
             if (!$rawData) {
+                $this->getLogger()->info('Fetching plans from original plan manager');
                 $this->plans = $this->planManager->getPlans();
                 $rawData = serialize($this->plans);
                 $this->redis->set(self::REDIS_STORAGE_KEY, $rawData);
             } else {
+                $this->getLogger()->info('Got the plans from cache');
                 $this->plans = unserialize($rawData);
             }
         }

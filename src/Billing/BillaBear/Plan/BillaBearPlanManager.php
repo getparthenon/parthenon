@@ -19,13 +19,14 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Parthenon\Billing\BillaBear;
+namespace Parthenon\Billing\BillaBear\Plan;
 
 use BillaBear\Model\Feature;
 use BillaBear\Model\Limit;
 use BillaBear\Model\Price;
 use BillaBear\Model\SubscriptionPlan;
 use Doctrine\Common\Collections\Collection;
+use Parthenon\Billing\BillaBear\SdkFactory;
 use Parthenon\Billing\Exception\NoPlanFoundException;
 use Parthenon\Billing\Plan\LimitedUserInterface;
 use Parthenon\Billing\Plan\Plan;

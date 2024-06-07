@@ -19,19 +19,15 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Parthenon\Billing\BillaBear;
+namespace Parthenon\Billing\Subscription;
 
-use Parthenon\Billing\Entity\PaymentCard;
-use Parthenon\Billing\PaymentMethod\DeleterInterface;
+use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\Subscription;
 
-class Deleter implements DeleterInterface
+interface SubscriptionProviderInterface
 {
-    public function __construct(private SdkFactory $sdkFactory)
-    {
-    }
-
-    public function delete(PaymentCard $paymentDetails): void
-    {
-        $this->sdkFactory->createPaymentDetails()->deletePaymentDetails($paymentDetails->getId());
-    }
+    /**
+     * @return Subscription[]
+     */
+    public function getSubscriptionsForCustomer(CustomerInterface $customer): array;
 }
