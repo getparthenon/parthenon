@@ -19,24 +19,19 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Parthenon\Billing\Repository;
+namespace Parthenon\Billing\BillaBear;
 
-use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentCard;
-use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\Repository\RepositoryInterface;
+use Parthenon\Billing\PaymentMethod\DeleterInterface;
 
-interface PaymentCardRepositoryInterface extends RepositoryInterface
+class Deleter implements DeleterInterface
 {
-    /**
-     * @return PaymentCard[]
-     */
-    public function getPaymentCardForCustomer(CustomerInterface $customer): array;
+    public function __construct(private SdkFactory $sdkFactory)
+    {
+    }
 
-    public function markAllCustomerCardsAsNotDefault(CustomerInterface $customer): void;
-
-    /**
-     * @throws NoEntityFoundException
-     */
-    public function getDefaultPaymentCardForCustomer(CustomerInterface $customer): PaymentCard;
+    public function delete(PaymentCard $paymentDetails): void
+    {
+        $this->sdkFactory->createPaymentDetails()->deletePaymentDetails($paymentDetails->getId());
+    }
 }
