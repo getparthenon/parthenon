@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Controller;
 
 use Parthenon\Billing\CustomerProviderInterface;
+use Parthenon\Billing\Invoice\InvoiceChargerInterface;
 use Parthenon\Billing\Invoice\InvoiceProviderInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -67,5 +68,15 @@ class InvoiceController
         );
 
         return $response;
+    }
+
+    #[Route('/billing/invoices/{id}/charge', name: 'parthenon_billing_invoices_charge')]
+    public function chargeAction(
+        Request $request,
+        InvoiceChargerInterface $invoiceCharger,
+    ): Response {
+        $paid = $invoiceCharger->chargeInvoice($request->get('id'));
+
+        return new JsonResponse(['paid' => $paid]);
     }
 }
