@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\BillaBear;
 
 use BillaBear\Api\CustomersApi;
+use BillaBear\Api\InvoicesApi;
 use BillaBear\Api\PaymentDetailsApi;
 use BillaBear\Api\SubscriptionsApi;
 use BillaBear\Configuration;
@@ -57,6 +58,15 @@ class SdkFactory
         $config = $this->createConfig();
 
         $apiInstance = new SubscriptionsApi(config: $config);
+
+        return $apiInstance;
+    }
+
+    public function createInvoiceApi(): InvoicesApi
+    {
+        $config = $this->createConfig();
+
+        $apiInstance = new InvoicesApi(config: $config);
 
         return $apiInstance;
     }
