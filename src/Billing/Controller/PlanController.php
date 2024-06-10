@@ -25,9 +25,9 @@ use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanManagerInterface;
-use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionProviderInterface;
 use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -35,12 +35,12 @@ class PlanController
 {
     use LoggerAwareTrait;
 
-    #[Route('/billing/plans', name: 'parthenon_billing_plan_list')]
+    #[Route('/billing/plans', name: 'parthenon_billing_plan_list_h')]
     public function listAction(
         PlanManagerInterface $planManager,
         CustomerProviderInterface $customerProvider,
         SubscriptionProviderInterface $subscriptionProvider,
-        SubscriptionRepositoryInterface $subscriptionRepository,
+        LoggerInterface $logger,
     ) {
         $this->getLogger()->info('Getting plans info');
         $plans = $planManager->getPlans();
@@ -66,8 +66,10 @@ class PlanController
 
         foreach ($plans as $plan) {
             if (!$plan->isPublic()) {
+                $logger->info('Skipping plan', ['plan_name' => $plan->getName()]);
                 continue;
             }
+            $logger->info('Found plan', ['plan_name' => $plan->getName()]);
             $output[$plan->getName()] = [
                 'name' => $plan->getName(),
                 'limits' => $plan->getLimits(),

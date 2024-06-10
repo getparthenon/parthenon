@@ -114,6 +114,9 @@ class StartSubscriptionResponse
     {
         return [
             'success' => true,
+            'subscription' => [
+                'id' => $subscription->getId(),
+            ],
         ];
     }
 }

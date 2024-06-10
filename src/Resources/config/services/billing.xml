@@ -74,7 +74,7 @@
             <argument type="service" id="Parthenon\Billing\Plan\Counter\TeamInviteCounterInterface" />
             <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
             <argument type="service" id="Parthenon\Billing\CustomerProviderInterface" />
-            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Subscription\SubscriptionProviderInterface" />
             <tag name="security.voter" priority="20"/>
         </service>
         <service id="Parthenon\Billing\Plan\Security\Voter\InviteVoter" alias="parthenon.plan.security.voter.invite" />
@@ -254,7 +254,7 @@
         <service id="Parthenon\Billing\Subscription\PaymentLinkerInterface" alias="Parthenon\Billing\Subscription\PaymentLinker" />
 
         <service id="Parthenon\Billing\Plan\CustomerPlanInfo" class="Parthenon\Billing\Plan\CustomerPlanInfo">
-            <argument type="service" id="Parthenon\Billing\Repository\SubscriptionRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Subscription\SubscriptionProviderInterface" />
             <argument type="service" id="Parthenon\Billing\Plan\PlanManager" />
         </service>
         <service id="Parthenon\Billing\Plan\CustomerPlanInfoInterface" alias="Parthenon\Billing\Plan\CustomerPlanInfo" />

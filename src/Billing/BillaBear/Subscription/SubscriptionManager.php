@@ -19,9 +19,10 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace App\Parthenon\Billing\BillaBear\Subscription;
+namespace Parthenon\Billing\BillaBear\Subscription;
 
 use BillaBear\ApiException;
+use BillaBear\Model\SubscriptionIdCancelBody;
 use BillaBear\Model\SubscriptionStartBody;
 use Obol\Model\Enum\ChargeFailureReasons;
 use Parthenon\Billing\BillaBear\SdkFactory;
@@ -32,6 +33,8 @@ use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Enum\BillingChangeTiming;
+use Parthenon\Billing\Enum\SubscriptionStatus;
+use Parthenon\Billing\Event\SubscriptionCancelled;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Parthenon\Billing\Exception\NoPaymentDetailsException;
 use Parthenon\Billing\Exception\PaymentFailureException;
@@ -119,17 +122,48 @@ class SubscriptionManager implements SubscriptionManagerInterface
 
     public function cancelSubscriptionAtEndOfCurrentPeriod(Subscription $subscription): Subscription
     {
-        // TODO: Implement cancelSubscriptionAtEndOfCurrentPeriod() method.
+        $cancelBody = new SubscriptionIdCancelBody();
+        $cancelBody->setWhen('end-of-run');
+        $cancelBody->setRefundType('none');
+        $this->sdkFactory->createSubscriptionsApi()->cancelSubscription($cancelBody, $subscription->getId());
+
+        $subscription->setStatus(SubscriptionStatus::PENDING_CANCEL);
+        $subscription->endAtEndOfPeriod();
+        $this->dispatcher->dispatch(new SubscriptionCancelled($subscription), SubscriptionCancelled::NAME);
+
+        return $subscription;
     }
 
     public function cancelSubscriptionInstantly(Subscription $subscription): Subscription
     {
-        // TODO: Implement cancelSubscriptionInstantly() method.
+        $cancelBody = new SubscriptionIdCancelBody();
+        $cancelBody->setWhen('instantly');
+        $cancelBody->setRefundType('prorate');
+        $this->sdkFactory->createSubscriptionsApi()->cancelSubscription($cancelBody, $subscription->getId());
+
+        $subscription->setStatus(SubscriptionStatus::CANCELLED);
+        $subscription->setActive(false);
+        $subscription->endNow();
+        $this->dispatcher->dispatch(new SubscriptionCancelled($subscription), SubscriptionCancelled::NAME);
+
+        return $subscription;
     }
 
     public function cancelSubscriptionOnDate(Subscription $subscription, \DateTimeInterface $dateTime): Subscription
     {
-        // TODO: Implement cancelSubscriptionOnDate() method.
+        $cancelBody = new SubscriptionIdCancelBody();
+        $cancelBody->setWhen('specific-date');
+        $cancelBody->setRefundType('prorate');
+        $cancelBody->setDate($dateTime);
+        $this->sdkFactory->createSubscriptionsApi()->cancelSubscription($cancelBody, $subscription->getId());
+
+        $subscription->setStatus(SubscriptionStatus::PENDING_CANCEL);
+        $subscription->setEndedAt($dateTime);
+        $subscription->setValidUntil($dateTime);
+
+        $this->dispatcher->dispatch(new SubscriptionCancelled($subscription), SubscriptionCancelled::NAME);
+
+        return $subscription;
     }
 
     public function changeSubscriptionPrice(Subscription $subscription, Price $price, BillingChangeTiming $billingChangeTiming): void

@@ -30,9 +30,9 @@ use Parthenon\Billing\Exception\NoPlanFoundException;
 use Parthenon\Billing\Exception\NoPlanPriceFoundException;
 use Parthenon\Billing\Exception\PaymentFailureException;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
-use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Response\StartSubscriptionResponse;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
+use Parthenon\Billing\Subscription\SubscriptionProviderInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -47,10 +47,13 @@ class SubscriptionController
     use LoggerAwareTrait;
 
     #[Route('/billing/subscription/{subscriptionId}/cancel', name: 'parthenon_billing_subscription_cancel', methods: ['POST'])]
-    public function cancelSubscription(Request $request, SubscriptionRepositoryInterface $subscriptionRepository, SubscriptionManagerInterface $subscriptionManager): Response
-    {
+    public function cancelSubscription(
+        Request $request,
+        SubscriptionProviderInterface $subscriptionProvider,
+        SubscriptionManagerInterface $subscriptionManager,
+    ): Response {
         try {
-            $subscription = $subscriptionRepository->getById($request->get('subscriptionId'));
+            $subscription = $subscriptionProvider->getSubscription($request->get('subscriptionId'));
         } catch (NoEntityFoundException $E) {
             return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
         }

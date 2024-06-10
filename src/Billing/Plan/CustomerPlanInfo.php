@@ -22,19 +22,19 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Plan;
 
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Billing\Subscription\SubscriptionProviderInterface;
 
 class CustomerPlanInfo implements CustomerPlanInfoInterface
 {
     public function __construct(
-        private SubscriptionRepositoryInterface $subscriptionRepository,
+        private SubscriptionProviderInterface $subscriptionProvider,
         private PlanManagerInterface $planManager,
     ) {
     }
 
     public function hasFeature(CustomerInterface $customer, string $featureCode): bool
     {
-        $active = $this->subscriptionRepository->getAllActiveForCustomer($customer);
+        $active = $this->subscriptionProvider->getSubscriptionsForCustomer($customer);
 
         foreach ($active as $subscription) {
             $plan = $this->planManager->getPlanByName($subscription->getPlanName());
@@ -51,7 +51,7 @@ class CustomerPlanInfo implements CustomerPlanInfoInterface
 
     public function getLimitCount(CustomerInterface $customer, string $limitCode): int
     {
-        $active = $this->subscriptionRepository->getAllActiveForCustomer($customer);
+        $active = $this->subscriptionProvider->getSubscriptionsForCustomer($customer);
 
         $count = 0;
         foreach ($active as $subscription) {

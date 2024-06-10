@@ -23,7 +23,7 @@ namespace Parthenon\Billing\Plan;
 
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
-use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Billing\Subscription\SubscriptionProviderInterface;
 use PHPUnit\Framework\TestCase;
 
 class CustomerPlanInfoTest extends TestCase
@@ -32,9 +32,9 @@ class CustomerPlanInfoTest extends TestCase
     {
         $customer = $this->createMock(CustomerInterface::class);
         $planManager = $this->createMock(PlanManagerInterface::class);
-        $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
+        $subscriptionRepository = $this->createMock(SubscriptionProviderInterface::class);
 
-        $subscriptionRepository->method('getAllActiveForCustomer')->with($customer)->willReturn([]);
+        $subscriptionRepository->method('getSubscriptionsForCustomer')->with($customer)->willReturn([]);
 
         $subject = new CustomerPlanInfo($subscriptionRepository, $planManager);
 
@@ -45,14 +45,14 @@ class CustomerPlanInfoTest extends TestCase
     {
         $customer = $this->createMock(CustomerInterface::class);
         $planManager = $this->createMock(PlanManagerInterface::class);
-        $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
+        $subscriptionRepository = $this->createMock(SubscriptionProviderInterface::class);
         $subscription = $this->createMock(Subscription::class);
         $plan = $this->createMock(Plan::class);
 
         $planManager->method('getPlanByName')->with('plan_name')->willReturn($plan);
         $plan->method('getFeatures')->willReturn(['feature']);
         $subscription->method('getPlanName')->willReturn('plan_name');
-        $subscriptionRepository->method('getAllActiveForCustomer')->with($customer)->willReturn([$subscription]);
+        $subscriptionRepository->method('getSubscriptionsForCustomer')->with($customer)->willReturn([$subscription]);
 
         $subject = new CustomerPlanInfo($subscriptionRepository, $planManager);
 
@@ -63,9 +63,9 @@ class CustomerPlanInfoTest extends TestCase
     {
         $customer = $this->createMock(CustomerInterface::class);
         $planManager = $this->createMock(PlanManagerInterface::class);
-        $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
+        $subscriptionRepository = $this->createMock(SubscriptionProviderInterface::class);
 
-        $subscriptionRepository->method('getAllActiveForCustomer')->with($customer)->willReturn([]);
+        $subscriptionRepository->method('getSubscriptionsForCustomer')->with($customer)->willReturn([]);
 
         $subject = new CustomerPlanInfo($subscriptionRepository, $planManager);
 
@@ -76,7 +76,7 @@ class CustomerPlanInfoTest extends TestCase
     {
         $customer = $this->createMock(CustomerInterface::class);
         $planManager = $this->createMock(PlanManagerInterface::class);
-        $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
+        $subscriptionRepository = $this->createMock(SubscriptionProviderInterface::class);
         $subscription = $this->createMock(Subscription::class);
         $subscriptionTwo = $this->createMock(Subscription::class);
         $plan = $this->createMock(Plan::class);
@@ -94,7 +94,7 @@ class CustomerPlanInfoTest extends TestCase
 
         $planTwo->method('getLimits')->willReturn(['feature' => 9]);
         $subscriptionTwo->method('getPlanName')->willReturn('plan_name_two');
-        $subscriptionRepository->method('getAllActiveForCustomer')->with($customer)->willReturn([$subscription, $subscriptionTwo]);
+        $subscriptionRepository->method('getSubscriptionsForCustomer')->with($customer)->willReturn([$subscription, $subscriptionTwo]);
 
         $subject = new CustomerPlanInfo($subscriptionRepository, $planManager);
 

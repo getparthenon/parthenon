@@ -19,17 +19,8 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Parthenon\Billing\Subscription;
+namespace Parthenon\Billing\Controller;
 
-use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\Subscription;
-
-interface SubscriptionProviderInterface
+class InvoiceController
 {
-    public function getSubscription(string $id): Subscription;
-
-    /**
-     * @return Subscription[]
-     */
-    public function getSubscriptionsForCustomer(CustomerInterface $customer): array;
 }

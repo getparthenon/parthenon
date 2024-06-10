@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Subscription;
 
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 
 class SubscriptionProvider implements SubscriptionProviderInterface
@@ -33,5 +34,10 @@ class SubscriptionProvider implements SubscriptionProviderInterface
     public function getSubscriptionsForCustomer(CustomerInterface $customer): array
     {
         return $this->subscriptionRepository->getAllActiveForCustomer($customer);
+    }
+
+    public function getSubscription(string $id): Subscription
+    {
+        return $this->subscriptionRepository->getById($id);
     }
 }

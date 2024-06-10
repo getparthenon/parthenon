@@ -54,9 +54,14 @@ class SubscriptionProvider implements SubscriptionProviderInterface
         $entity->setValidUntil(new \DateTime($subscription->getValidUntil()));
         $entity->setCreatedAt(new \DateTime($subscription->getCreatedAt()));
         $entity->setUpdatedAt(new \DateTime($subscription->getUpdatedAt()));
-        $entity->setMainExternalReference($subscription->getMainExternalReference());
-        $entity->setChildExternalReference($subscription->getChildExternalReference());
 
         return $entity;
+    }
+
+    public function getSubscription(string $id): Subscription
+    {
+        $response = $this->sdkFactory->createSubscriptionsApi()->showSubscriptionById($id);
+
+        return $this->buildSubscription($response);
     }
 }

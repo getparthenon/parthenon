@@ -25,7 +25,7 @@ use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Plan\Counter\TeamInviteCounterInterface;
 use Parthenon\Billing\Plan\LimitedUserInterface;
 use Parthenon\Billing\Plan\PlanManagerInterface;
-use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Billing\Subscription\SubscriptionProviderInterface;
 use Parthenon\User\Entity\MemberInterface;
 use Parthenon\User\Entity\TeamInviteCode;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -37,7 +37,7 @@ final class InviteVoter extends Voter
         private TeamInviteCounterInterface $teamInviteCounter,
         private PlanManagerInterface $planManager,
         private CustomerProviderInterface $customerProvider,
-        private SubscriptionRepositoryInterface $subscriptionRepository,
+        private SubscriptionProviderInterface $subscriptionRepository,
     ) {
     }
 
@@ -58,7 +58,7 @@ final class InviteVoter extends Voter
         }
 
         $customer = $this->customerProvider->getCurrentCustomer();
-        $subscriptions = $this->subscriptionRepository->getAllActiveForCustomer($customer);
+        $subscriptions = $this->subscriptionRepository->getSubscriptionsForCustomer($customer);
         $inviteLimit = 0;
 
         foreach ($subscriptions as $subscription) {
