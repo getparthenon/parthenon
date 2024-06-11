@@ -273,5 +273,7 @@
         </service>
         <service id="Parthenon\Billing\Refund\RefundManagerInterface" alias="Parthenon\Billing\Refund\RefundManager" />
 
+        <service id="Parthenon\Billing\Customer\NullCustomerRegister" class="Parthenon\Billing\Customer\NullCustomerRegister" />
+        <service id="Parthenon\Billing\Customer\CustomerRegisterInterface" alias="Parthenon\Billing\Customer\NullCustomerRegister" />
     </services>
 </container>

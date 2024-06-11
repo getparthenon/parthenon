@@ -33,6 +33,7 @@ class Team implements TeamInterface
     private ?\DateTime $deletedAt;
     private ?string $name = '';
     private bool $enabled = true;
+    private string $billingEmail;
 
     public function __construct()
     {
@@ -128,5 +129,15 @@ class Team implements TeamInterface
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getBillingEmail(): string
+    {
+        return $this->billingEmail;
+    }
+
+    public function setBillingEmail(string $billingEmail): void
+    {
+        $this->billingEmail = $billingEmail;
     }
 }

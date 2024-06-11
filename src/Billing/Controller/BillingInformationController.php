@@ -21,12 +21,13 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Controller;
 
+use Parthenon\Billing\Customer\CustomerRegisterInterface;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Common\Address;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -52,6 +53,7 @@ class BillingInformationController
         SerializerInterface $serializer,
         CustomerRepositoryInterface $customerRepository,
         CustomerProviderInterface $customerProvider,
+        CustomerRegisterInterface $customerRegister,
         ValidatorInterface $validator,
     ) {
         $customer = $customerProvider->getCurrentCustomer();
@@ -76,6 +78,7 @@ class BillingInformationController
         }
 
         $customer->setBillingAddress($address);
+        $customerRegister->updateCustomer($customer);
         $customerRepository->save($customer);
 
         return new JsonResponse(['success' => true], JsonResponse::HTTP_ACCEPTED);

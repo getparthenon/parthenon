@@ -11,6 +11,7 @@
         <field name="deleted_at" field-name="deletedAt" type="date" />
         <embed-many field="members" field-name="members" target-document="Parthenon\User\Entity\UserInterface" />
         <field name="name" field-name="name" type="string" />
+        <field name="billing_email" field-name="billingEmail" type="string" />
     </mapped-superclass>
 
 </doctrine-mongo-mapping>

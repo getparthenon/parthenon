@@ -19,27 +19,19 @@ declare(strict_types=1);
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Parthenon\User\Entity;
+namespace Parthenon\Billing\Customer;
 
-interface TeamInterface
+use Parthenon\Billing\Entity\CustomerInterface;
+
+class NullCustomerRegister implements CustomerRegisterInterface
 {
-    public function getId();
+    public function createCustomer(CustomerInterface $customer): void
+    {
+        // TODO: Implement createCustomer() method.
+    }
 
-    public function addMember(MemberInterface $member): self;
-
-    public function hasMember(MemberInterface $member): bool;
-
-    public function getMembers(): array;
-
-    public function getTeamSize(): int;
-
-    public function setCreatedAt(\DateTime $createdAt): self;
-
-    public function setName(?string $name);
-
-    public function getName(): ?string;
-
-    public function getBillingEmail(): string;
-
-    public function setBillingEmail(string $billingEmail): void;
+    public function updateCustomer(CustomerInterface $customer): void
+    {
+        // TODO: Implement updateCustomer() method.
+    }
 }

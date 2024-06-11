@@ -157,11 +157,6 @@ class TeamCustomerProviderTest extends TestCase
                 // TODO: Implement getExternalCustomerReference() method.
             }
 
-            public function getBillingEmail()
-            {
-                // TODO: Implement getBillingEmail() method.
-            }
-
             public function getDisplayName(): string
             {
                 // TODO: Implement getDisplayName() method.

@@ -13,5 +13,6 @@
         <field name="updatedAt" column="updated_at" type="datetime" nullable="true" />
         <field name="deletedAt" column="deleted_at" type="datetime" nullable="true" />
         <field name="name" column="name" type="string" length="255" nullable="true" />
+        <field name="billingEmail" column="billing_email" type="string" length="255" nullable="false" />
     </mapped-superclass>
 </doctrine-mapping>

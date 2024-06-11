@@ -47,6 +47,7 @@ final class TeamCreator implements TeamCreatorInterface
         $team->setName(sprintf("%s's team", $user->getEmail()));
         $team->setCreatedAt(new \DateTime('now'));
         $team->addMember($user);
+        $team->setBillingEmail($user->getEmail());
 
         $this->teamRepository->save($team);
         $user->setTeam($team);

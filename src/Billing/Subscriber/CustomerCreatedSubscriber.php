@@ -21,12 +21,10 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Subscriber;
 
-use Parthenon\Billing\BillaBear\SdkFactory;
+use Parthenon\Billing\Customer\CustomerRegisterInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Exception\NoCustomerException;
-use Parthenon\Common\Address;
 use Parthenon\User\Entity\MemberInterface;
-use Parthenon\User\Entity\UserInterface;
 use Parthenon\User\Event\PostUserSignupEvent;
 use Parthenon\User\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -35,7 +33,7 @@ final class CustomerCreatedSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
-        private SdkFactory $sdkFactory,
+        private CustomerRegisterInterface $customerRegister,
     ) {
     }
 
@@ -58,33 +56,7 @@ final class CustomerCreatedSubscriber implements EventSubscriberInterface
             throw new NoCustomerException(sprintf('There is no BillaBear customer'));
         }
 
-        $payload = $this->buildPayload($user, $customer);
-        $response = $this->sdkFactory->createCustomersApi()->createCustomer($payload);
-        $customer->setExternalCustomerReference($response->getId());
-
+        $this->customerRegister->createCustomer($customer);
         $this->userRepository->save($customer);
-    }
-
-    private function buildPayload(UserInterface $user, CustomerInterface $internalCustomer): \BillaBear\Model\Customer
-    {
-        $customer = new \BillaBear\Model\Customer();
-        $customer->setEmail($user->getEmail());
-        if ($internalCustomer->hasBillingAddress()) {
-            $customer->setAddress($this->convertBillingAddress($internalCustomer->getBillingAddress()));
-        }
-
-        return $customer;
-    }
-
-    private function convertBillingAddress(Address $address): \BillaBear\Model\Address
-    {
-        $apiAddress = new \BillaBear\Model\Address();
-        $apiAddress->setStreetLineOne($address->getStreetLineOne());
-        $apiAddress->setStreetLineTwo($address->getStreetLineTwo());
-        $apiAddress->setCity($address->getCity());
-        $apiAddress->setCountry($address->getCountry());
-        $apiAddress->setPostcode($address->getPostcode());
-
-        return $apiAddress;
     }
 }

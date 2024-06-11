@@ -37,6 +37,7 @@ class TeamCreatorTest extends TestCase
 
         $user = $this->createMock(MemberInterface::class);
         $user->expects($this->once())->method('setTeam')->with($this->isInstanceOf(TeamInterface::class));
+        $user->method('getEmail')->willReturn('test@example.org');
 
         $teamRepository->expects($this->once())->method('save')->with($this->isInstanceOf(TeamInterface::class));
         $userRepository->expects($this->once())->method('save')->with($this->equalTo($user));

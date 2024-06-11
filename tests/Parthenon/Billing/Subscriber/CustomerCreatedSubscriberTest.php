@@ -21,9 +21,8 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\Subscriber;
 
-use BillaBear\Api\CustomersApi;
 use BillaBear\Model\Customer;
-use Parthenon\Billing\BillaBear\SdkFactory;
+use Parthenon\Billing\Customer\CustomerRegisterInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Common\Address;
 use Parthenon\User\Entity\MemberInterface;
@@ -44,10 +43,8 @@ class CustomerCreatedSubscriberTest extends TestCase
         $customerModel->setId(self::CUSTOMER_ID);
 
         $userRepository = $this->createMock(UserRepositoryInterface::class);
-        $sdkFactory = $this->createMock(SdkFactory::class);
-        $customersApi = $this->createMock(CustomersApi::class);
-        $customersApi->expects($this->once())->method('createCustomer')->willReturn($customerModel);
-        $sdkFactory->method('createCustomersApi')->willReturn($customersApi);
+        $customerRegister = $this->createMock(CustomerRegisterInterface::class);
+        $customerRegister->expects($this->once())->method('createCustomer');
 
         $user = new class() extends User implements CustomerInterface {
             private $customerId;
@@ -90,9 +87,9 @@ class CustomerCreatedSubscriberTest extends TestCase
                 // TODO: Implement hasExternalCustomerReference() method.
             }
 
-            public function getBillingEmail()
+            public function getBillingEmail(): string
             {
-                // TODO: Implement getBillingEmail() method.
+                return $this->email;
             }
 
             public function setPaymentProviderDetailsUrl(?string $url)
@@ -119,10 +116,8 @@ class CustomerCreatedSubscriberTest extends TestCase
 
         $event = new PostUserSignupEvent($user);
 
-        $subject = new CustomerCreatedSubscriber($userRepository, $sdkFactory);
+        $subject = new CustomerCreatedSubscriber($userRepository, $customerRegister);
         $subject->userCreated($event);
-
-        $this->assertEquals(self::CUSTOMER_ID, $user->getExternalCustomerReference());
     }
 
     public function testRegisterTeamCustomer()
@@ -131,10 +126,8 @@ class CustomerCreatedSubscriberTest extends TestCase
         $customerModel->setId(self::CUSTOMER_ID);
 
         $userRepository = $this->createMock(UserRepositoryInterface::class);
-        $sdkFactory = $this->createMock(SdkFactory::class);
-        $customersApi = $this->createMock(CustomersApi::class);
-        $customersApi->expects($this->once())->method('createCustomer')->willReturn($customerModel);
-        $sdkFactory->method('createCustomersApi')->willReturn($customersApi);
+        $customerRegister = $this->createMock(CustomerRegisterInterface::class);
+        $customerRegister->expects($this->once())->method('createCustomer');
 
         $team = new class() extends Team implements CustomerInterface {
             private $customerId;
@@ -175,11 +168,6 @@ class CustomerCreatedSubscriberTest extends TestCase
             public function hasExternalCustomerReference(): bool
             {
                 // TODO: Implement hasExternalCustomerReference() method.
-            }
-
-            public function getBillingEmail()
-            {
-                // TODO: Implement getBillingEmail() method.
             }
 
             public function setPaymentProviderDetailsUrl(?string $url)
@@ -228,9 +216,7 @@ class CustomerCreatedSubscriberTest extends TestCase
 
         $event = new PostUserSignupEvent($user);
 
-        $subject = new CustomerCreatedSubscriber($userRepository, $sdkFactory);
+        $subject = new CustomerCreatedSubscriber($userRepository, $customerRegister);
         $subject->userCreated($event);
-
-        $this->assertEquals(self::CUSTOMER_ID, $team->getExternalCustomerReference());
     }
 }
