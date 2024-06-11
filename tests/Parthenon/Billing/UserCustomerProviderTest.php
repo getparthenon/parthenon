@@ -159,6 +159,16 @@ class UserCustomerProviderTest extends TestCase
             {
                 // TODO: Implement setPaymentProviderDetailsUrl() method.
             }
+
+            public function setEnabled(bool $enabled)
+            {
+                // TODO: Implement setEnabled() method.
+            }
+
+            public function isEnabled(): bool
+            {
+                // TODO: Implement isEnabled() method.
+            }
         });
         $userCustomerProvider = new UserCustomerProvider($security);
         $actual = $userCustomerProvider->getCurrentCustomer();

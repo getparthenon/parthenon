@@ -45,4 +45,8 @@ interface CustomerInterface extends CrudEntityInterface
     public function setPaymentProviderDetailsUrl(?string $url);
 
     public function getPaymentProviderDetailsUrl();
+
+    public function setEnabled(bool $enabled);
+
+    public function isEnabled(): bool;
 }

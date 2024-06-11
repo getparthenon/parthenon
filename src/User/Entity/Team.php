@@ -32,6 +32,7 @@ class Team implements TeamInterface
     private ?\DateTime $updatedAt;
     private ?\DateTime $deletedAt;
     private ?string $name = '';
+    private bool $enabled = true;
 
     public function __construct()
     {
@@ -117,5 +118,15 @@ class Team implements TeamInterface
     public function setName(?string $name): void
     {
         $this->name = $name;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }

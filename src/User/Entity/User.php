@@ -48,6 +48,7 @@ class User implements UserInterface, EquatableInterface, DeletableInterface
     protected bool $isConfirmed = false;
     protected $isDeleted = false;
     protected $roles = [];
+    protected bool $enabled = false;
 
     public function getId()
     {
@@ -213,5 +214,15 @@ class User implements UserInterface, EquatableInterface, DeletableInterface
     public function getUserIdentifier(): string
     {
         return $this->email;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }
