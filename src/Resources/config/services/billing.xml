@@ -275,5 +275,8 @@
 
         <service id="Parthenon\Billing\Customer\NullCustomerRegister" class="Parthenon\Billing\Customer\NullCustomerRegister" />
         <service id="Parthenon\Billing\Customer\CustomerRegisterInterface" alias="Parthenon\Billing\Customer\NullCustomerRegister" />
+
+        <service id="Parthenon\Billing\Invoice\EmptyInvoiceProvider" class="Parthenon\Billing\Invoice\EmptyInvoiceProvider" />
+        <service id="Parthenon\Billing\Invoice\InvoiceProviderInterface" alias="Parthenon\Billing\Invoice\EmptyInvoiceProvider" />
     </services>
 </container>

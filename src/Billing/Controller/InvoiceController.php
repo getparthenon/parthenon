@@ -24,6 +24,7 @@ namespace Parthenon\Billing\Controller;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Invoice\InvoiceChargerInterface;
 use Parthenon\Billing\Invoice\InvoiceProviderInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,11 +40,13 @@ class InvoiceController
         CustomerProviderInterface $customerProvider,
         InvoiceProviderInterface $invoiceProvider,
         SerializerInterface $serializer,
+        #[Autowire('%parthenon_billing_billabear_enabled%')]
+        bool $supported
     ): Response {
         $customer = $customerProvider->getCurrentCustomer();
         $invoices = $invoiceProvider->fetchInvoices($customer);
 
-        $returnData = $serializer->serialize(['invoices' => $invoices], 'json');
+        $returnData = $serializer->serialize(['invoices' => $invoices, 'supported' => $supported], 'json');
 
         return JsonResponse::fromJsonString($returnData);
     }
