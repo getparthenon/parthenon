@@ -24,11 +24,13 @@ namespace Parthenon\Billing\Controller;
 use Obol\Exception\UnsupportedFunctionalityException;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
+use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Billing\Exception\NoPaymentDetailsException;
 use Parthenon\Billing\Exception\NoPlanFoundException;
 use Parthenon\Billing\Exception\NoPlanPriceFoundException;
 use Parthenon\Billing\Exception\PaymentFailureException;
+use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Response\StartSubscriptionResponse;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
@@ -124,5 +126,24 @@ class SubscriptionController
         }
 
         return new JsonResponse(StartSubscriptionResponse::createSuccessResponse($subscription), JsonResponse::HTTP_CREATED);
+    }
+
+    #[Route('/billing/subscription/{id}/change/{planName}/{schedule}/{currency}', name: 'parthenon_billing_subscription_change', methods: ['POST'])]
+    public function changeSubscription(
+        Request $request,
+        SubscriptionProviderInterface $subscriptionProvider,
+        SubscriptionManagerInterface $subscriptionManager,
+        PlanManagerInterface $planManager,
+    ): Response {
+        $subscriptions = $subscriptionProvider->getSubscription($request->get('id'));
+
+        $schedule = $request->get('schedule');
+        $currency = $request->get('currency');
+        $plan = $planManager->getPlanByName($request->get('planName'));
+        $price = $plan->getPriceForPaymentSchedule($schedule, $currency);
+
+        $subscriptionManager->changeSubscriptionPlan($subscriptions, $plan, $price, BillingChangeTiming::INSTANTLY);
+
+        return new JsonResponse(['success' => true], JsonResponse::HTTP_CREATED);
     }
 }

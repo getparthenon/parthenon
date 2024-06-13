@@ -23,6 +23,8 @@ namespace Parthenon\Billing\BillaBear\Subscription;
 
 use BillaBear\ApiException;
 use BillaBear\Model\SubscriptionIdCancelBody;
+use BillaBear\Model\SubscriptionIdPlanBody;
+use BillaBear\Model\SubscriptionIdPriceBody;
 use BillaBear\Model\SubscriptionStartBody;
 use Obol\Model\Enum\ChargeFailureReasons;
 use Parthenon\Billing\BillaBear\SdkFactory;
@@ -168,11 +170,20 @@ class SubscriptionManager implements SubscriptionManagerInterface
 
     public function changeSubscriptionPrice(Subscription $subscription, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
-        // TODO: Implement changeSubscriptionPrice() method.
+        $payload = new SubscriptionIdPriceBody();
+        $payload->setPrice($price->getId());
+        $payload->setWhen($billingChangeTiming->value);
+
+        $this->sdkFactory->createSubscriptionsApi()->changeSubscriptionPrice($payload, $subscription->getId());
     }
 
-    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
+    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan|Plan $plan, Price|PlanPrice $price, BillingChangeTiming $billingChangeTiming): void
     {
-        // TODO: Implement changeSubscriptionPlan() method.
+        $payload = new SubscriptionIdPlanBody();
+        $payload->setPrice($price->getEntityId());
+        $payload->setPlan($plan->getEntityId());
+        $payload->setWhen($billingChangeTiming->value);
+
+        $this->sdkFactory->createSubscriptionsApi()->customerChangeSubscriptionPlan($payload, $subscription->getId());
     }
 }

@@ -235,7 +235,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         $this->provider->subscriptions()->updatePrice($obolSubscription, $prorataTye);
     }
 
-    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
+    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan|Plan $plan, Price|PlanPrice $price, BillingChangeTiming $billingChangeTiming): void
     {
         $subscription->setSubscriptionPlan($plan);
         $subscription->setPlanName($plan->getName());

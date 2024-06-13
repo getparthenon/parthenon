@@ -54,6 +54,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
         $entity->setValidUntil(new \DateTime($subscription->getValidUntil()));
         $entity->setCreatedAt(new \DateTime($subscription->getCreatedAt()));
         $entity->setUpdatedAt(new \DateTime($subscription->getUpdatedAt()));
+        $entity->setCurrency($subscription->getPrice()->getCurrency());
 
         return $entity;
     }
