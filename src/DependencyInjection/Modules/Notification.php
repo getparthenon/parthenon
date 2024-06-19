@@ -203,7 +203,7 @@ final class Notification implements ModuleConfigurationInterface
             throw new ParameterNotSetException('When the notification.email.provider is Postmark you need to define postmark.api_key');
         }
 
-        $container->setParameter('parthenon_notification_email_sendgrid_api_key', $config['notification']['email']['sendgrid']['api_key']);
+        $container->setParameter('parthenon_notification_email_sendgrid_api_key', $config['notification']['email']['postmark']['api_key']);
 
         $container->setAlias($senderInterface, PostmarkEmailSender::class);
 
