@@ -75,7 +75,7 @@
         </service>
         <service id="Parthenon\Notification\Slack\ConfigProviderInterface" alias="Parthenon\Notification\Slack\OauthConfigProvider"/>
 
-        <service id="parthenon.notification.third_party.postmark_client" class="\PostmarkClient">
+        <service id="parthenon.notification.third_party.postmark_client" class="Postmark\PostmarkClient">
             <argument>%parthenon_notification_email_postmark_apikey%</argument>
         </service>
         <service id="Parthenon\Notification\Sender\PostmarkEmailSender" class="Parthenon\Notification\Sender\PostmarkEmailSender">
