@@ -22,8 +22,10 @@ declare(strict_types=1);
 namespace Parthenon\Notification\Sender;
 
 use Parthenon\Notification\Attachment;
+use Parthenon\Notification\Configuration;
 use Parthenon\Notification\EmailInterface;
 use PHPUnit\Framework\TestCase;
+use Postmark\Models\DynamicResponseModel;
 use Postmark\PostmarkClient;
 
 class PostmarkEmailSenderTest extends TestCase
@@ -71,9 +73,9 @@ class PostmarkEmailSenderTest extends TestCase
             }
 
             return true;
-        }));
+        }))->willReturn(new DynamicResponseModel([['ErrorCode' => 0, 'Message' => 'OK']]));
 
-        $sender = new PostmarkEmailSender($postmarkClient);
+        $sender = new PostmarkEmailSender($postmarkClient, new Configuration('Test', 'test@example.com'));
         $sender->send($message);
     }
 
@@ -118,9 +120,9 @@ class PostmarkEmailSenderTest extends TestCase
             }
 
             return true;
-        }));
+        }))->willReturn(new DynamicResponseModel([['ErrorCode' => 0, 'Message' => 'OK']]));
 
-        $sender = new PostmarkEmailSender($postmarkClient);
+        $sender = new PostmarkEmailSender($postmarkClient, new Configuration('Test', 'test@example.com'));
         $sender->send($message);
     }
 
@@ -169,9 +171,9 @@ class PostmarkEmailSenderTest extends TestCase
             }
 
             return true;
-        }));
+        }))->willReturn(new DynamicResponseModel([['ErrorCode' => 0, 'Message' => 'OK']]));
 
-        $sender = new PostmarkEmailSender($postmarkClient);
+        $sender = new PostmarkEmailSender($postmarkClient, new Configuration('Test', 'test@example.com'));
         $sender->send($message);
     }
 }

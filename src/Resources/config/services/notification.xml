@@ -80,6 +80,7 @@
         </service>
         <service id="Parthenon\Notification\Sender\PostmarkEmailSender" class="Parthenon\Notification\Sender\PostmarkEmailSender">
             <argument type="service" id="parthenon.notification.third_party.postmark_client" />
+            <argument type="service" id="Parthenon\Notification\Configuration" />
         </service>
 
 

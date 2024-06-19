@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace Parthenon\Notification\Sender;
 
 use Parthenon\Common\LoggerAwareTrait;
+use Parthenon\Notification\Configuration;
 use Parthenon\Notification\EmailInterface;
 use Parthenon\Notification\EmailSenderInterface;
 use Parthenon\Notification\Exception\UnableToSendMessageException;
@@ -32,7 +33,7 @@ final class PostmarkEmailSender implements EmailSenderInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private PostmarkClient $postmarkClient)
+    public function __construct(private PostmarkClient $postmarkClient, private Configuration $configuration)
     {
     }
 
@@ -42,10 +43,11 @@ final class PostmarkEmailSender implements EmailSenderInterface
         foreach ($message->getAttachments() as $attachment) {
             $attachments[] = PostmarkAttachment::fromRawData($attachment->getContent(), $attachment->getName());
         }
+        $from = $message->getFromAddress() ?? $this->configuration->getFromAddress();
 
         $email = [
             'To' => $message->getToAddress(),
-            'From' => $message->getFromAddress(),
+            'From' => $from,
             'Subject' => $message->getSubject(),
             'Attachments' => $attachments,
         ];
@@ -57,6 +59,10 @@ final class PostmarkEmailSender implements EmailSenderInterface
             } else {
                 $email['HtmlBody'] = $message->getContent();
                 $response = $this->postmarkClient->sendEmailBatch([$email]);
+            }
+            $response = $response[0];
+            if (0 !== $response->ErrorCode) {
+                throw new \Exception($response->Message);
             }
 
             $this->getLogger()->info('Sent email using PostMark');
