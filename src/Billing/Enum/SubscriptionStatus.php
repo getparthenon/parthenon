@@ -30,4 +30,6 @@ enum SubscriptionStatus: string
     case PAUSED = 'paused';
     case CANCELLED = 'cancelled';
     case BLOCKED = 'blocked';
+    case TRIAL_ACTIVE = 'trial_active';
+    case TRIAL_ENDED = 'trial_ended';
 }
