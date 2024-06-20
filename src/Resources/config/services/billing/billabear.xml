@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autoconfigure="true" />
+
+        <service id="Parthenon\Billing\BillaBear\SdkFactory" class="Parthenon\Billing\BillaBear\SdkFactory">
+            <argument>%parthenon_billing_billabear_api_url%</argument>
+            <argument>%parthenon_billing_billabear_api_key%</argument>
+        </service>
+
+        <service id="Parthenon\Billing\Subscriber\CustomerCreatedSubscriber" class="Parthenon\Billing\Subscriber\CustomerCreatedSubscriber">
+            <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
+            <argument type="service" id="Parthenon\Billing\Customer\CustomerRegisterInterface" />
+        </service>
+
+        <service id="Parthenon\Billing\BillaBear\Repository\PaymentCardRepository" class="Parthenon\Billing\BillaBear\Repository\PaymentCardRepository">
+            <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
+        </service>
+        <service id="Parthenon\Billing\Repository\PaymentCardRepositoryInterface" alias="Parthenon\Billing\BillaBear\Repository\PaymentCardRepository" />
+
+        <service id="Parthenon\Billing\BillaBear\PaymentMethod\Deleter" class="Parthenon\Billing\BillaBear\PaymentMethod\Deleter">
+            <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
+        </service>
+        <service id="Parthenon\Billing\PaymentMethod\DeleterInterface" alias="Parthenon\Billing\BillaBear\PaymentMethod\Deleter" />
+
+        <service id="Parthenon\Billing\BillaBear\PaymentMethod\FrontendAddProcessor" class="Parthenon\Billing\BillaBear\PaymentMethod\FrontendAddProcessor">
+            <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
+        </service>
+        <service id="Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface" alias="Parthenon\Billing\BillaBear\PaymentMethod\FrontendAddProcessor" />
+
+        <service id="Parthenon\Billing\BillaBear\Plan\BillaBearPlanManager" class="Parthenon\Billing\BillaBear\Plan\BillaBearPlanManager">
+            <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
+        </service>
+
+        <service id="Parthenon\Billing\Plan\CachedPlanManager" class="Parthenon\Billing\Plan\CachedPlanManager">
+            <argument type="service" id="Parthenon\Billing\BillaBear\Plan\BillaBearPlanManager" />
+            <argument type="service" id="Redis" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+        <service id="Parthenon\Billing\Plan\PlanManagerInterface" alias="Parthenon\Billing\Plan\CachedPlanManager" />
+
+        <service id="Parthenon\Billing\BillaBear\Subscription\SubscriptionManager" class="Parthenon\Billing\BillaBear\Subscription\SubscriptionManager">
+            <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
+            <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
+            <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+        </service>
+        <service id="Parthenon\Billing\Subscription\SubscriptionManagerInterface" alias="Parthenon\Billing\BillaBear\Subscription\SubscriptionManager" />
+
+        <service id="Parthenon\Billing\BillaBear\Subscription\SubscriptionProvider" class="Parthenon\Billing\BillaBear\Subscription\SubscriptionProvider">
+            <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
+        </service>
+
+        <service id="Parthenon\Billing\Subscription\CachedSubscriptionProvider" class="Parthenon\Billing\Subscription\CachedSubscriptionProvider">
+            <argument type="service" id="Parthenon\Billing\BillaBear\Subscription\SubscriptionProvider" />
+            <argument type="service" id="Redis" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+        <service id="Parthenon\Billing\Subscription\SubscriptionProviderInterface" alias="Parthenon\Billing\Subscription\CachedSubscriptionProvider" />
+
+
+        <service id="Parthenon\Billing\BillaBear\Invoice\InvoiceProvider" class="Parthenon\Billing\BillaBear\Invoice\InvoiceProvider">
+            <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
+        </service>
+        <service id="Parthenon\Billing\Invoice\InvoiceProviderInterface" alias="Parthenon\Billing\BillaBear\Invoice\InvoiceProvider" />
+        <service id="Parthenon\Billing\BillaBear\Invoice\InvoiceCharger" class="Parthenon\Billing\BillaBear\Invoice\InvoiceCharger">
+            <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
+        </service>
+        <service id="Parthenon\Billing\Invoice\InvoiceChargerInterface" alias="Parthenon\Billing\BillaBear\Invoice\InvoiceCharger" />
+
+        <service id="Parthenon\Billing\BillaBear\Webhook\CustomerDisableProcessor" class="Parthenon\Billing\BillaBear\Webhook\CustomerDisableProcessor">
+            <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Billing\BillaBear\Webhook\CustomerEnableProcessor" class="Parthenon\Billing\BillaBear\Webhook\CustomerEnableProcessor">
+            <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
+        </service>
+        <service id="Parthenon\Billing\BillaBear\Webhook\Handler" class="Parthenon\Billing\BillaBear\Webhook\Handler">
+            <argument type="collection">
+                <argument type="service" id="Parthenon\Billing\BillaBear\Webhook\CustomerEnableProcessor" />
+                <argument type="service" id="Parthenon\Billing\BillaBear\Webhook\CustomerDisableProcessor" />
+            </argument>
+        </service>
+
+
+        <service id="Parthenon\Billing\BillaBear\Customer\CustomerRegister" class="Parthenon\Billing\BillaBear\Customer\CustomerRegister">
+            <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
+        </service>
+        <service id="Parthenon\Billing\Customer\CustomerRegisterInterface" alias="Parthenon\Billing\BillaBear\Customer\CustomerRegister" />
+    </services>
+</container>
