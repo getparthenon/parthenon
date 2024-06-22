@@ -50,11 +50,11 @@ class SubscriptionProvider implements SubscriptionProviderInterface
         $entity->setActive(true);
         $entity->setPaymentSchedule($subscription->getSchedule());
         $entity->setSeats($subscription->getSeatNumber());
-        $entity->setPlanName($subscription->getPlan()->getName());
+        $entity->setPlanName($subscription->getPlan()?->getName());
         $entity->setValidUntil(new \DateTime($subscription->getValidUntil()));
         $entity->setCreatedAt(new \DateTime($subscription->getCreatedAt()));
         $entity->setUpdatedAt(new \DateTime($subscription->getUpdatedAt()));
-        $entity->setCurrency($subscription->getPrice()->getCurrency());
+        $entity->setCurrency($subscription->getPrice()?->getCurrency());
 
         return $entity;
     }
