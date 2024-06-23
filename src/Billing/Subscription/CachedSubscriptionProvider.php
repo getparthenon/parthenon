@@ -52,7 +52,7 @@ class CachedSubscriptionProvider implements SubscriptionProviderInterface
         if (!$rawData) {
             $this->getLogger()->debug('Fetching subscription from original subscription provider');
             $this->subscription[$id] = $this->subscriptionProvider->getSubscription($id);
-            $rawData = serialize($this->subscriptions[$id]);
+            $rawData = serialize($this->subscription[$id]);
             $this->redis->set($key, $rawData);
         } else {
             $this->getLogger()->debug('Got the subscription from cache');

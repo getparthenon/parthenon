@@ -23,6 +23,7 @@ namespace Parthenon\Billing\BillaBear\Subscription;
 
 use Parthenon\Billing\BillaBear\SdkFactory;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Subscription\SubscriptionProviderInterface;
 
@@ -55,6 +56,14 @@ class SubscriptionProvider implements SubscriptionProviderInterface
         $entity->setCreatedAt(new \DateTime($subscription->getCreatedAt()));
         $entity->setUpdatedAt(new \DateTime($subscription->getUpdatedAt()));
         $entity->setCurrency($subscription->getPrice()?->getCurrency());
+
+        if ($subscription->getPrice()) {
+            $price = new Price();
+            $price->setCurrency($subscription->getPrice()?->getCurrency());
+            $price->setAmount($subscription->getPrice()?->getAmount());
+            $price->setSchedule($subscription->getPrice()?->getSchedule());
+            $entity->setPrice($price);
+        }
 
         return $entity;
     }
