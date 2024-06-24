@@ -108,6 +108,8 @@ class SubscriptionManager implements SubscriptionManagerInterface
         $subscription->setValidUntil(new \DateTime($response->getValidUntil()));
         $subscription->setMainExternalReference($response->getMainExternalReference());
         $subscription->setChildExternalReference($response->getChildExternalReference());
+        $subscription->setPlanName($plan->getName());
+        $subscription->setStatus(SubscriptionStatus::from($response->getStatus()));
 
         $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
 
