@@ -27,6 +27,11 @@
         </service>
         <service id="Parthenon\Billing\PaymentMethod\DeleterInterface" alias="Parthenon\Billing\BillaBear\PaymentMethod\Deleter" />
 
+        <service id="Parthenon\Billing\BillaBear\PaymentMethod\DefaultPaymentManager" class="Parthenon\Billing\BillaBear\PaymentMethod\DefaultPaymentManager">
+            <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
+        </service>
+        <service id="Parthenon\Billing\PaymentMethod\DefaultPaymentManagerInterface" alias="Parthenon\Billing\BillaBear\PaymentMethod\DefaultPaymentManager" />
+
         <service id="Parthenon\Billing\BillaBear\PaymentMethod\FrontendAddProcessor" class="Parthenon\Billing\BillaBear\PaymentMethod\FrontendAddProcessor">
             <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
         </service>
