@@ -25,6 +25,7 @@ use Parthenon\Billing\BillaBear\SdkFactory;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Subscription\SubscriptionProviderInterface;
 
 class SubscriptionProvider implements SubscriptionProviderInterface
@@ -56,6 +57,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
         $entity->setCreatedAt(new \DateTime($subscription->getCreatedAt()));
         $entity->setUpdatedAt(new \DateTime($subscription->getUpdatedAt()));
         $entity->setCurrency($subscription->getPrice()?->getCurrency());
+        $entity->setStatus(SubscriptionStatus::from($subscription->getStatus()));
 
         if ($subscription->getPrice()) {
             $price = new Price();
