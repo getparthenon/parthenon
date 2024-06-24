@@ -86,7 +86,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
         $subscriptionStart = new SubscriptionStartBody($payload);
 
         try {
-            $response = $this->sdkFactory->createSubscriptionsApi()->customerStartSubscription($subscriptionStart, $customerId);
+            $response = $this->sdkFactory->createSubscriptionsApi()->createSubscription($subscriptionStart, $customerId);
         } catch (ApiException $apiException) {
             if (402 === $apiException->getCode()) {
                 $body = $apiException->getResponseBody();
