@@ -148,7 +148,7 @@ class Subscription implements SubscriptionInterface
         return $this->mainExternalReference;
     }
 
-    public function setMainExternalReference(string $mainExternalReference): void
+    public function setMainExternalReference(?string $mainExternalReference): void
     {
         $this->mainExternalReference = $mainExternalReference;
     }
