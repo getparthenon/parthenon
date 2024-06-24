@@ -121,14 +121,10 @@ class Subscription implements SubscriptionInterface
 
     public function setStatus(SubscriptionStatus $status): void
     {
-        if (SubscriptionStatus::CANCELLED === $status
-            || SubscriptionStatus::PAUSED === $status
-            || SubscriptionStatus::BLOCKED === $status
-            || SubscriptionStatus::OVERDUE_PAYMENT_DISABLED === $status) {
-            $this->active = false;
-        } else {
-            $this->active = true;
-        }
+        $this->active = match ($status) {
+            SubscriptionStatus::ACTIVE, SubscriptionStatus::TRIAL_ACTIVE, SubscriptionStatus::OVERDUE_PAYMENT_OPEN, SubscriptionStatus::PENDING_CANCEL => true,
+            default => false,
+        };
 
         $this->status = $status;
     }
