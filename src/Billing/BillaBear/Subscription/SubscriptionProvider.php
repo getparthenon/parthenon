@@ -36,7 +36,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
 
     public function getSubscriptionsForCustomer(CustomerInterface $customer): array
     {
-        $response = $this->sdkFactory->createSubscriptionsApi()->getForCustomer($customer->getExternalCustomerReference());
+        $response = $this->sdkFactory->createSubscriptionsApi()->getActiveForCustomer($customer->getExternalCustomerReference());
         $output = [];
         foreach ($response->getData() as $subscription) {
             $output[] = $this->buildSubscription($subscription);
