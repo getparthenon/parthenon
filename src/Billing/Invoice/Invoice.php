@@ -33,6 +33,8 @@ class Invoice
 
     private bool $paid;
 
+    private string $number;
+
     #[SerializedName('created_at')]
     private \DateTime $createdAt;
 
@@ -84,5 +86,15 @@ class Invoice
     public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getNumber(): string
+    {
+        return $this->number;
+    }
+
+    public function setNumber(string $number): void
+    {
+        $this->number = $number;
     }
 }

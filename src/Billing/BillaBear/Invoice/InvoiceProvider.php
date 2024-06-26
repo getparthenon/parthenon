@@ -59,6 +59,7 @@ class InvoiceProvider implements InvoiceProviderInterface
         $invoice->setCurrency($invoiceData->getCurrency());
         $invoice->setAmount($invoiceData->getAmountDue());
         $invoice->setPaid($invoiceData->getPaid());
+        $invoice->setNumber($invoice->getNumber());
         $invoice->setCreatedAt(new \DateTime($invoiceData->getCreatedAt()));
 
         return $invoice;
