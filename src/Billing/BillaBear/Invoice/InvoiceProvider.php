@@ -21,10 +21,10 @@ declare(strict_types=1);
 
 namespace Parthenon\Billing\BillaBear\Invoice;
 
-use BillaBear\Model\InlineResponse2004Data;
+use BillaBear\Model\Invoice as Model;
 use Parthenon\Billing\BillaBear\SdkFactory;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Invoice\Invoice;
+use Parthenon\Billing\Invoice\Invoice as Entity;
 use Parthenon\Billing\Invoice\InvoiceProviderInterface;
 
 class InvoiceProvider implements InvoiceProviderInterface
@@ -52,9 +52,9 @@ class InvoiceProvider implements InvoiceProviderInterface
         return $downloadBlob;
     }
 
-    protected function buildDto(InlineResponse2004Data $invoiceData): Invoice
+    protected function buildDto(Model $invoiceData): Entity
     {
-        $invoice = new Invoice();
+        $invoice = new Entity();
         $invoice->setId($invoiceData->getId());
         $invoice->setCurrency($invoiceData->getCurrency());
         $invoice->setAmount($invoiceData->getAmountDue());
