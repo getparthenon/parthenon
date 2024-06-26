@@ -75,7 +75,7 @@ final class SubscriptionManager implements SubscriptionManagerInterface
         ?PaymentCard $paymentDetails = null,
         int $seatNumbers = 1,
         ?bool $hasTrial = null,
-        ?int $trialLengthDays = 0,
+        ?int $trialLengthDays = null,
     ): Subscription {
         $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($customer, $paymentDetails);
         $obolSubscription = $this->subscriptionFactory->createSubscription($billingDetails, $planPrice, $seatNumbers, $hasTrial ?? $plan->getHasTrial(), $trialLengthDays ?? $plan->getTrialLengthDays());
