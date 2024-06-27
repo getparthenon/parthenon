@@ -35,7 +35,7 @@ class InvoiceProvider implements InvoiceProviderInterface
 
     public function fetchInvoices(CustomerInterface $customer, mixed $lastKey = null): array
     {
-        $response = $this->sdkFactory->createCustomersApi()->listCustomerInvoices($customer->getExternalCustomerReference());
+        $response = $this->sdkFactory->createCustomersApi()->getInvoicesForCustomer($customer->getExternalCustomerReference());
 
         $output = [];
         foreach ($response->getData() as $invoice) {
