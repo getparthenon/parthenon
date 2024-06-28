@@ -70,7 +70,7 @@ final class CurrentTenantProvider implements TenantProviderInterface
 
         if ($this->previouslyFailed && !$refresh) {
             // If it's already failed other attempts by other possible factors will fail too.
-            throw new NoTenantFoundException(sprintf('Previously Unable to find tenant for \'%s\'', $subdomain), $e->getCode(), $e);
+            throw new NoTenantFoundException(sprintf('Previously Unable to find tenant for \'%s\'', $subdomain));
         }
 
         try {
