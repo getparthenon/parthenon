@@ -30,4 +30,6 @@ interface TenantProviderInterface
      * @throws NoTenantFoundException
      */
     public function getCurrentTenant(bool $refresh = false): TenantInterface;
+
+    public function setTenant(TenantInterface $tenant): void;
 }
