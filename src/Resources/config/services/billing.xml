@@ -52,9 +52,9 @@
             <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
         </service>
 
-        <service id="parthenon.payments.plan.counter_manager" class="Parthenon\Billing\Plan\CounterManager">
+        <service id="parthenon.billing.plan.counter_manager" class="Parthenon\Billing\Plan\CounterManager">
         </service>
-        <service id="Parthenon\Billing\Plan\CounterManager" alias="parthenon.payments.plan.counter_manager" />
+        <service id="Parthenon\Billing\Plan\CounterManager" alias="parthenon.billing.plan.counter_manager" />
 
         <service id="parthenon.plan.security.voter.plan_feature" class="Parthenon\Billing\Plan\Security\Voter\PlanFeatureVoter">
             <argument type="service" id="Parthenon\Billing\CustomerProviderInterface" />
