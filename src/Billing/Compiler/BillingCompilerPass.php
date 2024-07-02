@@ -22,15 +22,16 @@ declare(strict_types=1);
 namespace Parthenon\Billing\Compiler;
 
 use Parthenon\Billing\Webhook\HandlerManager;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Parthenon\Common\Compiler\AbstractCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class BillingCompilerPass implements CompilerPassInterface
+final class BillingCompilerPass extends AbstractCompilerPass
 {
     public function process(ContainerBuilder $container)
     {
         $this->handleEnabledDecider($container);
+        $this->handle($container, 'parthenon.billing.plan.counter_manager', 'parthenon.billing.plan.counter', 'add');
     }
 
     private function handleEnabledDecider(ContainerBuilder $container): void

@@ -25,6 +25,7 @@ use Parthenon\Billing\Athena\CustomerTeamSection;
 use Parthenon\Billing\Athena\CustomerUserSection;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Plan\CachedPlanManager;
+use Parthenon\Billing\Plan\CounterInterface;
 use Parthenon\Billing\Plan\PlanManager;
 use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Repository\CustomerRepositoryInterface;
@@ -111,6 +112,8 @@ class Billing implements ModuleConfigurationInterface
         if (!isset($config['billing']) || !isset($config['billing']['enabled']) || false === $config['billing']['enabled']) {
             return;
         }
+
+        $container->registerForAutoconfiguration(CounterInterface::class)->addTag('parthenon.billing.plan.counter');
         $container->registerForAutoconfiguration(HandlerInterface::class)->addTag('parthenon.billing.webhooks.handler');
         $container->setParameter('parthenon_billing_enabled', true);
 
