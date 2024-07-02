@@ -241,7 +241,7 @@
         <service id="parthenon.user.request_processor.settings" class="Parthenon\User\RequestProcessor\Settings">
             <argument type="service" id="Symfony\Component\Form\FormFactoryInterface" />
             <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
-            <argument type="service" id="Parthenon\User\Form\Type\SettingsType" />
+            <argument type="service" id="parthenon.user.form.settings" />
             <argument type="service" id="Symfony\Bundle\SecurityBundle\Security" />
             <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
             <argument type="service" id="Parthenon\Common\RequestHandler\RequestHandlerManagerInterface" />
@@ -311,6 +311,7 @@
             <tag name="form.type"  />
             <tag name="container.preload"  class="Parthenon\User\Form\Type\SettingsType" />
         </service>
+        <service id="parthenon.user.form.settings" alias="Parthenon\User\Form\Type\SettingsType" />
         <service id="Parthenon\User\Form\Type\UserInviteType" class="Parthenon\User\Form\Type\UserInviteType" />
         <service id="Parthenon\User\Form\Type\UserSignUpType" class="Parthenon\User\Form\Type\UserSignUpType">
             <argument type="service"  id="Parthenon\User\Entity\UserInterface" />
