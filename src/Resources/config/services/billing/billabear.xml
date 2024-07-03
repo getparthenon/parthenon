@@ -87,10 +87,6 @@
             <argument type="service" id="Parthenon\Billing\Repository\CustomerRepositoryInterface" />
         </service>
         <service id="Parthenon\Billing\BillaBear\Webhook\Handler" class="Parthenon\Billing\BillaBear\Webhook\Handler">
-            <argument type="collection">
-                <argument type="service" id="Parthenon\Billing\BillaBear\Webhook\CustomerEnableProcessor" />
-                <argument type="service" id="Parthenon\Billing\BillaBear\Webhook\CustomerDisableProcessor" />
-            </argument>
         </service>
 
 

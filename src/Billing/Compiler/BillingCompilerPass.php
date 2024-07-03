@@ -24,27 +24,13 @@ namespace Parthenon\Billing\Compiler;
 use Parthenon\Billing\Webhook\HandlerManager;
 use Parthenon\Common\Compiler\AbstractCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 final class BillingCompilerPass extends AbstractCompilerPass
 {
     public function process(ContainerBuilder $container)
     {
-        $this->handleEnabledDecider($container);
         $this->handle($container, 'parthenon.billing.plan.counter_manager', 'parthenon.billing.plan.counter', 'add');
-    }
-
-    private function handleEnabledDecider(ContainerBuilder $container): void
-    {
-        if (!$container->hasDefinition(HandlerManager::class)) {
-            return;
-        }
-
-        $handlerManager = $container->getDefinition(HandlerManager::class);
-        $definitions = $container->findTaggedServiceIds('parthenon.billing.webhooks.handler');
-
-        foreach ($definitions as $id => $tagInfo) {
-            $handlerManager->addMethodCall('addHandler', [new Reference($id)]);
-        }
+        $this->handle($container, HandlerManager::class, 'parthenon.billing.webhooks.handler', 'addHandler');
+        $this->handle($container, \Parthenon\Billing\BillaBear\Webhook\Handler::class, 'parthenon.billing.billabear.webhooks.handler', 'add');
     }
 }

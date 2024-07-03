@@ -38,4 +38,9 @@ final class Handler
             }
         }
     }
+
+    public function add(ProcessorInterface $processor): void
+    {
+        $this->processors[] = $processor;
+    }
 }

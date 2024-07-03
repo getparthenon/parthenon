@@ -23,6 +23,7 @@ namespace Parthenon\DependencyInjection\Modules;
 
 use Parthenon\Billing\Athena\CustomerTeamSection;
 use Parthenon\Billing\Athena\CustomerUserSection;
+use Parthenon\Billing\BillaBear\Webhook\ProcessorInterface;
 use Parthenon\Billing\CustomerProviderInterface;
 use Parthenon\Billing\Plan\CachedPlanManager;
 use Parthenon\Billing\Plan\CounterInterface;
@@ -115,6 +116,7 @@ class Billing implements ModuleConfigurationInterface
 
         $container->registerForAutoconfiguration(CounterInterface::class)->addTag('parthenon.billing.plan.counter');
         $container->registerForAutoconfiguration(HandlerInterface::class)->addTag('parthenon.billing.webhooks.handler');
+        $container->registerForAutoconfiguration(ProcessorInterface::class)->addTag('parthenon.billing.billabear.webhooks.handler');
         $container->setParameter('parthenon_billing_enabled', true);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
