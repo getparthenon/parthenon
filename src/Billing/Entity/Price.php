@@ -28,7 +28,7 @@ use Parthenon\Athena\Entity\DeletableInterface;
 
 class Price implements CrudEntityInterface, DeletableInterface, PriceInterface
 {
-    protected ?string $paymentProviderDetailsUrl;
+    protected ?string $paymentProviderDetailsUrl = null;
     private $id;
 
     private int $amount;
