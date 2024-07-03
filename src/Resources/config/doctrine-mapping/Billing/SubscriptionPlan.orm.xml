@@ -21,13 +21,13 @@
         <field name="hasTrial" column="has_trial" type="boolean" nullable="true"  />
         <field name="trialLengthDays" column="trial_length_days" type="integer" nullable="true"  />
         <many-to-one field="product" target-entity="Parthenon\Billing\Entity\ProductInterface" />
-        <one-to-many field="limits" target-entity="Parthenon\Billing\Entity\SubscriptionPlanLimit" mapped-by="subscriptionPlan" orphan-removal="false">
+        <one-to-many field="limits" target-entity="Parthenon\Billing\Entity\SubscriptionPlanLimit" mapped-by="subscriptionPlan" orphan-removal="true">
             <cascade>
                 <cascade-persist />
                 <cascade-remove />
             </cascade>
         </one-to-many>
-        <many-to-many field="features" target-entity="Parthenon\Billing\Entity\SubscriptionFeature" orphan-removal="false">
+        <many-to-many field="features" target-entity="Parthenon\Billing\Entity\SubscriptionFeature" orphan-removal="true">
             <join-table name="subscription_plan_subscription_feature">
                 <join-columns>
                     <join-column name="subscription_plan_id" referenced-column-name="id" />
@@ -41,7 +41,7 @@
                 <cascade-remove />
             </cascade>
         </many-to-many>
-        <many-to-many field="prices" target-entity="Parthenon\Billing\Entity\PriceInterface" orphan-removal="false" >
+        <many-to-many field="prices" target-entity="Parthenon\Billing\Entity\PriceInterface" orphan-removal="true" >
             <join-table name="subscription_plan_price">
                 <join-columns>
                     <join-column name="subscription_plan_id" referenced-column-name="id" />
