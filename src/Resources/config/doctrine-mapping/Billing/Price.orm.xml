@@ -14,6 +14,7 @@
         <field name="currency" column="currency" type="string" nullable="false" />
         <field name="recurring" column="recurring" type="boolean" nullable="true" />
         <field name="public" column="public" type="boolean" nullable="true" />
+        <field name="includingTax" column="including_tax" type="boolean" nullable="true" />
         <field name="isDeleted" column="is_deleted" type="boolean" nullable="true" />
         <field name="schedule" column="schedule" type="string" nullable="true" />
         <field name="externalReference" column="external_reference" type="string" nullable="true" />
