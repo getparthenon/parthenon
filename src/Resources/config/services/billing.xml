@@ -255,7 +255,7 @@
 
         <service id="Parthenon\Billing\Plan\CustomerPlanInfo" class="Parthenon\Billing\Plan\CustomerPlanInfo">
             <argument type="service" id="Parthenon\Billing\Subscription\SubscriptionProviderInterface" />
-            <argument type="service" id="Parthenon\Billing\Plan\PlanManager" />
+            <argument type="service" id="Parthenon\Billing\Plan\PlanManagerInterface" />
         </service>
         <service id="Parthenon\Billing\Plan\CustomerPlanInfoInterface" alias="Parthenon\Billing\Plan\CustomerPlanInfo" />
 
