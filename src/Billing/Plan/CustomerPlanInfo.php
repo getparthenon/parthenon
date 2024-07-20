@@ -59,7 +59,11 @@ class CustomerPlanInfo implements CustomerPlanInfoInterface
 
             foreach ($plan->getLimits() as $code => $limit) {
                 if ($limitCode === $code) {
-                    $count += $limit;
+                    if (is_array($limit)) {
+                        $count += $limit['limit'];
+                    } else {
+                        $count += $limit;
+                    }
                 }
             }
         }
