@@ -26,7 +26,7 @@ final class Handler
     /**
      * @param ProcessorInterface[] $processors
      */
-    public function __construct(private array $processors)
+    public function __construct(private array $processors = [])
     {
     }
 
