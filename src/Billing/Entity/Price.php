@@ -23,35 +23,45 @@ namespace Parthenon\Billing\Entity;
 
 use Brick\Money\Currency;
 use Brick\Money\Money;
+use Doctrine\Common\Collections\Collection;
 use Parthenon\Athena\Entity\CrudEntityInterface;
 use Parthenon\Athena\Entity\DeletableInterface;
+use Parthenon\Billing\Enum\PriceType;
+use Parthenon\Billing\Enum\UsageType;
 
 class Price implements CrudEntityInterface, DeletableInterface, PriceInterface
 {
+    protected $id;
+
+    protected int $amount;
+
+    protected string $currency;
+
+    protected bool $recurring;
+
+    protected ?string $schedule = null;
+
+    protected ?string $externalReference = null;
+
+    protected bool $includingTax = true;
+
+    protected Product $product;
+
+    protected ?bool $public = true;
+
+    protected ?bool $isDeleted = false;
+
+    protected \DateTimeInterface $createdAt;
+
+    protected ?\DateTimeInterface $deletedAt = null;
+
     protected ?string $paymentProviderDetailsUrl = null;
-    private $id;
 
-    private int $amount;
+    protected array|Collection $tierComponents = [];
 
-    private string $currency;
+    protected PriceType $type;
 
-    private bool $recurring;
-
-    private ?string $schedule = null;
-
-    private ?string $externalReference = null;
-
-    private bool $includingTax = true;
-
-    private Product $product;
-
-    private ?bool $public = true;
-
-    private ?bool $isDeleted = false;
-
-    private \DateTimeInterface $createdAt;
-
-    private ?\DateTimeInterface $deletedAt = null;
+    protected ?UsageType $usageType = null;
 
     public function getId()
     {
@@ -218,5 +228,35 @@ class Price implements CrudEntityInterface, DeletableInterface, PriceInterface
     public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getTierComponents(): Collection|array
+    {
+        return $this->tierComponents;
+    }
+
+    public function setTierComponents(Collection|array $tierComponents): void
+    {
+        $this->tierComponents = $tierComponents;
+    }
+
+    public function getType(): PriceType
+    {
+        return $this->type;
+    }
+
+    public function setType(PriceType $type): void
+    {
+        $this->type = $type;
+    }
+
+    public function getUsageType(): ?UsageType
+    {
+        return $this->usageType;
+    }
+
+    public function setUsageType(?UsageType $usageType): void
+    {
+        $this->usageType = $usageType;
     }
 }

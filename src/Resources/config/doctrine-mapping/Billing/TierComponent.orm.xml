@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="Parthenon\Billing\Entity\TierComponent">
+        <id name="id" type="uuid" column="id">
+            <generator strategy="CUSTOM" />
+            <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
+        </id>
+
+        <field name="firstUnit" column="first_unit" type="integer" nullable="false" />
+        <field name="lastUnit" column="last_unit" type="integer" nullable="true" />
+        <field name="unitPrice" column="unit_price" type="integer" nullable="false" />
+        <field name="flatFee" column="flat_fee" type="integer" nullable="false" />
+
+        <many-to-one field="price" target-entity="Parthenon\Billing\Entity\PriceInterface" inversed-by="price" />
+    </mapped-superclass>
+</doctrine-mapping>
