@@ -23,7 +23,11 @@
         <field name="externalReference" column="external_reference" type="string" nullable="true" />
         <field name="paymentProviderDetailsUrl" column="payment_provider_details_url" type="string" nullable="true" />
         <many-to-one field="product" target-entity="Parthenon\Billing\Entity\ProductInterface" />
-        <one-to-many field="tierComponents" target-entity="Parthenon\Billing\Entity\TierComponentInterface" mapped-by="price" />
+        <one-to-many field="tierComponents" target-entity="Parthenon\Billing\Entity\TierComponentInterface" mapped-by="price" orphan-removal="true">
+            <cascade>
+                <cascade-all />
+            </cascade>
+        </one-to-many>
         <field name="createdAt" column="created_at" type="datetime" nullable="false"  />
         <field name="deletedAt" column="deleted_at" type="datetime" nullable="true"  />
     </mapped-superclass>
