@@ -141,6 +141,10 @@ class Price implements CrudEntityInterface, DeletableInterface, PriceInterface
 
     public function getAsMoney(): Money
     {
+        if (!$this->amount) {
+            return Money::zero(Currency::of($this->currency));
+        }
+
         return Money::ofMinor($this->amount, Currency::of($this->currency));
     }
 
