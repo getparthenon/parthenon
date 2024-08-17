@@ -23,7 +23,7 @@ namespace Parthenon\Billing\Enum;
 
 enum PriceType: string
 {
-    case RECURRING = 'recurring';
+    case FIXED_PRICE = 'fixed_price';
     case ONE_OFF = 'one-off';
     case PACKAGE = 'package';
     case UNIT = 'per_unit';
