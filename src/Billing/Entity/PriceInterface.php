@@ -30,7 +30,7 @@ interface PriceInterface
 
     public function setId($id): void;
 
-    public function getAmount(): int;
+    public function getAmount(): ?int;
 
     public function setAmount(int $amount): void;
 

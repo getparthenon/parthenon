@@ -27,13 +27,12 @@ use Doctrine\Common\Collections\Collection;
 use Parthenon\Athena\Entity\CrudEntityInterface;
 use Parthenon\Athena\Entity\DeletableInterface;
 use Parthenon\Billing\Enum\PriceType;
-use Parthenon\Billing\Enum\UsageType;
 
 class Price implements CrudEntityInterface, DeletableInterface, PriceInterface
 {
     protected $id;
 
-    protected int $amount;
+    protected ?int $amount;
 
     protected string $currency;
 
@@ -61,7 +60,9 @@ class Price implements CrudEntityInterface, DeletableInterface, PriceInterface
 
     protected PriceType $type;
 
-    protected ?UsageType $usageType = null;
+    private ?int $units = null;
+
+    private ?bool $usage = false;
 
     public function getId()
     {
@@ -73,12 +74,12 @@ class Price implements CrudEntityInterface, DeletableInterface, PriceInterface
         $this->id = $id;
     }
 
-    public function getAmount(): int
+    public function getAmount(): ?int
     {
         return $this->amount;
     }
 
-    public function setAmount(int $amount): void
+    public function setAmount(?int $amount): void
     {
         $this->amount = $amount;
     }
@@ -250,13 +251,23 @@ class Price implements CrudEntityInterface, DeletableInterface, PriceInterface
         $this->type = $type;
     }
 
-    public function getUsageType(): ?UsageType
+    public function getUnits(): ?int
     {
-        return $this->usageType;
+        return $this->units;
     }
 
-    public function setUsageType(?UsageType $usageType): void
+    public function setUnits(?int $units): void
     {
-        $this->usageType = $usageType;
+        $this->units = $units;
+    }
+
+    public function getUsage(): bool
+    {
+        return true === $this->usage;
+    }
+
+    public function setUsage(?bool $usage): void
+    {
+        $this->usage = $usage;
     }
 }

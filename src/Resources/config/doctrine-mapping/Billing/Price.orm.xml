@@ -10,12 +10,13 @@
             <custom-id-generator class="Ramsey\Uuid\Doctrine\UuidGenerator" />
         </id>
 
-        <field name="amount" column="amount" type="integer" nullable="false" />
+        <field name="amount" column="amount" type="integer" nullable="true" />
         <field name="currency" column="currency" type="string" nullable="false" />
         <field name="recurring" column="recurring" type="boolean" nullable="true" />
+        <field name="usage" column="usage" type="boolean" nullable="true" />
+        <field name="units" column="units" type="integer" nullable="true" />
         <field name="public" column="public" type="boolean" nullable="true" />
         <field name="type" column="type" type="string" nullable="false" enum-type="Parthenon\Billing\Enum\PriceType"  />
-        <field name="usageType" column="usage_type" type="string" nullable="true" enum-type="Parthenon\Billing\Enum\UsageType"  />
         <field name="includingTax" column="including_tax" type="boolean" nullable="true" />
         <field name="isDeleted" column="is_deleted" type="boolean" nullable="true" />
         <field name="schedule" column="schedule" type="string" nullable="true" />
