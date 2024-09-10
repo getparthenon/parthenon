@@ -52,7 +52,7 @@ class PaymentsController
         PlanManagerInterface $planManager,
         SubscriptionFactoryInterface $subscriptionFactory,
         SubscriptionOptionsFactoryInterface $subscriptionOptionsFactory,
-        CheckoutManagerInterface $checkoutManager
+        CheckoutManagerInterface $checkoutManager,
     ) {
         $content = json_decode($request->getContent(), true);
         $seats = 1;
@@ -129,7 +129,7 @@ class PaymentsController
         SubscriberRepositoryInterface $subscriberRepository,
         SubscriptionManagerInterface $subscriptionManager,
         PlanManager $planManager,
-        PriceProviderInterface $priceProvider
+        PriceProviderInterface $priceProvider,
     ) {
         try {
             $planName = $request->get('planName');
@@ -175,7 +175,7 @@ class PaymentsController
     public function cancelCheckout(
         LoggerInterface $logger,
         UrlGeneratorInterface $urlGenerator,
-        ParameterBagInterface $parameterBag
+        ParameterBagInterface $parameterBag,
     ) {
         $logger->info('A user has returned from the checkout by cancelling');
 
@@ -188,7 +188,7 @@ class PaymentsController
         LoggerInterface $logger,
         CurrentSubscriberProviderInterface $subscriberProvider,
         SubscriberRepositoryInterface $subscriberRepository,
-        SubscriptionManagerInterface $subscriptionManager
+        SubscriptionManagerInterface $subscriptionManager,
     ) {
         $logger->info('A user has cancelled their subscription');
 

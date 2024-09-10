@@ -36,7 +36,7 @@ class TimezoneListener
 
     public function __construct(
         private Security $security,
-        private CurrentTeamProviderInterface $currentTeamProvider
+        private CurrentTeamProviderInterface $currentTeamProvider,
     ) {
     }
 

@@ -38,7 +38,7 @@ class MigrationsHandler implements MigrationsHandlerInterface
     public function __construct(
         private ManagerRegistry $managerRegistry,
         private string $migrationsDirectory,
-        private string $entityManagerName
+        private string $entityManagerName,
     ) {
     }
 

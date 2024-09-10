@@ -27,7 +27,7 @@ class TierComponent implements TierComponentInterface
 
     private int $firstUnit;
 
-    private ?int $lastUnit;
+    private ?int $lastUnit = null;
 
     private int $unitPrice;
 

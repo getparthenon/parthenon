@@ -75,7 +75,7 @@ class PaymentDetailsController
         Request $request,
         CustomerProviderInterface $customerProvider,
         SerializerInterface $serializer,
-        FrontendAddProcessorInterface $addCardByTokenDriver
+        FrontendAddProcessorInterface $addCardByTokenDriver,
     ) {
         $customer = $customerProvider->getCurrentCustomer();
 

@@ -40,7 +40,7 @@ class ConfirmEmail
     public function __construct(
         private UserRepositoryInterface $userRepository,
         private EventDispatcherInterface $dispatcher,
-        private RequestHandlerManagerInterface $requestHandlerManager
+        private RequestHandlerManagerInterface $requestHandlerManager,
     ) {
     }
 

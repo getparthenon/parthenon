@@ -40,7 +40,7 @@ class AthenaController
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionManagerInterface $subscriptionManager,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
     ): Response {
         try {
             /** @var Subscription $subscription */

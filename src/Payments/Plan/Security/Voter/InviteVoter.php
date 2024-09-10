@@ -35,7 +35,7 @@ final class InviteVoter extends Voter
     public function __construct(
         private TeamInviteCounterInterface $teamInviteCounter,
         private PlanManagerInterface $planManager,
-        private CurrentSubscriberProvider $currentSubscriberProvider
+        private CurrentSubscriberProvider $currentSubscriberProvider,
     ) {
     }
 

@@ -43,7 +43,7 @@ class TeamController
         LoggerInterface $logger,
         Security $security,
         CurrentTeamProvider $teamProvider,
-        TeamInviteCodeRepositoryInterface $inviteCodeRepository
+        TeamInviteCodeRepositoryInterface $inviteCodeRepository,
     ) {
         $logger->info('A user viewed their team');
         /** @var User $user */

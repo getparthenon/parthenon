@@ -41,7 +41,7 @@ class InvoiceController
         InvoiceProviderInterface $invoiceProvider,
         SerializerInterface $serializer,
         #[Autowire('%parthenon_billing_billabear_enabled%')]
-        bool $supported
+        bool $supported,
     ): Response {
         $customer = $customerProvider->getCurrentCustomer();
         $invoices = $invoiceProvider->fetchInvoices($customer);

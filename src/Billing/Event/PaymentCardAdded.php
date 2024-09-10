@@ -31,7 +31,7 @@ class PaymentCardAdded extends Event
 
     public function __construct(
         private CustomerInterface $customer,
-        private PaymentCard $paymentCard
+        private PaymentCard $paymentCard,
     ) {
     }
 

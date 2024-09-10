@@ -31,7 +31,7 @@ class BillingDetailsFactory implements BillingDetailsFactoryInterface
 
     public function createFromCustomerAndPaymentDetails(
         CustomerInterface $customer,
-        PaymentCard $paymentDetails
+        PaymentCard $paymentDetails,
     ): BillingDetails {
         $address = $this->buildAddresss($customer);
         $billingDetails = new BillingDetails();

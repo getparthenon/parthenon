@@ -31,7 +31,7 @@ class SiteUrlProvider implements SiteUrlProviderInterface, TenantProviderAwareIn
     public function __construct(
         private string $domain,
         private string $siteUrl,
-        private TenantProviderInterface $tenantProvider
+        private TenantProviderInterface $tenantProvider,
     ) {
     }
 

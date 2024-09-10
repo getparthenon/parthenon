@@ -33,7 +33,7 @@ final class TeamInviteCounter implements TeamInviteCounterInterface
     public function __construct(
         private TeamInviteCodeRepositoryInterface $inviteCodeRepository,
         private ActiveMembersRepositoryInterface $userRepository,
-        private TeamRepositoryInterface $teamRepository
+        private TeamRepositoryInterface $teamRepository,
     ) {
     }
 

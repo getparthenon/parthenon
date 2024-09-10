@@ -27,7 +27,7 @@ use Parthenon\MultiTenancy\Model\SignUp;
 final class TenantFactory implements TenantFactoryInterface
 {
     public function __construct(
-        private TenantInterface $tenant
+        private TenantInterface $tenant,
     ) {
     }
 

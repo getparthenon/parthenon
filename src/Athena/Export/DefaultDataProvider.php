@@ -33,7 +33,7 @@ final class DefaultDataProvider implements DataProviderInterface
 {
     public function __construct(
         private SectionManagerInterface $sectionManager,
-        private FilterManager $filterManager
+        private FilterManager $filterManager,
     ) {
     }
 

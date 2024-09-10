@@ -37,7 +37,7 @@ final class CleanUpSessions
         SessionRepositoryInterface $sessionRepository,
         ResultLogRepositoryInterface $resultLogRepository,
         ExperimentLogRepositoryInterface $experimentLogRepository,
-        array $disabledUserAgents
+        array $disabledUserAgents,
     ) {
         $this->sessionRepository = $sessionRepository;
         $this->resultLogRepository = $resultLogRepository;
