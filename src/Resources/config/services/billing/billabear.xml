@@ -59,6 +59,7 @@
 
         <service id="Parthenon\Billing\BillaBear\Subscription\SubscriptionProvider" class="Parthenon\Billing\BillaBear\Subscription\SubscriptionProvider">
             <argument type="service" id="Parthenon\Billing\BillaBear\SdkFactory" />
+            <argument type="service" id="Parthenon\Billing\Factory\EntityFactoryInterface" />
         </service>
 
         <service id="Parthenon\Billing\Subscription\CachedSubscriptionProvider" class="Parthenon\Billing\Subscription\CachedSubscriptionProvider">

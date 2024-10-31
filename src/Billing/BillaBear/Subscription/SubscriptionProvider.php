@@ -23,15 +23,17 @@ namespace Parthenon\Billing\BillaBear\Subscription;
 
 use Parthenon\Billing\BillaBear\SdkFactory;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\SubscriptionStatus;
+use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionProviderInterface;
 
 class SubscriptionProvider implements SubscriptionProviderInterface
 {
-    public function __construct(private SdkFactory $sdkFactory)
-    {
+    public function __construct(
+        private SdkFactory $sdkFactory,
+        private EntityFactoryInterface $entityFactory,
+    ) {
     }
 
     public function getSubscriptionsForCustomer(CustomerInterface $customer): array
@@ -47,7 +49,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
 
     public function buildSubscription(\BillaBear\Model\Subscription $subscription): Subscription
     {
-        $entity = new Subscription();
+        $entity = $this->entityFactory->getSubscriptionEntity();
         $entity->setId($subscription->getId());
         $entity->setActive(true);
         $entity->setPaymentSchedule($subscription->getSchedule());
@@ -60,7 +62,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
         $entity->setStatus(SubscriptionStatus::from($subscription->getStatus()));
 
         if ($subscription->getPrice()) {
-            $price = new Price();
+            $price = $this->entityFactory->getPriceEntity();
             $price->setCurrency($subscription->getPrice()?->getCurrency());
             $price->setAmount($subscription->getPrice()?->getAmount());
             $price->setSchedule($subscription->getPrice()?->getSchedule());
