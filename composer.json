@@ -1,7 +1,7 @@
 {
     "name": "parthenon/parthenon",
     "type": "library",
-    "license": "GPL-3.0-only",
+    "license": "LGPL-2.1-only",
     "require": {
         "php": ">=8.1",
         "ext-ctype": "*",
