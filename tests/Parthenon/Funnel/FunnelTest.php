@@ -5,18 +5,18 @@ declare(strict_types=1);
 /*
  * Copyright (C) 2020-2024 Iain Cambridge
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
+ * the Free Software Foundation, either version 2.1 of the License, or
+ * (at your option) any later version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 namespace Parthenon\Funnel;
@@ -45,7 +45,7 @@ class FunnelTest extends TestCase
 
         $funnel = new Funnel($formFactory, $requestStack);
 
-        $funnel->addStep(new class() implements StepInterface {
+        $funnel->addStep(new class implements StepInterface {
             public function isComplete(Request $request, FormFactoryInterface $formFactory, $entity): bool
             {
                 return true;
@@ -67,7 +67,11 @@ class FunnelTest extends TestCase
         $request = $this->createMock(Request::class);
         $element = $this->createMock(StepInterface::class);
 
-        $entity = new class() {
+        $entity = new class {
+            public function getId(): string
+            {
+                return bin2hex(random_bytes(8));
+            }
         };
         $data = ['data' => 'true'];
 
@@ -91,7 +95,11 @@ class FunnelTest extends TestCase
         $request = $this->createMock(Request::class);
         $element = $this->createMock(StepInterface::class);
 
-        $entity = new class() {
+        $entity = new class {
+            public function getId(): string
+            {
+                return bin2hex(random_bytes(8));
+            }
         };
         $data = ['data' => 'true'];
 
@@ -113,7 +121,11 @@ class FunnelTest extends TestCase
         $element = $this->createMock(StepInterface::class);
         $successHandler = $this->createMock(SuccessHandlerInterface::class);
 
-        $entity = new class() {
+        $entity = new class {
+            public function getId(): string
+            {
+                return bin2hex(random_bytes(8));
+            }
         };
         $data = ['data' => 'true'];
 
@@ -138,7 +150,16 @@ class FunnelTest extends TestCase
         $elementTwo = $this->createMock(StepInterface::class);
         $skipHandler = $this->createMock(SkipHandlerInterface::class);
 
-        $entity = new class() {
+        $id = bin2hex(random_bytes(8));
+        $entity = new class($id) {
+            public function __construct(private string $id)
+            {
+            }
+
+            public function getId(): string
+            {
+                return $this->id;
+            }
         };
         $funnelState = new FunnelState();
         $funnelState->setStep(1)->setEntity($entity);
@@ -146,8 +167,8 @@ class FunnelTest extends TestCase
 
         $requestStack->method('getSession')->willReturn($session);
 
-        $session->method('get')->with(get_class($entity).'_funnel')->willReturn($funnelState);
-        $session->method('set')->with(get_class($entity).'_funnel', $funnelState);
+        $session->method('get')->with($id.'_funnel')->willReturn($funnelState);
+        $session->method('set')->with($id.'_funnel', $funnelState);
 
         $elementOne->method('getOutput')->with($request, $formFactory, $entity)->willReturn($data);
         $elementOne->expects($this->never())->method('isComplete')->with($request, $formFactory, $entity)->willReturn(true);
@@ -175,7 +196,16 @@ class FunnelTest extends TestCase
         $elementTwo = $this->createMock(StepInterface::class);
         $skipHandler = $this->createMock(SkipHandlerInterface::class);
 
-        $entity = new class() {
+        $id = bin2hex(random_bytes(8));
+        $entity = new class($id) {
+            public function __construct(private string $id)
+            {
+            }
+
+            public function getId(): string
+            {
+                return $this->id;
+            }
         };
         $funnelState = new FunnelState();
         $funnelState->setStep(1)->setEntity($entity);
@@ -183,8 +213,8 @@ class FunnelTest extends TestCase
 
         $requestStack->method('getSession')->willReturn($session);
 
-        $session->method('get')->with(get_class($entity).'_funnel')->willReturn($funnelState);
-        $session->method('set')->with(get_class($entity).'_funnel', $funnelState);
+        $session->method('get')->with($id.'_funnel')->willReturn($funnelState);
+        $session->method('set')->with($id.'_funnel', $funnelState);
 
         $elementOne->method('getOutput')->with($request, $formFactory, $entity)->willReturn($data);
         $elementOne->expects($this->never())->method('isComplete')->with($request, $formFactory, $entity)->willReturn(true);
@@ -199,7 +229,7 @@ class FunnelTest extends TestCase
         $this->assertEquals($data, $funnel->process($request));
     }
 
-    public function testCallsCOrrectElements()
+    public function testCallsCorrectElements()
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $requestStack = $this->createMock(RequestStack::class);
@@ -209,7 +239,16 @@ class FunnelTest extends TestCase
         $elementTwo = $this->createMock(StepInterface::class);
         $skipHandler = $this->createMock(SkipHandlerInterface::class);
 
-        $entity = new class() {
+        $id = bin2hex(random_bytes(8));
+        $entity = new class($id) {
+            public function __construct(private string $id)
+            {
+            }
+
+            public function getId(): string
+            {
+                return $this->id;
+            }
         };
         $funnelState = new FunnelState();
         $funnelState->setStep(1)->setEntity($entity);
@@ -217,14 +256,10 @@ class FunnelTest extends TestCase
 
         $requestStack->method('getSession')->willReturn($session);
 
-        $session->method('get')->with(get_class($entity).'_funnel')->willReturn($funnelState);
+        $session->method('get')->with($id.'_funnel')->willReturn($funnelState);
 
-        $session->method('set')->with(get_class($entity).'_funnel', $funnelState);
+        $session->method('set')->with($id.'_funnel', $funnelState);
 
-        /*   $session->method('set')->with(get_class($entity).'_funnel', $this->callback(function (FunnelState $funnelState) {
-               return 1 === $funnelState->getStep();
-           }))->willReturn(null);
-   */
         $elementOne->expects($this->never())->method('getOutput')->with($request, $formFactory, $entity)->willReturn([]);
         $elementOne->expects($this->never())->method('isComplete')->with($request, $formFactory, $entity)->willReturn(true);
 
@@ -246,7 +281,16 @@ class FunnelTest extends TestCase
         $elementTwo = $this->createMock(StepInterface::class);
         $skipHandler = $this->createMock(SkipHandlerInterface::class);
 
-        $entity = new class() {
+        $id = bin2hex(random_bytes(8));
+        $entity = new class($id) {
+            public function __construct(private string $id)
+            {
+            }
+
+            public function getId(): string
+            {
+                return $this->id;
+            }
         };
         $funnelState = new FunnelState();
         $funnelState->setStep(
@@ -256,8 +300,8 @@ class FunnelTest extends TestCase
 
         $requestStack->method('getSession')->willReturn($session);
 
-        $session->method('get')->with(get_class($entity).'_funnel')->willReturn($funnelState);
-        $session->method('set')->with(get_class($entity).'_funnel', $this->callback(function (FunnelState $funnelState) {
+        $session->method('get')->with($id.'_funnel')->willReturn($funnelState);
+        $session->method('set')->with($id.'_funnel', $this->callback(function (FunnelState $funnelState) {
             return 1 === $funnelState->getStep();
         }));
 

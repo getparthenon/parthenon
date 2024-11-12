@@ -36,5 +36,7 @@ interface FunnelInterface
 
     public function setSkipHandler(SkipHandlerInterface $skipHandler): self;
 
+    public function isLiveEntity(bool $preloaded): self;
+
     public function process(Request $request);
 }

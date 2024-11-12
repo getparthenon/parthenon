@@ -47,8 +47,8 @@ final class Funnel implements FunnelInterface
     private FormFactoryInterface $formFactory;
     private SuccessHandlerInterface $successHandler;
     private SkipHandlerInterface $skipHandler;
-
     private SessionInterface $session;
+    private bool $isLiveEntity = false;
 
     public function __construct(FormFactoryInterface $formFactory, RequestStack $requestStack)
     {
@@ -91,6 +91,13 @@ final class Funnel implements FunnelInterface
         return $this;
     }
 
+    public function isLiveEntity(bool $preloaded): self
+    {
+        $this->isLiveEntity = $preloaded;
+
+        return $this;
+    }
+
     public function process(Request $request)
     {
         if (!is_object($this->entity)) {
@@ -102,7 +109,7 @@ final class Funnel implements FunnelInterface
 
         $funnelState = $this->getState($newState);
 
-        $entity = $funnelState->getEntity();
+        $entity = $this->isLiveEntity ? $this->entity : $funnelState->getEntity();
 
         if (null !== $request->get('skip', null)) {
             return $this->handleSkip($entity);
@@ -195,7 +202,7 @@ final class Funnel implements FunnelInterface
     private function getState(bool $newState): FunnelState
     {
         $this->getLogger()->info('Fetching funnel state from session', ['entity' => $this->getEntityName()]);
-        $state = $this->session->get(get_class($this->entity).'_funnel');
+        $state = $this->session->get($this->entity->getId().'_funnel');
 
         if (!$state instanceof FunnelState || $newState) {
             if ($newState) {
@@ -212,7 +219,7 @@ final class Funnel implements FunnelInterface
     private function saveState(FunnelState $funnelState)
     {
         $this->getLogger()->info('Saving funnel state', ['entity' => get_class($this->entity)]);
-        $this->session->set(get_class($this->entity).'_funnel', $funnelState);
+        $this->session->set($this->entity->getId().'_funnel', $funnelState);
     }
 
     private function getEntityName(): string
