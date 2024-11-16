@@ -21,8 +21,13 @@ declare(strict_types=1);
 
 namespace Parthenon\Common\Repository;
 
+use Parthenon\Common\Exception\NoEntityFoundException;
+
 interface RepositoryInterface
 {
+    /**
+     * @throws NoEntityFoundException
+     */
     public function findById($id);
 
     public function save($entity);
