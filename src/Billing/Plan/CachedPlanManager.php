@@ -46,7 +46,7 @@ class CachedPlanManager implements PlanManagerInterface
                 $this->getLogger()->debug('Fetching plans from original plan manager');
                 $this->plans = $this->planManager->getPlans();
                 $rawData = serialize($this->plans);
-                $this->redis->set(self::REDIS_STORAGE_KEY, $rawData);
+                $this->redis->set(self::REDIS_STORAGE_KEY, $rawData, 900);
             } else {
                 $this->getLogger()->debug('Got the plans from cache');
                 $this->plans = unserialize($rawData);

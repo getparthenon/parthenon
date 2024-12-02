@@ -117,7 +117,6 @@ class Billing implements ModuleConfigurationInterface
         $container->registerForAutoconfiguration(CounterInterface::class)->addTag('parthenon.billing.plan.counter');
         $container->registerForAutoconfiguration(HandlerInterface::class)->addTag('parthenon.billing.webhooks.handler');
         $container->registerForAutoconfiguration(ProcessorInterface::class)->addTag('parthenon.billing.billabear.webhooks.handler');
-        $container->setParameter('parthenon_billing_enabled', true);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
         $loader->load('services/billing.xml');
@@ -136,10 +135,13 @@ class Billing implements ModuleConfigurationInterface
             $loader->load('services/billing/billabear.xml');
             $container->setAlias(PlanManagerInterface::class, CachedPlanManager::class);
             $this->handleBillaBearConfig($billingConfig['billabear'], $container);
+            $container->setParameter('parthenon_billing_enabled', false);
         } elseif ('athena' === strtolower($billingConfig['plan_management'])) {
+            $container->setParameter('parthenon_billing_enabled', true);
             $loader->load('services/billing/athena_plans.xml');
             $container->setAlias(PlanManagerInterface::class, CachedPlanManager::class);
         } else {
+            $container->setParameter('parthenon_billing_enabled', true);
             $container->setAlias(PlanManagerInterface::class, PlanManager::class);
         }
 

@@ -15,6 +15,12 @@
         <service id="Parthenon\Billing\Subscriber\CustomerCreatedSubscriber" class="Parthenon\Billing\Subscriber\CustomerCreatedSubscriber">
             <argument type="service" id="Parthenon\User\Repository\UserRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Customer\CustomerRegisterInterface" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="Parthenon\Billing\Subscriber\SubscriptionChangeSubscriber" class="Parthenon\Billing\Subscriber\SubscriptionChangeSubscriber">
+            <argument type="service" id="Redis" />
+            <tag name="kernel.event_subscriber" />
         </service>
 
         <service id="Parthenon\Billing\BillaBear\Repository\PaymentCardRepository" class="Parthenon\Billing\BillaBear\Repository\PaymentCardRepository">

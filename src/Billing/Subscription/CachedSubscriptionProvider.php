@@ -53,7 +53,7 @@ class CachedSubscriptionProvider implements SubscriptionProviderInterface
             $this->getLogger()->debug('Fetching subscription from original subscription provider');
             $this->subscription[$id] = $this->subscriptionProvider->getSubscription($id);
             $rawData = serialize($this->subscription[$id]);
-            $this->redis->set($key, $rawData);
+            $this->redis->set($key, $rawData, 900);
         } else {
             $this->getLogger()->debug('Got the subscription from cache');
             $this->subscription[$id] = unserialize($rawData);
@@ -77,7 +77,7 @@ class CachedSubscriptionProvider implements SubscriptionProviderInterface
             $this->getLogger()->debug('Fetching subscriptions from original subscription provider');
             $this->subscriptions[$id] = $this->subscriptionProvider->getSubscriptionsForCustomer($customer);
             $rawData = serialize($this->subscriptions[$id]);
-            $this->redis->set($key, $rawData);
+            $this->redis->set($key, $rawData. 900);
         } else {
             $this->getLogger()->debug('Got the subscriptions from cache');
             $this->subscriptions[$id] = unserialize($rawData);
