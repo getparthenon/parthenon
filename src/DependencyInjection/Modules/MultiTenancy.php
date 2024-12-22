@@ -42,6 +42,7 @@ final class MultiTenancy implements ModuleConfigurationInterface
                     ->booleanNode('enabled')->defaultFalse()->end()
                     ->booleanNode('background_creation')->defaultFalse()->end()
                     ->scalarNode('domain')->end()
+                    ->scalarNode('domain_format')->end()
                     ->arrayNode('doctrine')
                         ->children()
                             ->scalarNode('dbal_connection')->end()
@@ -69,6 +70,7 @@ final class MultiTenancy implements ModuleConfigurationInterface
     public function handleDefaultParameters(ContainerBuilder $container): void
     {
         $container->setParameter('parthenon_multi_tenancy_domain', '');
+        $container->setParameter('parthenon_multi_tenancy_domain_format', '');
         $container->setParameter('parthenon_multi_tenancy_migrations_directory', '');
         $container->setParameter('parthenon_multi_tenancy_background_creation', false);
         $container->setParameter('parthenon_multi_tenancy_dbal_connection', '');
@@ -114,7 +116,7 @@ final class MultiTenancy implements ModuleConfigurationInterface
             } elseif (!isset($multiTenancyConfig['domain']) && $enabled) {
                 throw new ParameterNotSetException('parthenon.multi_tenancy.domain must be set when multi_tenancy is enabled');
             }
-
+            $container->setParameter('parthenon_multi_tenancy_domain_format', $multiTenancyConfig['domain_format'] ?? $multiTenancyConfig['domain']);
             $this->configureMigrations($config, $container);
             $this->configureDoctrineConfig($config, $container);
             $this->configureTenantCreator($backgroundCreation, $container);

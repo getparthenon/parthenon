@@ -118,7 +118,7 @@
         <service id="Parthenon\MultiTenancy\Creator\TenantCreatorInterface" alias="Parthenon\MultiTenancy\Creator\TenantCreator" />
 
         <service id="Parthenon\MultiTenancy\SiteUrlProvider" class="Parthenon\MultiTenancy\SiteUrlProvider">
-            <argument>%parthenon_multi_tenancy_domain%</argument>
+            <argument>%parthenon_multi_tenancy_domain_format%</argument>
             <argument>%parthenon_common_site_url%</argument>
             <argument type="service" id="Parthenon\MultiTenancy\TenantProvider\TenantProviderInterface" />
         </service>
