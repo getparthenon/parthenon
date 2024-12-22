@@ -29,7 +29,7 @@ use Parthenon\MultiTenancy\TenantProvider\TenantProviderInterface;
 class SiteUrlProvider implements SiteUrlProviderInterface, TenantProviderAwareInterface
 {
     public function __construct(
-        private string $domain,
+        private string $format,
         private string $siteUrl,
         private TenantProviderInterface $tenantProvider,
     ) {
@@ -40,7 +40,7 @@ class SiteUrlProvider implements SiteUrlProviderInterface, TenantProviderAwareIn
         try {
             $tenant = $this->tenantProvider->getCurrentTenant();
 
-            return sprintf('https://%s.%s', $tenant->getSubdomain(), $this->domain);
+            return sprintf($this->format, $tenant->getSubdomain());
         } catch (NoTenantFoundException $exception) {
             return $this->siteUrl;
         }
