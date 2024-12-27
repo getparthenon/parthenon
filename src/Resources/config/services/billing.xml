@@ -270,6 +270,7 @@
             <argument type="service" id="Parthenon\Billing\Repository\PaymentRepositoryInterface" />
             <argument type="service" id="Parthenon\Billing\Repository\RefundRepositoryInterface" />
             <argument type="service" id="Symfony\Component\EventDispatcher\EventDispatcherInterface" />
+            <argument type="service" id="Parthenon\Billing\Factory\EntityFactoryInterface" />
         </service>
         <service id="Parthenon\Billing\Refund\RefundManagerInterface" alias="Parthenon\Billing\Refund\RefundManager" />
 

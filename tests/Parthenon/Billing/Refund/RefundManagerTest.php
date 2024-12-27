@@ -5,18 +5,18 @@ declare(strict_types=1);
 /*
  * Copyright (C) 2020-2024 Iain Cambridge
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
+ * the Free Software Foundation, either version 2.1 of the License, or
+ * (at your option) any later version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 namespace Parthenon\Billing\Refund;
@@ -31,6 +31,7 @@ use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Refund as RefundEntity;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Factory\EntityFactory;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use PHPUnit\Framework\TestCase;
@@ -84,7 +85,7 @@ class RefundManagerTest extends TestCase
         $start = new \DateTime('now');
         $end = new \DateTime('+3 days');
 
-        $subject = new RefundManager($provider, $paymentRepository, $refundRepository, $dispatcher);
+        $subject = new RefundManager($provider, $paymentRepository, $refundRepository, $dispatcher, new EntityFactory());
         $subject->issueProrateRefundForSubscription($subscription, $billingAdmin, $start, $end);
     }
 
@@ -133,7 +134,7 @@ class RefundManagerTest extends TestCase
         $start = new \DateTime('now');
         $end = new \DateTime('+3 days');
 
-        $subject = new RefundManager($provider, $paymentRepository, $refundRepository, $dispatcher);
+        $subject = new RefundManager($provider, $paymentRepository, $refundRepository, $dispatcher, new EntityFactory());
         $subject->issueProrateRefundForSubscription($subscription, $billingAdmin, $start, $end);
     }
 }

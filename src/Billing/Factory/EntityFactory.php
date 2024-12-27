@@ -31,6 +31,7 @@ use Parthenon\Billing\Entity\Receipt;
 use Parthenon\Billing\Entity\ReceiptInterface;
 use Parthenon\Billing\Entity\ReceiptLine;
 use Parthenon\Billing\Entity\ReceiptLineInterface;
+use Parthenon\Billing\Entity\Refund;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Entity\SubscriptionPlanInterface;
@@ -75,5 +76,10 @@ class EntityFactory implements EntityFactoryInterface
     public function getReceiptLine(): ReceiptLineInterface
     {
         return new ReceiptLine();
+    }
+
+    public function getRefundEntity(): Refund
+    {
+        return new Refund();
     }
 }

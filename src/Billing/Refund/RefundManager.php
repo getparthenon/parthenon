@@ -34,6 +34,7 @@ use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Enum\RefundStatus;
 use Parthenon\Billing\Event\RefundCreated;
 use Parthenon\Billing\Exception\RefundLimitExceededException;
+use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -45,6 +46,7 @@ class RefundManager implements RefundManagerInterface
         private PaymentRepositoryInterface $paymentRepository,
         private RefundRepositoryInterface $refundRepository,
         private EventDispatcherInterface $dispatcher,
+        private EntityFactoryInterface $entityFactory,
     ) {
     }
 
@@ -118,7 +120,7 @@ class RefundManager implements RefundManagerInterface
             $payment->setStatus(PaymentStatus::PARTIALLY_REFUNDED);
         }
         $this->paymentRepository->save($payment);
-        $refundEn = new Refund();
+        $refundEn = $this->entityFactory->getRefundEntity();
         $refundEn->setAmount($refund->getAmount());
         $refundEn->setCurrency(strtoupper($refund->getCurrency()));
         $refundEn->setExternalReference($refund->getId());
