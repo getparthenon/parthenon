@@ -2,14 +2,22 @@
 
 declare(strict_types=1);
 
+
 /*
- * Copyright Iain Cambridge 2020-2022.
+ * Copyright (C) 2020-2025 Iain Cambridge
  *
- * Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
+ * the Free Software Foundation, either version 2.1 of the License, or
+ * (at your option) any later version.
  *
- * Change Date: TBD ( 3 years after 2.1.0 release )
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 return (new PhpCsFixer\Config())
@@ -17,13 +25,20 @@ return (new PhpCsFixer\Config())
             ->setRules([
                 '@PSR2' => true,
                 '@Symfony' => true,
-                'header_comment' => ['header' => 'Copyright Iain Cambridge 2020-2022.
-                
-Use of this software is governed by the Business Source License included in the LICENSE file and at https://getparthenon.com/docs/next/license.
+                'header_comment' => ['header' => 'Copyright Iain Cambridge 2020-2025.
 
-Change Date: TBD ( 3 years after 2.1.0 release )
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
+the Free Software Foundation, either version 2.1 of the License, or
+(at your option) any later version.
 
-On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.'],
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.'],
                 'list_syntax' => ['syntax' => 'short'],
                 'array_syntax' => ['syntax' => 'short'],
                 'declare_strict_types' => true,

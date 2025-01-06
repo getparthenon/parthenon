@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * Copyright (C) 2020-2024 Iain Cambridge
+ * Copyright Iain Cambridge 2020-2025.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
