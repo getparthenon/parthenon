@@ -25,9 +25,10 @@ use BillaBear\Api\CustomersApi;
 use BillaBear\Api\InvoicesApi;
 use BillaBear\Api\PaymentDetailsApi;
 use BillaBear\Api\SubscriptionsApi;
+use BillaBear\Api\UsageApi;
 use BillaBear\Configuration;
 
-class SdkFactory
+final class SdkFactory
 {
     public function __construct(
         private string $apiUrl,
@@ -69,6 +70,14 @@ class SdkFactory
         $apiInstance = new InvoicesApi(config: $config);
 
         return $apiInstance;
+    }
+
+    public function createUsageApi(): UsageApi
+    {
+        $config = $this->createConfig();
+        $usageInstance = new UsageApi(config: $config);
+
+        return $usageInstance;
     }
 
     public function createConfig(): Configuration
